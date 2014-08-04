@@ -20,44 +20,11 @@ namespace Hardware
         public enum KEITHLEY_2601A_MeasureMode { Voltage, Current, Resistance, Power }
         public enum KEITHLEY_2601A_LimitMode { Voltage, Current }
 
-        public class GPIB_KEITHLEY_2602A : IExperimentalDevice
+        public class GPIB_KEITHLEY_2602A : GPIB_Device
         {
 
             public GPIB_KEITHLEY_2602A(byte _PrimaryAddress, byte _SecondaryAddress, byte _BoardNumber)
-            {
-                this._primaryAddress = _PrimaryAddress;
-                this._secondaryAddress = _SecondaryAddress;
-                this._boardNumber = _BoardNumber;
-                
-                InitDevice();
-            }
-
-            //Addresses of device
-
-            private byte _primaryAddress;
-            public byte primaryAddress
-            {
-                get { return _primaryAddress; }
-                set { _primaryAddress = value; }
-            }
-            private byte _secondaryAddress;
-            public byte secondaryAddress
-            {
-                get { return _secondaryAddress; }
-                set { _secondaryAddress = value; }
-            }
-
-            private byte _boardNumber;
-            public byte boardNumber
-            {
-                get { return _boardNumber; }
-                set { _boardNumber = value; }
-            }
-
-            //For controlling the device
-
-            private NationalInstruments.NI4882.Address GPIB_KEITHLEY_2602A_Adderss;
-            private NationalInstruments.NI4882.Device GPIB_KEITHLEY_2602A_Device;
+                : base(_PrimaryAddress, _SecondaryAddress, _BoardNumber) { }
 
             //Overriding basical device functionality
 
@@ -65,64 +32,15 @@ namespace Hardware
             /// Initializes the device
             /// </summary>
             /// <returns>Returns true, if initialization succeed</returns>
-            public bool InitDevice()
+            public override bool InitDevice()
             {
-                try
+                var IsInitSuccess = base.InitDevice();
+                if (IsInitSuccess == true)
                 {
-                    GPIB_KEITHLEY_2602A_Adderss = new NationalInstruments.NI4882.Address(_primaryAddress, _secondaryAddress);
-                    GPIB_KEITHLEY_2602A_Device = new NationalInstruments.NI4882.Device(_boardNumber, GPIB_KEITHLEY_2602A_Adderss);
-
-                    GPIB_KEITHLEY_2602A_Device.Clear();
-
-                    GPIB_KEITHLEY_2602A_Device.Write("beeper.enable = 1 ");
-
+                    GPIB_CurrentDevice.Write("beeper.enable = 1 ");
                     return true;
                 }
-                catch
-                {
-                    return false;
-                }
-            }
-
-            /// <summary>
-            /// Sends command request to the device
-            /// </summary>
-            /// <param name="RequestString">Command, to be sent to the device</param>
-            /// <returns></returns>
-            public bool SendCommandRequest(string RequestString)
-            {
-                try
-                {
-                    GPIB_KEITHLEY_2602A_Device.Write(RequestString);
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
-                }
-            }
-
-            /// <summary>
-            /// Receives the answer of the denvice
-            /// </summary>
-            /// <returns>Returns the ansver, if succeed else returns empty string</returns>
-            public string ReceiveDeviceAnswer()
-            {
-                GPIB_KEITHLEY_2602A_Device.IOTimeout = NationalInstruments.NI4882.TimeoutValue.None;
-                var GPIB_KEITHLEY_2602A_Responce = string.Empty;
-                
-                try
-                {
-                    GPIB_KEITHLEY_2602A_Responce = GPIB_KEITHLEY_2602A_Device.ReadString();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    GPIB_KEITHLEY_2602A_Responce = string.Empty;
-                }
-
-                return GPIB_KEITHLEY_2602A_Responce;
+                else return false;
             }
 
             /*     Realizing advanced device functionality     */
