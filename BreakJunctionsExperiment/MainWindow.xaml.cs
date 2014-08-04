@@ -119,6 +119,12 @@ namespace BreakJunctions
 		{
 			this.InitializeComponent();
 
+            /* test */
+
+            GPIB_HP_35670A analyzer = new GPIB_HP_35670A(27, 0, 0);
+
+            /* end test */
+
             #region Interface model-view interactions
 
             this.DataContext = IV_And_TimeTraceViewModel.Instance;
