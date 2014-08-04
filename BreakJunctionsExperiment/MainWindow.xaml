@@ -253,8 +253,8 @@
 									<StackPanel x:Name="TimeTraceChartPanel" Orientation="Vertical" Margin="20 0 30 0">
 										<GroupBox Header="Source Mode" HorizontalAlignment="Stretch" Margin="5">
 											<StackPanel Height="Auto">
-												<RadioButton x:Name="radioTimeTraceSourceVoltage" Content="Voltage Mode" Margin="5 5 5 2.5" FontFamily="/BrekJunctions;component/Fonts/#Segoe UI" IsChecked="True"/>
-												<RadioButton x:Name="radioTimeTraceSourceCurrent" Content="Current Mode" Margin="5 2.5 5 5"/>
+                                                <RadioButton x:Name="radioTimeTraceSourceVoltage" Content="Voltage Mode" Margin="5 5 5 2.5" IsChecked="{Binding Path=IsTimeTraceMeasurementVoltageModeChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                <RadioButton x:Name="radioTimeTraceSourceCurrent" Content="Current Mode" Margin="5 2.5 5 5" IsChecked="{Binding Path=IsTimeTraceMeasurementCurrentModeChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 											</StackPanel>
 										</GroupBox>  <!-- Source mode group box -->
 										<Grid Margin="5">

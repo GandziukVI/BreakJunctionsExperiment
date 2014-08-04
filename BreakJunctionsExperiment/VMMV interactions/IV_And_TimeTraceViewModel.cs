@@ -132,7 +132,7 @@ namespace BreakJunctions
             get { return _IsTimeTraceMeasurementVoltageModeChecked; }
             set { _IsTimeTraceMeasurementVoltageModeChecked = value; }
         }
-        private bool _IsTimeTraceMeasurementCurrentModeChecked = true;
+        private bool _IsTimeTraceMeasurementCurrentModeChecked = false;
         public bool IsTimeTraceMeasurementCurrentModeChecked
         {
             get { return _IsTimeTraceMeasurementCurrentModeChecked; }
