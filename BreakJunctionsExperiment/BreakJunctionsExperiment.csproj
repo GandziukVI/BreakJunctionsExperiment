@@ -89,6 +89,7 @@
     <Compile Include="Hardware\Hardware %28Abstract%29\IMotion.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\I_SMU.cs" />
     <Compile Include="Hardware\Hardware %28Physical%29\FAULHABER_MINIMOTOR_SA.cs" />
+    <Compile Include="Hardware\Hardware %28Physical%29\HP_35670A.cs" />
     <Compile Include="Hardware\Hardware %28Physical%29\KEITHLEY_2602A\GPIB_KEITHLEY_2602A_CHANNEL.cs" />
     <Compile Include="Hardware\Hardware %28Physical%29\KEITHLEY_2602A\KEITHLEY_2602A.cs" />
     <Compile Include="Hardware\Hardware %28Physical%29\ORDINARY_MOTOR.cs" />

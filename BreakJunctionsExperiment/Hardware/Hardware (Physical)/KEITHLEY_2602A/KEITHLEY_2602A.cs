@@ -28,6 +28,7 @@ namespace Hardware
                 this._primaryAddress = _PrimaryAddress;
                 this._secondaryAddress = _SecondaryAddress;
                 this._boardNumber = _BoardNumber;
+                
                 InitDevice();
             }
 
