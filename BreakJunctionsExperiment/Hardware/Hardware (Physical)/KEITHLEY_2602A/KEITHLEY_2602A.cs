@@ -370,7 +370,7 @@ namespace Hardware
                     "trigger.wait({9})\n" +
                     "result = result + smu{0}.measure.r()\n" +
                     "end\n" +
-                    "result = result / ({8} - 1)\n" +
+                    "result = result / {8}\n" +
                     "print (result)\n" +
                     "endscript\n" +
                     "MeasureResistanceInChannel()\n";

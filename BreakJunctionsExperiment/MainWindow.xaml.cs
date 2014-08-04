@@ -416,6 +416,8 @@ namespace BreakJunctions
                 var ExperimentSettings = IV_And_TimeTraceViewModel.Instance;
 
                 var valueThroughTheStructure = ExperimentSettings.TimeTraceMeasurementValueThrougtTheStructure;
+                var isTimeTraceVoltageModeChecked = ExperimentSettings.IsTimeTraceMeasurementVoltageModeChecked;
+                var isTimeTraceCurrentModeChecked = ExperimentSettings.IsTimeTraceMeasurementCurrentModeChecked;
 
                 var selectedTimeTraceModeItem = (tabControlTimeTraceMeasurementParameters.SelectedItem as TabItem).Header.ToString();
 
@@ -426,7 +428,10 @@ namespace BreakJunctions
                             var motionStartPosition = ExperimentSettings.TimeTraceMeasurementMotionCurrentDestination;
                             var motionFinalDestination = ExperimentSettings.TimeTraceMeasurementMotionFinalDestination;
 
-                            TimeTraceCurve = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, Device, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
+                            if (isTimeTraceVoltageModeChecked == true)
+                                TimeTraceCurve = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, Device, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
+                            else if (isTimeTraceCurrentModeChecked == true)
+                                TimeTraceCurve = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, Device, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
                         } break;
                     case "Distance (Repetitive)":
                         {
@@ -434,7 +439,10 @@ namespace BreakJunctions
                             var motionRepetitiveEndPosition = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
                             var numerCycles = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
 
-                            TimeTraceCurve = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, Device, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
+                            if (isTimeTraceVoltageModeChecked == true)
+                                TimeTraceCurve = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, Device, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
+                            else if (isTimeTraceCurrentModeChecked == true)
+                                TimeTraceCurve = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, Device, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
                         } break;
                     case "Time":
                         {
