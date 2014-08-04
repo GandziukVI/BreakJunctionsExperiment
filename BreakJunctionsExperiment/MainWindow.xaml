@@ -389,7 +389,7 @@
 																			</ToolTip>
 																		</Label.ToolTip>
 																	</Label>
-																	<TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltPosition" Text="{Binding Path=TimeTraceMeasurementMotionCurrentDestination, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltPosition" Text="{Binding Path=TimeTraceMeasurementMotionCurrentDestination, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
 
 																	<Label Grid.Row="2" Grid.Column="0" Margin="0 2.5" Content="Motion final dest.">
 																		<Label.ToolTip>
@@ -398,7 +398,7 @@
 																			</ToolTip>
 																		</Label.ToolTip>
 																	</Label>
-																	<TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltFinalPosition" Text="{Binding Path=TimeTraceMeasurementMotionFinalDestination, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                                                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltFinalPosition" Text="{Binding Path=TimeTraceMeasurementMotionFinalDestination, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
 																</Grid>
 															</TabItem> <!-- End tab item single time trace distance measuremebts -->
 															<!-- Tab item repetitive time trace distance measuremebts -->
