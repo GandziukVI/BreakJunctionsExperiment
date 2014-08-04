@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{40D47A18-2082-491F-92BA-199B3C027560}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BreakJunctions</RootNamespace>
+    <AssemblyName>BreakJunctionsExperiment</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <ExpressionBlendVersion>12.0.41002.1</ExpressionBlendVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DynamicDataDisplay">
+      <HintPath>.\DynamicDataDisplay.dll</HintPath>
+    </Reference>
+    <Reference Include="NationalInstruments.Common, Version=13.0.40.190, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL" />
+    <Reference Include="NationalInstruments.Common.Native, Version=13.0.40.190, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=x86" />
+    <Reference Include="NationalInstruments.MStudioCLM, Version=13.0.40.190, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="NationalInstruments.NI4882, Version=13.0.40.159, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL" />
+    <Reference Include="NationalInstruments.NiLmClientDLL, Version=13.0.40.190, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>.\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data Handling\I-V Data Handling\IV_MeasurementLog.cs" />
+    <Compile Include="Data Handling\I-V Data Handling\IV_SingleMeasurement.cs" />
+    <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceMeasurementLog.cs" />
+    <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceSingleMeasurement.cs" />
+    <Compile Include="Events\Custom Events\IV_MeasurementStateChanged_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
+    <Compile Include="Events\EventsHandler.cs" />
+    <Compile Include="Events\Custom Events\IV_PointReceived_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTracePointReceived_EventArgs.cs" />
+    <Compile Include="Hardware\Hardware %28Abstract%29\IExperimentalDevice.cs" />
+    <Compile Include="Hardware\Hardware %28Abstract%29\IMotion.cs" />
+    <Compile Include="Hardware\Hardware %28Abstract%29\I_SMU.cs" />
+    <Compile Include="Hardware\Hardware %28Physical%29\FAULHABER_MINIMOTOR_SA.cs" />
+    <Compile Include="Hardware\Hardware %28Physical%29\KEITHLEY_2602A\GPIB_KEITHLEY_2602A_CHANNEL.cs" />
+    <Compile Include="Hardware\Hardware %28Physical%29\KEITHLEY_2602A\KEITHLEY_2602A.cs" />
+    <Compile Include="Hardware\Hardware %28Physical%29\ORDINARY_MOTOR.cs" />
+    <Compile Include="Measurements\MeasureIV.cs" />
+    <Compile Include="Measurements\MeasureTimeTrace.cs" />
+    <Compile Include="Plotting\ExperimentalDataSource.cs" />
+    <Compile Include="User Interface\HandlingUserInput.cs" />
+    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml.cs">
+      <DependentUpon>MeasureDeviceConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml.cs">
+      <DependentUpon>SourceDeviceConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings.xaml.cs">
+      <DependentUpon>Keithley2602A_Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="User Interface\ViewModel.cs" />
+    <Compile Include="VMMV interactions\IV_And_TimeTraceViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
