@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using NationalInstruments.NI4882;
 using System.Windows;
+using NationalInstruments.NI4882;
 
 namespace Hardware
 {
@@ -79,18 +79,18 @@ namespace Hardware
         /// <returns>Returns the ansver, if succeed else returns empty string</returns>
         public virtual string ReceiveDeviceAnswer()
         {
-            _GPIB_Device.IOTimeout = NationalInstruments.NI4882.TimeoutValue.None;
-            var GPIB_Device_Responce = string.Empty;
+            _GPIB_Device.IOTimeout = TimeoutValue.None;
+            var GPIB_DeviceResponce = string.Empty;
 
-            try { GPIB_Device_Responce = _GPIB_Device.ReadString(); }
+            try { GPIB_DeviceResponce = _GPIB_Device.ReadString(); }
 
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                GPIB_Device_Responce = string.Empty;
+                GPIB_DeviceResponce = string.Empty;
             }
 
-            return GPIB_Device_Responce;
+            return GPIB_DeviceResponce;
         }
     }
 }

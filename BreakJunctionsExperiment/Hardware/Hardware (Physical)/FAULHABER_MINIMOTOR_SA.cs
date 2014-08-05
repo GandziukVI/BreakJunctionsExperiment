@@ -14,23 +14,8 @@ using BreakJunctions.Events;
 
 namespace Hardware
 {
-    class FAULHABER_MINIMOTOR_SA : IMotion, IDisposable
+    class FAULHABER_MINIMOTOR_SA : COM_Device, IMotion, IDisposable
     {
-        public static readonly double _metersPerSecond = 0.000003389831;
-
-        #region COM Port settings
-
-        private SerialPort _MotionSerialPort;
-
-        private string _comPort;
-        private int _baud;
-        private Parity _parity;
-        private int _dataBits;
-        private StopBits _stopBits;
-        private string _returnToken;
-
-        #endregion
-
         #region Motion settings
 
         private double _CurrentTime = 0.0;
@@ -87,38 +72,14 @@ namespace Hardware
             Dispose();
         }
 
-        public void SetSerialPort(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
+        public override bool InitDevice()
         {
-            this._comPort = comPort;
-            this._baud = baud;
-            this._parity = parity;
-            this._dataBits = dataBits;
-            this._stopBits = stopBits;
-            this._returnToken = returnToken;
-        }
-
-        public bool InitDevice()
-        {
-            try
+            var isInitSucceed = base.InitDevice();
+            if (isInitSucceed == true)
             {
-                _MotionSerialPort = new SerialPort(_comPort, _baud, _parity);
-
-                _MotionSerialPort.NewLine = _returnToken;
-                _MotionSerialPort.ReadTimeout = 1000;
-                _MotionSerialPort.RtsEnable = true;
-                _MotionSerialPort.DtrEnable = true;
-
-                _MotionSerialPort.Open();
-
-                _MotionSerialPort.WriteLine("EN");
-                Thread.Sleep(100);
-
                 return true;
             }
-            catch
-            {
-                return false;
-            }
+            else return false;
         }
 
         public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, int numberOfRepetities = 1)
@@ -193,7 +154,7 @@ namespace Hardware
         {
             _CurrentTime += _MotionSingleMeasurementTimer.Interval.Milliseconds;
 
-            var positionPerTick = _MotionSingleMeasurementTimer.Interval.Milliseconds / 1000 * _metersPerSecond;
+            var positionPerTick = _MotionSingleMeasurementTimer.Interval.Milliseconds / 1000;// *_metersPerSecond;
 
             if (_CurrentPosition <= _FinalDestination)
             {
@@ -221,7 +182,7 @@ namespace Hardware
             if (_CurrentIteration >= _NumberRepetities)
                 this.StopMotion();
 
-            var positionPerTick = _MotionSingleMeasurementTimer.Interval.Milliseconds / 1000 * _metersPerSecond;
+            var positionPerTick = _MotionSingleMeasurementTimer.Interval.Milliseconds / 1000;// *_metersPerSecond;
 
             if (_CurrentPosition >= _FinalDestination - positionPerTick)
             {
@@ -239,16 +200,7 @@ namespace Hardware
 
         public void Dispose()
         {
-            if (_MotionSerialPort != null)
-            {
-                if (_MotionSerialPort.IsOpen == true)
-                {
-                    _MotionSerialPort.WriteLine("DI");
-                    Thread.Sleep(100);
-
-                    _MotionSerialPort.Close();
-                }
-            }
+            
         }
     }
 }

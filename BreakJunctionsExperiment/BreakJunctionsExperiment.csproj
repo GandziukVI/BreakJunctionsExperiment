@@ -85,6 +85,7 @@
     <Compile Include="Events\Custom Events\IV_PointReceived_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceived_EventArgs.cs" />
+    <Compile Include="Hardware\Hardvare %28Interfaces%29\COM_Device.cs" />
     <Compile Include="Hardware\Hardvare %28Interfaces%29\GPIB_Device.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\IExperimentalDevice.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\IMotion.cs" />
