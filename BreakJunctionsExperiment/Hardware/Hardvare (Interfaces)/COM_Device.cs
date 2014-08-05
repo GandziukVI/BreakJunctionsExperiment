@@ -54,7 +54,7 @@ namespace Hardware
 
         ~COM_Device()
         {
-            Dispose();
+            this.Dispose();
         }
 
         public virtual bool InitDevice()
