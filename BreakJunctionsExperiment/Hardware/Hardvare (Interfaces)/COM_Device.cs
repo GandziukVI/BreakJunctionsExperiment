@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Hardware
 {
-    class COM_Device : IExperimentalDevice
+    class COM_Device : IExperimentalDevice, IDisposable
     {
         #region COM Port settings
 
@@ -48,7 +48,13 @@ namespace Hardware
 
         public COM_Device(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
-            SetSerialPort(comPort, baud, parity, dataBits, stopBits, returnToken);
+            this.SetSerialPort(comPort, baud, parity, dataBits, stopBits, returnToken);
+            this.InitDevice();
+        }
+
+        ~COM_Device()
+        {
+            Dispose();
         }
 
         public virtual bool InitDevice()
@@ -88,6 +94,16 @@ namespace Hardware
             }
 
             return COM_DeviceResponce;
+        }
+
+        public virtual void Dispose()
+        {
+            if (_COM_Device != null)
+                if (_COM_Device.IsOpen == true)
+                {
+                    _COM_Device.Close();
+                    _COM_Device.Dispose();
+                }
         }
     }
 }

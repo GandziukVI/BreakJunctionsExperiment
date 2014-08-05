@@ -198,9 +198,11 @@ namespace Hardware
             AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentTime / 1000));
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
-            
+            var isDeactivateRequestSent = SendCommandRequest("DI");
+
+            base.Dispose();
         }
     }
 }
