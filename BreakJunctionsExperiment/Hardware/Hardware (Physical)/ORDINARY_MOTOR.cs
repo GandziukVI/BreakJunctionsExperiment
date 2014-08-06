@@ -184,5 +184,11 @@ namespace Hardware
 
             AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentTime / 1000));
         }
+
+
+        public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, double motiomVelosity, MotionVelosityUnits motionVelosityUnits, int numberOfRepetities = 1)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
