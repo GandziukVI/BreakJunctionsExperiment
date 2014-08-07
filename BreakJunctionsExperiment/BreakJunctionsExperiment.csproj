@@ -79,6 +79,7 @@
     <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceMeasurementLog.cs" />
     <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceSingleMeasurement.cs" />
     <Compile Include="Events\Custom Events\IV_MeasurementStateChanged_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\EventsHandler.cs" />

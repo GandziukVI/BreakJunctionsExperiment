@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BreakJunctions.Events.Custom_Events
+namespace BreakJunctions.Events
 {
     class MotorFinalDestinationReached_EventArgs : EventArgs
     {

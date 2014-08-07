@@ -49,6 +49,13 @@ namespace Hardware
             set { _NumberRepetities = value; }
         }
 
+        private double _VelosityValue = 0.0;
+        public double VelosityValue
+        {
+            get { return _VelosityValue; }
+            set { _VelosityValue = value; }
+        }
+
         private DispatcherTimer _MotionSingleMeasurementTimer;
         private DispatcherTimer _MotionRepetitiveMeasurementTimer;
 
@@ -161,6 +168,7 @@ namespace Hardware
             {
                 case MotionDirection.Up:
                     {
+                        //SetVelosity()
                     } break;
                 case MotionDirection.Down:
                     {
