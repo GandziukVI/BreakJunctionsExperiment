@@ -49,6 +49,20 @@ namespace Hardware
             set { _NumberRepetities = value; }
         }
 
+        private double _MotionVelosity = 0.0;
+        public double MotionVelosity
+        {
+            get { return _MotionVelosity; }
+            set { _MotionVelosity = value; }
+        }
+
+        private MotionVelosityUnits _motionVelosityUnits = MotionVelosityUnits.rpm;
+        public MotionVelosityUnits motionVelosityUnits
+        {
+            get { return _motionVelosityUnits; }
+            set { _motionVelosityUnits = value; }
+        }
+
         private double _VelosityValue = 0.0;
         public double VelosityValue
         {
@@ -94,12 +108,19 @@ namespace Hardware
             else return false;
         }
 
-        public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, int numberOfRepetities = 1)
+        private void SetPositionNotifications()
+        {
+            
+        }
+
+        public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, double motionVelosity = 100.0, MotionVelosityUnits motionVelosityUnits = MotionVelosityUnits.rpm, int numberOfRepetities = 1)
         {
             _StartPosition = StartPosition;
             _CurrentPosition = StartPosition;
             _FinalDestination = FinalDestination;
             _NumberRepetities = numberOfRepetities;
+            _MotionVelosity = motionVelosity;
+            _motionVelosityUnits = motionVelosityUnits;
 
             switch (motionKind)
             {
@@ -168,10 +189,10 @@ namespace Hardware
             {
                 case MotionDirection.Up:
                     {
-                        //SetVelosity()
                     } break;
                 case MotionDirection.Down:
                     {
+                        SetVelosity(-1.0 - _MotionVelosity, _motionVelosityUnits);
                     } break;
                 default:
                     break;
