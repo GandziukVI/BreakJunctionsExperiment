@@ -57,7 +57,6 @@ namespace Hardware
         public COM_Device(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
             this.SetSerialPort(comPort, baud, parity, dataBits, stopBits, returnToken);
-            this.InitDevice();
         }
 
         ~COM_Device()
@@ -65,7 +64,7 @@ namespace Hardware
             this.Dispose();
         }
 
-        
+        #region IExperimental device implementation
 
         public virtual bool InitDevice()
         {
@@ -99,13 +98,15 @@ namespace Hardware
             var COM_DeviceResponce = string.Empty;
 
             try { COM_DeviceResponce = _COM_Device.ReadLine(); }
-            catch (Exception ex)
+            catch
             {
                 COM_DeviceResponce = string.Empty;
             }
 
             return COM_DeviceResponce;
         }
+
+        #endregion
 
         public virtual void Dispose()
         {

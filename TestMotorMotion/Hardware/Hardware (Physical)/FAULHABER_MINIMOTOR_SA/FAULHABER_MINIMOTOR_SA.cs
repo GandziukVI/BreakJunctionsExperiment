@@ -77,15 +77,7 @@ namespace Hardware
 
         public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
             : base (comPort, baud, parity, dataBits, stopBits, returnToken)
-        {
-            //_MotionSingleMeasurementTimer = new DispatcherTimer();
-            //_MotionSingleMeasurementTimer.Interval = TimeSpan.FromMilliseconds(5);
-            //_MotionSingleMeasurementTimer.Tick += new EventHandler(_MotionSingleMeasurementTimer_Tick);
-
-            //_MotionRepetitiveMeasurementTimer = new DispatcherTimer();
-            //_MotionRepetitiveMeasurementTimer.Interval = TimeSpan.FromMilliseconds(5);
-            //_MotionRepetitiveMeasurementTimer.Tick += new EventHandler(_MotionRepettiiveMeasurementTimer_Tick);
-            
+        {         
             this.InitDevice();
         }
 
