@@ -99,7 +99,7 @@ namespace BreakJunctions.Events
 
         #region TimeTrace Curve Measurements Events
         
-        //I-V measurements stateChanged
+        //Time trace measurements state changed
 
         private readonly object TimeTraceMeasurementsStateChanged_EventLock = new object();
         private EventHandler<TimeTraceMeasurementStateChanged_EventArgs> _TimeTraceMeasurementsStateChanged;
@@ -173,9 +173,8 @@ namespace BreakJunctions.Events
             }
         }
 
-        
-
         //Motion EventArgs
+
         private readonly object MotionEventLock = new object();
         private EventHandler<Motion_EventArgs> _Motion;
         public event EventHandler<Motion_EventArgs> Motion
@@ -210,6 +209,84 @@ namespace BreakJunctions.Events
                 handler(sender, e);
             }
         }
+
+        #region Motor Events
+
+        //Motor current position reached
+
+        private readonly object MotorCurrentPositionReachedEventLock = new object();
+        private EventHandler<MotorCurrentPositionReached_EventArgs> _MotorCurrentPositionReached;
+        public event EventHandler<MotorCurrentPositionReached_EventArgs> MotorCurrentPositionReached
+        {
+            add
+            {
+                lock (MotorCurrentPositionReachedEventLock)
+                {
+                    if (_MotorCurrentPositionReached == null || !_MotorCurrentPositionReached.GetInvocationList().Contains(value))
+                    {
+                        _MotorCurrentPositionReached += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock(MotorCurrentPositionReachedEventLock)
+                {
+                    _MotorCurrentPositionReached -= value;
+                }
+            }
+        }
+        public virtual void OnMotorCurrentPositionReached(object sender, MotorCurrentPositionReached_EventArgs e)
+        {
+            EventHandler<MotorCurrentPositionReached_EventArgs> handler;
+            lock(MotorCurrentPositionReachedEventLock)
+            {
+                handler = _MotorCurrentPositionReached;
+            }
+            if(handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        //Motor final destination reached
+
+        private readonly object MotorFinalDestinationReachedEventLock = new object();
+        private EventHandler<MotorFinalDestinationReached_EventArgs> _MotorFinalDestinationReached;
+        public event EventHandler<MotorFinalDestinationReached_EventArgs> MotorFinalDestinationReached
+        {
+            add
+            {
+                lock(MotorFinalDestinationReachedEventLock)
+                {
+                    if(_MotorFinalDestinationReached == null || !_MotorFinalDestinationReached.GetInvocationList().Contains(value))
+                    {
+                        _MotorFinalDestinationReached += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock(MotorFinalDestinationReachedEventLock)
+                {
+                    _MotorFinalDestinationReached -= value;
+                }
+            }
+        }
+        public virtual void OnMotorFinalDestinationReached(object sender, MotorFinalDestinationReached_EventArgs e)
+        {
+            EventHandler<MotorFinalDestinationReached_EventArgs> handler;
+            lock(MotorFinalDestinationReachedEventLock)
+            {
+                handler = _MotorFinalDestinationReached;
+            }
+            if(handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        #endregion
 
         #endregion
     }

@@ -44,6 +44,15 @@ namespace Hardware
 
             this._COM_Device.ReadTimeout = SerialPort.InfiniteTimeout;
             this._COM_Device.WriteTimeout = SerialPort.InfiniteTimeout;
+
+            //Data received event handling
+            _COM_Device.DataReceived += _COM_Device_DataReceived;
+
+        }
+
+        public virtual void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public COM_Device(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
@@ -56,6 +65,8 @@ namespace Hardware
         {
             this.Dispose();
         }
+
+        
 
         public virtual bool InitDevice()
         {
