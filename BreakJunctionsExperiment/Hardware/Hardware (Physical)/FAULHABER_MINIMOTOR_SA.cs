@@ -70,8 +70,7 @@ namespace Hardware
 
         #endregion
 
-        public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
-            : base (comPort, baud, parity, dataBits, stopBits, returnToken)
+        public FAULHABER_MINIMOTOR_SA()
         {
             _MotionSingleMeasurementTimer = new DispatcherTimer();
             _MotionSingleMeasurementTimer.Interval = TimeSpan.FromMilliseconds(5);
@@ -80,22 +79,18 @@ namespace Hardware
             _MotionRepetitiveMeasurementTimer = new DispatcherTimer();
             _MotionRepetitiveMeasurementTimer.Interval = TimeSpan.FromMilliseconds(5);
             _MotionRepetitiveMeasurementTimer.Tick += new EventHandler(_MotionRepettiiveMeasurementTimer_Tick);
-
-            this.InitDevice();
         }
 
         ~FAULHABER_MINIMOTOR_SA()
         {
-            this.Dispose();
+            Dispose();
         }
 
         public override bool InitDevice()
         {
             var isInitSucceed = base.InitDevice();
-
             if (isInitSucceed == true)
             {
-                SendCommandRequest("EN");
                 return true;
             }
             else return false;
@@ -152,22 +147,7 @@ namespace Hardware
 
         public void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
         {
-            switch (VelosityUnits)
-            {
-                case MotionVelosityUnits.rpm:
-                    {
-                        SendCommandRequest(String.Format("V{0}", Convert.ToInt32(Math.Round(VelosityValue))));
-                    } break;
-                case MotionVelosityUnits.MilimetersPerMinute:
-                    {
-                        var RevolutionPerMinute = 0.0005; //Meters per one revolution
-                        var _NewVelosity = Convert.ToInt32(VelosityValue / RevolutionPerMinute);
-
-                        SendCommandRequest(String.Format("V{0}", _NewVelosity));
-                    } break;
-                default:
-                    break;
-            }
+            throw new NotImplementedException();
         }
 
         public void SetDirection(MotionDirection motionDirection)
