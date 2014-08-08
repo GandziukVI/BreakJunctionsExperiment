@@ -103,7 +103,7 @@ namespace Hardware
 
             if (isInitSucceed == true)
             {
-                EnableDevice();
+                SendCommandRequest("EN");
                 return true;
             }
             else return false;
@@ -111,16 +111,12 @@ namespace Hardware
 
         public override void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void AnswerMode(AnswerMode mode)
         {
             SendCommandRequest(String.Format("ANSW{0}", (int)mode));
-        }
-        public void EnableDevice()
-        {
-            SendCommandRequest("EN");
         }
 
         public void DisableDevice()

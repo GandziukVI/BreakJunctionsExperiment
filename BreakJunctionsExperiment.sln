@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreakJunctionsExperiment", "BreakJunctionsExperiment\BreakJunctionsExperiment.csproj", "{40D47A18-2082-491F-92BA-199B3C027560}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMotorMotion", "TestMotorMotion\TestMotorMotion.csproj", "{F4B5E916-49F6-4585-B7FC-2FCF7C1D10B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +15,10 @@ Global
 		{40D47A18-2082-491F-92BA-199B3C027560}.Debug|x86.Build.0 = Debug|x86
 		{40D47A18-2082-491F-92BA-199B3C027560}.Release|x86.ActiveCfg = Release|x86
 		{40D47A18-2082-491F-92BA-199B3C027560}.Release|x86.Build.0 = Release|x86
+		{F4B5E916-49F6-4585-B7FC-2FCF7C1D10B8}.Debug|x86.ActiveCfg = Debug|x86
+		{F4B5E916-49F6-4585-B7FC-2FCF7C1D10B8}.Debug|x86.Build.0 = Debug|x86
+		{F4B5E916-49F6-4585-B7FC-2FCF7C1D10B8}.Release|x86.ActiveCfg = Release|x86
+		{F4B5E916-49F6-4585-B7FC-2FCF7C1D10B8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
