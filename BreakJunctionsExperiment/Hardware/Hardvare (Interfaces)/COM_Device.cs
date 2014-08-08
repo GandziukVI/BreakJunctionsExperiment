@@ -52,7 +52,9 @@ namespace Hardware
 
         public virtual void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            throw new NotImplementedException();
+            SerialPort sp = (SerialPort)sender;
+            string data = sp.ReadExisting();
+            //throw new NotImplementedException();
         }
 
         public COM_Device(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
