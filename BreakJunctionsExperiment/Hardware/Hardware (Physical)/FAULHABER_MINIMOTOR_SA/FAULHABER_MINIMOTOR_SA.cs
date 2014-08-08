@@ -80,15 +80,7 @@ namespace Hardware
 
         public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
             : base (comPort, baud, parity, dataBits, stopBits, returnToken)
-        {
-            //_MotionSingleMeasurementTimer = new DispatcherTimer();
-            //_MotionSingleMeasurementTimer.Interval = TimeSpan.FromMilliseconds(5);
-            //_MotionSingleMeasurementTimer.Tick += new EventHandler(_MotionSingleMeasurementTimer_Tick);
-
-            //_MotionRepetitiveMeasurementTimer = new DispatcherTimer();
-            //_MotionRepetitiveMeasurementTimer.Interval = TimeSpan.FromMilliseconds(5);
-            //_MotionRepetitiveMeasurementTimer.Tick += new EventHandler(_MotionRepettiiveMeasurementTimer_Tick);
-            
+        {           
             this.InitDevice();
         }
 
@@ -134,6 +126,7 @@ namespace Hardware
         public void LoadAbsolutePosition(int Value)
         {
             const int MaxValue = 1800000000;
+
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
@@ -144,6 +137,7 @@ namespace Hardware
         public void LoadRelativePosition(int Value)
         {
             const int MaxValue = 2140000000;
+
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
@@ -155,6 +149,7 @@ namespace Hardware
         {
             SendCommandRequest("NP");
         }
+
         public void NotifyPosition(int Value)
         {
             const int MaxValue = 1800000000;
@@ -164,6 +159,7 @@ namespace Hardware
                 Value = MaxValue;
             SendCommandRequest(String.Format("NP{0}", Value));
         }
+
         public void NotifyPositionOff()
         {
             SendCommandRequest("NPOFF");
@@ -172,6 +168,7 @@ namespace Hardware
         public void SelectVelocityMode(int Value)
         {
             int MaxValue = 30000;
+
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
@@ -190,14 +187,17 @@ namespace Hardware
 
             SendCommandRequest(String.Format("NV{0}", Value));
         }
+
         public void NotifyVelocityOff()
         {
             SendCommandRequest("NVOFF");
         }
+
         public void SetOutputVoltage()
         {
             throw new NotImplementedException();
         }
+
         public void GoHomingSequence()
         {
             throw new NotImplementedException();
@@ -207,18 +207,22 @@ namespace Hardware
         {
             throw new NotImplementedException();
         }
+
         public void GoHallIndex()
         {
             throw new NotImplementedException();
         }
+
         public void GoEncoderIndex()
         {
             throw new NotImplementedException();
         }
+
         public void DefineHomePosition()
         {
             throw new NotImplementedException();
         }
+
         public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, double motionVelosity = 100.0, MotionVelosityUnits motionVelosityUnits = MotionVelosityUnits.rpm, int numberOfRepetities = 1)
         {
             _StartPosition = StartPosition;
