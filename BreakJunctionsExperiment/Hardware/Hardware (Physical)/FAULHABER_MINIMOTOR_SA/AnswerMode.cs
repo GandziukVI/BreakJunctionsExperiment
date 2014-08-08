@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BreakJunctions.Hardware.Hardware__Physical_.FAULHABER_MINIMOTOR_SA
+namespace Hardware
 {
     public enum AnswerMode
     {

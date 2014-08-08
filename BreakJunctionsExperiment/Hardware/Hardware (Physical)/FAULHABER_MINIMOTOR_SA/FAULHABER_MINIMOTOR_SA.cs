@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Threading;
 
 using BreakJunctions.Events;
-using BreakJunctions.Hardware.Hardware__Physical_.FAULHABER_MINIMOTOR_SA;
+using Hardware;
 
 namespace Hardware
 {
