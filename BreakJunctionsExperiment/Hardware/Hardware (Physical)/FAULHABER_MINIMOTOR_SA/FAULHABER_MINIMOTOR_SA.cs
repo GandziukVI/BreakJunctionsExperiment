@@ -111,6 +111,8 @@ namespace Hardware
 
         public override void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            SerialPort sp = (SerialPort)sender;
+            string read = sp.ReadExisting();
             //throw new NotImplementedException();
         }
 
