@@ -121,8 +121,15 @@ namespace BreakJunctions
 
             /* test */
 
-            GPIB_HP_35670A analyzer = new GPIB_HP_35670A(27, 0, 0);
-
+            //GPIB_HP_35670A analyzer = new GPIB_HP_35670A(27, 0, 0);
+            FAULHABER_MINIMOTOR_SA mot = new FAULHABER_MINIMOTOR_SA("COM5");
+            mot.SelectVelocityMode(100);
+            mot.AnswerMode(AnswerMode.SentCommandsAreReturned);
+            mot.LoadRelativePosition(1000000);
+            
+            mot.InitiateMotion();
+            Thread.Sleep(1000);
+            
             /* end test */
 
             #region Interface model-view interactions

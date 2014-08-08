@@ -103,7 +103,7 @@ namespace Hardware
 
             if (isInitSucceed == true)
             {
-                SendCommandRequest("EN");
+                EnableDevice();
                 return true;
             }
             else return false;
@@ -357,8 +357,8 @@ namespace Hardware
 
         public override void Dispose()
         {
-            var isDeactivateRequestSent = SendCommandRequest("DI");
-
+            //var isDeactivateRequestSent = SendCommandRequest("DI");
+            DisableDevice();
             base.Dispose();
         }
     }

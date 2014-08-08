@@ -90,7 +90,8 @@ namespace Hardware
                 _COM_Device.Write(RequestString);
                 return true;
             }
-            catch { return false; }
+            catch
+            { return false; }
         }
 
         public virtual string ReceiveDeviceAnswer()
