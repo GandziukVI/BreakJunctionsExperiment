@@ -121,10 +121,10 @@ namespace BreakJunctions
 
             #region Test commands
 
-            COM_Device d = new COM_Device("COM3");
-            d.SendCommandRequest("EN");
-            d.SendCommandRequest("LR500000");
-            d.SendCommandRequest("M");
+            //COM_Device d = new COM_Device("COM3");
+            //d.SendCommandRequest("EN");
+            //d.SendCommandRequest("LR500000");
+            //d.SendCommandRequest("M");
 
             FAULHABER_MINIMOTOR_SA mot = new FAULHABER_MINIMOTOR_SA("COM3");
 

@@ -111,7 +111,6 @@ namespace Hardware
 
         public override void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            var a = 1;
             //throw new NotImplementedException();
         }
 
