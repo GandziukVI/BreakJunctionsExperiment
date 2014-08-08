@@ -58,7 +58,6 @@ namespace Hardware
         public COM_Device(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
             this.SetSerialPort(comPort, baud, parity, dataBits, stopBits, returnToken);
-            this.InitDevice();
         }
 
         ~COM_Device()
@@ -72,7 +71,7 @@ namespace Hardware
         {
             try
             {
-                if (!_COM_Device.IsOpen == true)
+                if (_COM_Device.IsOpen == false)
                     _COM_Device.Open();
 
                 return true;
@@ -87,7 +86,7 @@ namespace Hardware
         {
             try
             {
-                _COM_Device.Write(RequestString);
+                _COM_Device.WriteLine(RequestString);
                 return true;
             }
             catch

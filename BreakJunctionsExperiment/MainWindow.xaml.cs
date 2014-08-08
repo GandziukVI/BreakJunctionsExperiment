@@ -119,18 +119,19 @@ namespace BreakJunctions
 		{
 			this.InitializeComponent();
 
-            /* test */
+            #region Test commands
 
-            //GPIB_HP_35670A analyzer = new GPIB_HP_35670A(27, 0, 0);
-            FAULHABER_MINIMOTOR_SA mot = new FAULHABER_MINIMOTOR_SA("COM5");
-            mot.SelectVelocityMode(100);
-            mot.AnswerMode(AnswerMode.SentCommandsAreReturned);
-            mot.LoadRelativePosition(1000000);
-            
+            COM_Device d = new COM_Device("COM3");
+            d.SendCommandRequest("EN");
+            d.SendCommandRequest("LR500000");
+            d.SendCommandRequest("M");
+
+            FAULHABER_MINIMOTOR_SA mot = new FAULHABER_MINIMOTOR_SA("COM3");
+
+            mot.LoadRelativePosition(5000000);
             mot.InitiateMotion();
-            Thread.Sleep(1000);
-            
-            /* end test */
+
+            #endregion
 
             #region Interface model-view interactions
 
