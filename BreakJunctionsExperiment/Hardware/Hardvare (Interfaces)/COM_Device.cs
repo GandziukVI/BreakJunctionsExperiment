@@ -87,7 +87,8 @@ namespace Hardware
         {
             try
             {
-                _COM_Device.Write(RequestString);
+                var strBytes = Encoding.ASCII.GetBytes(RequestString);
+                _COM_Device.Write(strBytes, 0, strBytes.Length);//.Write(RequestString);
                 return true;
             }
             catch { return false; }
