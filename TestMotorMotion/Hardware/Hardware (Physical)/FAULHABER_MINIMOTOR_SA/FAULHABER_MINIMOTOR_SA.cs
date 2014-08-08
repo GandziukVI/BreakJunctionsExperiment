@@ -100,14 +100,20 @@ namespace Hardware
 
         public override void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //throw new NotImplementedException();
+            var a = sender as SerialPort;
+            var b = a.ReadExisting();
+
+            var c = 1;
         }
 
         public void AnswerMode(AnswerMode mode)
         {
             SendCommandRequest(String.Format("ANSW{0}", (int)mode));
         }
-
+        public void EnableDevice()
+        {
+            SendCommandRequest("EN");
+        }
         public void DisableDevice()
         {
             SendCommandRequest("DI");
@@ -219,11 +225,9 @@ namespace Hardware
             {
                 case MotionKind.Single:
                     {
-            //            _MotionSingleMeasurementTimer.Start();
                     } break;
                 case MotionKind.Repetitive:
                     {
-            //            _MotionRepetitiveMeasurementTimer.Start();
                     } break;
                 default:
                     break;

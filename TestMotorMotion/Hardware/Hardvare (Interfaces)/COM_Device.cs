@@ -70,7 +70,7 @@ namespace Hardware
         {
             try
             {
-                if (!_COM_Device.IsOpen == true)
+                if (_COM_Device.IsOpen == false)
                     _COM_Device.Open();
 
                 return true;
@@ -85,8 +85,7 @@ namespace Hardware
         {
             try
             {
-                var strBytes = Encoding.ASCII.GetBytes(RequestString+'\n');
-                _COM_Device.Write(strBytes, 0, strBytes.Length);//.Write(RequestString);
+                _COM_Device.Write(RequestString);
                 return true;
             }
             catch
