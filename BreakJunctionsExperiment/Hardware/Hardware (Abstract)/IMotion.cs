@@ -7,8 +7,7 @@ namespace Hardware
 {
     public enum MotionKind { Single, Repetitive }
     public enum MotionDirection { Up, Down }
-    public enum MotionVelosityUnits { StepsPerMinute, MilimetersPerMinute }
-
+    public enum MotionVelosityUnits { rpm, MilimetersPerMinute } // Comment comment
     interface IMotion
     {
         /// <summary>
