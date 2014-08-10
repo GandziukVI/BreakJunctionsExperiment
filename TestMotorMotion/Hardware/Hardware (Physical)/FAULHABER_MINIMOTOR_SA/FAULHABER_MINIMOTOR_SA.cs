@@ -75,11 +75,8 @@ namespace Hardware
 
         #endregion
 
-        public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
-            : base (comPort, baud, parity, dataBits, stopBits, returnToken)
-        {         
-            this.InitDevice();
-        }
+        public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
+            : base (comPort, baud, parity, dataBits, stopBits, returnToken) { }
 
         ~FAULHABER_MINIMOTOR_SA()
         {
@@ -103,7 +100,7 @@ namespace Hardware
             var a = sender as SerialPort;
             var b = a.ReadExisting();
 
-            var c = 1;
+            Console.WriteLine(b);
         }
 
         public void AnswerMode(AnswerMode mode)
@@ -327,7 +324,6 @@ namespace Hardware
 
         public override void Dispose()
         {
-            //var isDeactivateRequestSent = SendCommandRequest("DI");
             DisableDevice();
             base.Dispose();
         }

@@ -43,6 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\Custom Events\IV_MeasurementStateChanged_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\IV_PointReceived_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTracePointReceived_EventArgs.cs" />
+    <Compile Include="Events\EventsHandler.cs" />
     <Compile Include="Hardware\Hardvare %28Interfaces%29\COM_Device.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\IExperimentalDevice.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\IMotion.cs" />

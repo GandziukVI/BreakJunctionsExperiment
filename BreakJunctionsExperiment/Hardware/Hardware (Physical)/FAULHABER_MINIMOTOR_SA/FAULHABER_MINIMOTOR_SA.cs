@@ -7,10 +7,7 @@ using System.IO;
 using System.IO.Ports;
 
 using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
 
-using BreakJunctions.Events;
 using Hardware;
 
 namespace Hardware
@@ -78,11 +75,8 @@ namespace Hardware
 
         #endregion
 
-        public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
-            : base (comPort, baud, parity, dataBits, stopBits, returnToken)
-        {           
-            this.InitDevice();
-        }
+        public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
+            : base(comPort, baud, parity, dataBits, stopBits, returnToken) { }
 
         ~FAULHABER_MINIMOTOR_SA()
         {
@@ -103,16 +97,20 @@ namespace Hardware
 
         public override void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            SerialPort sp = (SerialPort)sender;
-            string read = sp.ReadExisting();
-            //throw new NotImplementedException();
+            var a = sender as SerialPort;
+            var b = a.ReadExisting();
+
+            Console.WriteLine(b);
         }
 
         public void AnswerMode(AnswerMode mode)
         {
             SendCommandRequest(String.Format("ANSW{0}", (int)mode));
         }
-
+        public void EnableDevice()
+        {
+            SendCommandRequest("EN");
+        }
         public void DisableDevice()
         {
             SendCommandRequest("DI");
@@ -126,7 +124,6 @@ namespace Hardware
         public void LoadAbsolutePosition(int Value)
         {
             const int MaxValue = 1800000000;
-
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
@@ -137,7 +134,6 @@ namespace Hardware
         public void LoadRelativePosition(int Value)
         {
             const int MaxValue = 2140000000;
-
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
@@ -149,7 +145,6 @@ namespace Hardware
         {
             SendCommandRequest("NP");
         }
-
         public void NotifyPosition(int Value)
         {
             const int MaxValue = 1800000000;
@@ -159,7 +154,6 @@ namespace Hardware
                 Value = MaxValue;
             SendCommandRequest(String.Format("NP{0}", Value));
         }
-
         public void NotifyPositionOff()
         {
             SendCommandRequest("NPOFF");
@@ -168,12 +162,11 @@ namespace Hardware
         public void SelectVelocityMode(int Value)
         {
             int MaxValue = 30000;
-
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
                 Value = MaxValue;
-            
+
             SendCommandRequest(String.Format("V{0}", Value));
         }
 
@@ -187,17 +180,14 @@ namespace Hardware
 
             SendCommandRequest(String.Format("NV{0}", Value));
         }
-
         public void NotifyVelocityOff()
         {
             SendCommandRequest("NVOFF");
         }
-
         public void SetOutputVoltage()
         {
             throw new NotImplementedException();
         }
-
         public void GoHomingSequence()
         {
             throw new NotImplementedException();
@@ -207,22 +197,18 @@ namespace Hardware
         {
             throw new NotImplementedException();
         }
-
         public void GoHallIndex()
         {
             throw new NotImplementedException();
         }
-
         public void GoEncoderIndex()
         {
             throw new NotImplementedException();
         }
-
         public void DefineHomePosition()
         {
             throw new NotImplementedException();
         }
-
         public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, double motionVelosity = 100.0, MotionVelosityUnits motionVelosityUnits = MotionVelosityUnits.rpm, int numberOfRepetities = 1)
         {
             _StartPosition = StartPosition;
@@ -236,11 +222,9 @@ namespace Hardware
             {
                 case MotionKind.Single:
                     {
-            //            _MotionSingleMeasurementTimer.Start();
                     } break;
                 case MotionKind.Repetitive:
                     {
-            //            _MotionRepetitiveMeasurementTimer.Start();
                     } break;
                 default:
                     break;
@@ -264,7 +248,7 @@ namespace Hardware
             //if (_MotionRepetitiveMeasurementTimer.IsEnabled == true)
             //    _MotionRepetitiveMeasurementTimer.Stop();
 
-            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
+            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         public void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
@@ -330,36 +314,16 @@ namespace Hardware
             //        StopMotion();
             //}
 
-            AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentPosition));
+            //AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentPosition));
         }
 
         void _MotionRepettiiveMeasurementTimer_Tick(object sender, EventArgs e)
         {
-            //_CurrentTime += _MotionSingleMeasurementTimer.Interval.Milliseconds;
 
-            ////Checking if measurement is completed
-            //if (_CurrentIteration >= _NumberRepetities)
-            //    this.StopMotion();
-
-            //var positionPerTick = _MotionSingleMeasurementTimer.Interval.Milliseconds / 1000;// *_metersPerSecond;
-
-            //if (_CurrentPosition >= _FinalDestination - positionPerTick)
-            //{
-            //    this.SetDirection(MotionDirection.Down);
-            //}
-            //else if (_CurrentPosition <= _StartPosition + positionPerTick)
-            //{
-            //    this.SetDirection(MotionDirection.Up);
-            //}
-
-            //_CurrentPosition += (_CurrentDirection == MotionDirection.Up ? 1 : -1) * positionPerTick;
-
-            AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentTime / 1000));
         }
 
         public override void Dispose()
         {
-            //var isDeactivateRequestSent = SendCommandRequest("DI");
             DisableDevice();
             base.Dispose();
         }
