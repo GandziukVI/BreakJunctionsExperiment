@@ -132,7 +132,11 @@ namespace BreakJunctions.Plotting
 
             dispatcher.BeginInvoke(new Action(delegate()
             {
-                DataChanged(sender, new EventArgs());
+                try
+                {
+                    DataChanged(sender, new EventArgs());
+                }
+                catch { }
             }));
         }
     }

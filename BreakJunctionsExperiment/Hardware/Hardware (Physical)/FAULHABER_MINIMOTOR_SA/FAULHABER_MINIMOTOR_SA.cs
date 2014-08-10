@@ -19,6 +19,8 @@ namespace Hardware
     {
         #region Motion settings
 
+        private bool _IsMotionInProcess = false;
+
         private double _MetersPerRevolution = 0.0005;
         public double MetersPerRevolution
         {
@@ -26,14 +28,15 @@ namespace Hardware
             set { _MetersPerRevolution = value; }
         }
 
-        private int _IncPerRevolution = 4500000; //Not exactly! Calibration needed!!!
+        private int _IncPerRevolution = 4576118;  //Not exactly! Calibration needed!!!
+                                                  //3000 in documentation. WTF?
         public int IncPerRevolution
         {
             get { return _IncPerRevolution; }
             set { _IncPerRevolution = value; }
         }
 
-        private int _NotificationsPerRevolution = 1000;
+        private int _NotificationsPerRevolution = 100; //2000 is OK
         public int NitofocationsPerRevolution
         {
             get { return _NotificationsPerRevolution; }
@@ -150,13 +153,15 @@ namespace Hardware
 
         private void OnTimeTracePointReceived(object sender, TimeTracePointReceived_EventArgs e)
         {
+            var positionIncrement = _MetersPerRevolution / _NotificationsPerRevolution;
+
             switch (_MotionKind)
             {
                 case MotionKind.Single:
                     {
-                        if (_CurrentPosition <= _FinalDestination)
+                        if ((_CurrentPosition <= _FinalDestination) && (_IsMotionInProcess == true))
                         {
-                            _CurrentPosition += _MetersPerRevolution * _NotificationsPerRevolution / _IncPerRevolution;
+                            _CurrentPosition += _MetersPerRevolution / _NotificationsPerRevolution;
                             LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
                             NotifyPosition();
                             InitiateMotion();
@@ -165,6 +170,24 @@ namespace Hardware
                     } break;
                 case MotionKind.Repetitive:
                     {
+                        //Checking if measurement is completed
+                        if (_CurrentIteration >= _NumberRepetities)
+                            this.StopMotion();
+
+                        if (_CurrentPosition >= _FinalDestination - positionIncrement)
+                        {
+                            this.SetDirection(MotionDirection.Down);
+                        }
+                        else if (_CurrentPosition <= _StartPosition + positionIncrement)
+                        {
+                            this.SetDirection(MotionDirection.Up);
+                        }
+
+                        _CurrentPosition += (_CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+
+                        LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
+                        NotifyPosition();
+                        InitiateMotion();
                     } break;
                 default:
                     break;
@@ -309,6 +332,8 @@ namespace Hardware
             _motionVelosityUnits = motionVelosityUnits;
             _MotionKind = motionKind;
 
+            _IsMotionInProcess = true;
+
             LoadAbsolutePosition(ConvertPotitionToMotorUnits(_StartPosition));
             NotifyPosition();
             InitiateMotion();
@@ -326,6 +351,7 @@ namespace Hardware
 
         public void StopMotion()
         {
+            _IsMotionInProcess = false;
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
@@ -355,19 +381,6 @@ namespace Hardware
             {
                 _CurrentDirection = motionDirection;
                 ++_CurrentIteration;
-            }
-
-            switch (motionDirection)
-            {
-                case MotionDirection.Up:
-                    {
-                    } break;
-                case MotionDirection.Down:
-                    {
-                        SetVelosity(-1.0 - _VelosityValue, _motionVelosityUnits);
-                    } break;
-                default:
-                    break;
             }
         }
 
