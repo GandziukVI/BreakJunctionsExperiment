@@ -6,7 +6,8 @@
 	x:Class="BreakJunctions.MainWindow"
 	x:Name="Window"
 	Title="Break junctions measurement"
-	Width="1024" Height="768">
+	Width="1024" Height="768"
+    WindowStartupLocation="CenterScreen" WindowState="Maximized">
 	
 	<Grid x:Name="LayoutRoot">
 		<TabControl>

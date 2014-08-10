@@ -7,7 +7,10 @@ using System.IO;
 using System.IO.Ports;
 
 using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
 
+using BreakJunctions.Events;
 using Hardware;
 
 namespace Hardware
@@ -16,9 +19,32 @@ namespace Hardware
     {
         #region Motion settings
 
-        private double _CurrentTime = 0.0;
+        private double _MetersPerRevolution = 0.0005;
+        public double MetersPerRevolution
+        {
+            get { return _MetersPerRevolution; }
+            set { _MetersPerRevolution = value; }
+        }
+
+        private int _IncPerRevolution = 4500000; //Not exactly! Calibration needed!!!
+        public int IncPerRevolution
+        {
+            get { return _IncPerRevolution; }
+            set { _IncPerRevolution = value; }
+        }
+
+        private int _NotificationsPerRevolution = 1000;
+        public int NitofocationsPerRevolution
+        {
+            get { return _NotificationsPerRevolution; }
+            set { _NotificationsPerRevolution = value; }
+        }
 
         private double _CurrentPosition = 0.0;
+        /// <summary>
+        /// Gets or sets current micrometric bolt
+        /// position in meters
+        /// </summary>
         public double CurrentPosition
         {
             get { return _CurrentPosition; }
@@ -26,6 +52,10 @@ namespace Hardware
         }
 
         private double _StartPosition = 0.0;
+        /// <summary>
+        /// Gets or sets start micrometric bolt
+        /// position in meters
+        /// </summary>
         public double StartPosition
         {
             get { return _StartPosition; }
@@ -33,6 +63,10 @@ namespace Hardware
         }
 
         private double _FinalDestination = 0.0;
+        /// <summary>
+        /// Gets or sets final micrometric bolt
+        /// position in meters
+        /// </summary>
         public double FinalDestination
         {
             get { return _FinalDestination; }
@@ -40,18 +74,16 @@ namespace Hardware
         }
 
         private int _CurrentIteration = 0;
+
         private int _NumberRepetities = 0;
+        /// <summary>
+        /// Gets or sets number of repetities
+        /// for repetitive measurement
+        /// </summary>
         public int NumberRepetities
         {
             get { return _NumberRepetities; }
             set { _NumberRepetities = value; }
-        }
-
-        private double _MotionVelosity = 0.0;
-        public double MotionVelosity
-        {
-            get { return _MotionVelosity; }
-            set { _MotionVelosity = value; }
         }
 
         private MotionVelosityUnits _motionVelosityUnits = MotionVelosityUnits.rpm;
@@ -62,55 +94,97 @@ namespace Hardware
         }
 
         private double _VelosityValue = 0.0;
+        /// <summary>
+        /// Gets or sets velosity value. Can only be used in velosity mode!
+        /// For correct work motionVelosityUnits must be set
+        /// </summary>
         public double VelosityValue
         {
             get { return _VelosityValue; }
             set { _VelosityValue = value; }
         }
 
-        //private DispatcherTimer _MotionSingleMeasurementTimer;
-        //private DispatcherTimer _MotionRepetitiveMeasurementTimer;
-
         private MotionDirection _CurrentDirection;
+
+        private MotionKind _MotionKind = MotionKind.Single;
+        public MotionKind MotionKind
+        {
+            get { return _MotionKind; }
+            set { _MotionKind = value; }
+        }
+
+        private int ConvertPotitionToMotorUnits(double _position)
+        {
+            return Convert.ToInt32(_IncPerRevolution * _position / _MetersPerRevolution);
+        }
 
         #endregion
 
+        #region Motor device initialization
+
         public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
-            : base(comPort, baud, parity, dataBits, stopBits, returnToken) { }
+            : base (comPort, baud, parity, dataBits, stopBits, returnToken)
+        {           
+            this.InitDevice();
+
+            AllEventsHandler.Instance.TimetracePointReceived += OnTimeTracePointReceived;
+        }
 
         ~FAULHABER_MINIMOTOR_SA()
         {
             this.Dispose();
         }
 
-        public override bool InitDevice()
-        {
-            var isInitSucceed = base.InitDevice();
+        #endregion
 
-            if (isInitSucceed == true)
-            {
-                SendCommandRequest("EN");
-                return true;
-            }
-            else return false;
-        }
+        #region Motor answer received
 
         public override void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            var a = sender as SerialPort;
-            var b = a.ReadExisting();
+            var motorPort = sender as SerialPort;
+            var responce = motorPort.ReadExisting();
 
-            Console.WriteLine(b);
+            if (responce.Contains('p'))
+                AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentPosition));
         }
+
+        private void OnTimeTracePointReceived(object sender, TimeTracePointReceived_EventArgs e)
+        {
+            switch (_MotionKind)
+            {
+                case MotionKind.Single:
+                    {
+                        if (_CurrentPosition <= _FinalDestination)
+                        {
+                            _CurrentPosition += _MetersPerRevolution * _NotificationsPerRevolution / _IncPerRevolution;
+                            LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
+                            NotifyPosition();
+                            InitiateMotion();
+                        }
+                        else StopMotion();
+                    } break;
+                case MotionKind.Repetitive:
+                    {
+                    } break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Motor controlling functions
 
         public void AnswerMode(AnswerMode mode)
         {
             SendCommandRequest(String.Format("ANSW{0}", (int)mode));
         }
+
         public void EnableDevice()
         {
             SendCommandRequest("EN");
         }
+
         public void DisableDevice()
         {
             SendCommandRequest("DI");
@@ -124,6 +198,7 @@ namespace Hardware
         public void LoadAbsolutePosition(int Value)
         {
             const int MaxValue = 1800000000;
+
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
@@ -134,6 +209,7 @@ namespace Hardware
         public void LoadRelativePosition(int Value)
         {
             const int MaxValue = 2140000000;
+
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
@@ -145,6 +221,7 @@ namespace Hardware
         {
             SendCommandRequest("NP");
         }
+
         public void NotifyPosition(int Value)
         {
             const int MaxValue = 1800000000;
@@ -154,6 +231,7 @@ namespace Hardware
                 Value = MaxValue;
             SendCommandRequest(String.Format("NP{0}", Value));
         }
+
         public void NotifyPositionOff()
         {
             SendCommandRequest("NPOFF");
@@ -162,11 +240,12 @@ namespace Hardware
         public void SelectVelocityMode(int Value)
         {
             int MaxValue = 30000;
+
             if (Value < -MaxValue)
                 Value = -MaxValue;
             if (Value > MaxValue)
                 Value = MaxValue;
-
+            
             SendCommandRequest(String.Format("V{0}", Value));
         }
 
@@ -180,14 +259,17 @@ namespace Hardware
 
             SendCommandRequest(String.Format("NV{0}", Value));
         }
+
         public void NotifyVelocityOff()
         {
             SendCommandRequest("NVOFF");
         }
+
         public void SetOutputVoltage()
         {
             throw new NotImplementedException();
         }
+
         public void GoHomingSequence()
         {
             throw new NotImplementedException();
@@ -197,38 +279,39 @@ namespace Hardware
         {
             throw new NotImplementedException();
         }
+
         public void GoHallIndex()
         {
             throw new NotImplementedException();
         }
+
         public void GoEncoderIndex()
         {
             throw new NotImplementedException();
         }
+
         public void DefineHomePosition()
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
+        #region Motion controlling functions
+
         public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, double motionVelosity = 100.0, MotionVelosityUnits motionVelosityUnits = MotionVelosityUnits.rpm, int numberOfRepetities = 1)
         {
             _StartPosition = StartPosition;
-            _CurrentPosition = StartPosition;
+            _CurrentPosition = 0.0;
             _FinalDestination = FinalDestination;
             _NumberRepetities = numberOfRepetities;
-            _MotionVelosity = motionVelosity;
+            _VelosityValue = motionVelosity;
             _motionVelosityUnits = motionVelosityUnits;
+            _MotionKind = motionKind;
 
-            switch (motionKind)
-            {
-                case MotionKind.Single:
-                    {
-                    } break;
-                case MotionKind.Repetitive:
-                    {
-                    } break;
-                default:
-                    break;
-            }
+            LoadAbsolutePosition(ConvertPotitionToMotorUnits(_StartPosition));
+            NotifyPosition();
+            InitiateMotion();
         }
 
         public void StartMotion(TimeSpan FinalTime)
@@ -243,12 +326,7 @@ namespace Hardware
 
         public void StopMotion()
         {
-            //if (_MotionSingleMeasurementTimer.IsEnabled == true)
-            //    _MotionSingleMeasurementTimer.Stop();
-            //if (_MotionRepetitiveMeasurementTimer.IsEnabled == true)
-            //    _MotionRepetitiveMeasurementTimer.Stop();
-
-            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
+            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         public void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
@@ -286,44 +364,19 @@ namespace Hardware
                     } break;
                 case MotionDirection.Down:
                     {
-                        SetVelosity(-1.0 - _MotionVelosity, _motionVelosityUnits);
+                        SetVelosity(-1.0 - _VelosityValue, _motionVelosityUnits);
                     } break;
                 default:
                     break;
             }
         }
 
-        void _MotionSingleMeasurementTimer_Tick(object sender, EventArgs e)
-        {
-            //_CurrentTime += _MotionSingleMeasurementTimer.Interval.Milliseconds;
-
-            //var positionPerTick = _MotionSingleMeasurementTimer.Interval.Milliseconds / 1000;// *_metersPerSecond;
-
-            //if (_CurrentPosition <= _FinalDestination)
-            //{
-            //    this.SetDirection(MotionDirection.Up);
-            //    _CurrentPosition += positionPerTick;
-            //    if (_CurrentPosition >= _FinalDestination)
-            //        StopMotion();
-            //}
-            //else
-            //{
-            //    this.SetDirection(MotionDirection.Down);
-            //    _CurrentPosition -= positionPerTick;
-            //    if (_CurrentPosition <= _FinalDestination)
-            //        StopMotion();
-            //}
-
-            //AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentPosition));
-        }
-
-        void _MotionRepettiiveMeasurementTimer_Tick(object sender, EventArgs e)
-        {
-
-        }
+        #endregion
 
         public override void Dispose()
         {
+            AllEventsHandler.Instance.TimetracePointReceived -= OnTimeTracePointReceived;
+
             DisableDevice();
             base.Dispose();
         }

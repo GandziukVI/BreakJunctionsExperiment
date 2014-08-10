@@ -80,7 +80,7 @@ namespace BreakJunctions.Measurements
 
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += OnTimeTraceMeasurementsStateChanged;
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
-        }
+       }
 
         public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind motionKind, int numberRepetities = 1)
         {

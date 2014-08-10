@@ -121,15 +121,7 @@ namespace BreakJunctions
 
             #region Test commands
 
-            //COM_Device d = new COM_Device("COM3");
-            //d.SendCommandRequest("EN");
-            //d.SendCommandRequest("LR500000");
-            //d.SendCommandRequest("M");
-
-            FAULHABER_MINIMOTOR_SA mot = new FAULHABER_MINIMOTOR_SA("COM3");
-
-            mot.LoadRelativePosition(5000000);
-            mot.InitiateMotion();
+            //TestClass.StartTest();
 
             #endregion
 
@@ -417,7 +409,8 @@ namespace BreakJunctions
                 var sAddress = sourceDeviceConfiguration.Keithley2602A_DeviceSettings.DeviceSettings.SecondaryAddress;
                 var bNumber = sourceDeviceConfiguration.Keithley2602A_DeviceSettings.DeviceSettings.BoardNumber;
 
-                var motor = new ORDINARY_MOTOR(pAddress, sAddress, bNumber);
+                var motor = new FAULHABER_MINIMOTOR_SA("COM4");
+                motor.EnableDevice();
                 motor.FinalDestination = 0.0;
                 
                 Motor = motor;

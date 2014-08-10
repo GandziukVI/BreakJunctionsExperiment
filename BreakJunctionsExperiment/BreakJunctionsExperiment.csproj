@@ -100,6 +100,7 @@
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
     <Compile Include="Plotting\ExperimentalDataSource.cs" />
+    <Compile Include="TestClass.cs" />
     <Compile Include="User Interface\HandlingUserInput.cs" />
     <Compile Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml.cs">
       <DependentUpon>MeasureDeviceConfiguration.xaml</DependentUpon>
