@@ -9,8 +9,15 @@ using BreakJunctions.Events;
 
 namespace BreakJunctions.DataHandling
 {
+    #region Time trace single measurement file operations implementation
+
+    /// <summary>
+    /// Represents time trace single measurement data file
+    /// </summary>
     class TimeTraceSingleMeasurement : IDisposable
     {
+        #region Single measurement file paremeters
+
         private string _FileName;
         public string FileName { get { return _FileName; } }
 
@@ -23,6 +30,16 @@ namespace BreakJunctions.DataHandling
         private string _Header;
         private string _Subheader;
 
+        #endregion
+
+        #region Constructor / Destructor
+
+        /// <summary>
+        /// Creates new IV_SingleMeasurement instance
+        /// with specified file name and source mode
+        /// </summary>
+        /// <param name="fileName">File name</param>
+        /// <param name="sourceMode">Source mode</param>
         public TimeTraceSingleMeasurement(string fileName, SourceMode sourceMode)
         { 
             this._FileName = fileName;
@@ -59,11 +76,21 @@ namespace BreakJunctions.DataHandling
             AllEventsHandler.Instance.TimetracePointReceived += OnTimeTracePointReceived;
         }
 
+        /// <summary>
+        /// Correctly destroying the instance
+        /// </summary>
         ~TimeTraceSingleMeasurement()
         {
             this.Dispose();
         }
 
+        #endregion
+
+        #region Destroying instance
+
+        /// <summary>
+        /// Correctly destroy the instance
+        /// </summary>
         public void Dispose()
         {
             AllEventsHandler.Instance.TimetracePointReceived -= OnTimeTracePointReceived;
@@ -72,6 +99,10 @@ namespace BreakJunctions.DataHandling
             _DataString = string.Empty;
             _DataBuilder = null;
         }
+
+        #endregion
+
+        #region Functionality implementation
 
         private void OnTimeTracePointReceived(object sender, TimeTracePointReceived_EventArgs e)
         {
@@ -86,5 +117,9 @@ namespace BreakJunctions.DataHandling
             _OutputSingleMeasureStreamWriter.Close();
             _OutputSingleMeasureStream.Close();
         }
+
+        #endregion
     }
+
+    #endregion
 }

@@ -6,8 +6,15 @@ using System.Text;
 
 namespace BreakJunctions.DataHandling
 {
+    #region Time trace measurement log file writting implementation
+
+    /// <summary>
+    /// Represents time trace measurement log file
+    /// </summary>
     class TimeTraceMeasurementLog
     {
+        #region Measurement log file implementation
+
         private string _LogFileName;
 
         private FileStream _OutputLogStream;
@@ -16,6 +23,15 @@ namespace BreakJunctions.DataHandling
         private StringBuilder _LogBuilder;
         private string _SingleLog;
 
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Creates new TimeTraceMeasurementLog instance
+        /// with specified file name
+        /// </summary>
+        /// <param name="logFileName">File name</param>
         public TimeTraceMeasurementLog(string logFileName)
         {
             _LogFileName = logFileName;
@@ -26,6 +42,10 @@ namespace BreakJunctions.DataHandling
                 File.WriteAllText(logFileName, "File name\tSource mode\tValue through the structure\tMolecule type\tComment\n");
             }
         }
+
+        #endregion
+
+        #region Functionality implmentation
 
         public void AddNewTimeTraceMeasurementLog(string fileName, string sourceMode, double valueThroughTheStructure, string comment)
         {
@@ -47,5 +67,9 @@ namespace BreakJunctions.DataHandling
 
             _OutputLogStreamWriter.Close();
         }
+
+        #endregion
     }
+
+    #endregion
 }

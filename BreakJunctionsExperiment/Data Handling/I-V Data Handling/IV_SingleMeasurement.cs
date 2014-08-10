@@ -8,9 +8,20 @@ using BreakJunctions.Events;
 
 namespace BreakJunctions.DataHandling
 {
+    #region I-V single measurement file operations implementation
+
+    /// <summary>
+    /// Represents I-V single measurement data file
+    /// </summary>
     class IV_SingleMeasurement : IDisposable
     {
+
+        #region Single measurement file parameters
+
         private string _FileName;
+        /// <summary>
+        /// Gets specified data file name
+        /// </summary>
         public string FileName { get { return _FileName; } }
 
         private FileStream _OutputSingleMeasureStream;
@@ -19,6 +30,15 @@ namespace BreakJunctions.DataHandling
         private StringBuilder _DataBuilder;
         private string _DataString;
 
+        #endregion
+
+        #region Constructor / Destructor
+
+        /// <summary>
+        /// Creates new IV_SingleMeasurement instance
+        /// with specified file name
+        /// </summary>
+        /// <param name="fileName">File name</param>
         public IV_SingleMeasurement(string fileName)
         { 
             this._FileName = fileName;
@@ -39,11 +59,21 @@ namespace BreakJunctions.DataHandling
             AllEventsHandler.Instance.IV_PointReceived += OnIV_PointReceived;
         }
 
+        /// <summary>
+        /// Correctly destroying the instance
+        /// </summary>
         ~IV_SingleMeasurement()
         {
             this.Dispose();
         }
 
+        #endregion
+
+        #region Destroying instance
+
+        /// <summary>
+        /// Correctly destroy the instance
+        /// </summary>
         public void Dispose()
         {
             AllEventsHandler.Instance.IV_PointReceived -= OnIV_PointReceived;
@@ -53,6 +83,15 @@ namespace BreakJunctions.DataHandling
             _DataBuilder = null;
         }
 
+        #endregion
+
+        #region Functionality implementation
+
+        /// <summary>
+        /// Writes the data point, which arrives from event to file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnIV_PointReceived(object sender, IV_PointReceived_EventArgs e)
         {
             _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
@@ -66,5 +105,9 @@ namespace BreakJunctions.DataHandling
             _OutputSingleMeasureStreamWriter.Close();
             _OutputSingleMeasureStream.Close();
         }
+
+        #endregion
     }
+
+    #endregion
 }

@@ -5,9 +5,19 @@ using System.Text;
 
 namespace Hardware
 {
+    #region Motion paraneters
+
     public enum MotionKind { Single, Repetitive }
     public enum MotionDirection { Up, Down }
-    public enum MotionVelosityUnits { rpm, MilimetersPerMinute } // Comment comment
+    public enum MotionVelosityUnits { rpm, MetersPerMinute }
+
+    #endregion
+
+    #region Interface definition
+
+    /// <summary>
+    /// Motion interface
+    /// </summary>
     interface IMotion
     {
         /// <summary>
@@ -51,4 +61,6 @@ namespace Hardware
         /// <param name="motionDirection">The direction of motion</param>
         void SetDirection(MotionDirection motionDirection);
     }
+
+    #endregion
 }

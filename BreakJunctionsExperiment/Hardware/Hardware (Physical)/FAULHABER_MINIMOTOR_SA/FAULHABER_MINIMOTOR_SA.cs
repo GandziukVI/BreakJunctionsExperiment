@@ -20,8 +20,18 @@ namespace Hardware
         #region Motion settings
 
         private bool _IsMotionInProcess = false;
+        /// <summary>
+        /// Gets the motion state
+        /// </summary>
+        public bool IsMotionInProcess
+        {
+            get { return _IsMotionInProcess; }
+        }
 
         private double _MetersPerRevolution = 0.0005;
+        /// <summary>
+        /// Gets or sets the value of meters per revolution value
+        /// </summary>
         public double MetersPerRevolution
         {
             get { return _MetersPerRevolution; }
@@ -30,13 +40,20 @@ namespace Hardware
 
         private int _IncPerRevolution = 4576118;  //Not exactly! Calibration needed!!!
                                                   //3000 in documentation. WTF?
+        /// <summary>
+        /// Gets or sets IncPerRevolution value
+        /// </summary>
         public int IncPerRevolution
         {
             get { return _IncPerRevolution; }
             set { _IncPerRevolution = value; }
         }
 
-        private int _NotificationsPerRevolution = 100; //2000 is OK
+        private int _NotificationsPerRevolution = 1000; //2000 is OK too
+        /// <summary>
+        /// Gets or sets the number of notifications
+        /// per revolution
+        /// </summary>
         public int NitofocationsPerRevolution
         {
             get { return _NotificationsPerRevolution; }
@@ -46,7 +63,7 @@ namespace Hardware
         private double _CurrentPosition = 0.0;
         /// <summary>
         /// Gets or sets current micrometric bolt
-        /// position in meters
+        /// position in meters [m]
         /// </summary>
         public double CurrentPosition
         {
@@ -57,7 +74,7 @@ namespace Hardware
         private double _StartPosition = 0.0;
         /// <summary>
         /// Gets or sets start micrometric bolt
-        /// position in meters
+        /// position in meters [m]
         /// </summary>
         public double StartPosition
         {
@@ -68,7 +85,7 @@ namespace Hardware
         private double _FinalDestination = 0.0;
         /// <summary>
         /// Gets or sets final micrometric bolt
-        /// position in meters
+        /// position in meters [m]
         /// </summary>
         public double FinalDestination
         {
@@ -90,6 +107,9 @@ namespace Hardware
         }
 
         private MotionVelosityUnits _motionVelosityUnits = MotionVelosityUnits.rpm;
+        /// <summary>
+        /// Gets or sets motion velosity units
+        /// </summary>
         public MotionVelosityUnits motionVelosityUnits
         {
             get { return _motionVelosityUnits; }
@@ -110,12 +130,20 @@ namespace Hardware
         private MotionDirection _CurrentDirection;
 
         private MotionKind _MotionKind = MotionKind.Single;
+        /// <summary>
+        /// Gets or sets motion kind (Single/Repetitive)
+        /// </summary>
         public MotionKind MotionKind
         {
             get { return _MotionKind; }
             set { _MotionKind = value; }
         }
-
+        /// <summary>
+        /// Converts motor position from meters to
+        /// motor-specified value
+        /// </summary>
+        /// <param name="_position">Position [m]</param>
+        /// <returns></returns>
         private int ConvertPotitionToMotorUnits(double _position)
         {
             return Convert.ToInt32(_IncPerRevolution * _position / _MetersPerRevolution);
@@ -142,6 +170,11 @@ namespace Hardware
 
         #region Motor answer received
 
+        /// <summary>
+        /// Handling motor responce
+        /// </summary>
+        /// <param name="sender">SerialPort</param>
+        /// <param name="e">SerialDataReceivedEventArgs</param>
         public override void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             var motorPort = sender as SerialPort;
@@ -151,6 +184,12 @@ namespace Hardware
                 AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentPosition));
         }
 
+        /// <summary>
+        /// Going to the next motor position, if the data
+        /// is measured
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnTimeTracePointReceived(object sender, TimeTracePointReceived_EventArgs e)
         {
             var positionIncrement = _MetersPerRevolution / _NotificationsPerRevolution;
@@ -174,20 +213,24 @@ namespace Hardware
                         if (_CurrentIteration >= _NumberRepetities)
                             this.StopMotion();
 
-                        if (_CurrentPosition >= _FinalDestination - positionIncrement)
+                        if (_IsMotionInProcess == true)
                         {
-                            this.SetDirection(MotionDirection.Down);
-                        }
-                        else if (_CurrentPosition <= _StartPosition + positionIncrement)
-                        {
-                            this.SetDirection(MotionDirection.Up);
-                        }
 
-                        _CurrentPosition += (_CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+                            if (_CurrentPosition >= _FinalDestination - positionIncrement)
+                            {
+                                this.SetDirection(MotionDirection.Down);
+                            }
+                            else if (_CurrentPosition <= _StartPosition + positionIncrement)
+                            {
+                                this.SetDirection(MotionDirection.Up);
+                            }
 
-                        LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
-                        NotifyPosition();
-                        InitiateMotion();
+                            _CurrentPosition += (_CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+
+                            LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
+                            NotifyPosition();
+                            InitiateMotion();
+                        }
                     } break;
                 default:
                     break;
@@ -322,8 +365,19 @@ namespace Hardware
 
         #region Motion controlling functions
 
+        /// <summary>
+        /// Starts the motion of specified kind, velosity and number of repetities
+        /// </summary>
+        /// <param name="StartPosition">Position whict the motor must reach before
+        /// starting measurement [m]</param>
+        /// <param name="FinalDestination">Final destination of the motor [m]</param>
+        /// <param name="motionKind">Single or repetitive motion</param>
+        /// <param name="motionVelosity">Value of motion velosity</param>
+        /// <param name="motionVelosityUnits">Motion velosity units</param>
+        /// <param name="numberOfRepetities">Number of repetities (for repetitive measurement)</param>
         public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, double motionVelosity = 100.0, MotionVelosityUnits motionVelosityUnits = MotionVelosityUnits.rpm, int numberOfRepetities = 1)
         {
+            //Setting motion parameters
             _StartPosition = StartPosition;
             _CurrentPosition = 0.0;
             _FinalDestination = FinalDestination;
@@ -331,30 +385,47 @@ namespace Hardware
             _VelosityValue = motionVelosity;
             _motionVelosityUnits = motionVelosityUnits;
             _MotionKind = motionKind;
-
+            
             _IsMotionInProcess = true;
 
+            //Going to the start position
             LoadAbsolutePosition(ConvertPotitionToMotorUnits(_StartPosition));
             NotifyPosition();
             InitiateMotion();
         }
-
+        /// <summary>
+        /// Starts the motion with constant velosity and
+        /// specified time of motion
+        /// </summary>
+        /// <param name="FinalTime">Time of moving</param>
         public void StartMotion(TimeSpan FinalTime)
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Starts the motion and going on, until the specified value
+        /// of resistance is reached, then stops motor and gathering time trace
+        /// </summary>
+        /// <param name="FixedR">Value of resistance</param>
         public void StartMotion(double FixedR)
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Stops the motion
+        /// </summary>
         public void StopMotion()
         {
             _IsMotionInProcess = false;
+            //Signal that the motion is completed
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
-
+        /// <summary>
+        /// Sets the velosity value in responce to
+        /// velosity units. Works only for the velosity mode!
+        /// </summary>
+        /// <param name="VelosityValue">Velosity value</param>
+        /// <param name="VelosityUnits">Velosity units (rpm, MetersPerMinute)</param>
         public void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
         {
             switch (VelosityUnits)
@@ -363,7 +434,7 @@ namespace Hardware
                     {
                         SendCommandRequest(String.Format("V{0}", Convert.ToInt32(Math.Round(VelosityValue))));
                     } break;
-                case MotionVelosityUnits.MilimetersPerMinute:
+                case MotionVelosityUnits.MetersPerMinute:
                     {
                         var RevolutionPerMinute = 0.0005; //Meters per one revolution
                         var _NewVelosity = Convert.ToInt32(VelosityValue / RevolutionPerMinute);
@@ -374,7 +445,10 @@ namespace Hardware
                     break;
             }
         }
-
+        /// <summary>
+        /// Sets the direction of motor moving
+        /// </summary>
+        /// <param name="motionDirection">Direction type</param>
         public void SetDirection(MotionDirection motionDirection)
         {
             if (_CurrentDirection != motionDirection)
@@ -386,6 +460,11 @@ namespace Hardware
 
         #endregion
 
+        #region Disposing of the instance
+
+        /// <summary>
+        /// Correctly disposing of the instance
+        /// </summary>
         public override void Dispose()
         {
             AllEventsHandler.Instance.TimetracePointReceived -= OnTimeTracePointReceived;
@@ -393,5 +472,7 @@ namespace Hardware
             DisableDevice();
             base.Dispose();
         }
+
+        #endregion
     }
 }
