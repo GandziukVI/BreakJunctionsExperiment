@@ -38,18 +38,31 @@ namespace Hardware
             set { _MetersPerRevolution = value; }
         }
 
-        private int _IncPerRevolution = 4576118;  //Not exactly! Calibration needed!!!
-                                                  //3000 in documentation. WTF?
-        /// <summary>
-        /// Gets or sets IncPerRevolution value
-        /// </summary>
+        private int _IncPerRevolution = 3000;
         public int IncPerRevolution
         {
             get { return _IncPerRevolution; }
             set { _IncPerRevolution = value; }
         }
 
-        private int _NotificationsPerRevolution = 1000; //2000 is OK too
+        private int _TransferFactor = 1526;
+        public int TransferFactor
+        {
+            get { return _TransferFactor; }
+            set { _TransferFactor = value; }
+        }
+
+        private int _ValuePerRevolution = 4578000;
+        /// <summary>
+        /// Gets ValuePerRevolution value.
+        /// For correct work, specify IncPerRevolution and TransferFactor values!
+        /// </summary>
+        public int ValuePerRevolution
+        {
+            get { return _IncPerRevolution * _TransferFactor; }
+        }
+
+        private int _NotificationsPerRevolution = 1000; //The higher is the value, the slower is the motion
         /// <summary>
         /// Gets or sets the number of notifications
         /// per revolution
@@ -146,7 +159,7 @@ namespace Hardware
         /// <returns></returns>
         private int ConvertPotitionToMotorUnits(double _position)
         {
-            return Convert.ToInt32(_IncPerRevolution * _position / _MetersPerRevolution);
+            return Convert.ToInt32(_ValuePerRevolution * _position / _MetersPerRevolution);
         }
 
         #endregion
