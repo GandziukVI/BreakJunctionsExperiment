@@ -62,7 +62,7 @@ namespace Hardware
             get { return _IncPerRevolution * _TransferFactor; }
         }
 
-        private int _NotificationsPerRevolution = 1000; //The higher is the value, the slower is the motion
+        private int _NotificationsPerRevolution = 10000; //The higher is the value, the slower is the motion
         /// <summary>
         /// Gets or sets the number of notifications
         /// per revolution
@@ -211,9 +211,16 @@ namespace Hardware
             {
                 case MotionKind.Single:
                     {
-                        if ((_CurrentPosition <= _FinalDestination) && (_IsMotionInProcess == true))
+                        if ((_CurrentPosition <= _FinalDestination) && (_IsMotionInProcess == true) && (_CurrentDirection == MotionDirection.Up))
                         {
                             _CurrentPosition += _MetersPerRevolution / _NotificationsPerRevolution;
+                            LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
+                            NotifyPosition();
+                            InitiateMotion();
+                        }
+                        else if ((_CurrentPosition > _FinalDestination) && (_IsMotionInProcess == true) && (_CurrentDirection == MotionDirection.Down))
+                        {
+                            _CurrentPosition -= _MetersPerRevolution / _NotificationsPerRevolution;
                             LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
                             NotifyPosition();
                             InitiateMotion();
@@ -388,17 +395,20 @@ namespace Hardware
         /// <param name="motionVelosity">Value of motion velosity</param>
         /// <param name="motionVelosityUnits">Motion velosity units</param>
         /// <param name="numberOfRepetities">Number of repetities (for repetitive measurement)</param>
-        public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, double motionVelosity = 100.0, MotionVelosityUnits motionVelosityUnits = MotionVelosityUnits.rpm, int numberOfRepetities = 1)
+        public void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, int numberOfRepetities = 1)
         {
             //Setting motion parameters
             _StartPosition = StartPosition;
-            _CurrentPosition = 0.0;
+            _CurrentPosition = StartPosition;
             _FinalDestination = FinalDestination;
             _NumberRepetities = numberOfRepetities;
-            _VelosityValue = motionVelosity;
             _motionVelosityUnits = motionVelosityUnits;
             _MotionKind = motionKind;
-            
+
+            if (_StartPosition <= _FinalDestination)
+                SetDirection(MotionDirection.Up);
+            else SetDirection(MotionDirection.Down);
+
             _IsMotionInProcess = true;
 
             //Going to the start position

@@ -444,7 +444,6 @@ namespace BreakJunctions
                         {
                             var motionRepetitiveStartPosition = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
                             var motionRepetitiveEndPosition = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
-                            var numerCycles = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
 
                             if (isTimeTraceVoltageModeChecked == true)
                                 TimeTraceCurve = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, Device, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);

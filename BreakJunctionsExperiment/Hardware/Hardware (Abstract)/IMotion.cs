@@ -32,7 +32,7 @@ namespace Hardware
         /// <param name="StartPosition">Start position</param>
         /// <param name="FinalDestination">Final destination</param>
         /// <param name="motionKind">Motion kind (Single or Repettitive)</param>
-        void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, double motionVelosity = 100.0, MotionVelosityUnits motionVelosityUnits = MotionVelosityUnits.rpm, int numberOfRepetities = 1);
+        void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, int numberOfRepetities = 1);
         /// <summary>
         /// Starts the motion in response to maximum
         /// observation time
@@ -60,10 +60,6 @@ namespace Hardware
         /// </summary>
         /// <param name="motionDirection">The direction of motion</param>
         void SetDirection(MotionDirection motionDirection);
-        /// <summary>
-        /// For correctly disposing the instance
-        /// </summary>
-        void Dispose();
     }
 
     #endregion
