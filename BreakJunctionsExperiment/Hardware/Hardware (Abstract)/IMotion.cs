@@ -18,7 +18,7 @@ namespace Hardware
     /// <summary>
     /// Motion interface
     /// </summary>
-    interface IMotion
+    interface IMotion : IDisposable
     {
         /// <summary>
         /// Initializes the device
@@ -60,6 +60,10 @@ namespace Hardware
         /// </summary>
         /// <param name="motionDirection">The direction of motion</param>
         void SetDirection(MotionDirection motionDirection);
+        /// <summary>
+        /// For correctly disposing the instance
+        /// </summary>
+        void Dispose();
     }
 
     #endregion

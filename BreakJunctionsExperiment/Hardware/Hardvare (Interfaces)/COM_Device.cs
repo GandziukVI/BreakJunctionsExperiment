@@ -23,6 +23,8 @@ namespace Hardware
 
         #endregion
 
+        #region COM Port initialization
+
         private void SetSerialPort(string comPort, int baud, Parity parity, int dataBits, StopBits stopBits, string returnToken)
         {
             this._comPort = comPort;
@@ -50,13 +52,6 @@ namespace Hardware
 
         }
 
-        public virtual void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            SerialPort sp = (SerialPort)sender;
-            string data = sp.ReadExisting();
-            //throw new NotImplementedException();
-        }
-
         public COM_Device(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
             this.SetSerialPort(comPort, baud, parity, dataBits, stopBits, returnToken);
@@ -67,7 +62,18 @@ namespace Hardware
             this.Dispose();
         }
 
-        
+        #endregion
+
+        #region Data received handler
+
+        public virtual void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IExperimentalDevice implementation
 
         public virtual bool InitDevice()
         {
@@ -110,6 +116,10 @@ namespace Hardware
             return COM_DeviceResponce;
         }
 
+        #endregion
+
+        #region Correctly disposing the instance
+
         public virtual void Dispose()
         {
             if (_COM_Device != null)
@@ -119,5 +129,7 @@ namespace Hardware
                     _COM_Device.Dispose();
                 }
         }
+
+        #endregion
     }
 }

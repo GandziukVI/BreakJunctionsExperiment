@@ -407,9 +407,11 @@ namespace BreakJunctions
                 var sAddress = sourceDeviceConfiguration.Keithley2602A_DeviceSettings.DeviceSettings.SecondaryAddress;
                 var bNumber = sourceDeviceConfiguration.Keithley2602A_DeviceSettings.DeviceSettings.BoardNumber;
 
+                if (Motor != null)
+                    Motor.Dispose();
+
                 var motor = new FAULHABER_MINIMOTOR_SA("COM4");
                 motor.EnableDevice();
-                motor.FinalDestination = 0.0;
                 
                 Motor = motor;
 

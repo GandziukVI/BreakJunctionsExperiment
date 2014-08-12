@@ -15,7 +15,7 @@ using Hardware;
 
 namespace Hardware
 {
-    class FAULHABER_MINIMOTOR_SA : COM_Device, IMotion, IDisposable
+    class FAULHABER_MINIMOTOR_SA : COM_Device, IMotion
     {
         #region Motion settings
 
