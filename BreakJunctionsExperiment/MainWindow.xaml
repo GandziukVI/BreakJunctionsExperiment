@@ -400,7 +400,7 @@
 																			</ToolTip>
 																		</Label.ToolTip>
 																	</Label>
-                                                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMicrometricBoltCurrentPosition" Text="{Binding Path=TimeTraceMeasurementDistanceMotionCurrentPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+                                                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMicrometricBoltCurrentPosition" Text="{Binding Path=TimeTraceMeasurementDistanceMotionCurrentPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" />
 
 																	<Label Grid.Row="3" Grid.Column="0" Margin="0 2.5" Content="Motion final dest.">
 																		<Label.ToolTip>
