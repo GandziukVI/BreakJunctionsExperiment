@@ -121,8 +121,6 @@ namespace BreakJunctions
 
             #region Test commands
 
-            //TestClass.StartTest();
-
             #endregion
 
             #region Interface model-view interactions
@@ -432,7 +430,7 @@ namespace BreakJunctions
                 {
                     case "Distance":
                         {
-                            var motionStartPosition = ExperimentSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
+                            var motionStartPosition = ExperimentSettings.TimeTraceMeasurementDistanceMotionStartPosition;
                             var motionFinalDestination = ExperimentSettings.TimeTraceMeasurementDistanceMotionFinalDestination;
 
                             if (isTimeTraceVoltageModeChecked == true)
@@ -492,7 +490,7 @@ namespace BreakJunctions
                     }
 
                     double micrometricBoltPosition = double.NaN;
-                    double.TryParse(this.textBoxTimeTraceMicrometricBoltPosition.Text, numberStyle, culture, out micrometricBoltPosition);
+                    double.TryParse(this.textBoxTimeTraceDistanceMicrometricBoltCurrentPosition.Text, numberStyle, culture, out micrometricBoltPosition);
 
                     string comment = this.textBoxTimeTraceComment.Text;
 
@@ -593,7 +591,7 @@ namespace BreakJunctions
         {
             this.Dispatcher.BeginInvoke(new Action(delegate() 
                 {
-                    this.textBoxTimeTraceMicrometricBoltPosition.Text = Convert.ToString(e.Position, culture);
+                    this.textBoxTimeTraceDistanceMicrometricBoltCurrentPosition.Text = e.Position.ToString("E8", culture);
                 }));
         }
 

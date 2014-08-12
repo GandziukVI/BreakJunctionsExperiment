@@ -340,7 +340,7 @@ namespace BreakJunctions
                 OnPropertyChanged("IsTimeTraceMeasurementDistanceMotionModeUpChecked");
             }
         }
-        private bool _IsTimeTraceMeasurementDistanceMotionModeDownChecked = true;
+        private bool _IsTimeTraceMeasurementDistanceMotionModeDownChecked = false;
         public bool IsTimeTraceMeasurementDistanceMotionModeDownChecked
         {
             get { return _IsTimeTraceMeasurementDistanceMotionModeDownChecked; }
