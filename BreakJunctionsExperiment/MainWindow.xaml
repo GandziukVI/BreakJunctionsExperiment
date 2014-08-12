@@ -363,7 +363,7 @@
 														</Grid>
 														<TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="tabControlTimeTraceMeasurementParameters" SelectedIndex="{Binding Path=TimeTraceMeasurementSelectedTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0 10 0 0">
 															<!-- Tab item single time trace distance measuremebts -->
-															<TabItem Header="Distance">
+															<TabItem Header="Distance"> <!-- The improvement should be here -->
 																<Grid Margin="0 5 0 0">
 																	<Grid.RowDefinitions>
 																		<RowDefinition />
