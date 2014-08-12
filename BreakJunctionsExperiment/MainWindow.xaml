@@ -363,9 +363,10 @@
 														</Grid>
 														<TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="tabControlTimeTraceMeasurementParameters" SelectedIndex="{Binding Path=TimeTraceMeasurementSelectedTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0 10 0 0">
 															<!-- Tab item single time trace distance measuremebts -->
-															<TabItem Header="Distance"> <!-- The improvement should be here -->
+															<TabItem Header="Distance">
 																<Grid Margin="0 5 0 0">
 																	<Grid.RowDefinitions>
+																		<RowDefinition />
 																		<RowDefinition />
 																		<RowDefinition />
 																		<RowDefinition />
@@ -377,29 +378,38 @@
 
 																	<GroupBox Grid.Row="0" Grid.Column="0" Header="Moving direction" Margin="2.5">
 																		<StackPanel>
-																			<RadioButton x:Name="radioTimeTraceMoveUp" IsChecked="True">Up</RadioButton>
-																			<RadioButton x:Name="radioTimeTraceMoveDown">Down</RadioButton>
+																			<RadioButton x:Name="radioTimeTraceDistanceMoveUp" IsChecked="{Binding Path=IsTimeTraceMeasurementDistanceMotionModeUpChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Up</RadioButton>
+																			<RadioButton x:Name="radioTimeTraceDistanceMoveDown" IsChecked="{Binding Path=IsTimeTraceMeasurementDistanceMotionModeDownChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Down</RadioButton>
 																		</StackPanel>
 																	</GroupBox>
-																	<Button x:Name="cmdTimeTraceMoveToInitialPosition" Grid.Row="0" Grid.Column="1" Margin="5">Move to initial</Button>
-															
-																	<Label Grid.Row="1" Grid.Column="0" Margin="0 2.5" Content="Motion current pos.">
+																	<Button x:Name="cmdTimeTraceDistanceMoveToInitialPosition" Grid.Row="0" Grid.Column="1" Margin="5">Move to initial</Button>
+																	
+																	<Label Grid.Row="1" Grid.Column="0" Margin="0 2.5" Content="Motion start pos.">
+																		<Label.ToolTip>
+																			<ToolTip>
+																				<TextBlock>The position, from which the measurement takes place</TextBlock>
+																			</ToolTip>
+																		</Label.ToolTip>
+																	</Label>
+																	<TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMiscometricBoltStartPosition" Text="{Binding Path=TimeTraceMeasurementDistanceMotionStartPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+																	<Label Grid.Row="2" Grid.Column="0" Margin="0 2.5" Content="Motion current pos.">
 																		<Label.ToolTip>
 																			<ToolTip>
 																				<TextBlock>Motion current destination.</TextBlock>
 																			</ToolTip>
 																		</Label.ToolTip>
 																	</Label>
-                                                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltPosition" Text="{Binding Path=TimeTraceMeasurementMotionCurrentDestination, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+                                                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltPosition" Text="{Binding Path=TimeTraceMeasurementDistanceMotionCurrentPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
 
-																	<Label Grid.Row="2" Grid.Column="0" Margin="0 2.5" Content="Motion final dest.">
+																	<Label Grid.Row="3" Grid.Column="0" Margin="0 2.5" Content="Motion final dest.">
 																		<Label.ToolTip>
 																			<ToolTip>
 																				<TextBlock>Motion final destination.</TextBlock>
 																			</ToolTip>
 																		</Label.ToolTip>
 																	</Label>
-                                                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltFinalPosition" Text="{Binding Path=TimeTraceMeasurementMotionFinalDestination, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+                                                                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltFinalPosition" Text="{Binding Path=TimeTraceMeasurementDistanceMotionFinalDestination, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
 																</Grid>
 															</TabItem> <!-- End tab item single time trace distance measuremebts -->
 															<!-- Tab item repetitive time trace distance measuremebts -->

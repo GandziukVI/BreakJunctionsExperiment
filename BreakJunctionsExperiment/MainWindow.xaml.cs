@@ -432,8 +432,8 @@ namespace BreakJunctions
                 {
                     case "Distance":
                         {
-                            var motionStartPosition = ExperimentSettings.TimeTraceMeasurementMotionCurrentDestination;
-                            var motionFinalDestination = ExperimentSettings.TimeTraceMeasurementMotionFinalDestination;
+                            var motionStartPosition = ExperimentSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
+                            var motionFinalDestination = ExperimentSettings.TimeTraceMeasurementDistanceMotionFinalDestination;
 
                             if (isTimeTraceVoltageModeChecked == true)
                                 TimeTraceCurve = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, Device, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
