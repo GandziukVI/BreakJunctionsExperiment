@@ -62,7 +62,7 @@ namespace Hardware
             get { return _IncPerRevolution * _TransferFactor; }
         }
 
-        private int _NotificationsPerRevolution = 10000; //The higher is the value, the slower is the motion
+        private int _NotificationsPerRevolution = 1000; //The higher is the value, the slower is the motion
         /// <summary>
         /// Gets or sets the number of notifications
         /// per revolution
