@@ -107,9 +107,10 @@
     <Compile Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml.cs">
       <DependentUpon>SourceDeviceConfiguration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings.xaml.cs">
+    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml.cs">
       <DependentUpon>Keithley2602A_Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\MVVM_Keithley2602A_Settings.cs" />
     <Compile Include="User Interface\ViewModel.cs" />
     <Compile Include="VMMV interactions\IV_And_TimeTraceViewModel.cs" />
   </ItemGroup>
@@ -154,7 +155,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings.xaml">
+    <Page Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

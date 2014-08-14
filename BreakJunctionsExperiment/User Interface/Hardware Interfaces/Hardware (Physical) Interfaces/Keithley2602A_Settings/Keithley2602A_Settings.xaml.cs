@@ -139,14 +139,19 @@ namespace BreakJunctions
 	/// Interaction logic for Keithley2602A_Settings.xaml
 	/// </summary>
 	public partial class Keithley2602A_Channel_Settings : Window
-	{
-        //The device
+    {
+        #region MVVM for Keithley2602ASettings
 
-        private Keithley2602A_Settings _DeviceSettings;
-        public Keithley2602A_Settings DeviceSettings
+        private MVVM_Keithley2602A_Settings _DeviceSettings;
+        public MVVM_Keithley2602A_Settings DeviceSettings
         {
             get { return _DeviceSettings; }
         }
+
+        #endregion
+
+        //The device
+
         private I_SMU _Device;
         public I_SMU Device
         {
@@ -156,45 +161,20 @@ namespace BreakJunctions
 		public Keithley2602A_Channel_Settings()
 		{
 			this.InitializeComponent();
+
+            #region Set MVVM
+
+            _DeviceSettings = new MVVM_Keithley2602A_Settings();
+            this.DataContext = _DeviceSettings;
             
             this.radioSourceMeasureModeVoltage.DataContext = ModelViewInteractions.IV_VoltageChangedModel;
             this.radioSourceMeasureModeCurrent.DataContext = ModelViewInteractions.IV_CurrentChangedModel;
 
-		}
+            #endregion
+        }
 
-        private I_SMU GetSettings()
+        private I_SMU SetDevice()
         {
-            _DeviceSettings = new Keithley2602A_Settings();
-
-            byte TempByteSettings;
-            double TempDoubleSettings;
-
-            var style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent;
-            var culture = new CultureInfo("en-US");
-
-            byte.TryParse(this.textBoxBoardNumber.Text, out TempByteSettings);
-            _DeviceSettings.SetBoardNumber(TempByteSettings);
-            byte.TryParse(this.textBoxPrimaryAddress.Text, out TempByteSettings);
-            _DeviceSettings.SetPrimaryAddress(TempByteSettings);
-            byte.TryParse(this.textBoxSecondaryAddress.Text, out TempByteSettings);
-            _DeviceSettings.SetSecondaryAddress(TempByteSettings);
-
-            //Device Source/Measure mode
-
-            var IsVoltageMode = this.radioSourceMeasureModeVoltage.IsChecked;
-            var IsCurrentMode = this.radioSourceMeasureModeCurrent.IsChecked;
-
-            //Limit mode
-
-            if (IsCurrentMode/*IsVoltageLimit*/ == true)
-            {
-                _DeviceSettings.SetLimitMode(KEITHLEY_2601A_LimitMode.Voltage);
-            }
-            else if (IsVoltageMode/*IsCurrentLimit*/ == true)
-            {
-                _DeviceSettings.SetLimitMode(KEITHLEY_2601A_LimitMode.Current);
-            }
-
             //Limit value voltage
 
             var IsLimitVoltageRead = double.TryParse(this.textBoxVoltageLimit.Text, style, culture, out TempDoubleSettings);
@@ -236,7 +216,7 @@ namespace BreakJunctions
 
 		private void on_cmdSaveSettingsClick(object sender, System.Windows.RoutedEventArgs e)
 		{
-            _Device = GetSettings();
+            _Device = SetDevice();
             this.Close();
 		}
 
