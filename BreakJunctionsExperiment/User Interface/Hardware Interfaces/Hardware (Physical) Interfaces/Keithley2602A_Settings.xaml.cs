@@ -99,22 +99,30 @@ namespace BreakJunctions
             {
                 if((_SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
                 {
-                    _Device = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
+                    var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
+                    smu.SetSpeed(25.0, KEITHLEY_2602A_Channels.ChannelA);
+                    _Device = smu;
                     _Device.SetVoltageLimit(_LimitValueVoltage);
                 }
                 else if ((_SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_LimitMode == KEITHLEY_2601A_LimitMode.Current))
                 {
-                    _Device = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
+                    var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
+                    smu.SetSpeed(25.0, KEITHLEY_2602A_Channels.ChannelA);
+                    _Device = smu;
                     _Device.SetCurrentLimit(_LimitValueCurrent);
                 }
                 else if ((_SelectedChannel == KEITHLEY_2602A_Channels.ChannelB) && (_LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
                 {
-                    _Device = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
+                    var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
+                    smu.SetSpeed(25.0, KEITHLEY_2602A_Channels.ChannelB);
+                    _Device = smu;
                     _Device.SetVoltageLimit(_LimitValueVoltage);
                 }
                 else if ((_SelectedChannel == KEITHLEY_2602A_Channels.ChannelB) && (_LimitMode == KEITHLEY_2601A_LimitMode.Current))
                 {
-                    _Device = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
+                    var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
+                    smu.SetSpeed(25.0, KEITHLEY_2602A_Channels.ChannelB);
+                    _Device = smu;
                     _Device.SetCurrentLimit(_LimitValueCurrent);
                 }
 

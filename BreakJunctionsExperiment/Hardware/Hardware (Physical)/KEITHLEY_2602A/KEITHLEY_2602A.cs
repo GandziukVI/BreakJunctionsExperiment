@@ -38,6 +38,7 @@ namespace Hardware
                 if (IsInitSuccess == true)
                 {
                     GPIB_CurrentDevice.Write("beeper.enable = 1 ");
+
                     return true;
                 }
                 else return false;
@@ -48,6 +49,31 @@ namespace Hardware
             //For constructing command requests
 
             private StringBuilder CommandBuilder;
+
+            private double _FastestSpeed = 0.001;
+            private double _LowestSpeed = 25.0;
+            public void SetSpeed(double Speed, KEITHLEY_2602A_Channels SelectedChannel)
+            {
+                var Command = "smu{0}.measure.nplc = {1} ";
+                var _Speed = Speed.ToString().Replace(',', '.');
+
+                if (Speed < _FastestSpeed) Speed = _FastestSpeed;
+                else if (Speed > _LowestSpeed) Speed = _LowestSpeed;
+
+                switch (SelectedChannel)
+                {
+                    case KEITHLEY_2602A_Channels.ChannelA:
+                        {
+                            SendCommandRequest(String.Format(Command, "a", _Speed));
+                        } break;
+                    case KEITHLEY_2602A_Channels.ChannelB:
+                        {
+                            SendCommandRequest(String.Format(Command, "b", _Speed));
+                        } break;
+                    default:
+                        break;
+                }
+            }
 
             /// <summary>
             /// Switching appropriate channel ON or OFF
