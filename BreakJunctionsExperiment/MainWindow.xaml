@@ -350,16 +350,8 @@
 																<ColumnDefinition />
 															</Grid.ColumnDefinitions>
 
-															<Label Grid.Column="0" Margin="0 0 10 0">Moving velosity</Label>
-															<Grid Grid.Column="1">
-																<Grid.ColumnDefinitions>
-																	<ColumnDefinition />
-																	<ColumnDefinition />
-																</Grid.ColumnDefinitions>
-
-																<TextBox Grid.Column="0" x:Name="textBoxTimeTraceMovingVelosity" Text="{Binding Path=TimeTraceMeasurementMovingVelosity, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Margin="0 2.5"></TextBox>
-																<ComboBox Grid.Column="1" x:Name="comboBoxTimeTraceMovingVelosity" Margin="0 2.5"></ComboBox>
-															</Grid>
+															<Label Grid.Column="0" Margin="0 0 10 0">Notifications per rev</Label>
+															<TextBox Grid.Column="1" x:Name="textBoxTimeTraceNotificationsPerRevolution" Margin="0 2.5 " Text="{Binding Path=TimeTraceNotificationsPerRevolution, UpdateSourceTrigger=LostFocus , Mode=TwoWay}"/>
 														</Grid>
 														<TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="tabControlTimeTraceMeasurementParameters" SelectedIndex="{Binding Path=TimeTraceMeasurementSelectedTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0 10 0 0">
 															<!-- Tab item single time trace distance measuremebts -->

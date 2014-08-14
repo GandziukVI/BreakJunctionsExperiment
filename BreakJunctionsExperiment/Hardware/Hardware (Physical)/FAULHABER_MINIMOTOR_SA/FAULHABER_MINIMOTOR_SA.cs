@@ -67,7 +67,7 @@ namespace Hardware
         /// Gets or sets the number of notifications
         /// per revolution
         /// </summary>
-        public int NitofocationsPerRevolution
+        public int NotificationsPerRevolution
         {
             get { return _NotificationsPerRevolution; }
             set { _NotificationsPerRevolution = value; }

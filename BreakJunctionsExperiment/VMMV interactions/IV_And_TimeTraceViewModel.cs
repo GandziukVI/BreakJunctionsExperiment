@@ -304,13 +304,13 @@ namespace BreakJunctions
         }
 
         //Motion parameters
-        private int _TimeTraceMeasurementMovingVelosity = 0;
-        public int TimeTraceMeasurementMovingVelosity
+        private int _TimeTraceNotificationsPerRevolution = 1000;
+        public int TimeTraceNotificationsPerRevolution
         {
-            get { return _TimeTraceMeasurementMovingVelosity; }
+            get { return _TimeTraceNotificationsPerRevolution; }
             set 
             {
-                _TimeTraceMeasurementMovingVelosity = value;
+                _TimeTraceNotificationsPerRevolution = value;
                 OnPropertyChanged("TimeTraceMeasurementMovingVelosity");
             }
         }

@@ -403,24 +403,21 @@ namespace BreakJunctions
 
                 #region Time trace measurement configuration
 
-                var pAddress = sourceDeviceConfiguration.Keithley2602A_DeviceSettings.DeviceSettings.PrimaryAddress;
-                var sAddress = sourceDeviceConfiguration.Keithley2602A_DeviceSettings.DeviceSettings.SecondaryAddress;
-                var bNumber = sourceDeviceConfiguration.Keithley2602A_DeviceSettings.DeviceSettings.BoardNumber;
-
+                var ExperimentSettings = IV_And_TimeTraceViewModel.Instance;
+                
                 if (Motor != null)
                     Motor.Dispose();
 
                 var motor = new FAULHABER_MINIMOTOR_SA("COM4");
+                motor.NotificationsPerRevolution = ExperimentSettings.TimeTraceNotificationsPerRevolution;
                 motor.EnableDevice();
-                
+
                 Motor = motor;
 
                 if (TimeTraceCurve != null)
                 {
                     TimeTraceCurve.Dispose();
                 }
-
-                var ExperimentSettings = IV_And_TimeTraceViewModel.Instance;
 
                 var valueThroughTheStructure = ExperimentSettings.TimeTraceMeasurementValueThrougtTheStructure;
                 var isTimeTraceVoltageModeChecked = ExperimentSettings.IsTimeTraceMeasurementVoltageModeChecked;
