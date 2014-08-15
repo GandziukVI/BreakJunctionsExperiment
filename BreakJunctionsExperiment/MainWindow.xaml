@@ -60,7 +60,7 @@
 						</d3:ChartPlotter>
 							
 						<ScrollViewer Grid.Row="0" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-							<local:IV_MeasurementSettings x:Name="IV_MeasurementSettings"/>
+							<local:IV_MeasurementSettings x:Name="controlIV_MeasurementSettings"/>
 						</ScrollViewer>
 					</Grid>
 					
@@ -92,7 +92,7 @@
 							
 						<!-- Time trace scroll viever -->
 						<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="0" Grid.Column="1" Margin="0 5 0 0">
-							<local:TimeTraceMeasurementSettings x:Name="TimeTraceMeasurementSettings" />
+							<local:TimeTraceMeasurementSettings x:Name="controlTimeTraceMeasurementSettings" />
 						</ScrollViewer>
 					</Grid>	
 					<!-- Progress bar panel -->

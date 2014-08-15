@@ -121,14 +121,14 @@ namespace BreakJunctions
 
             #region Interface model-view interactions
 
-            IV_MeasurementSettings.cmdIV_DataFileNameBrowse.Click += on_cmdIV_DataFileNameBrowseClick;
-            IV_MeasurementSettings.cmdIV_StartMeasurement.Click += on_cmdIV_StartMeasurementClick;
-            IV_MeasurementSettings.cmdIV_StopMeasurement.Click += on_cmdIV_StopMeasurementClick;
+            controlIV_MeasurementSettings.cmdIV_DataFileNameBrowse.Click += on_cmdIV_DataFileNameBrowseClick;
+            controlIV_MeasurementSettings.cmdIV_StartMeasurement.Click += on_cmdIV_StartMeasurementClick;
+            controlIV_MeasurementSettings.cmdIV_StopMeasurement.Click += on_cmdIV_StopMeasurementClick;
 
-            TimeTraceMeasurementSettings.cmdTimeTraceDataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClick;
-            //TimeTraceMeasurementSettings.cmdTimeTraceDistanceMoveToInitialPosition +=
-            TimeTraceMeasurementSettings.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceStartMeasurementClick;
-            TimeTraceMeasurementSettings.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceStopMeasurementClick;
+            controlTimeTraceMeasurementSettings.cmdTimeTraceDataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClick;
+            //controlTimeTraceMeasurementSettings.cmdTimeTraceDistanceMoveToInitialPosition +=
+            controlTimeTraceMeasurementSettings.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceStartMeasurementClick;
+            controlTimeTraceMeasurementSettings.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceStopMeasurementClick;
 
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
 
@@ -239,7 +239,7 @@ namespace BreakJunctions
 
                 #region I-V measurement configuration
 
-                var ExperimentSettings = IV_MeasurementSettings.MeasurementSettings;
+                var ExperimentSettings = controlIV_MeasurementSettings.MeasurementSettings;
 
                 var StartValue = ExperimentSettings.IV_MeasurementStartValue;                
                 var EndValue = ExperimentSettings.IV_MeasurementEndValue;
@@ -292,8 +292,7 @@ namespace BreakJunctions
                     }
 
                     //Some Comment
-                    double micrometricBoltPosition = double.NaN;
-                    double.TryParse(IV_MeasurementSettings.textBoxIV_MicrometricBoltPosition.Text, numberStyle, culture, out micrometricBoltPosition);
+                    double micrometricBoltPosition = controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
 
                     string comment = ExperimentSettings.IV_MeasurementDataComment;
 
@@ -368,7 +367,7 @@ namespace BreakJunctions
             {
                 _IV_FilesCounter = 0;
                 _SaveIV_MeasuremrentFileName = _SaveIV_MeasureDialog.FileName;
-                this.IV_MeasurementSettings.textBoxIV_FileName.Text = _SaveIV_MeasureDialog.SafeFileName;
+                this.controlIV_MeasurementSettings.textBoxIV_FileName.Text = _SaveIV_MeasureDialog.SafeFileName;
             }
         }
 
@@ -404,7 +403,7 @@ namespace BreakJunctions
 
                 #region Time trace measurement configuration
 
-                var ExperimentSettings = TimeTraceMeasurementSettings.MeasurementSettings;
+                var ExperimentSettings = controlTimeTraceMeasurementSettings.MeasurementSettings;
 
                 if (Motor != null)
                     Motor.Dispose();
@@ -424,7 +423,7 @@ namespace BreakJunctions
                 var isTimeTraceVoltageModeChecked = ExperimentSettings.IsTimeTraceMeasurementVoltageModeChecked;
                 var isTimeTraceCurrentModeChecked = ExperimentSettings.IsTimeTraceMeasurementCurrentModeChecked;
 
-                var selectedTimeTraceModeItem = (TimeTraceMeasurementSettings.tabControlTimeTraceMeasurementParameters.SelectedItem as TabItem).Header.ToString();
+                var selectedTimeTraceModeItem = (controlTimeTraceMeasurementSettings.tabControlTimeTraceMeasurementParameters.SelectedItem as TabItem).Header.ToString();
 
                 switch (selectedTimeTraceModeItem)
                 {
@@ -581,18 +580,20 @@ namespace BreakJunctions
             {
                 _TimeTraceFilesCounter = 0;
                 _SaveTimeTraceMeasuremrentFileName = _SaveTimeTraceMeasureDialog.FileName;
-                this.TimeTraceMeasurementSettings.textBoxTimeTraceFileName.Text = _SaveTimeTraceMeasureDialog.SafeFileName;
+                //this.controlTimeTraceMeasurementSettings.textBoxTimeTraceFileName.Text = _SaveTimeTraceMeasureDialog.SafeFileName;
+                this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDataFileName = _SaveTimeTraceMeasureDialog.SafeFileName;
             }
         }
 
         private void OnMotionPositionMeasured(object sender, Motion_EventArgs e)
         {
-            this.Dispatcher.BeginInvoke(new Action(delegate() 
-                {
-                    this.TimeTraceMeasurementSettings.textBoxTimeTraceDistanceMicrometricBoltCurrentPosition.Text = e.Position.ToString("E8", culture);
-                }));
+            this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
+
+            //this.Dispatcher.BeginInvoke(new Action(delegate() 
+            //    {
+            //        this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position.ToString("E8", culture);
+            //    }));
         }
-        //Hello world
         #endregion
 
         #region Checking User Input
