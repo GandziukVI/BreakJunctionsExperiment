@@ -100,21 +100,26 @@
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
     <Compile Include="Plotting\ExperimentalDataSource.cs" />
-    <Compile Include="User Interface\Application Interfaces\MainWindow Interfaces\IV_MeasurementSettings.xaml.cs">
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\IV_MeasurementSettingsDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\TimeTraceMeasurementSettingsDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\IV_MeasurementSettings.xaml.cs">
       <DependentUpon>IV_MeasurementSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interface\HandlingUserInput.cs" />
-    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml.cs">
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\TimeTraceMeasurementSettings.xaml.cs">
+      <DependentUpon>TimeTraceMeasurementSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="User Interfaces\HandlingUserInput.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml.cs">
       <DependentUpon>MeasureDeviceConfiguration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml.cs">
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml.cs">
       <DependentUpon>SourceDeviceConfiguration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml.cs">
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml.cs">
       <DependentUpon>Keithley2602A_Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\MVVM_Keithley2602A_Settings.cs" />
-    <Compile Include="User Interface\ViewModel.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\MVVM_Keithley2602A_Settings.cs" />
+    <Compile Include="User Interfaces\ViewModel.cs" />
     <Compile Include="VMMV interactions\IV_And_TimeTraceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -150,19 +155,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interface\Application Interfaces\MainWindow Interfaces\IV_MeasurementSettings.xaml">
+    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\IV_MeasurementSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml">
+    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\TimeTraceMeasurementSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml">
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interface\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml">
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BreakJunctions
 {
-	public class MVVM_IV_MeasurementSettings : INotifyPropertyChanged
+    public class IV_MeasurementSettingsDataModel : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged implementation
 
@@ -182,58 +174,6 @@ namespace BreakJunctions
                 _IV_MeasurementDataComment = value;
                 OnPropertyChanged("IV_MeasurementDataComment");
             }
-        }
-
-        #endregion
-    }
-
-	/// <summary>
-	/// Логика взаимодействия для IV_MeasurementSettings.xaml
-	/// </summary>
-	public partial class IV_MeasurementSettings : UserControl
-    {
-        #region MVVM interactions
-
-        private MVVM_IV_MeasurementSettings _MeasurementSettings;
-        public MVVM_IV_MeasurementSettings MeasurementSettings
-        {
-            get { return _MeasurementSettings; }
-        }
-
-        #endregion
-
-        public IV_MeasurementSettings()
-		{
-			this.InitializeComponent();
-
-            #region MVVM setup
-
-            _MeasurementSettings = new MVVM_IV_MeasurementSettings();
-            this.DataContext = _MeasurementSettings;
-
-            #endregion
-        }
-
-        #region Checking User Input
-
-        private void IntegerPastingHandler(object sender, DataObjectPastingEventArgs e)
-        {
-            HandlingUserInput.IntegerPastingHandler(ref sender, ref e);
-        }
-
-        private void OnIntegerTextChanged(object sender, TextChangedEventArgs e)
-        {
-            HandlingUserInput.OnIntegerTextChanged(ref sender, ref e);
-        }
-
-        private void FloatingPointPastingHandler(object sender, DataObjectPastingEventArgs e)
-        {
-            HandlingUserInput.FloatingPointPastingHandler(ref sender, ref e);
-        }
-
-        private void OnFloatingPointTextChanged(object sender, TextChangedEventArgs e)
-        {
-            HandlingUserInput.OnFloatingPointTextChanged(ref sender, ref e);
         }
 
         #endregion
