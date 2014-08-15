@@ -287,6 +287,7 @@ namespace BreakJunctions
                         sourceMode = "SourceMode: Current";
                     }
 
+                    //Some Comment
                     double micrometricBoltPosition = double.NaN;
                     double.TryParse(IV_MeasurementSettings.textBoxIV_MicrometricBoltPosition.Text, numberStyle, culture, out micrometricBoltPosition);
 
