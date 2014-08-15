@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BreakJunctions.User_Interface.Application_Interfaces.MainWindow_Interfaces.Views
+namespace BreakJunctions
 {
     /// <summary>
     /// Interaction logic for TimeTraceMeasurementSettings.xaml
