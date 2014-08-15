@@ -587,6 +587,7 @@ namespace BreakJunctions
 
         private void OnMotionPositionMeasured(object sender, Motion_EventArgs e)
         {
+            //this.controlIV_MeasurementSettings.MeasurementSettings
             this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
 
             //this.Dispatcher.BeginInvoke(new Action(delegate() 

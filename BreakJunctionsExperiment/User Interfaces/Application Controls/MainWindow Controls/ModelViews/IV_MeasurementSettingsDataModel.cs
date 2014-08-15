@@ -176,6 +176,17 @@ namespace BreakJunctions
             }
         }
 
+        private double _IV_MeasurementMicrometricBoltPosition = 0.0;
+        public double IV_MeasurementMicrometricBoltPosition
+        {
+            get { return _IV_MeasurementMicrometricBoltPosition; }
+            set
+            {
+                _IV_MeasurementMicrometricBoltPosition = value;
+                OnPropertyChanged("IV_MeasurementMicrometricBoltPosition");
+            }
+        }
+
         #endregion
     }
 }
