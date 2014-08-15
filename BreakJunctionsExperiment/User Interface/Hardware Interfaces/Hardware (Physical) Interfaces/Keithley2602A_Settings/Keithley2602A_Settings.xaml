@@ -4,7 +4,7 @@
 	x:Class="BreakJunctions.Keithley2602A_Channel_Settings"
 	x:Name="Window"
 	Title="Keithley2602A_Channel_Settings"
-	Width="360" Height="400"
+	Width="360" Height="420"
 	ResizeMode="NoResize">
 
 	<Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -22,21 +22,30 @@
 		
 		<Grid x:Name="ConnectionSettings" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
 			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition/>
-				<RowDefinition/>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition/>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
 			</Grid.ColumnDefinitions>
 			
 			<Label Grid.Row="0" Grid.Column="0">Board Number</Label>
-			<TextBox x:Name="textBoxBoardNumber" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged">0</TextBox>
+			<TextBox x:Name="textBoxBoardNumber" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=BoardNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />
 			<Label Grid.Row="1" Grid.Column="0">Primary Address</Label>
-			<TextBox x:Name="textBoxPrimaryAddress" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged">26</TextBox>
+			<TextBox x:Name="textBoxPrimaryAddress" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=PrimaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />
 			<Label Grid.Row="2" Grid.Column="0">Secondary Address</Label>
-			<TextBox x:Name="textBoxSecondaryAddress" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged">0</TextBox>
+			<TextBox x:Name="textBoxSecondaryAddress" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=SecondaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />
+			<Label Grid.Row="3" Grid.Column="0" Content="Accuracy Coeficient">
+				<Label.ToolTip>
+					<ToolTip>
+						<TextBlock MaxWidth="250" TextWrapping="Wrap">Range is 0.001 - 25. The higher is the value - the higher is the accuracy</TextBlock>
+					</ToolTip>
+				</Label.ToolTip>
+			</Label>
+			<TextBox Grid.Row="3" Grid.Column="1" x:Name="textBoxAccuracyCoefficient" HorizontalAlignment="Stretch" Margin=" 2.5" TextAlignment="Right" Text="{Binding Path=AccuracyCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
 		</Grid>
 		<GroupBox Grid.Row="1" Grid.Column="0" Header="Source Mode" HorizontalAlignment="Stretch" Margin="5 5 5 2.5">
 			<StackPanel>
@@ -60,7 +69,7 @@
 		</GroupBox> -->
 		<StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
 			<Label>Working Channel</Label>
-			<ComboBox x:Name="comboBoxWorkingChannel">
+			<ComboBox x:Name="comboBoxWorkingChannel" Text="{Binding Path=SelectedChannelString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 				<ComboBoxItem>Channel A</ComboBoxItem>
 				<ComboBoxItem IsSelected="True">Channel B</ComboBoxItem>
 			</ComboBox>
@@ -78,8 +87,8 @@
 			</Grid.ColumnDefinitions>
 			
 			<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">Current Limit</Label>
-            <TextBox x:Name="textBoxCurrentLimit" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" MinWidth="50" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged">1</TextBox>
-            <ComboBox x:Name="comboBoxCurrentLimitMultiplier" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch">
+            <TextBox x:Name="textBoxCurrentLimit" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" MinWidth="50" Text="{Binding Path=LimitValueCurrent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+            <ComboBox x:Name="comboBoxCurrentLimitMultiplier" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Path=LimitValueCurrentMultiplier, UpdateSourceTrigger=propertyChanged, Mode=TwoWay}">
 				<ComboBoxItem>Pico</ComboBoxItem>
 				<ComboBoxItem>Nano</ComboBoxItem>
 				<ComboBoxItem>Micro</ComboBoxItem>
@@ -89,8 +98,8 @@
 				<ComboBoxItem IsSelected="True">None</ComboBoxItem>
 			</ComboBox>
 			<Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Voltage Limit</Label>
-			<TextBox x:Name="textBoxVoltageLimit" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" MinWidth="50" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged">12</TextBox>
-			<ComboBox x:Name="comboBoxVoltageLimitMultiplier" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch">
+			<TextBox x:Name="textBoxVoltageLimit" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" MinWidth="50" Text="{Binding Path=LimitValueVoltage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+			<ComboBox x:Name="comboBoxVoltageLimitMultiplier" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Path=LimitValueVoltageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 				<ComboBoxItem>Pico</ComboBoxItem>
 				<ComboBoxItem>Nano</ComboBoxItem>
 				<ComboBoxItem>Micro</ComboBoxItem>

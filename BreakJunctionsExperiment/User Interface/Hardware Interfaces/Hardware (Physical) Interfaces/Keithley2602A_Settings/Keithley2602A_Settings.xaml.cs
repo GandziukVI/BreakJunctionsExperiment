@@ -17,124 +17,6 @@ using System.Globalization;
 
 namespace BreakJunctions
 {
-    public class Keithley2602A_Settings
-    {
-        private bool _isBoardNumberSet = false;
-        private bool isBoardNumberSet { get { return _isBoardNumberSet; } }
-        private byte _BoardNumber;
-        public byte BoardNumber { get { return _BoardNumber; } }
-        public void SetBoardNumber(byte boardNumber)
-        {
-            _BoardNumber = boardNumber;
-            _isBoardNumberSet = true;
-        }
-
-        private bool _isPrimaryAddressSet = false;
-        private bool isPrimaryAddressSet { get { return _isPrimaryAddressSet; } }
-        private byte _PrimaryAddress;
-        public byte PrimaryAddress { get { return _PrimaryAddress; } }
-        public void SetPrimaryAddress(byte primaryAddress)
-        {
-            _PrimaryAddress = primaryAddress;
-            _isPrimaryAddressSet = true;
-        }
-
-        private bool _isSecondaryAddressSet = false;
-        private bool isSecondaryAddressSet { get { return _isSecondaryAddressSet; } }
-        private byte _SecondaryAddress;
-        public byte SecondaryAddress { get { return _SecondaryAddress; } }
-        public void SetSecondaryAddress(byte secondaryAddress)
-        {
-            _SecondaryAddress = secondaryAddress;
-            _isSecondaryAddressSet = true;
-        }
-
-        private bool _isLimitModeSet = false;
-        private bool isLimitModeSet { get { return _isLimitModeSet; } }
-        private KEITHLEY_2601A_LimitMode _LimitMode;
-        public KEITHLEY_2601A_LimitMode LimitMode { get { return _LimitMode; } }
-        public void SetLimitMode(KEITHLEY_2601A_LimitMode limitMode)
-        {
-            _LimitMode = limitMode;
-            _isLimitModeSet = true;
-        }
-
-        private bool _isLimitValueVoltageSet = false;
-        private bool isLimitValueVoltageSet { get { return _isLimitValueVoltageSet; } }
-        private double _LimitValueVoltage;
-        public double LimitValueVoltage { get { return _LimitValueVoltage; } }
-        public void SetLimitValueVoltage(double limitValueVoltage)
-        {
-            _LimitValueVoltage = limitValueVoltage;
-            _isLimitValueVoltageSet = true;
-        }
-
-        private bool _isLimitValueCurrentSet = false;
-        private bool isLimitValueCurrentSet { get { return _isLimitValueCurrentSet; } }
-        private double _LimitValueCurrent;
-        public double LimitValueCurrent { get { return _LimitValueCurrent; } }
-        public void SetLimitValueCurrent(double limitValueCurrent)
-        {
-            _LimitValueCurrent = limitValueCurrent;
-            _isLimitValueCurrentSet = true;
-        }
-
-        private bool _isSelectedChannelSet = false;
-        private bool isSelectedChannelSet { get { return _isSelectedChannelSet; } }
-        private KEITHLEY_2602A_Channels _SelectedChannel;
-        public KEITHLEY_2602A_Channels SelectedChannel { get { return _SelectedChannel; } }
-        public void SetSelectedChannel(KEITHLEY_2602A_Channels selectedChannel)
-        {
-            _SelectedChannel = selectedChannel;
-            _isSelectedChannelSet = true;
-        }
-
-        public I_SMU SetDevice()
-        {
-            bool areAllSettingsSet = _isBoardNumberSet && _isPrimaryAddressSet && _isSecondaryAddressSet && _isLimitModeSet &&
-                _isLimitValueVoltageSet && _isLimitValueCurrentSet && _isSelectedChannelSet;
-            I_SMU _Device = null;
-
-            if (areAllSettingsSet)
-            {
-                if((_SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
-                {
-                    var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
-                    smu.SetSpeed(25.0, KEITHLEY_2602A_Channels.ChannelA);
-                    _Device = smu;
-                    _Device.SetVoltageLimit(_LimitValueVoltage);
-                }
-                else if ((_SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_LimitMode == KEITHLEY_2601A_LimitMode.Current))
-                {
-                    var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
-                    smu.SetSpeed(25.0, KEITHLEY_2602A_Channels.ChannelA);
-                    _Device = smu;
-                    _Device.SetCurrentLimit(_LimitValueCurrent);
-                }
-                else if ((_SelectedChannel == KEITHLEY_2602A_Channels.ChannelB) && (_LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
-                {
-                    var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
-                    smu.SetSpeed(25.0, KEITHLEY_2602A_Channels.ChannelB);
-                    _Device = smu;
-                    _Device.SetVoltageLimit(_LimitValueVoltage);
-                }
-                else if ((_SelectedChannel == KEITHLEY_2602A_Channels.ChannelB) && (_LimitMode == KEITHLEY_2601A_LimitMode.Current))
-                {
-                    var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_PrimaryAddress, _SecondaryAddress, _BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
-                    smu.SetSpeed(25.0, KEITHLEY_2602A_Channels.ChannelB);
-                    _Device = smu;
-                    _Device.SetCurrentLimit(_LimitValueCurrent);
-                }
-
-                return _Device;
-            }
-            else
-            {
-                throw new Exception("Not all configurations set! Please set all the configurations and try again.");
-            }
-        }
-    }
-
 	/// <summary>
 	/// Interaction logic for Keithley2602A_Settings.xaml
 	/// </summary>
@@ -175,43 +57,36 @@ namespace BreakJunctions
 
         private I_SMU SetDevice()
         {
-            //Limit value voltage
-
-            var IsLimitVoltageRead = double.TryParse(this.textBoxVoltageLimit.Text, style, culture, out TempDoubleSettings);
-            if (IsLimitVoltageRead)
+            if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
             {
-                var VoltageMultiplier = this.comboBoxVoltageLimitMultiplier.Text;
-                _DeviceSettings.SetLimitValueVoltage(TempDoubleSettings * HandlingUserInput.GetMultiplier(VoltageMultiplier));
+                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, KEITHLEY_2602A_Channels.ChannelA);
+                _Device = smu;
+                _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
             }
-            else throw new Exception("Voltage limit value is defined incorrectly!");
-
-            //Limit value current
-
-            var IsLimitCurrentRead = double.TryParse(this.textBoxCurrentLimit.Text, style, culture, out TempDoubleSettings);
-            if (IsLimitCurrentRead)
+            else if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Current))
             {
-                var CurrentMultiplier = this.comboBoxCurrentLimitMultiplier.Text;
-                _DeviceSettings.SetLimitValueCurrent(TempDoubleSettings * HandlingUserInput.GetMultiplier(CurrentMultiplier));
+                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, KEITHLEY_2602A_Channels.ChannelA);
+                _Device = smu;
+                _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
             }
-            else throw new Exception("Current limit value is defined incorrectly!");
-
-            //Working channel
-
-            switch (this.comboBoxWorkingChannel.Text)
+            else if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelB) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
             {
-                case "Channel A":
-                    {
-                        _DeviceSettings.SetSelectedChannel(KEITHLEY_2602A_Channels.ChannelA);
-                    } break;
-                case "Channel B":
-                    {
-                        _DeviceSettings.SetSelectedChannel(KEITHLEY_2602A_Channels.ChannelB);
-                    } break;
-                default:
-                    break;
+                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, KEITHLEY_2602A_Channels.ChannelB);
+                _Device = smu;
+                _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
+            }
+            else if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelB) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Current))
+            {
+                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, KEITHLEY_2602A_Channels.ChannelB);
+                _Device = smu;
+                _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
             }
 
-            return _DeviceSettings.SetDevice();
+            return _Device;
         }
 
 		private void on_cmdSaveSettingsClick(object sender, System.Windows.RoutedEventArgs e)

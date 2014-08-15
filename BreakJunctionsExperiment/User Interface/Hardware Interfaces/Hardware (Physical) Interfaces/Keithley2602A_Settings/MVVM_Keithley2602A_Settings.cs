@@ -116,7 +116,7 @@ namespace BreakJunctions
             }
         }
 
-        private double _LimitValueVoltage;
+        private double _LimitValueVoltage = 12.0;
         public double LimitValueVoltage 
         {
             get 
@@ -130,18 +130,70 @@ namespace BreakJunctions
             }
         }
 
-        private double _LimitValueCurrent;
-        public double LimitValueCurrent 
+        private string _LimitValueCurrentMultiplier = "None";
+        public string LimitValueCurrentMultiplier
         {
-            get { return _LimitValueCurrent; }
-            set { _LimitValueCurrent = value; }
+            get { return _LimitValueCurrentMultiplier; }
+            set
+            {
+                _LimitValueCurrentMultiplier = value;
+                OnPropertyChanged("LimitValueCurrentMultiplier");
+            }
         }
 
-        private KEITHLEY_2602A_Channels _SelectedChannel;
+        private double _LimitValueCurrent = 1.0;
+        public double LimitValueCurrent 
+        {
+            get 
+            {
+                return _LimitValueCurrent * HandlingUserInput.GetMultiplier(_LimitValueCurrentMultiplier); 
+            }
+            set 
+            {
+                _LimitValueCurrent = value;
+                OnPropertyChanged("LimitValueCurrent");
+            }
+        }
+
+        private string _SelectedChannelString = "Channel B";
+        public string SelectedChannelString
+        {
+            get { return _SelectedChannelString; }
+            set
+            {
+                _SelectedChannelString = value;
+                OnPropertyChanged("SelectedChannelString");
+            }
+        }
+
+        private KEITHLEY_2602A_Channels _SelectedChannel = KEITHLEY_2602A_Channels.ChannelB;
         public KEITHLEY_2602A_Channels SelectedChannel 
         {
-            get { return _SelectedChannel; }
-            set { _SelectedChannel = value; }
+            get 
+            {
+                if (_SelectedChannelString == "Channel A")
+                    _SelectedChannel = KEITHLEY_2602A_Channels.ChannelA;
+                else
+                    _SelectedChannel = KEITHLEY_2602A_Channels.ChannelB;
+
+                return _SelectedChannel; 
+            }
+            set
+            {
+                _SelectedChannel = value;
+                OnPropertyChanged("SelectedChannel");
+            }
+        }
+
+        private double _AccuracyCoefficient = 10.0;
+        public double AccuracyCoefficient
+        {
+            get { return _AccuracyCoefficient; }
+            set
+            {
+                _AccuracyCoefficient = value;
+                OnPropertyChanged("AccuracyCoefficient");
+            }
         }
 
         #endregion
