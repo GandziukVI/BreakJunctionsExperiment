@@ -123,8 +123,9 @@ namespace BreakJunctions
 
             //this.DataContext = IV_And_TimeTraceViewModel.Instance;
 
-            //this.radioIVSourceVoltage.DataContext = ModelViewInteractions.IV_VoltageChangedModel;
-            //this.radioIVSourceCurrent.DataContext = ModelViewInteractions.IV_CurrentChangedModel;
+            IV_MeasurementSettings.cmdIV_DataFileNameBrowse.Click += on_cmdIV_DataFileNameBrowseClick;
+            IV_MeasurementSettings.cmdIV_StartMeasurement.Click += on_cmdIV_StartMeasurementClick;
+            IV_MeasurementSettings.cmdIV_StopMeasurement.Click += on_cmdIV_StopMeasurementClick;
 
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
 
