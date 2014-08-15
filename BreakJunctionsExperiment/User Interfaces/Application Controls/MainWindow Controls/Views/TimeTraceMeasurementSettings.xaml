@@ -168,7 +168,7 @@
                                             </ToolTip>
                                         </Label.ToolTip>
                                     </Label>
-                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:#.######E}}" IsEnabled="False" />
+                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False" />
 
                                     <Label Grid.Row="3" Grid.Column="0" Margin="0 2.5" Content="Motion final dest.">
                                         <Label.ToolTip>

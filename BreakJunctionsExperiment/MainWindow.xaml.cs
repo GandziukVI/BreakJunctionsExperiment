@@ -587,13 +587,8 @@ namespace BreakJunctions
 
         private void OnMotionPositionMeasured(object sender, Motion_EventArgs e)
         {
-            //this.controlIV_MeasurementSettings.MeasurementSettings
             this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
-
-            //this.Dispatcher.BeginInvoke(new Action(delegate() 
-            //    {
-            //        this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position.ToString("E8", culture);
-            //    }));
+            this.controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementMicrometricBoltPosition = e.Position;
         }
         #endregion
 

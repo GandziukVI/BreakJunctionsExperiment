@@ -133,7 +133,7 @@
                                     <TextBox x:Name="textBoxIV_FileName" Text="{Binding Path=IV_MeasurementDataFileName, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Margin="0 2.5"></TextBox>
 									<Button Grid.Row="3" Grid.Column="1" x:Name="cmdIV_DataFileNameBrowse" Content="Browse ..." MinHeight="25" Margin="10 2.5 0 2.5" />
                                     <Label Grid.Row="4" Grid.Column="0" Margin="0 10">Motion position</Label>
-                                    <TextBox Grid.Row="4" Grid.Column="1" Margin="0 10" IsEnabled="False" Text="{Binding Path=IV_MeasurementMicrometricBoltPosition, Mode=OneWay}" x:Name="textBoxIV_MicrometricBoltPosition" />
+                                    <TextBox Grid.Row="4" Grid.Column="1" Margin="0 10" IsEnabled="False" Text="{Binding Path=IV_MeasurementMicrometricBoltPosition, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat={}{0:E8}}" x:Name="textBoxIV_MicrometricBoltPosition" />
                                     <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">Comments:</Label>
                                     <TextBox x:Name="textBoxIV_Comment" Text="{Binding Path=IV_MeasurementDataComment, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250"  Margin="0 2.5" VerticalScrollBarVisibility="Auto"></TextBox>
                                 </Grid>
