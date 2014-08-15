@@ -100,6 +100,9 @@
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
     <Compile Include="Plotting\ExperimentalDataSource.cs" />
+    <Compile Include="User Interface\Application Interfaces\MainWindow Interfaces\IV_MeasurementSettings.xaml.cs">
+      <DependentUpon>IV_MeasurementSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="User Interface\HandlingUserInput.cs" />
     <Compile Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml.cs">
       <DependentUpon>MeasureDeviceConfiguration.xaml</DependentUpon>
@@ -147,6 +150,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="User Interface\Application Interfaces\MainWindow Interfaces\IV_MeasurementSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="User Interface\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -160,7 +167,6 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -34,7 +34,13 @@
 			
 			<Label Grid.Row="0" Grid.Column="0">Board Number</Label>
 			<TextBox x:Name="textBoxBoardNumber" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=BoardNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />
-			<Label Grid.Row="1" Grid.Column="0">Primary Address</Label>
+			<Label Grid.Row="1" Grid.Column="0" Content="Primary Address">
+				<Label.ToolTip>
+					<ToolTip>
+						<TextBlock MaxWidth="250">Range is 0 - 30. By default it is 26.</TextBlock>
+					</ToolTip>
+				</Label.ToolTip>
+			</Label>
 			<TextBox x:Name="textBoxPrimaryAddress" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=PrimaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />
 			<Label Grid.Row="2" Grid.Column="0">Secondary Address</Label>
 			<TextBox x:Name="textBoxSecondaryAddress" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=SecondaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />

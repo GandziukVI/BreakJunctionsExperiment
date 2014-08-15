@@ -119,16 +119,12 @@ namespace BreakJunctions
 		{
 			this.InitializeComponent();
 
-            #region Test commands
-
-            #endregion
-
             #region Interface model-view interactions
 
-            this.DataContext = IV_And_TimeTraceViewModel.Instance;
+            //this.DataContext = IV_And_TimeTraceViewModel.Instance;
 
-            this.radioIVSourceVoltage.DataContext = ModelViewInteractions.IV_VoltageChangedModel;
-            this.radioIVSourceCurrent.DataContext = ModelViewInteractions.IV_CurrentChangedModel;
+            //this.radioIVSourceVoltage.DataContext = ModelViewInteractions.IV_VoltageChangedModel;
+            //this.radioIVSourceCurrent.DataContext = ModelViewInteractions.IV_CurrentChangedModel;
 
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
 
@@ -239,7 +235,7 @@ namespace BreakJunctions
 
                 #region I-V measurement configuration
 
-                var ExperimentSettings = IV_And_TimeTraceViewModel.Instance;
+                var ExperimentSettings = IV_MeasurementSettings.MeasurementSettings;
 
                 var StartValue = ExperimentSettings.IV_MeasurementStartValue;                
                 var EndValue = ExperimentSettings.IV_MeasurementEndValue;
@@ -249,11 +245,11 @@ namespace BreakJunctions
 
                 SourceMode DeviceSourceMode = SourceMode.Voltage;
 
-                if (this.radioIVSourceVoltage.IsChecked == true)
+                if (ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
                 {
                     DeviceSourceMode = SourceMode.Voltage;
                 }
-                else if (this.radioIVSourceCurrent.IsChecked == true)
+                else if (ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
                 {
                     DeviceSourceMode = SourceMode.Current;
                 }
@@ -282,19 +278,19 @@ namespace BreakJunctions
 
                     string sourceMode = string.Empty;
 
-                    if (this.radioIVSourceVoltage.IsChecked == true)
+                    if (ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
                     {
                         sourceMode = "Source mode: Voltage";
                     }
-                    else if (this.radioIVSourceCurrent.IsChecked == true)
+                    else if (ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
                     {
                         sourceMode = "SourceMode: Current";
                     }
 
                     double micrometricBoltPosition = double.NaN;
-                    double.TryParse(this.textBoxIV_MicrometricBoltPosition.Text, numberStyle, culture, out micrometricBoltPosition);
+                    double.TryParse(IV_MeasurementSettings.textBoxIV_MicrometricBoltPosition.Text, numberStyle, culture, out micrometricBoltPosition);
 
-                    string comment = this.textBoxIV_Comment.Text;
+                    string comment = ExperimentSettings.IV_MeasurementDataComment;
 
                     _IV_MeasurementLog.AddNewIV_MeasurementLog(fileName, sourceMode, micrometricBoltPosition, comment);
                 }
@@ -367,7 +363,7 @@ namespace BreakJunctions
             {
                 _IV_FilesCounter = 0;
                 _SaveIV_MeasuremrentFileName = _SaveIV_MeasureDialog.FileName;
-                this.textBoxIV_FileName.Text = _SaveIV_MeasureDialog.SafeFileName;
+                this.IV_MeasurementSettings.textBoxIV_FileName.Text = _SaveIV_MeasureDialog.SafeFileName;
             }
         }
 

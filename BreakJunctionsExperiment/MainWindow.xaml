@@ -1,8 +1,9 @@
 ﻿<Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+	xmlns:local="clr-namespace:BreakJunctions" mc:Ignorable="d"
 	x:Class="BreakJunctions.MainWindow"
 	x:Name="Window"
 	Title="Break junctions measurement"
@@ -14,217 +15,80 @@
 			<TabItem Header="I-V Measurements" VerticalAlignment="Stretch">
 				<Grid x:Name="IVLayout">
 					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"></RowDefinition>
-						<RowDefinition></RowDefinition>
-						<RowDefinition Height="Auto"></RowDefinition>
-						<RowDefinition Height="285"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="285"/>
+						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition></ColumnDefinition>
+						<ColumnDefinition/>
 					</Grid.ColumnDefinitions>
 					
 					<!-- Menu -->
 					<Menu Grid.Row="0" Grid.Column="0">
 						<MenuItem Header="_File">
-							<MenuItem x:Name="menuOpen" Header="_Open..." Click="onMenuOpenClick"></MenuItem>
-							<MenuItem x:Name="menuSave" Header="_Save..." Click="onMenuSaveClick"></MenuItem>
+							<MenuItem x:Name="menuOpen" Header="_Open..." Click="onMenuOpenClick"/>
+							<MenuItem x:Name="menuSave" Header="_Save..." Click="onMenuSaveClick"/>
 							<Separator />
-							<MenuItem x:Name="menuExit" Header="_Exit" Click="onMenuExitClick"></MenuItem>
+							<MenuItem x:Name="menuExit" Header="_Exit" Click="onMenuExitClick"/>
 						</MenuItem>
 						<MenuItem Header="_Measurement">
-							<MenuItem x:Name="menuSetSMU" Header="Set _SMU" Click="onSetSMU_Click"></MenuItem>
+							<MenuItem x:Name="menuSetSMU" Header="Set _SMU" Click="onSetSMU_Click"/>
 						</MenuItem>
-					</Menu> <!-- Menu -->
+					</Menu>
 					
 					<Grid x:Name="ScrollableRow1" Grid.Row="1" Grid.Column="0">
 						<Grid.RowDefinitions>
-							<RowDefinition></RowDefinition>
+							<RowDefinition/>
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition></ColumnDefinition>
-							<ColumnDefinition Width="Auto"></ColumnDefinition>
+							<ColumnDefinition/>
+							<ColumnDefinition Width="Auto"/>
 						</Grid.ColumnDefinitions>
 							
 						<!-- Chart plotter to plot I-V curves -->
 						<d3:ChartPlotter x:Name="chartIV_Curves" Grid.Row="0" Grid.Column="0" Margin="10">
-							<d3:Header>I-V characteristics</d3:Header>
+							<d3:Header Content="I-V characteristics"/>
 							<d3:HorizontalAxis>
-								<d3:HorizontalAxisTitle>Voltage</d3:HorizontalAxisTitle>
+								<d3:HorizontalAxisTitle Content="Voltage"/>
 							</d3:HorizontalAxis>
 							<d3:VerticalAxis>
-								<d3:VerticalAxisTitle Content="Current"></d3:VerticalAxisTitle>
+								<d3:VerticalAxisTitle Content="Current"/>
 							</d3:VerticalAxis>
 							<d3:Viewport2D AutoFitToView="True"/>
 						</d3:ChartPlotter>
 							
-						<!-- I-V settings scroll viever -->					
-						<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="0" Grid.Column="1">
-							<Expander x:Name="EXpanderIV_Measurements" ExpandDirection="Left" Width="Auto" Margin="0 5 0 0">
-								<Expander.Header>
-									<TextBlock Text="I-V Measurement Settings" RenderTransformOrigin="0.5,0.5" Margin="5" Width="Auto">
-										<TextBlock.LayoutTransform>
-											<TransformGroup>
-												<ScaleTransform ScaleX="1" ScaleY="1"/>
-												<SkewTransform AngleX="0" AngleY="0"/>
-												<RotateTransform Angle="-90"/>
-												<TranslateTransform X="0" Y="0"/>
-											</TransformGroup>
-										</TextBlock.LayoutTransform>
-										<TextBlock.RenderTransform>
-							                <TransformGroup>
-							                    <ScaleTransform ScaleX="1" ScaleY="1"/>
-							                    <SkewTransform AngleX="0" AngleY="0"/>
-							                    <RotateTransform Angle="0"/>
-							                    <TranslateTransform X="0" Y="0"/>
-							                </TransformGroup>
-							            </TextBlock.RenderTransform> 
-									</TextBlock>
-								</Expander.Header>
-								<Expander.Content>
-									<!-- Settings for I-V measuring -->
-									<StackPanel x:Name="IVChartPanel" Orientation="Vertical" Margin="20 0 30 0">
-										<GroupBox Header="Source Mode" HorizontalAlignment="Stretch" Margin="5">
-											<StackPanel Height="Auto">
-												<RadioButton x:Name="radioIVSourceVoltage" Content="Voltage Mode" Margin="5 5 5 2.5" IsChecked="{Binding IV_VoltageModeIsChecked, Mode=TwoWay}"/>
-												<RadioButton x:Name="radioIVSourceCurrent" Content="Current Mode" Margin="5 2.5 5 5" IsChecked="{Binding IV_CurrentModeIsChecked, Mode=TwoWay}"/>
-											</StackPanel>
-										</GroupBox>  <!-- Source mode group box -->
-										<Grid Margin="5">
-											<Grid.RowDefinitions>
-												<RowDefinition></RowDefinition>
-												<RowDefinition></RowDefinition>
-												<RowDefinition></RowDefinition>
-												<RowDefinition></RowDefinition>
-												<RowDefinition></RowDefinition>
-												<RowDefinition></RowDefinition>
-											</Grid.RowDefinitions>
-											<Grid.ColumnDefinitions>
-												<ColumnDefinition></ColumnDefinition>
-												<ColumnDefinition Width="Auto"></ColumnDefinition>
-											</Grid.ColumnDefinitions>
-											<Label Grid.Row="0" Grid.Column="0" Content="Start Value"/>
-											<StackPanel Grid.Row="0" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-												<TextBox x:Name="textBoxIV_StartValue" Text="{Binding Path=IV_MeasurementStartValue, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"></TextBox>
-												<ComboBox x:Name="comboBoxIV_StartValueMultiplier" Text="{Binding Path=IV_MeasurementStartValueMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
-													<ComboBoxItem>Pico</ComboBoxItem>
-													<ComboBoxItem>Nano</ComboBoxItem>
-													<ComboBoxItem>Micro</ComboBoxItem>
-													<ComboBoxItem>Mili</ComboBoxItem>
-													<ComboBoxItem>Santi</ComboBoxItem>
-													<ComboBoxItem>Decy</ComboBoxItem>
-													<ComboBoxItem IsSelected="True">None</ComboBoxItem>
-												</ComboBox>
-											</StackPanel>
-											<Label Content="End Value" Grid.Row="1" Grid.Column="0"/>
-											<StackPanel Grid.Row="1" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-												<TextBox x:Name="textBoxIV_EndValue" Text="{Binding Path=IV_MeasurementEndValue, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" Height="21.96" VerticalAlignment="Top"/>
-												<ComboBox x:Name="comboBoxIV_EndValueMultiplier" Text="{Binding Path=IV_MeasurementEndValueMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
-													<ComboBoxItem>Pico</ComboBoxItem>
-													<ComboBoxItem>Nano</ComboBoxItem>
-													<ComboBoxItem>Mikro</ComboBoxItem>
-													<ComboBoxItem>Mili</ComboBoxItem>
-													<ComboBoxItem>Santi</ComboBoxItem>
-													<ComboBoxItem>Decy</ComboBoxItem>
-													<ComboBoxItem IsSelected="True">None</ComboBoxItem>
-												</ComboBox>
-											</StackPanel>
-											<Label Content="Step" Grid.Row="2" Grid.Column="0"/>
-											<StackPanel Grid.Row="2" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-												<TextBox x:Name="textBoxIV_Step" Text="{Binding Path=IV_MeasurementStep, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"/>
-												<ComboBox x:Name="comboBoxIV_StepMultiplier" Text="{Binding Path=IV_MeasurementStepValueMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
-													<ComboBoxItem>Pico</ComboBoxItem>
-													<ComboBoxItem>Nano</ComboBoxItem>
-													<ComboBoxItem>Micro</ComboBoxItem>
-													<ComboBoxItem>Mili</ComboBoxItem>
-													<ComboBoxItem>Santi</ComboBoxItem>
-													<ComboBoxItem>Decy</ComboBoxItem>
-													<ComboBoxItem IsSelected="True">None</ComboBoxItem>
-												</ComboBox>
-											</StackPanel>
-                                            <Expander Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
-                                                <Expander.Header>
-                                                    <TextBlock>Measurement Parameters</TextBlock>
-                                                </Expander.Header>
-                                                <Expander.Content>
-                                                    <Grid Margin="5 10 5 0">
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                            </Grid.RowDefinitions>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition />
-                                                                <ColumnDefinition />
-                                                            </Grid.ColumnDefinitions>
-
-                                                            <Label Grid.Row="0" Grid.Column="0">Number of Averages</Label>
-                                                            <TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxIV_NumberOfAverages" Text="{Binding Path=IV_MeasurementNumberOfAverages, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Margin="0 2.5" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged"></TextBox>
-                                                            <Label Grid.Row="1" Grid.Column="0">Time Delay</Label>
-															<Grid Grid.Row="1" Grid.Column="1">
-																<Grid.ColumnDefinitions>
-																	<ColumnDefinition />
-																	<ColumnDefinition />
-																</Grid.ColumnDefinitions>
-
-																<TextBox x:Name="textBoxIV_TimeDelay" Text="{Binding Path=IV_MeasurementTimeDelay, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Column="0" Margin="0 2.5" Width="70"/>
-                                                                <ComboBox x:Name="comboBoxIV_TimeDelayMultiplier" Text="{Binding Path=IV_MeasurementTimeDelayValueMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" Margin="0 2.5" Width="65">
-                                                                    <ComboBoxItem>Pico</ComboBoxItem>
-                                                                    <ComboBoxItem>Nano</ComboBoxItem>
-                                                                    <ComboBoxItem>Micro</ComboBoxItem>
-                                                                    <ComboBoxItem>Mili</ComboBoxItem>
-                                                                    <ComboBoxItem>Santi</ComboBoxItem>
-                                                                    <ComboBoxItem>Decy</ComboBoxItem>
-                                                                    <ComboBoxItem IsSelected="True">None</ComboBoxItem>
-                                                                </ComboBox>
-															</Grid>
-                                                            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Data file name</Label>
-                                                            <TextBox x:Name="textBoxIV_FileName" Text="{Binding Path=IV_MeasurementDataFileName, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Margin="0 2.5"></TextBox>
-															<Button Grid.Row="3" Grid.Column="1" x:Name="cmdIV_DataFileNameBrowse" Content="Browse ..." Click="on_cmdIV_DataFileNameBrowseClick" MinHeight="25" Margin="10 2.5 0 2.5" />
-                                                            <Label Grid.Row="4" Grid.Column="0" Margin="0 10">Motion position</Label>
-                                                            <TextBox Grid.Row="4" Grid.Column="1" Margin="0 10" IsEnabled="False" Text="{Binding ElementName=textBoxTimeTraceMicrometricBoltPosition, Path=Text, Mode=OneWay}" x:Name="textBoxIV_MicrometricBoltPosition" />
-                                                            <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">Comments:</Label>
-                                                            <TextBox x:Name="textBoxIV_Comment" Text="{Binding Path=IV_MeasurementDataComment, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250"  Margin="0 2.5" VerticalScrollBarVisibility="Auto"></TextBox>
-                                                        </Grid>
-                                                </Expander.Content>
-                                            </Expander>
-                                            <Button x:Name="cmdIV_StartMeasurement" Content="Start Measurement" Margin="0 5 0 0" MinHeight="30" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFDDDDDD" Click="on_cmdIV_StartMeasurementClick"></Button>
-                                            <Button x:Name="cmdIV_StopMeasurement" Content="Stop Measurement" Margin="0 5 0 0" MinHeight="30" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFDDDDDD" Click="on_cmdIV_StopMeasurementClick"></Button>
-                                        </Grid> <!-- IV measures settings grid -->
-									</StackPanel>  <!-- IVChartPanel -->
-								</Expander.Content>
-							</Expander>
-						</ScrollViewer> <!-- End I-V settings scroll viever -->
+						<ScrollViewer Grid.Row="0" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+							<local:IV_MeasurementSettings x:Name="IV_MeasurementSettings"/>
+						</ScrollViewer>
 					</Grid>
 					
 					<!-- Horizontal splitter -->
-					<GridSplitter Grid.Row="2" Grid.Column="0" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center"></GridSplitter>
+					<GridSplitter Grid.Row="2" Grid.Column="0" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 									
 					<Grid x:Name="ScrollableRow2"  Grid.Row="3" Grid.Column="0">
 						<Grid.RowDefinitions>
-							<RowDefinition></RowDefinition>
+							<RowDefinition/>
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition></ColumnDefinition>
-							<ColumnDefinition Width="Auto"></ColumnDefinition>
+							<ColumnDefinition/>
+							<ColumnDefinition Width="Auto"/>
 						</Grid.ColumnDefinitions>
 							
-						<!-- Time trace chart -->
+						<!-- End time trace scroll viever -->
+					<!-- Time trace chart -->
 						<d3:ChartPlotter x:Name="chartTimeTrace" Grid.Row="0" Grid.Column="0" Margin="10">
 								
-							<d3:Header>Time trace</d3:Header>
-                            <d3:HorizontalAxis>
-                                <d3:HorizontalAxisTitle>Distance</d3:HorizontalAxisTitle>
-                            </d3:HorizontalAxis>
-                            <d3:VerticalAxis>
-                                <d3:VerticalAxisTitle Content="Current"></d3:VerticalAxisTitle>
-                            </d3:VerticalAxis>
-                            <d3:Viewport2D AutoFitToView="True"/>
-                        </d3:ChartPlotter>
+							<d3:Header Content="Time trace"/>
+							<d3:HorizontalAxis>
+								<d3:HorizontalAxisTitle Content="Distance"/>
+							</d3:HorizontalAxis>
+							<d3:VerticalAxis>
+								<d3:VerticalAxisTitle Content="Current"/>
+							</d3:VerticalAxis>
+							<d3:Viewport2D AutoFitToView="True"/>
+						</d3:ChartPlotter>
 							
 						<!-- Time trace scroll viever -->
 						<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="0" Grid.Column="1" Margin="0 5 0 0">
@@ -240,242 +104,236 @@
 											</TransformGroup>
 										</TextBlock.LayoutTransform>
 										<TextBlock.RenderTransform>
-							                <TransformGroup>
-							                    <ScaleTransform ScaleX="1" ScaleY="1"/>
-							                    <SkewTransform AngleX="0" AngleY="0"/>
-							                    <RotateTransform Angle="0"/>
-							                    <TranslateTransform X="0" Y="0"/>
-							                </TransformGroup>
-							            </TextBlock.RenderTransform>
+											<TransformGroup>
+												<ScaleTransform ScaleX="1" ScaleY="1"/>
+												<SkewTransform AngleX="0" AngleY="0"/>
+												<RotateTransform Angle="0"/>
+												<TranslateTransform X="0" Y="0"/>
+											</TransformGroup>
+										</TextBlock.RenderTransform>
 									</TextBlock>
 								</Expander.Header>
-								<Expander.Content>
-									<!-- Time trace settings -->
-									<StackPanel x:Name="TimeTraceChartPanel" Orientation="Vertical" Margin="20 0 30 0">
-										<GroupBox Header="Source Mode" HorizontalAlignment="Stretch" Margin="5">
-											<StackPanel Height="Auto">
-                                                <RadioButton x:Name="radioTimeTraceSourceVoltage" Content="Voltage Mode" Margin="5 5 5 2.5" IsChecked="{Binding Path=IsTimeTraceMeasurementVoltageModeChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                                <RadioButton x:Name="radioTimeTraceSourceCurrent" Content="Current Mode" Margin="5 2.5 5 5" IsChecked="{Binding Path=IsTimeTraceMeasurementCurrentModeChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-											</StackPanel>
-										</GroupBox>  <!-- Source mode group box -->
-										<Grid Margin="5">
-											<Grid.RowDefinitions>
-												<RowDefinition />
-												<RowDefinition />
-												<RowDefinition />
-												<RowDefinition />
-												<RowDefinition />
-												<RowDefinition />
-											</Grid.RowDefinitions>
+								<!-- Time trace settings -->
+								<StackPanel x:Name="TimeTraceChartPanel" Orientation="Vertical" Margin="20 0 30 0">
+									<GroupBox Header="Source Mode" HorizontalAlignment="Stretch" Margin="5">
+										<StackPanel Height="Auto">
+											<RadioButton x:Name="radioTimeTraceSourceVoltage" Content="Voltage Mode" Margin="5 5 5 2.5" IsChecked="{Binding IsTimeTraceMeasurementVoltageModeChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+											<RadioButton x:Name="radioTimeTraceSourceCurrent" Content="Current Mode" Margin="5 2.5 5 5" IsChecked="{Binding IsTimeTraceMeasurementCurrentModeChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+										</StackPanel>
+									</GroupBox>  <!-- Source mode group box -->
+									<Grid Margin="5">
+										<Grid.RowDefinitions>
+											<RowDefinition />
+											<RowDefinition />
+											<RowDefinition />
+											<RowDefinition />
+											<RowDefinition />
+											<RowDefinition />
+										</Grid.RowDefinitions>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition />
+											<ColumnDefinition />
+										</Grid.ColumnDefinitions>
+										<Label Grid.Row="0" Grid.Column="0" Content="Value through str."/>
+										<Grid Grid.Row="0" Grid.Column="1" Margin="2.5">
 											<Grid.ColumnDefinitions>
 												<ColumnDefinition />
 												<ColumnDefinition />
 											</Grid.ColumnDefinitions>
-											<Label Grid.Row="0" Grid.Column="0" Content="Value through str."/>
-											<Grid Grid.Row="0" Grid.Column="1" Margin="2.5">
+
+											<TextBox x:Name="textBoxTimeTraceValueThroughTheStructure" Text="{Binding TimeTraceMeasurementValueThrougtTheStructure, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Column="0" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+											<ComboBox x:Name="comboBoxTimeTraceStartValueMultiplier" Text="{Binding TimeTraceMeasurementValueThrougtTheStructureMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" MinWidth="65">
+												<ComboBoxItem Content="Pico"/>
+												<ComboBoxItem Content="Nano"/>
+												<ComboBoxItem Content="Micro"/>
+												<ComboBoxItem Content="Mili"/>
+												<ComboBoxItem Content="Santi"/>
+												<ComboBoxItem Content="Decy"/>
+												<ComboBoxItem IsSelected="True" Content="None"/>
+											</ComboBox>
+										</Grid>
+										<!-- Expander Time Trace Measurement Parameters -->
+										<Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
+											<Expander.Header>
+												<TextBlock><Run Text="Measurement Parameters"/></TextBlock>
+											</Expander.Header>
+											<Grid Margin="5 10 5 0">
+												<Grid.RowDefinitions>
+													<RowDefinition />
+													<RowDefinition />
+													<RowDefinition />
+													<RowDefinition />
+													<RowDefinition />
+													<RowDefinition />
+												</Grid.RowDefinitions>
 												<Grid.ColumnDefinitions>
 													<ColumnDefinition />
-													<ColumnDefinition />
+													<ColumnDefinition Width="Auto" />
 												</Grid.ColumnDefinitions>
 
-												<TextBox x:Name="textBoxTimeTraceValueThroughTheStructure" Text="{Binding Path=TimeTraceMeasurementValueThrougtTheStructure, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Column="0" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
-												<ComboBox x:Name="comboBoxTimeTraceStartValueMultiplier" Text="{Binding Path=TimeTraceMeasurementValueThrougtTheStructureMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" MinWidth="65">
-													<ComboBoxItem>Pico</ComboBoxItem>
-													<ComboBoxItem>Nano</ComboBoxItem>
-													<ComboBoxItem>Micro</ComboBoxItem>
-													<ComboBoxItem>Mili</ComboBoxItem>
-													<ComboBoxItem>Santi</ComboBoxItem>
-													<ComboBoxItem>Decy</ComboBoxItem>
-													<ComboBoxItem IsSelected="True">None</ComboBoxItem>
-												</ComboBox>
+												<Label Grid.Row="0" Grid.Column="0" Content="Number of Averages"/>
+												<TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceNumberOfAverages" Text="{Binding TimeTraceMeasurementNumberOfAverages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged"/>
+												<Label Grid.Row="1" Grid.Column="0" Content="Time Delay"/>
+												<StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+													<TextBox x:Name="textBoxTimrTraceTimeDelay" Text="{Binding TimeTraceMeasurementTimeDelay, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="70" Margin="0 2.5" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"/>
+													<ComboBox x:Name="comboBoxTimeTraceTimeDelayMultiplier" Margin="0 2.5">
+														<ComboBoxItem Content="Pico"/>
+														<ComboBoxItem Content="Nano"/>
+														<ComboBoxItem Content="Micro"/>
+														<ComboBoxItem Content="Mili"/>
+														<ComboBoxItem Content="Santi"/>
+														<ComboBoxItem Content="Decy"/>
+														<ComboBoxItem IsSelected="True" Content="None"/>
+													</ComboBox>
+												</StackPanel>
+												<Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Data file name"/>
+												<TextBox Grid.Row="3" Grid.Column="0" x:Name="textBoxTimeTraceFileName" Text="{Binding TimeTraceMeasurementDataFileName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5"/>
+												<Button Grid.Row="3" Grid.Column="1" x:Name="cmdTimeTraceDataFileNameBrowse" Content="Browse ..." Click="on_cmdTimeTraceDataFileNameBrowseClick" MinHeight="25" Margin="10 2.5 0 2.5" />
+												<Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Comments:"/>
+												<TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="textBoxTimeTraceComment" Text="{Binding TimeTraceMeasurementDataComment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250"  Margin="0 2.5" VerticalScrollBarVisibility="Auto"/>
 											</Grid>
-											<!-- Expander Time Trace Measurement Parameters -->
-											<Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
-                                                <Expander.Header>
-                                                    <TextBlock>Measurement Parameters</TextBlock>
-                                                </Expander.Header>
-                                                <Expander.Content>
-                                                    <Grid Margin="5 10 5 0">
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                                <RowDefinition />
-                                                            </Grid.RowDefinitions>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition />
-                                                                <ColumnDefinition Width="Auto" />
-                                                            </Grid.ColumnDefinitions>
+										</Expander> <!-- End Expander Time Trace Measurement Parameters -->
+										<!-- Expander Time Trace Motion Parameters -->
+										<Expander Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
+											<Expander.Header>
+												<TextBlock><Run Text="Motion Parameters"/></TextBlock>
+											</Expander.Header>
+											<Grid>
+												<Grid.RowDefinitions>
+													<RowDefinition />
+													<RowDefinition />
+												</Grid.RowDefinitions>
 
-                                                            <Label Grid.Row="0" Grid.Column="0">Number of Averages</Label>
-                                                            <TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceNumberOfAverages" Text="{Binding Path=TimeTraceMeasurementNumberOfAverages, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Margin="0 2.5" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged"></TextBox>
-                                                            <Label Grid.Row="1" Grid.Column="0">Time Delay</Label>
-                                                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                                                <TextBox x:Name="textBoxTimrTraceTimeDelay" Text="{Binding Path=TimeTraceMeasurementTimeDelay, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Width="70" Margin="0 2.5" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"></TextBox>
-                                                                <ComboBox x:Name="comboBoxTimeTraceTimeDelayMultiplier" Margin="0 2.5">
-                                                                    <ComboBoxItem>Pico</ComboBoxItem>
-                                                                    <ComboBoxItem>Nano</ComboBoxItem>
-                                                                    <ComboBoxItem>Micro</ComboBoxItem>
-                                                                    <ComboBoxItem>Mili</ComboBoxItem>
-                                                                    <ComboBoxItem>Santi</ComboBoxItem>
-                                                                    <ComboBoxItem>Decy</ComboBoxItem>
-                                                                    <ComboBoxItem IsSelected="True">None</ComboBoxItem>
-                                                                </ComboBox>
-                                                            </StackPanel>
-                                                            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Data file name</Label>
-                                                            <TextBox Grid.Row="3" Grid.Column="0" x:Name="textBoxTimeTraceFileName" Text="{Binding Path=TimeTraceMeasurementDataFileName, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Margin="0 2.5"></TextBox>
-															<Button Grid.Row="3" Grid.Column="1" x:Name="cmdTimeTraceDataFileNameBrowse" Content="Browse ..." Click="on_cmdTimeTraceDataFileNameBrowseClick" MinHeight="25" Margin="10 2.5 0 2.5" />
-                                                            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Comments:</Label>
-                                                            <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="textBoxTimeTraceComment" Text="{Binding Path=TimeTraceMeasurementDataComment, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250"  Margin="0 2.5" VerticalScrollBarVisibility="Auto"></TextBox>
-                                                        </Grid>
-                                                </Expander.Content>
-                                            </Expander> <!-- End Expander Time Trace Measurement Parameters -->
-											<!-- Expander Time Trace Motion Parameters -->
-											<Expander Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
-												<Expander.Header>
-													<TextBlock>Motion Parameters</TextBlock>
-												</Expander.Header>
-												<Expander.Content>
-													<Grid>
-														<Grid.RowDefinitions>
-															<RowDefinition />
-															<RowDefinition />
-														</Grid.RowDefinitions>
+												<Grid Margin="0 5 0 0">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="Auto" />
+														<ColumnDefinition />
+													</Grid.ColumnDefinitions>
 
+													<Label Grid.Column="0" Margin="0 0 10 0" Content="Notifications per rev"/>
+													<TextBox Grid.Column="1" x:Name="textBoxTimeTraceNotificationsPerRevolution" Margin="0 2.5 " Text="{Binding TimeTraceNotificationsPerRevolution, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+												</Grid>
+												<TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="tabControlTimeTraceMeasurementParameters" SelectedIndex="{Binding TimeTraceMeasurementSelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 10 0 0">
+													<!-- Tab item single time trace distance measuremebts -->
+													<TabItem Header="Distance">
+														<Grid Margin="0 5 0 0">
+															<Grid.RowDefinitions>
+																<RowDefinition />
+																<RowDefinition />
+																<RowDefinition />
+																<RowDefinition />
+															</Grid.RowDefinitions>
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+
+															<GroupBox Grid.Row="0" Grid.Column="0" Header="Moving direction" Margin="2.5">
+																<StackPanel>
+																	<RadioButton x:Name="radioTimeTraceDistanceMoveUp" IsChecked="{Binding IsTimeTraceMeasurementDistanceMotionModeUpChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Up"/>
+																	<RadioButton x:Name="radioTimeTraceDistanceMoveDown" IsChecked="{Binding IsTimeTraceMeasurementDistanceMotionModeDownChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Down"/>
+																</StackPanel>
+															</GroupBox>
+															<Button x:Name="cmdTimeTraceDistanceMoveToInitialPosition" Grid.Row="0" Grid.Column="1" Margin="5" Content="Move to initial"/>
+																	
+															<Label Grid.Row="1" Grid.Column="0" Margin="0 2.5" Content="Motion start pos.">
+																<Label.ToolTip>
+																	<ToolTip>
+																		<TextBlock><Run Text="The position, from which the measurement takes place"/></TextBlock>
+																	</ToolTip>
+																</Label.ToolTip>
+															</Label>
+															<TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMiscometricBoltStartPosition" Text="{Binding TimeTraceMeasurementDistanceMotionStartPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+															<Label Grid.Row="2" Grid.Column="0" Margin="0 2.5" Content="Motion current pos.">
+																<Label.ToolTip>
+																	<ToolTip>
+																		<TextBlock><Run Text="Motion current destination."/></TextBlock>
+																	</ToolTip>
+																</Label.ToolTip>
+															</Label>
+															<TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
+
+															<Label Grid.Row="3" Grid.Column="0" Margin="0 2.5" Content="Motion final dest.">
+																<Label.ToolTip>
+																	<ToolTip>
+																		<TextBlock><Run Text="Motion final destination."/></TextBlock>
+																	</ToolTip>
+																</Label.ToolTip>
+															</Label>
+															<TextBox Grid.Row="3" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltFinalPosition" Text="{Binding TimeTraceMeasurementDistanceMotionFinalDestination, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+														</Grid>
+													</TabItem> <!-- End tab item single time trace distance measuremebts -->
+													<!-- Tab item repetitive time trace distance measuremebts -->
+													<TabItem Header="Distance (Repetitive)">
+														<Grid Margin="0 5 0 0">
+															<Grid.RowDefinitions>
+																<RowDefinition />
+																<RowDefinition />
+																<RowDefinition />
+															</Grid.RowDefinitions>
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition Width="Auto" />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+
+															<Label Grid.Row="0" Grid.Column="0" Content="Start position"/>
+															<TextBox x:Name="textBoxTimeTraceRepetitiveStartPosition" Text="{Binding TimeTraceMeasurementDistanceRepetitiveStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Row="0" Grid.Column="1" Margin="0 2.5" />
+															<Label Grid.Row="1" Grid.Column="0" Content="End position"/>
+															<TextBox x:Name="textBoxTimeTraceRepetitiveEndPosition" Text="{Binding TimeTraceMeasurementDistanceRepetitiveEndPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Row="1" Grid.Column="1" Margin="0 2.5" />
+															<Label Grid.Row="2" Grid.Column="0" Content="Number cycles"/>
+															<TextBox x:Name="textBoxTimeTraceRepetitiveNumberCycles" Text="{Binding TimeTraceMeasurementDistanceRepetitiveNumberCycles, UpdateSourceTrigger=LostFocus}" Grid.Row="2" Grid.Column="1" Margin="0 2.5" />
+														</Grid>
+													</TabItem> <!-- End tab item repetitive time trace distance measuremebts -->
+													<!-- Tab item time trace "time" measuremebts -->
+													<TabItem Header="Time">
 														<Grid Margin="0 5 0 0">
 															<Grid.ColumnDefinitions>
 																<ColumnDefinition Width="Auto" />
 																<ColumnDefinition />
 															</Grid.ColumnDefinitions>
 
-															<Label Grid.Column="0" Margin="0 0 10 0">Notifications per rev</Label>
-															<TextBox Grid.Column="1" x:Name="textBoxTimeTraceNotificationsPerRevolution" Margin="0 2.5 " Text="{Binding Path=TimeTraceNotificationsPerRevolution, UpdateSourceTrigger=LostFocus , Mode=TwoWay}"/>
+															<Label Grid.Column="0" Content="Measure time"/>
+															<wpfTool:TimeSpanUpDown Grid.Column="1" Margin="0 2.5" Value="{Binding TimeTraceMeasurementTime_TimeFinal, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 														</Grid>
-														<TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="tabControlTimeTraceMeasurementParameters" SelectedIndex="{Binding Path=TimeTraceMeasurementSelectedTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0 10 0 0">
-															<!-- Tab item single time trace distance measuremebts -->
-															<TabItem Header="Distance">
-																<Grid Margin="0 5 0 0">
-																	<Grid.RowDefinitions>
-																		<RowDefinition />
-																		<RowDefinition />
-																		<RowDefinition />
-																		<RowDefinition />
-																	</Grid.RowDefinitions>
-																	<Grid.ColumnDefinitions>
-																		<ColumnDefinition />
-																		<ColumnDefinition />
-																	</Grid.ColumnDefinitions>
+													</TabItem> <!-- End tab item time trace "time" measuremebts -->
+													<!-- Tab item time trace "Fixed R" measurements -->
+													<TabItem Header="Fixed R">
+														<Grid Margin="0 5 0 0">
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition Width="Auto" />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
 
-																	<GroupBox Grid.Row="0" Grid.Column="0" Header="Moving direction" Margin="2.5">
-																		<StackPanel>
-																			<RadioButton x:Name="radioTimeTraceDistanceMoveUp" IsChecked="{Binding Path=IsTimeTraceMeasurementDistanceMotionModeUpChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Up</RadioButton>
-																			<RadioButton x:Name="radioTimeTraceDistanceMoveDown" IsChecked="{Binding Path=IsTimeTraceMeasurementDistanceMotionModeDownChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Down</RadioButton>
-																		</StackPanel>
-																	</GroupBox>
-																	<Button x:Name="cmdTimeTraceDistanceMoveToInitialPosition" Grid.Row="0" Grid.Column="1" Margin="5">Move to initial</Button>
-																	
-																	<Label Grid.Row="1" Grid.Column="0" Margin="0 2.5" Content="Motion start pos.">
-																		<Label.ToolTip>
-																			<ToolTip>
-																				<TextBlock>The position, from which the measurement takes place</TextBlock>
-																			</ToolTip>
-																		</Label.ToolTip>
-																	</Label>
-																	<TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMiscometricBoltStartPosition" Text="{Binding Path=TimeTraceMeasurementDistanceMotionStartPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-
-																	<Label Grid.Row="2" Grid.Column="0" Margin="0 2.5" Content="Motion current pos.">
-																		<Label.ToolTip>
-																			<ToolTip>
-																				<TextBlock>Motion current destination.</TextBlock>
-																			</ToolTip>
-																		</Label.ToolTip>
-																	</Label>
-                                                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMicrometricBoltCurrentPosition" Text="{Binding Path=TimeTraceMeasurementDistanceMotionCurrentPosition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" />
-
-																	<Label Grid.Row="3" Grid.Column="0" Margin="0 2.5" Content="Motion final dest.">
-																		<Label.ToolTip>
-																			<ToolTip>
-																				<TextBlock>Motion final destination.</TextBlock>
-																			</ToolTip>
-																		</Label.ToolTip>
-																	</Label>
-                                                                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltFinalPosition" Text="{Binding Path=TimeTraceMeasurementDistanceMotionFinalDestination, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
-																</Grid>
-															</TabItem> <!-- End tab item single time trace distance measuremebts -->
-															<!-- Tab item repetitive time trace distance measuremebts -->
-															<TabItem Header="Distance (Repetitive)">
-																<Grid Margin="0 5 0 0">
-																	<Grid.RowDefinitions>
-																		<RowDefinition />
-																		<RowDefinition />
-																		<RowDefinition />
-																	</Grid.RowDefinitions>
-																	<Grid.ColumnDefinitions>
-																		<ColumnDefinition Width="Auto" />
-																		<ColumnDefinition />
-																	</Grid.ColumnDefinitions>
-
-																	<Label Grid.Row="0" Grid.Column="0">Start position</Label>
-																	<TextBox x:Name="textBoxTimeTraceRepetitiveStartPosition" Text="{Binding Path=TimeTraceMeasurementDistanceRepetitiveStartPosition, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Margin="0 2.5" />
-																	<Label Grid.Row="1" Grid.Column="0">End position</Label>
-																	<TextBox x:Name="textBoxTimeTraceRepetitiveEndPosition" Text="{Binding Path=TimeTraceMeasurementDistanceRepetitiveEndPosition, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="0 2.5" />
-																	<Label Grid.Row="2" Grid.Column="0">Number cycles</Label>
-																	<TextBox x:Name="textBoxTimeTraceRepetitiveNumberCycles" Text="{Binding Path=TimeTraceMeasurementDistanceRepetitiveNumberCycles, UpdateSourceTrigger=LostFocus}" Grid.Row="2" Grid.Column="1" Margin="0 2.5" />
-																</Grid>
-															</TabItem> <!-- End tab item repetitive time trace distance measuremebts -->
-															<!-- Tab item time trace "time" measuremebts -->
-															<TabItem Header="Time">
-																<Grid Margin="0 5 0 0">
-																	<Grid.ColumnDefinitions>
-																		<ColumnDefinition Width="Auto" />
-																		<ColumnDefinition />
-																	</Grid.ColumnDefinitions>
-
-																	<Label Grid.Column="0">Measure time</Label>
-																	<wpfTool:TimeSpanUpDown Grid.Column="1" Margin="0 2.5" Value="{Binding Path=TimeTraceMeasurementTime_TimeFinal, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
-																</Grid>
-															</TabItem> <!-- End tab item time trace "time" measuremebts -->
-															<!-- Tab item time trace "Fixed R" measurements -->
-															<TabItem Header="Fixed R">
-																<Grid Margin="0 5 0 0">
-																	<Grid.ColumnDefinitions>
-																		<ColumnDefinition Width="Auto" />
-																		<ColumnDefinition />
-																	</Grid.ColumnDefinitions>
-
-																	<Label Grid.Column="0">Value of R</Label>
-																	<TextBox x:Name="textBoxTimeTraceMeasurementValueOfR" Text="{Binding Path=TimeTraceMeasurementFixedR_R_Value, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Column="1" Margin="0 2.5" />
-																</Grid>
-															</TabItem>
-														</TabControl>
-													</Grid>
-												</Expander.Content>
-											</Expander> <!-- End Expander Time Trace Motion Parameters -->
-											<Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="10"></Separator>
-                                            <Button x:Name="cmdTimeTraceStartMeasurement" Content="Start Measurement" MinHeight="30" Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFDDDDDD" Click="on_cmdTimeTraceStartMeasurementClick"></Button>
-											<Button x:Name="cmdTimeTraceStopMeasurement" Content="Stop Measurement" MinHeight="30" Margin="0 5 0 0" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFDDDDDD" Click="on_cmdTimeTraceStopMeasurementClick"></Button>
-										</Grid> <!-- IV measures settings grid -->
-									</StackPanel>  <!-- TimeTraceChartPanel -->
-								</Expander.Content>
+															<Label Grid.Column="0" Content="Value of R"/>
+															<TextBox x:Name="textBoxTimeTraceMeasurementValueOfR" Text="{Binding TimeTraceMeasurementFixedR_R_Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Column="1" Margin="0 2.5" />
+														</Grid>
+													</TabItem>
+												</TabControl>
+											</Grid>
+										</Expander> <!-- End Expander Time Trace Motion Parameters -->
+										<Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="10"/>
+										<Button x:Name="cmdTimeTraceStartMeasurement" Content="Start Measurement" MinHeight="30" Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFDDDDDD" Click="on_cmdTimeTraceStartMeasurementClick"/>
+										<Button x:Name="cmdTimeTraceStopMeasurement" Content="Stop Measurement" MinHeight="30" Margin="0 5 0 0" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFDDDDDD" Click="on_cmdTimeTraceStopMeasurementClick"/>
+									</Grid> <!-- IV measures settings grid -->
+								</StackPanel>
 							</Expander>
-						</ScrollViewer> <!-- End time trace scroll viever -->
+						</ScrollViewer>
 					</Grid>	
 					<!-- Progress bar panel -->
 					<Grid Grid.Row="4" Grid.Column="0" Margin="5">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"></ColumnDefinition>
-							<ColumnDefinition></ColumnDefinition>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition/>
 						</Grid.ColumnDefinitions>
 						
-						<Label x:Name="labelMeasurementStatus" Grid.Column="0" Width="120">Ready</Label>
+						<Label x:Name="labelMeasurementStatus" Grid.Column="0" Width="120" Content="Ready"/>
 						<ProgressBar x:Name="progressBarMeasurementProgress" Grid.Column="1" />
-                        <TextBlock x:Name="textBlockProgressStatus" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ElementName=progressBarMeasurementProgress, Path=Value, StringFormat={}{0:0}%}"/>
+						<TextBlock x:Name="textBlockProgressStatus" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarMeasurementProgress, StringFormat=\{0:0\}%}"/>
 					</Grid>	<!-- End progress bar panel -->	
 				</Grid> <!-- IVLayout -->
 			</TabItem>
-			<TabItem Header="Noise Measurements"></TabItem>
+			<TabItem Header="Noise Measurements"/>
 		</TabControl>
- 	</Grid>  <!-- LayoutRoot -->
+	</Grid>  <!-- LayoutRoot -->
 </Window>
