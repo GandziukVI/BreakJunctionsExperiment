@@ -592,7 +592,7 @@ namespace BreakJunctions
                     this.TimeTraceMeasurementSettings.textBoxTimeTraceDistanceMicrometricBoltCurrentPosition.Text = e.Position.ToString("E8", culture);
                 }));
         }
-
+        //Hello world
         #endregion
 
         #region Checking User Input
