@@ -22,6 +22,8 @@ namespace BreakJunctions
 
         #region I-V measurement model-view interactions
 
+        #region General settings
+
         //Source mode settings
         private bool _IsIV_MeasurementVoltageModeChecked = true;
         public bool IsIV_MeasurementVoltageModeChecked
@@ -44,80 +46,186 @@ namespace BreakJunctions
             }
         }
 
-        //Measurement value settings
-        private string _IV_MeasurementStartValueMultiplier = "None";
-        public string IV_MeasurementStartValueMultiplier
+        #endregion
+
+        #region 1-st Channel Measurement value settings
+
+        private string _IV_MeasurementStartValueMultiplierChannel_01 = "None";
+        public string IV_MeasurementStartValueMultiplierChannel_01
         {
-            get { return _IV_MeasurementStartValueMultiplier; }
+            get { return _IV_MeasurementStartValueMultiplierChannel_01; }
             set
             {
-                _IV_MeasurementStartValueMultiplier = value;
-                OnPropertyChanged("IV_MeasurementStartValueMultiplier");
+                _IV_MeasurementStartValueMultiplierChannel_01 = value;
+                OnPropertyChanged("IV_MeasurementStartValueMultiplierChannel_01");
             }
         }
-        private double _IV_MeasurementStartValue = 0.0;
-        public double IV_MeasurementStartValue
+        private double _IV_MeasurementStartValueChannel_01 = 0.0;
+        public double IV_MeasurementStartValueChannel_01
         {
             get
             {
-                return _IV_MeasurementStartValue * HandlingUserInput.GetMultiplier(_IV_MeasurementStartValueMultiplier);
+                return _IV_MeasurementStartValueChannel_01 * HandlingUserInput.GetMultiplier(_IV_MeasurementStartValueMultiplierChannel_01);
             }
             set
             {
-                _IV_MeasurementStartValue = value;
-                OnPropertyChanged("IV_MeasurementStartValue");
+                _IV_MeasurementStartValueChannel_01 = value;
+                OnPropertyChanged("IV_MeasurementStartValueChannel_01");
             }
         }
 
-        private string _IV_MeasurementEndValueMultiplier = "None";
-        public string IV_MeasurementEndValueMultiplier
+        private string _IV_MeasurementEndValueMultiplierChannel_01 = "None";
+        public string IV_MeasurementEndValueMultiplierChannel_01
         {
-            get { return _IV_MeasurementEndValueMultiplier; }
+            get { return _IV_MeasurementEndValueMultiplierChannel_01; }
             set
             {
-                _IV_MeasurementEndValueMultiplier = value;
-                OnPropertyChanged("IV_MeasurementEndValueMultiplier");
+                _IV_MeasurementEndValueMultiplierChannel_01 = value;
+                OnPropertyChanged("IV_MeasurementEndValueMultiplierChannel_01");
             }
         }
-        private double _IV_MeasurementEndValue = 1.0;
-        public double IV_MeasurementEndValue
+        private double _IV_MeasurementEndValueChannel_01 = 1.0;
+        public double IV_MeasurementEndValueChannel_01
         {
             get
             {
-                return _IV_MeasurementEndValue * HandlingUserInput.GetMultiplier(_IV_MeasurementEndValueMultiplier);
+                return _IV_MeasurementEndValueChannel_01 * HandlingUserInput.GetMultiplier(_IV_MeasurementEndValueMultiplierChannel_01);
             }
             set
             {
-                _IV_MeasurementEndValue = value;
-                OnPropertyChanged("IV_MeasurementEndValue");
+                _IV_MeasurementEndValueChannel_01 = value;
+                OnPropertyChanged("IV_MeasurementEndValueChannel_01");
             }
         }
 
-        private string _IV_MeasurementStepValueMultiplier = "None";
-        public string IV_MeasurementStepValueMultiplier
+        private string _IV_MeasurementStepValueMultiplierChannel_01 = "None";
+        public string IV_MeasurementStepValueMultiplierChannel_01
         {
-            get { return _IV_MeasurementStepValueMultiplier; }
+            get { return _IV_MeasurementStepValueMultiplierChannel_01; }
             set
             {
-                _IV_MeasurementStepValueMultiplier = value;
-                OnPropertyChanged("IV_MeasurementStepValueMultiplier");
+                _IV_MeasurementStepValueMultiplierChannel_01 = value;
+                OnPropertyChanged("IV_MeasurementStepValueMultiplierChannel_01");
             }
         }
-        private double _IV_MeasurementStep = 0.01;
-        public double IV_MeasurementStep
+        private double _IV_MeasurementStepChannel_01 = 0.01;
+        public double IV_MeasurementStepChannel_01
         {
             get
             {
-                return _IV_MeasurementStep * HandlingUserInput.GetMultiplier(_IV_MeasurementStepValueMultiplier);
+                return _IV_MeasurementStepChannel_01 * HandlingUserInput.GetMultiplier(_IV_MeasurementStepValueMultiplierChannel_01);
             }
             set
             {
-                _IV_MeasurementStep = value;
-                OnPropertyChanged("IV_MeasurementStep");
+                _IV_MeasurementStepChannel_01 = value;
+                OnPropertyChanged("IV_MeasurementStepChannel_01");
             }
         }
 
-        //Measurement parameters
+        //Saving data
+        private string _IV_MeasurementDataFileNameChannel_01 = "IV_MeasurementChannel_01.dat";
+        public string IV_MeasurementDataFileNameChannel_01
+        {
+            get { return _IV_MeasurementDataFileNameChannel_01; }
+            set
+            {
+                _IV_MeasurementDataFileNameChannel_01 = value;
+                OnPropertyChanged("IV_MeasurementDataFileNameChannel_01");
+            }
+        }
+
+        #endregion
+
+        #region 2-nd Channel Measurement value settings
+
+        private string _IV_MeasurementStartValueMultiplierChannel_02 = "None";
+        public string IV_MeasurementStartValueMultiplierChannel_02
+        {
+            get { return _IV_MeasurementStartValueMultiplierChannel_02; }
+            set
+            {
+                _IV_MeasurementStartValueMultiplierChannel_02 = value;
+                OnPropertyChanged("IV_MeasurementStartValueMultiplierChannel_02");
+            }
+        }
+        private double _IV_MeasurementStartValueChannel_02 = 0.0;
+        public double IV_MeasurementStartValueChannel_02
+        {
+            get
+            {
+                return _IV_MeasurementStartValueChannel_02 * HandlingUserInput.GetMultiplier(_IV_MeasurementStartValueMultiplierChannel_02);
+            }
+            set
+            {
+                _IV_MeasurementStartValueChannel_02 = value;
+                OnPropertyChanged("IV_MeasurementStartValueChannel_02");
+            }
+        }
+
+        private string _IV_MeasurementEndValueMultiplierChannel_02 = "None";
+        public string IV_MeasurementEndValueMultiplierChannel_02
+        {
+            get { return _IV_MeasurementEndValueMultiplierChannel_02; }
+            set
+            {
+                _IV_MeasurementEndValueMultiplierChannel_02 = value;
+                OnPropertyChanged("IV_MeasurementEndValueMultiplierChannel_02");
+            }
+        }
+        private double _IV_MeasurementEndValueChannel_02 = 1.0;
+        public double IV_MeasurementEndValueChannel_02
+        {
+            get
+            {
+                return _IV_MeasurementEndValueChannel_02 * HandlingUserInput.GetMultiplier(_IV_MeasurementEndValueMultiplierChannel_02);
+            }
+            set
+            {
+                _IV_MeasurementEndValueChannel_02 = value;
+                OnPropertyChanged("IV_MeasurementEndValueChannel_02");
+            }
+        }
+
+        private string _IV_MeasurementStepValueMultiplierChannel_02 = "None";
+        public string IV_MeasurementStepValueMultiplierChannel_02
+        {
+            get { return _IV_MeasurementStepValueMultiplierChannel_02; }
+            set
+            {
+                _IV_MeasurementStepValueMultiplierChannel_02 = value;
+                OnPropertyChanged("IV_MeasurementStepValueMultiplierChannel_02");
+            }
+        }
+        private double _IV_MeasurementStepChannel_02 = 0.01;
+        public double IV_MeasurementStepChannel_02
+        {
+            get
+            {
+                return _IV_MeasurementStepChannel_02 * HandlingUserInput.GetMultiplier(_IV_MeasurementStepValueMultiplierChannel_02);
+            }
+            set
+            {
+                _IV_MeasurementStepChannel_02 = value;
+                OnPropertyChanged("IV_MeasurementStepChannel_02");
+            }
+        }
+
+        //Saving data
+        private string _IV_MeasurementDataFileNameChannel_02 = "IV_MeasurementChannel_02.dat";
+        public string IV_MeasurementDataFileNameChannel_02
+        {
+            get { return _IV_MeasurementDataFileNameChannel_02; }
+            set
+            {
+                _IV_MeasurementDataFileNameChannel_02 = value;
+                OnPropertyChanged("IV_MeasurementDataFileNameChannel_02");
+            }
+        }
+
+        #endregion
+
+        #region Measurement parameters
+
         private int _IV_MeasurementNumberOfAverages = 2;
         public int IV_MeasurementNumberOfAverages
         {
@@ -153,18 +261,6 @@ namespace BreakJunctions
             }
         }
 
-        //Saving data
-        private string _IV_MeasurementDataFileName = "IV_Measurement.dat";
-        public string IV_MeasurementDataFileName
-        {
-            get { return _IV_MeasurementDataFileName; }
-            set
-            {
-                _IV_MeasurementDataFileName = value;
-                OnPropertyChanged("IV_MeasurementDataFileName");
-            }
-        }
-
         private string _IV_MeasurementDataComment = "";
         public string IV_MeasurementDataComment
         {
@@ -186,6 +282,8 @@ namespace BreakJunctions
                 OnPropertyChanged("IV_MeasurementMicrometricBoltPosition");
             }
         }
+
+        #endregion
 
         #endregion
     }

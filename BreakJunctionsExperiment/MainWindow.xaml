@@ -51,7 +51,7 @@
 						</Grid.ColumnDefinitions>
 							
 						<!-- Chart plotter to plot I-V curves -->
-						<d3:ChartPlotter Grid.Row="0" Grid.Column="0" x:Name="chartIV_Curves" Margin="10">
+						<d3:ChartPlotter Grid.Row="0" Grid.Column="0" x:Name="chartIV_CurvesChannel_01" Margin="10">
 							<d3:Header Content="I-V characteristics CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>
@@ -64,7 +64,7 @@
 							
 						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-						<d3:ChartPlotter Grid.Row="0" Grid.Column="2" x:Name="chartIV_CurvesChannel_01" Margin="10">
+						<d3:ChartPlotter Grid.Row="0" Grid.Column="2" x:Name="chartIV_CurvesChannel_02" Margin="10">
 							<d3:Header Content="I-V characteristics CH_02"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>

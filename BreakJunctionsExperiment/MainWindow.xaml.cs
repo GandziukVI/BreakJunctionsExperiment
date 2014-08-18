@@ -120,6 +120,8 @@ namespace BreakJunctions
 
         #endregion
 
+        IV_MeasurementSettingsDataModel _IV_ExperimentSettings;
+
         #endregion
 
         #region Time Trace data handling and presenting
@@ -172,6 +174,8 @@ namespace BreakJunctions
 
         #endregion
 
+        TimeTraceMeasurementSettingsDataModel _TimeTraceExperimentSettings;
+
         #endregion
 
         public MainWindow()
@@ -180,14 +184,24 @@ namespace BreakJunctions
 
             #region Interface model-view interactions
 
-            controlIV_MeasurementSettings.cmdIV_DataFileNameBrowse.Click += on_cmdIV_DataFileNameBrowseClickChannel_01;
+            #region I-V Model-view interactions
+
+            controlIV_MeasurementSettings.cmdIV_DataFileNameBrowseChannel_01.Click += on_cmdIV_DataFileNameBrowseClickChannel_01;
+            controlIV_MeasurementSettings.cmdIV_DataFileNameBrowseChannel_02.Click += on_cmdIV_DataFileNameBrowseClickChannel_02;
+
             controlIV_MeasurementSettings.cmdIV_StartMeasurement.Click += on_cmdIV_StartMeasurementClick;
             controlIV_MeasurementSettings.cmdIV_StopMeasurement.Click += on_cmdIV_StopMeasurementClick;
 
-            controlTimeTraceMeasurementSettings.cmdTimeTraceDataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClick;
+            #endregion
+
+            #region TimeTrace Model-view interactions
+
+            controlTimeTraceMeasurementSettings.cmdTimeTraceDataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01;
             //controlTimeTraceMeasurementSettings.cmdTimeTraceDistanceMoveToInitialPosition +=
             controlTimeTraceMeasurementSettings.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceStartMeasurementClick;
             controlTimeTraceMeasurementSettings.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceStopMeasurementClick;
+
+            #endregion
 
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
 
@@ -247,12 +261,25 @@ namespace BreakJunctions
 
             #region Save I-V data to file dialog configuration
 
+            #region 1-st channel
+
             _SaveIV_MeasuremrentFileNameChannel_01 = string.Empty;
 
             _SaveIV_MeasureDialogChannel_01 = new SaveFileDialog();
-            _SaveIV_MeasureDialogChannel_01.FileName = "IV_Measurement";
+            _SaveIV_MeasureDialogChannel_01.FileName = "IV_MeasurementChannel_01_";
             _SaveIV_MeasureDialogChannel_01.DefaultExt = ".dat";
             _SaveIV_MeasureDialogChannel_01.Filter = "Measure data (.dat)|*.dat";
+
+            #endregion
+
+            #region 2-nd channel
+
+            _SaveIV_MeasureDialogChannel_02 = new SaveFileDialog();
+            _SaveIV_MeasureDialogChannel_02.FileName = "IV_MeasurementChannel_02_";
+            _SaveIV_MeasureDialogChannel_02.DefaultExt = ".dat";
+            _SaveIV_MeasureDialogChannel_02.Filter = "Measure data (.dat)|*.dat";
+
+            #endregion
 
             #endregion
 
@@ -293,8 +320,8 @@ namespace BreakJunctions
 
         private void onSetSMU_Channel_02_Click(object sender, RoutedEventArgs e)
         {
-            sourceDeviceConfigurationChannel_01 = new SourceDeviceConfiguration();
-            sourceDeviceConfigurationChannel_01.ShowDialog();
+            sourceDeviceConfigurationChannel_02 = new SourceDeviceConfiguration();
+            sourceDeviceConfigurationChannel_02.ShowDialog();
         }
 
         #endregion
@@ -310,9 +337,11 @@ namespace BreakJunctions
             #region SMU, rendering and save data configurations
 
             //Checking the SMU settings
-            if (sourceDeviceConfigurationChannel_01 != null)
+            if ((sourceDeviceConfigurationChannel_01 != null) && (sourceDeviceConfigurationChannel_02 != null))
             {
                 #region Chart rendering settings
+
+                #region 1-st channel
 
                 //Initializing a new plot on I-V chart
                 if (_IV_LineGraphChannel_01 != null)
@@ -326,63 +355,112 @@ namespace BreakJunctions
                 _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSource(_CurrentIV_CurveChannel_01);
                 _experimentalIV_DataSourceChannel_01.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_01 = new LineGraph(_experimentalIV_DataSourceChannel_01);
-                _IV_LineGraphChannel_01.AddToPlotter(chartIV_Curves);
+                _IV_LineGraphChannel_01.AddToPlotter(chartIV_CurvesChannel_01);
+
+                #endregion
+
+                #region 2-nd channel
+
+                //Initializing a new plot on I-V chart
+                if (_IV_LineGraphChannel_02 != null)
+                {
+                    //Detaching receive event from "old" data source
+                    _experimentalIV_DataSourceChannel_02.DetachPointReceiveEvent();
+                    _IV_LineGraphChannel_02.Remove();
+                }
+                //Creating new plot and attaching it to the chart
+                _CurrentIV_CurveChannel_02 = new List<PointD>();
+                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSource(_CurrentIV_CurveChannel_02);
+                _experimentalIV_DataSourceChannel_02.AttachPointReceiveEvent();
+                _IV_LineGraphChannel_02 = new LineGraph(_experimentalIV_DataSourceChannel_02);
+                _IV_LineGraphChannel_02.AddToPlotter(chartIV_CurvesChannel_02);
+
+                #endregion
 
                 #endregion
 
                 //Getting SMU device
+
+                /*      Better implementation for lot of SMU kinds neened     */
+
                 DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
+                DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
 
                 #region I-V measurement configuration
 
-                var ExperimentSettings = controlIV_MeasurementSettings.MeasurementSettings;
+                #region General configuration
 
-                var StartValue = ExperimentSettings.IV_MeasurementStartValue;                
-                var EndValue = ExperimentSettings.IV_MeasurementEndValue;
-                var Step = ExperimentSettings.IV_MeasurementStep;
-                var NumberOfAverages = ExperimentSettings.IV_MeasurementNumberOfAverages;
-                var TimeDelay = ExperimentSettings.IV_MeasurementTimeDelay;
+                _IV_ExperimentSettings = controlIV_MeasurementSettings.MeasurementSettings;
+
+                var NumberOfAverages = _IV_ExperimentSettings.IV_MeasurementNumberOfAverages;
+                var TimeDelay = _IV_ExperimentSettings.IV_MeasurementTimeDelay;
 
                 SourceMode DeviceSourceMode = SourceMode.Voltage;
 
-                if (ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
+                if (_IV_ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
                 {
                     DeviceSourceMode = SourceMode.Voltage;
                 }
-                else if (ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
+                else if (_IV_ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
                 {
                     DeviceSourceMode = SourceMode.Current;
                 }
 
-                IV_CurveChannel_01 = new MeasureIV(StartValue, EndValue, Step, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01);
+                #endregion
+
+                #region 1-st channel settings
+
+                var StartValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementStartValueChannel_01;
+                var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueChannel_01;
+                var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepChannel_01;
+
+                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01);
+
+                #endregion
+
+                #region 2-nd channel settings
+
+                var StartValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementStartValueChannel_02;
+                var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueChannel_02;
+                var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepChannel_02;
+
+                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02);
+
+                #endregion
 
                 #endregion
 
                 #region Saving I-V data into files
 
-                var _IV_FileNumber = String.Format("_{0}{1}{2}", (_IV_FilesCounterChannel_01 / 100) % 10, (_IV_FilesCounterChannel_01 / 10) % 10, _IV_FilesCounterChannel_01 % 10);
-                string newFileName = string.Empty;
+                var _IV_FileNumberChannel_01 = String.Format("_{0}{1}{2}", (_IV_FilesCounterChannel_01 / 100) % 10, (_IV_FilesCounterChannel_01 / 10) % 10, _IV_FilesCounterChannel_01 % 10);
+                var newFileNameChannel_01 = string.Empty;
 
-                if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01))
+                var _IV_FileNumberChannel_02 = String.Format("_{0}{1}{2}", (_IV_FilesCounterChannel_02 / 100) % 10, (_IV_FilesCounterChannel_02 / 10) % 10, _IV_FilesCounterChannel_02 % 10);
+                var newFileNameChannel_02 = string.Empty;
+
+                if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_02))
                 {
-                    _IV_MeasurementLogChannel_01 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_01)).DirectoryName + "\\IV_MeasurementLog.dat");
+                    _IV_MeasurementLogChannel_01 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_01)).DirectoryName + "\\IV_MeasurementLogChannel_01.dat");
+                    _IV_MeasurementLogChannel_02 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_02)).DirectoryName + "\\IV_MeasurementLogChannel_02.dat");
                     
-                    newFileName = _SaveIV_MeasuremrentFileNameChannel_01.Insert(_SaveIV_MeasuremrentFileNameChannel_01.LastIndexOf('.'), _IV_FileNumber);
+                    newFileNameChannel_01 = _SaveIV_MeasuremrentFileNameChannel_01.Insert(_SaveIV_MeasuremrentFileNameChannel_01.LastIndexOf('.'), _IV_FileNumberChannel_01);
+                    newFileNameChannel_02 = _SaveIV_MeasuremrentFileNameChannel_02.Insert(_SaveIV_MeasuremrentFileNameChannel_02.LastIndexOf('.'), _IV_FileNumberChannel_02);
                     ++_IV_FilesCounterChannel_01;
+                    ++_IV_FilesCounterChannel_02;
                 }
 
-                if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01))
+                if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_02))
                 {
+                    var fileNameChannel_01 = (new FileInfo(newFileNameChannel_01)).Name;
+                    var fileNameChannel_02 = (new FileInfo(newFileNameChannel_02)).Name;
 
-                    string fileName = (new FileInfo(newFileName)).Name;
+                    var sourceMode = string.Empty;
 
-                    string sourceMode = string.Empty;
-
-                    if (ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
+                    if (_IV_ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
                     {
                         sourceMode = "Source mode: Voltage";
                     }
-                    else if (ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
+                    else if (_IV_ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
                     {
                         sourceMode = "SourceMode: Current";
                     }
@@ -390,16 +468,21 @@ namespace BreakJunctions
                     //Some Comment
                     double micrometricBoltPosition = controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
 
-                    string comment = ExperimentSettings.IV_MeasurementDataComment;
+                    string comment = _IV_ExperimentSettings.IV_MeasurementDataComment;
 
-                    _IV_MeasurementLogChannel_01.AddNewIV_MeasurementLog(fileName, sourceMode, micrometricBoltPosition, comment);
+                    _IV_MeasurementLogChannel_01.AddNewIV_MeasurementLog(fileNameChannel_01, sourceMode, micrometricBoltPosition, comment);
+                    _IV_MeasurementLogChannel_02.AddNewIV_MeasurementLog(fileNameChannel_02, sourceMode, micrometricBoltPosition, comment);
                 }
 
-                if (_IV_SingleMeasurementChannel_01 != null)
+                if ((_IV_SingleMeasurementChannel_01 != null) && (_IV_SingleMeasurementChannel_02 != null))
+                {
                     _IV_SingleMeasurementChannel_01.Dispose();
+                    _IV_SingleMeasurementChannel_02.Dispose();
+                }
 
 
-                _IV_SingleMeasurementChannel_01 = new IV_SingleMeasurement(newFileName);
+                _IV_SingleMeasurementChannel_01 = new IV_SingleMeasurement(newFileNameChannel_01);
+                _IV_SingleMeasurementChannel_02 = new IV_SingleMeasurement(newFileNameChannel_02);
 
                 #endregion
 
@@ -407,7 +490,7 @@ namespace BreakJunctions
             }
             else
             {
-                MessageBox.Show("The device is not initialized.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("The channels of the device are not initialized.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
@@ -419,8 +502,11 @@ namespace BreakJunctions
             var isInitSuccess = InitIV_Measurements();
             
             //Starting I-V measurements in background
-            if((isInitSuccess == true) && (backgroundIV_MeasureChannel_01.IsBusy == false))
+            if ((isInitSuccess == true) && (backgroundIV_MeasureChannel_01.IsBusy == false) && (backgroundIV_MeasureChannel_02.IsBusy == false))
+            {
                 backgroundIV_MeasureChannel_01.RunWorkerAsync();
+                backgroundIV_MeasureChannel_02.RunWorkerAsync();
+            }
         }
 
 		private void on_cmdIV_StopMeasurementClick(object sender, RoutedEventArgs e)
@@ -428,6 +514,8 @@ namespace BreakJunctions
             //Canceling I-V measures
             if(backgroundIV_MeasureChannel_01.IsBusy == true)
                 backgroundIV_MeasureChannel_01.CancelAsync();
+            if (backgroundIV_MeasureChannel_02.IsBusy == true)
+                backgroundIV_MeasureChannel_02.CancelAsync();
 		}
 
         #region 1-st Channel Background Work
@@ -465,7 +553,7 @@ namespace BreakJunctions
             {
                 _IV_FilesCounterChannel_01 = 0;
                 _SaveIV_MeasuremrentFileNameChannel_01 = _SaveIV_MeasureDialogChannel_01.FileName;
-                this.controlIV_MeasurementSettings.textBoxIV_FileName.Text = _SaveIV_MeasureDialogChannel_01.SafeFileName;
+                this.controlIV_MeasurementSettings.textBoxIV_FileNameChannel_01.Text = _SaveIV_MeasureDialogChannel_01.SafeFileName;
             }
         }
 
@@ -506,7 +594,7 @@ namespace BreakJunctions
             {
                 _IV_FilesCounterChannel_02 = 0;
                 _SaveIV_MeasuremrentFileNameChannel_02 = _SaveIV_MeasureDialogChannel_02.FileName;
-                this.controlIV_MeasurementSettings.textBoxIV_FileName.Text = _SaveIV_MeasureDialogChannel_02.SafeFileName;
+                this.controlIV_MeasurementSettings.textBoxIV_FileNameChannel_02.Text = _SaveIV_MeasureDialogChannel_02.SafeFileName;
             }
         }
 
@@ -786,7 +874,7 @@ namespace BreakJunctions
         #endregion
 
 
-        private void on_cmdTimeTraceDataFileNameBrowseClick(object sender, RoutedEventArgs e)
+        private void on_cmdTimeTraceDataFileNameBrowseClickChannel_01(object sender, RoutedEventArgs e)
         {
             //Choosing file name to save data
             Nullable<bool> dialogResult = _SaveTimeTraceMeasureDialogChannel_01.ShowDialog();
