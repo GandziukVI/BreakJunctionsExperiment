@@ -58,9 +58,14 @@ namespace BreakJunctions.Measurements
             set { _Device = value; }
         }
 
-        public MeasureIV() { }
+        private string _ChannelIdentificator;
+        public string ChannelIdentificator
+        {
+            get { return _ChannelIdentificator; }
+            set { _ChannelIdentificator = value; }
+        }
         
-        public MeasureIV(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device) 
+        public MeasureIV(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, string ChannelIdentificator_Val) 
         {
             _StartValue = startVal;
             _EndValue = endVal;
@@ -69,6 +74,7 @@ namespace BreakJunctions.Measurements
             _TimeDelay = timeDelay;
             _sourceMode = deviceSourceMode;
             _Device = device;
+            _ChannelIdentificator = ChannelIdentificator_Val;
         }
 
         public void StartMeasurement(object sender, DoWorkEventArgs e)
@@ -98,7 +104,10 @@ namespace BreakJunctions.Measurements
 
                                 if (!(double.IsNaN(X) || double.IsNaN(Y)))
                                 {
-                                    AllEventsHandler.Instance.OnIV_PointReceived(null, new IV_PointReceived_EventArgs(X, Y));
+                                    if(_ChannelIdentificator == "Channel_01")
+                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(null, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                    else if(_ChannelIdentificator == "Channel_02")
+                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(null, new IV_PointReceivedChannel_02_EventArgs(X, Y));
 
                                     worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
                                 }
@@ -128,7 +137,11 @@ namespace BreakJunctions.Measurements
 
                                 if (!(double.IsNaN(X) || double.IsNaN(Y)))
                                 {
-                                   AllEventsHandler.Instance.OnIV_PointReceived(null, new IV_PointReceived_EventArgs(X, Y));
+                                    if(_ChannelIdentificator == "Channel_01")
+                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(null, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                    else if (_ChannelIdentificator == "Channel_02")
+                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(null, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+
                                    worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
                                 }
                             }

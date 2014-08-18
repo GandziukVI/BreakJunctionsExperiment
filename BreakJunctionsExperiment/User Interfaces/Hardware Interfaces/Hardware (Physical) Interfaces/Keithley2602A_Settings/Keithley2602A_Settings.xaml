@@ -76,8 +76,8 @@
 		<StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
 			<Label>Working Channel</Label>
 			<ComboBox x:Name="comboBoxWorkingChannel" Text="{Binding Path=SelectedChannelString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-				<ComboBoxItem>Channel A</ComboBoxItem>
-				<ComboBoxItem IsSelected="True">Channel B</ComboBoxItem>
+				<ComboBoxItem IsSelected="True">Channel A</ComboBoxItem>
+				<ComboBoxItem>Channel B</ComboBoxItem>
 			</ComboBox>
 		</StackPanel>
 		<Grid Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" Margin="5">

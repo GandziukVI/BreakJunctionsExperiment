@@ -30,6 +30,13 @@ namespace BreakJunctions.DataHandling
         private StringBuilder _DataBuilder;
         private string _DataString;
 
+        private string _ChannelIdentificator;
+        public string ChannelIdentificator
+        {
+            get { return _ChannelIdentificator; }
+            set { _ChannelIdentificator = value; }
+        }
+
         #endregion
 
         #region Constructor / Destructor
@@ -39,7 +46,7 @@ namespace BreakJunctions.DataHandling
         /// with specified file name
         /// </summary>
         /// <param name="fileName">File name</param>
-        public IV_SingleMeasurement(string fileName)
+        public IV_SingleMeasurement(string fileName, string ChannelIdentificator_Val)
         { 
             this._FileName = fileName;
 
@@ -56,7 +63,12 @@ namespace BreakJunctions.DataHandling
 
             _DataString = "{0}\t{1}";
 
-            AllEventsHandler.Instance.IV_PointReceived += OnIV_PointReceived;
+            _ChannelIdentificator = ChannelIdentificator_Val;
+
+            if(_ChannelIdentificator == "Channel_01")
+                AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceivedChannel_01;
+            else if(_ChannelIdentificator == "Channel_02")
+                AllEventsHandler.Instance.IV_PointReceivedChannel_02 += OnIV_PointReceivedChannel_02;
         }
 
         /// <summary>
@@ -76,7 +88,10 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         public void Dispose()
         {
-            AllEventsHandler.Instance.IV_PointReceived -= OnIV_PointReceived;
+            if(_ChannelIdentificator == "Channel_01")
+                AllEventsHandler.Instance.IV_PointReceivedChannel_01 -= OnIV_PointReceivedChannel_01;
+            else if (_ChannelIdentificator == "Channel_02")
+                AllEventsHandler.Instance.IV_PointReceivedChannel_02 -= OnIV_PointReceivedChannel_02;
 
             _FileName = string.Empty;
             _DataString = string.Empty;
@@ -92,7 +107,21 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnIV_PointReceived(object sender, IV_PointReceived_EventArgs e)
+        private void OnIV_PointReceivedChannel_01(object sender, IV_PointReceivedChannel_01_EventArgs e)
+        {
+            _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
+            _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
+
+            _DataBuilder = new StringBuilder();
+            _DataBuilder.AppendFormat(_DataString, e.X, e.Y);
+
+            _OutputSingleMeasureStreamWriter.WriteLine(_DataBuilder.ToString());
+
+            _OutputSingleMeasureStreamWriter.Close();
+            _OutputSingleMeasureStream.Close();
+        }
+        
+        private void OnIV_PointReceivedChannel_02(object sender, IV_PointReceivedChannel_02_EventArgs e)
         {
             _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
             _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);

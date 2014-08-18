@@ -79,11 +79,12 @@
     <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceMeasurementLog.cs" />
     <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceSingleMeasurement.cs" />
     <Compile Include="Events\Custom Events\IV_MeasurementStateChanged_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\IV_PointReceivedChannel_02_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\EventsHandler.cs" />
-    <Compile Include="Events\Custom Events\IV_PointReceived_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceived_EventArgs.cs" />
     <Compile Include="Hardware\Hardvare %28Interfaces%29\COM_Device.cs" />

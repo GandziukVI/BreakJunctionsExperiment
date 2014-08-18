@@ -45,15 +45,23 @@ namespace BreakJunctions.Plotting
             set { _ExperimentalData = value; }
         }
 
+        private string _ChannelIdentificator;
+        public string ChannelIdentificator
+        {
+            get { return _ChannelIdentificator; }
+            set { _ChannelIdentificator = value; }
+        }
+
         private Dispatcher dispatcher;
         private EnumerableDataSource<PointD> _ExperimentalDataSource;
 
-        public ExperimentalIV_DataSource(List<PointD> data)
+        public ExperimentalIV_DataSource(List<PointD> data, string ChannelIdentificator_Val)
         {
             _ExperimentalData = data;
             _ExperimentalDataSource = new EnumerableDataSource<PointD>(_ExperimentalData);
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
+            _ChannelIdentificator = ChannelIdentificator_Val;
 
             dispatcher = Dispatcher.CurrentDispatcher;
         }
@@ -67,20 +75,36 @@ namespace BreakJunctions.Plotting
 
         public void AttachPointReceiveEvent()
         {
-            AllEventsHandler.Instance.IV_PointReceived += OnIV_PointReceived;
+            if (_ChannelIdentificator == "Channel_01")
+                AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceivedChannel_01;
+            else if (_ChannelIdentificator == "Channel_02")
+                AllEventsHandler.Instance.IV_PointReceivedChannel_02 += OnIV_PointReceivedChannel_02;
         }
 
         public void DetachPointReceiveEvent()
         {
-            AllEventsHandler.Instance.IV_PointReceived -= OnIV_PointReceived;
+            if (_ChannelIdentificator == "Channel_01")
+                AllEventsHandler.Instance.IV_PointReceivedChannel_01 -= OnIV_PointReceivedChannel_01;
+            else if (_ChannelIdentificator == "Channel_02")
+                AllEventsHandler.Instance.IV_PointReceivedChannel_02 -= OnIV_PointReceivedChannel_02;
         }
 
-        private void OnIV_PointReceived(object sender, IV_PointReceived_EventArgs e)
+        private void OnIV_PointReceivedChannel_01(object sender, IV_PointReceivedChannel_01_EventArgs e)
         {
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
 
             dispatcher.BeginInvoke(new Action(delegate() {
+                DataChanged(sender, new EventArgs());
+            }));
+        }
+        private void OnIV_PointReceivedChannel_02(object sender, IV_PointReceivedChannel_02_EventArgs e)
+        {
+            _ExperimentalData.Add(new PointD(e.X, e.Y));
+            _ExperimentalDataSource.RaiseDataChanged();
+
+            dispatcher.BeginInvoke(new Action(delegate()
+            {
                 DataChanged(sender, new EventArgs());
             }));
         }

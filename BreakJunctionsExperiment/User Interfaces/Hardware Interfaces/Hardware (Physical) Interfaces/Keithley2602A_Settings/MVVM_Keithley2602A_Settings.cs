@@ -155,7 +155,7 @@ namespace BreakJunctions
             }
         }
 
-        private string _SelectedChannelString = "Channel B";
+        private string _SelectedChannelString = "Channel A";
         public string SelectedChannelString
         {
             get { return _SelectedChannelString; }
@@ -166,7 +166,7 @@ namespace BreakJunctions
             }
         }
 
-        private KEITHLEY_2602A_Channels _SelectedChannel = KEITHLEY_2602A_Channels.ChannelB;
+        private KEITHLEY_2602A_Channels _SelectedChannel = KEITHLEY_2602A_Channels.ChannelA;
         public KEITHLEY_2602A_Channels SelectedChannel 
         {
             get 

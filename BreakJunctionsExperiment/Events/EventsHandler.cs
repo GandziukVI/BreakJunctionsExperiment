@@ -58,36 +58,38 @@ namespace BreakJunctions.Events
             }
         }
 
-        //I-V curve point received
-        
-        private readonly object IV_PointReceived_EventLock = new object();
-        private EventHandler<IV_PointReceived_EventArgs> _IV_PointReceived;
-        public event EventHandler<IV_PointReceived_EventArgs> IV_PointReceived
+        #region I-V curve point received
+
+        #region 1-st channel point received events
+
+        private readonly object IV_PointReceivedChannel_01_EventLock = new object();
+        private EventHandler<IV_PointReceivedChannel_01_EventArgs> _IV_PointReceivedChannel_01;
+        public event EventHandler<IV_PointReceivedChannel_01_EventArgs> IV_PointReceivedChannel_01
         {
             add
             {
-                lock (IV_PointReceived_EventLock)
+                lock (IV_PointReceivedChannel_01_EventLock)
                 {
-                    if (_IV_PointReceived == null || !_IV_PointReceived.GetInvocationList().Contains(value))
+                    if (_IV_PointReceivedChannel_01 == null || !_IV_PointReceivedChannel_01.GetInvocationList().Contains(value))
                     {
-                        _IV_PointReceived += value;
+                        _IV_PointReceivedChannel_01 += value;
                     }
                 }
             }
             remove
             {
-                lock (IV_PointReceived_EventLock)
+                lock (IV_PointReceivedChannel_01_EventLock)
                 {
-                    _IV_PointReceived -= value;
+                    _IV_PointReceivedChannel_01 -= value;
                 }
             }
         }
-        public virtual void OnIV_PointReceived(object sender, IV_PointReceived_EventArgs e)
+        public virtual void OnIV_PointReceivedChannel_01(object sender, IV_PointReceivedChannel_01_EventArgs e)
         {
-            EventHandler<IV_PointReceived_EventArgs> handler; 
-            lock(IV_PointReceived_EventLock)
+            EventHandler<IV_PointReceivedChannel_01_EventArgs> handler; 
+            lock(IV_PointReceivedChannel_01_EventLock)
             {
-                handler = _IV_PointReceived;
+                handler = _IV_PointReceivedChannel_01;
             }
             if (handler != null)
             {
@@ -97,8 +99,51 @@ namespace BreakJunctions.Events
 
         #endregion
 
+        #region 2-nd channel point received events
+
+        private readonly object IV_PointReceivedChannel_02_EventLock = new object();
+        private EventHandler<IV_PointReceivedChannel_02_EventArgs> _IV_PointReceivedChannel_02;
+        public event EventHandler<IV_PointReceivedChannel_02_EventArgs> IV_PointReceivedChannel_02
+        {
+            add
+            {
+                lock (IV_PointReceivedChannel_02_EventLock)
+                {
+                    if (_IV_PointReceivedChannel_02 == null || !_IV_PointReceivedChannel_02.GetInvocationList().Contains(value))
+                    {
+                        _IV_PointReceivedChannel_02 += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock (IV_PointReceivedChannel_02_EventLock)
+                {
+                    _IV_PointReceivedChannel_02 -= value;
+                }
+            }
+        }
+        public virtual void OnIV_PointReceivedChannel_02(object sender, IV_PointReceivedChannel_02_EventArgs e)
+        {
+            EventHandler<IV_PointReceivedChannel_02_EventArgs> handler;
+            lock (IV_PointReceivedChannel_02_EventLock)
+            {
+                handler = _IV_PointReceivedChannel_02;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
         #region TimeTrace Curve Measurements Events
-        
+
         //Time trace measurements state changed
 
         private readonly object TimeTraceMeasurementsStateChanged_EventLock = new object();

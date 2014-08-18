@@ -186,7 +186,7 @@
 						<ColumnDefinition Width="Auto"></ColumnDefinition>
 					</Grid.ColumnDefinitions>
                     
-                    <Expander Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Expander Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 0 0 5">
                         <Expander.Header>
                             <TextBlock>Measurement Parameters</TextBlock>
                         </Expander.Header>

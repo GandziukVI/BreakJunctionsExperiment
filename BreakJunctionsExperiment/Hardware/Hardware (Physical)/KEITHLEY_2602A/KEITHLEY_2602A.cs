@@ -237,12 +237,12 @@ namespace Hardware
                             {
                                 case KEITHLEY_2602A_Channels.ChannelA:
                                     {
-                                        IV_Script = CommandBuilder.AppendFormat(IV_Script, "a", "v", NumberOfAverages, _TimeDelay, "SMUA", "MEASURE_DCVOLTS").ToString();
+                                        IV_Script = CommandBuilder.AppendFormat(IV_Script, "a", "v", NumberOfAverages, _TimeDelay, "SMUA_SMUB", "MEASURE_DCVOLTS").ToString();
                                         ExecuteQuery(IV_Script, ref MeasuredValue);
                                     } break;
                                 case KEITHLEY_2602A_Channels.ChannelB:
                                     {
-                                        IV_Script = CommandBuilder.AppendFormat(IV_Script, "b", "v", NumberOfAverages, _TimeDelay, "SMUB", "MEASURE_DCVOLTS").ToString();
+                                        IV_Script = CommandBuilder.AppendFormat(IV_Script, "b", "v", NumberOfAverages, _TimeDelay, "SMUA_SMUB", "MEASURE_DCVOLTS").ToString();
                                         ExecuteQuery(IV_Script, ref MeasuredValue);
                                     } break;
                                 default:
@@ -255,12 +255,12 @@ namespace Hardware
                             {
                                 case KEITHLEY_2602A_Channels.ChannelA:
                                     {
-                                        IV_Script = CommandBuilder.AppendFormat(IV_Script, "a", "i", NumberOfAverages, _TimeDelay, "SMUA", "MEASURE_DCAMPS").ToString();
+                                        IV_Script = CommandBuilder.AppendFormat(IV_Script, "a", "i", NumberOfAverages, _TimeDelay, "SMUA_SMUB", "MEASURE_DCAMPS").ToString();
                                         ExecuteQuery(IV_Script, ref MeasuredValue);
                                     } break;
                                 case KEITHLEY_2602A_Channels.ChannelB:
                                     {
-                                        IV_Script = CommandBuilder.AppendFormat(IV_Script, "b", "i", NumberOfAverages, _TimeDelay, "SMUB", "MEASURE_DCAMPS").ToString();
+                                        IV_Script = CommandBuilder.AppendFormat(IV_Script, "b", "i", NumberOfAverages, _TimeDelay, "SMUA_SMUB", "MEASURE_DCAMPS").ToString();
                                         ExecuteQuery(IV_Script, ref MeasuredValue);
                                     } break;
                                 default:
@@ -358,12 +358,12 @@ namespace Hardware
                                         {
                                             case KEITHLEY_2601A_SourceMode.Voltage:
                                                 {
-                                                    R_Script = CommandBuilder.AppendFormat(R_Script, "a", "OUTPUT_DCVOLTS", "v", _valueThroughTheStructure, "i", _limiti, "SMUA", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
+                                                    R_Script = CommandBuilder.AppendFormat(R_Script, "a", "OUTPUT_DCVOLTS", "v", _valueThroughTheStructure, "i", _limiti, "SMUA_SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
                                                     ExecuteQuery(R_Script, ref MeasuredValue);
                                                 } break;
                                             case KEITHLEY_2601A_SourceMode.Current:
                                                 {
-                                                    R_Script = CommandBuilder.AppendFormat(R_Script, "a", "OUTPUT_DCAMPS", "i", _valueThroughTheStructure, "v", _limitv, "SMUA", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
+                                                    R_Script = CommandBuilder.AppendFormat(R_Script, "a", "OUTPUT_DCAMPS", "i", _valueThroughTheStructure, "v", _limitv, "SMUA_SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
                                                     ExecuteQuery(R_Script, ref MeasuredValue);
                                                 } break;
                                             default:
@@ -376,12 +376,12 @@ namespace Hardware
                                         {
                                             case KEITHLEY_2601A_SourceMode.Voltage:
                                                 {
-                                                    R_Script = CommandBuilder.AppendFormat(R_Script, "b", "OUTPUT_DCVOLTS", "v", _valueThroughTheStructure, "i", _limiti, "SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
+                                                    R_Script = CommandBuilder.AppendFormat(R_Script, "b", "OUTPUT_DCVOLTS", "v", _valueThroughTheStructure, "i", _limiti, "SMUA_SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
                                                     ExecuteQuery(R_Script, ref MeasuredValue);
                                                 } break;
                                             case KEITHLEY_2601A_SourceMode.Current:
                                                 {
-                                                    R_Script = CommandBuilder.AppendFormat(R_Script, "b", "OUTPUT_DCAMPS", "i", _valueThroughTheStructure, "v", _limitv, "SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
+                                                    R_Script = CommandBuilder.AppendFormat(R_Script, "b", "OUTPUT_DCAMPS", "i", _valueThroughTheStructure, "v", _limitv, "SMUA_SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
                                                     ExecuteQuery(R_Script, ref MeasuredValue);
                                                 } break;
                                             default:
@@ -402,12 +402,12 @@ namespace Hardware
                                         {
                                             case KEITHLEY_2601A_SourceMode.Voltage:
                                                 {
-                                                    P_Script = CommandBuilder.AppendFormat(P_Script, "a", "i", "SMUA", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
+                                                    P_Script = CommandBuilder.AppendFormat(P_Script, "a", "i", "SMUA_SMUB", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
                                                     ExecuteQuery(P_Script, ref MeasuredValue);
                                                 } break;
                                             case KEITHLEY_2601A_SourceMode.Current:
                                                 {
-                                                    P_Script = CommandBuilder.AppendFormat(P_Script, "a", "v", "SMUA", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
+                                                    P_Script = CommandBuilder.AppendFormat(P_Script, "a", "v", "SMUA_SMUB", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
                                                     ExecuteQuery(P_Script, ref MeasuredValue);
                                                 } break;
                                             default:
@@ -420,12 +420,12 @@ namespace Hardware
                                         {
                                             case KEITHLEY_2601A_SourceMode.Voltage:
                                                 {
-                                                    P_Script = CommandBuilder.AppendFormat(P_Script, "b", "i", "SMUA", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
+                                                    P_Script = CommandBuilder.AppendFormat(P_Script, "b", "i", "SMUA_SMUB", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
                                                     ExecuteQuery(P_Script, ref MeasuredValue);
                                                 } break;
                                             case KEITHLEY_2601A_SourceMode.Current:
                                                 {
-                                                    P_Script = CommandBuilder.AppendFormat(P_Script, "b", "v", "SMUA", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
+                                                    P_Script = CommandBuilder.AppendFormat(P_Script, "b", "v", "SMUA_SMUB", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
                                                     ExecuteQuery(P_Script, ref MeasuredValue);
                                                 } break;
                                             default:

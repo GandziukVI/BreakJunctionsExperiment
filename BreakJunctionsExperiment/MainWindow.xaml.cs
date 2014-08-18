@@ -274,6 +274,8 @@ namespace BreakJunctions
 
             #region 2-nd channel
 
+            _SaveIV_MeasuremrentFileNameChannel_02 = string.Empty;
+
             _SaveIV_MeasureDialogChannel_02 = new SaveFileDialog();
             _SaveIV_MeasureDialogChannel_02.FileName = "IV_MeasurementChannel_02_";
             _SaveIV_MeasureDialogChannel_02.DefaultExt = ".dat";
@@ -352,7 +354,7 @@ namespace BreakJunctions
                 }
                 //Creating new plot and attaching it to the chart
                 _CurrentIV_CurveChannel_01 = new List<PointD>();
-                _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSource(_CurrentIV_CurveChannel_01);
+                _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSource(_CurrentIV_CurveChannel_01, "Channel_01");
                 _experimentalIV_DataSourceChannel_01.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_01 = new LineGraph(_experimentalIV_DataSourceChannel_01);
                 _IV_LineGraphChannel_01.AddToPlotter(chartIV_CurvesChannel_01);
@@ -370,7 +372,7 @@ namespace BreakJunctions
                 }
                 //Creating new plot and attaching it to the chart
                 _CurrentIV_CurveChannel_02 = new List<PointD>();
-                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSource(_CurrentIV_CurveChannel_02);
+                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSource(_CurrentIV_CurveChannel_02, "Channel_02");
                 _experimentalIV_DataSourceChannel_02.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_02 = new LineGraph(_experimentalIV_DataSourceChannel_02);
                 _IV_LineGraphChannel_02.AddToPlotter(chartIV_CurvesChannel_02);
@@ -414,7 +416,7 @@ namespace BreakJunctions
                 var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueChannel_01;
                 var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepChannel_01;
 
-                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01);
+                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, "Channel_01");
 
                 #endregion
 
@@ -424,7 +426,7 @@ namespace BreakJunctions
                 var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueChannel_02;
                 var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepChannel_02;
 
-                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02);
+                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, "Channel_02");
 
                 #endregion
 
@@ -445,6 +447,7 @@ namespace BreakJunctions
                     
                     newFileNameChannel_01 = _SaveIV_MeasuremrentFileNameChannel_01.Insert(_SaveIV_MeasuremrentFileNameChannel_01.LastIndexOf('.'), _IV_FileNumberChannel_01);
                     newFileNameChannel_02 = _SaveIV_MeasuremrentFileNameChannel_02.Insert(_SaveIV_MeasuremrentFileNameChannel_02.LastIndexOf('.'), _IV_FileNumberChannel_02);
+                    
                     ++_IV_FilesCounterChannel_01;
                     ++_IV_FilesCounterChannel_02;
                 }
@@ -481,8 +484,8 @@ namespace BreakJunctions
                 }
 
 
-                _IV_SingleMeasurementChannel_01 = new IV_SingleMeasurement(newFileNameChannel_01);
-                _IV_SingleMeasurementChannel_02 = new IV_SingleMeasurement(newFileNameChannel_02);
+                _IV_SingleMeasurementChannel_01 = new IV_SingleMeasurement(newFileNameChannel_01, "Channel_01");
+                _IV_SingleMeasurementChannel_02 = new IV_SingleMeasurement(newFileNameChannel_02, "Channel_02");
 
                 #endregion
 
@@ -525,7 +528,7 @@ namespace BreakJunctions
             //Updating interface to show that measurement is in process
             this.Dispatcher.BeginInvoke(new Action(delegate()
             {
-                this.labelMeasurementStatus.Content = "In process...";
+                this.labelMeasurementStatusChannel_01.Content = "In process...";
             }));
 
             //Starting measurements
@@ -535,13 +538,13 @@ namespace BreakJunctions
         private void backgroundIV_Measure_ProgressChangedChannel_01(object sender, ProgressChangedEventArgs e)
         {
             //Updating interface to show measurement progress
-            this.progressBarMeasurementProgress.Value = e.ProgressPercentage;
+            this.progressBarMeasurementProgressChannel_01.Value = e.ProgressPercentage;
         }
 
         private void backgroundIV_Measure_RunWorkerCompletedChannel_01(object sender, RunWorkerCompletedEventArgs e)
         {
             //Updating interface to show that measurement is completed
-            this.labelMeasurementStatus.Content = "Ready";
+            this.labelMeasurementStatusChannel_01.Content = "Ready";
         }
 
         private void on_cmdIV_DataFileNameBrowseClickChannel_01(object sender, RoutedEventArgs e)
@@ -817,7 +820,7 @@ namespace BreakJunctions
         private void backgroundTimeTraceMeasureProgressChangedChannel_01(object sender, ProgressChangedEventArgs e)
         {
             //Updating interface to show measurement progress
-            this.progressBarMeasurementProgress.Value = e.ProgressPercentage;
+            this.progressBarMeasurementProgressChannel_01.Value = e.ProgressPercentage;
         }
 
         private void backgroundTimeTrace_RunWorkerCompletedChannel_01(object sender, RunWorkerCompletedEventArgs e)
@@ -864,7 +867,7 @@ namespace BreakJunctions
         private void backgroundTimeTraceMeasureProgressChangedChannel_02(object sender, ProgressChangedEventArgs e)
         {
             //Updating interface to show measurement progress
-            this.progressBarMeasurementProgress.Value = e.ProgressPercentage;
+            this.progressBarMeasurementProgressChannel_02.Value = e.ProgressPercentage;
         }
 
         private void backgroundTimeTrace_RunWorkerCompletedChannel_02(object sender, RunWorkerCompletedEventArgs e)
@@ -893,6 +896,7 @@ namespace BreakJunctions
             this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
             this.controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementMicrometricBoltPosition = e.Position;
         }
+
         #endregion
 
         #region Checking User Input
