@@ -10,7 +10,7 @@ namespace BreakJunctions
     /// <summary>
     /// Realizes MVVM interactions for main window
     /// </summary>
-    public class IV_And_TimeTraceViewModel : INotifyPropertyChanged
+    /*public class IV_And_TimeTraceViewModel : INotifyPropertyChanged
     {
 
         #region Singleton object realization
@@ -449,5 +449,5 @@ namespace BreakJunctions
         #endregion
 
         #endregion
-    }
+    }*/
 }

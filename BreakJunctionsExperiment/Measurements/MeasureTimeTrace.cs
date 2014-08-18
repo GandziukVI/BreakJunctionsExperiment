@@ -49,8 +49,18 @@ namespace BreakJunctions.Measurements
             set { _ValueThroughTheStructure = value; }
         }
 
-        private int _NumberOfAverages = IV_And_TimeTraceViewModel.Instance.TimeTraceMeasurementNumberOfAverages;
-        private double _TimeDelay = IV_And_TimeTraceViewModel.Instance.TimeTraceMeasurementTimeDelay;
+        private int _NumberOfAverages = 2;
+        public int NumberOfAverages
+        {
+            get { return _NumberOfAverages; }
+            set { _NumberOfAverages = value; }
+        }
+        private double _TimeDelay = 0.005;
+        public double TimeDelay
+        {
+            get { return _TimeDelay; }
+            set { _TimeDelay = value; }
+        }
         
         private KEITHLEY_2601A_SourceMode _SourceMode;
         public KEITHLEY_2601A_SourceMode SourceMode

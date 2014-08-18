@@ -15,14 +15,14 @@
 			<TabItem Header="I-V Measurements" VerticalAlignment="Stretch">
 				<Grid x:Name="IVLayout">
 					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="285"/>
-						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="285" />
+						<RowDefinition Height="Auto" />
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition/>
+						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 					
 					<!-- Menu -->
@@ -34,22 +34,25 @@
 							<MenuItem x:Name="menuExit" Header="_Exit" Click="onMenuExitClick"/>
 						</MenuItem>
 						<MenuItem Header="_Measurement">
-							<MenuItem x:Name="menuSetSMU" Header="Set _SMU" Click="onSetSMU_Click"/>
+							<MenuItem x:Name="menuSetSMU" Header="Set _SMU CH_01" Click="onSetSMU_Click"/>
+							<MenuItem x:Name="menuSetSMU_Channel_02" Header="Set S_MU CH_02" Click="onSetSMU_Channel_02_Click"/>
 						</MenuItem>
 					</Menu>
 					
 					<Grid x:Name="ScrollableRow1" Grid.Row="1" Grid.Column="0">
 						<Grid.RowDefinitions>
-							<RowDefinition/>
+							<RowDefinition />
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition/>
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
 							<ColumnDefinition Width="Auto"/>
 						</Grid.ColumnDefinitions>
 							
 						<!-- Chart plotter to plot I-V curves -->
-						<d3:ChartPlotter x:Name="chartIV_Curves" Grid.Row="0" Grid.Column="0" Margin="10">
-							<d3:Header Content="I-V characteristics"/>
+						<d3:ChartPlotter Grid.Row="0" Grid.Column="0" x:Name="chartIV_Curves" Margin="10">
+							<d3:Header Content="I-V characteristics CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>
 							</d3:HorizontalAxis>
@@ -59,7 +62,20 @@
 							<d3:Viewport2D AutoFitToView="True"/>
 						</d3:ChartPlotter>
 							
-						<ScrollViewer Grid.Row="0" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+
+						<d3:ChartPlotter Grid.Row="0" Grid.Column="2" x:Name="chartIV_CurvesChannel_01" Margin="10">
+							<d3:Header Content="I-V characteristics CH_02"/>
+							<d3:HorizontalAxis>
+								<d3:HorizontalAxisTitle Content="Voltage"/>
+							</d3:HorizontalAxis>
+							<d3:VerticalAxis>
+								<d3:VerticalAxisTitle Content="Current"/>
+							</d3:VerticalAxis>
+							<d3:Viewport2D AutoFitToView="True"/>
+						</d3:ChartPlotter>
+
+						<ScrollViewer Grid.Row="0" Grid.Column="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 							<local:IV_MeasurementSettings x:Name="controlIV_MeasurementSettings"/>
 						</ScrollViewer>
 					</Grid>
@@ -69,29 +85,42 @@
 									
 					<Grid x:Name="ScrollableRow2"  Grid.Row="3" Grid.Column="0">
 						<Grid.RowDefinitions>
-							<RowDefinition/>
+							<RowDefinition />
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition/>
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
 							<ColumnDefinition Width="Auto"/>
 						</Grid.ColumnDefinitions>
 							
-						<!-- End time trace scroll viever -->
-					<!-- Time trace chart -->
-						<d3:ChartPlotter x:Name="chartTimeTrace" Grid.Row="0" Grid.Column="0" Margin="10">
-								
-							<d3:Header Content="Time trace"/>
+						<!-- Time trace chart -->
+						<d3:ChartPlotter x:Name="chartTimeTrace" Grid.Row="0" Grid.Column="0" Margin="10">	
+							<d3:Header Content="Time trace CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Distance"/>
 							</d3:HorizontalAxis>
 							<d3:VerticalAxis>
-								<d3:VerticalAxisTitle Content="Current"/>
+								<d3:VerticalAxisTitle Content="Resistance"/>
 							</d3:VerticalAxis>
 							<d3:Viewport2D AutoFitToView="True"/>
 						</d3:ChartPlotter>
-							
+						
+						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+
+						<d3:ChartPlotter x:Name="chartTimeTraceChannel_02" Grid.Row="0" Grid.Column="2" Margin="10">	
+							<d3:Header Content="Time trace CH_02"/>
+							<d3:HorizontalAxis>
+								<d3:HorizontalAxisTitle Content="Distance"/>
+							</d3:HorizontalAxis>
+							<d3:VerticalAxis>
+								<d3:VerticalAxisTitle Content="Resistance"/>
+							</d3:VerticalAxis>
+							<d3:Viewport2D AutoFitToView="True"/>
+						</d3:ChartPlotter>
+
 						<!-- Time trace scroll viever -->
-						<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="0" Grid.Column="1" Margin="0 5 0 0">
+						<ScrollViewer Grid.Row="0" Grid.Column="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0 5 0 0">
 							<local:TimeTraceMeasurementSettings x:Name="controlTimeTraceMeasurementSettings" />
 						</ScrollViewer>
 					</Grid>	
@@ -99,12 +128,18 @@
 					<Grid Grid.Row="4" Grid.Column="0" Margin="5">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition/>
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
 						</Grid.ColumnDefinitions>
 						
-						<Label x:Name="labelMeasurementStatus" Grid.Column="0" Width="120" Content="Ready"/>
+						<Label x:Name="labelMeasurementStatus" Grid.Column="0" Width="120" Content="Ready" HorizontalContentAlignment="Center"/>
 						<ProgressBar x:Name="progressBarMeasurementProgress" Grid.Column="1" />
 						<TextBlock x:Name="textBlockProgressStatus" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarMeasurementProgress, StringFormat=\{0:0\}%}"/>
+
+						<Label x:Name="labelMeasurementStatusChannel_02" Grid.Column="2" Width="120" Content="Ready" HorizontalContentAlignment="Center"/>
+						<ProgressBar x:Name="progressBarMeasurementProgressChannel_02" Grid.Column="3" />
+						<TextBlock x:Name="textBlockProgressStatusChannel_02" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarMeasurementProgress, StringFormat=\{0:0\}%}"/>
 					</Grid>	<!-- End progress bar panel -->	
 				</Grid> <!-- IVLayout -->
 			</TabItem>
