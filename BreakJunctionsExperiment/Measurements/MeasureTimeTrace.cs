@@ -154,6 +154,8 @@ namespace BreakJunctions.Measurements
 
         private void OnMotionPositionMeasured(object sender, Motion_EventArgs e)
         {
+            var worker = sender as BackgroundWorker;
+
             switch (_MeasureMode)
             {
                 case KEITHLEY_2601A_MeasureMode.Voltage:
@@ -166,10 +168,12 @@ namespace BreakJunctions.Measurements
                                 case Channels.Channel_01:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredVoltage));
+                                        worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                     } break;
                                 case Channels.Channel_02:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredVoltage));
+                                        worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                     } break;
                                 default:
                                     break;
@@ -186,10 +190,12 @@ namespace BreakJunctions.Measurements
                                 case Channels.Channel_01:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredCurrent));
+                                        worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                     } break;
                                 case Channels.Channel_02:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredCurrent));
+                                        worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                     } break;
                                 default:
                                     break;
@@ -210,10 +216,12 @@ namespace BreakJunctions.Measurements
                                             case Channels.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
+                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
+                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                                 } break;
                                             default:
                                                 break;
@@ -230,10 +238,12 @@ namespace BreakJunctions.Measurements
                                             case Channels.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
+                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
+                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                                 } break;
                                             default:
                                                 break;
@@ -258,10 +268,12 @@ namespace BreakJunctions.Measurements
                                             case Channels.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
+                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
+                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                                 } break;
                                             default:
                                                 break;
@@ -278,10 +290,12 @@ namespace BreakJunctions.Measurements
                                             case Channels.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
+                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
+                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
                                                 } break;
                                             default:
                                                 break;

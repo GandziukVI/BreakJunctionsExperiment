@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 
 using BreakJunctions.Events;
+using BreakJunctions.Plotting;
 
 namespace BreakJunctions.DataHandling
 {
@@ -30,12 +31,7 @@ namespace BreakJunctions.DataHandling
         private StringBuilder _DataBuilder;
         private string _DataString;
 
-        private string _ChannelIdentificator;
-        public string ChannelIdentificator
-        {
-            get { return _ChannelIdentificator; }
-            set { _ChannelIdentificator = value; }
-        }
+        private Channels _Channel;
 
         #endregion
 
@@ -46,7 +42,7 @@ namespace BreakJunctions.DataHandling
         /// with specified file name
         /// </summary>
         /// <param name="fileName">File name</param>
-        public IV_SingleMeasurement(string fileName, string ChannelIdentificator_Val)
+        public IV_SingleMeasurement(string fileName, Channels Channel)
         { 
             this._FileName = fileName;
 
@@ -63,12 +59,21 @@ namespace BreakJunctions.DataHandling
 
             _DataString = "{0}\t{1}";
 
-            _ChannelIdentificator = ChannelIdentificator_Val;
+            _Channel = Channel;
 
-            if(_ChannelIdentificator == "Channel_01")
-                AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceivedChannel_01;
-            else if(_ChannelIdentificator == "Channel_02")
-                AllEventsHandler.Instance.IV_PointReceivedChannel_02 += OnIV_PointReceivedChannel_02;
+            switch (_Channel)
+            {
+                case Channels.Channel_01:
+                    { 
+                        AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceivedChannel_01;
+                    } break;
+                case Channels.Channel_02:
+                    {
+                        AllEventsHandler.Instance.IV_PointReceivedChannel_02 += OnIV_PointReceivedChannel_02;
+                    } break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -88,10 +93,19 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         public void Dispose()
         {
-            if(_ChannelIdentificator == "Channel_01")
-                AllEventsHandler.Instance.IV_PointReceivedChannel_01 -= OnIV_PointReceivedChannel_01;
-            else if (_ChannelIdentificator == "Channel_02")
-                AllEventsHandler.Instance.IV_PointReceivedChannel_02 -= OnIV_PointReceivedChannel_02;
+            switch (_Channel)
+            {
+                case Channels.Channel_01:
+                    {
+                        AllEventsHandler.Instance.IV_PointReceivedChannel_01 -= OnIV_PointReceivedChannel_01;
+                    } break;
+                case Channels.Channel_02:
+                    {
+                        AllEventsHandler.Instance.IV_PointReceivedChannel_02 -= OnIV_PointReceivedChannel_02;
+                    } break;
+                default:
+                    break;
+            }
 
             _FileName = string.Empty;
             _DataString = string.Empty;

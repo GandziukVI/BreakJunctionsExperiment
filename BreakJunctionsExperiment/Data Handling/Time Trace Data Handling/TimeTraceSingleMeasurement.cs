@@ -6,6 +6,7 @@ using System.Text;
 
 using Hardware;
 using BreakJunctions.Events;
+using BreakJunctions.Plotting;
 
 namespace BreakJunctions.DataHandling
 {
@@ -16,7 +17,7 @@ namespace BreakJunctions.DataHandling
     /// </summary>
     class TimeTraceSingleMeasurement : IDisposable
     {
-        #region Single measurement file paremeters
+        #region Single measurement paremeters
 
         private string _FileName;
         public string FileName { get { return _FileName; } }
@@ -30,6 +31,8 @@ namespace BreakJunctions.DataHandling
         private string _Header;
         private string _Subheader;
 
+        private Channels _Channel;
+
         #endregion
 
         #region Constructor / Destructor
@@ -40,9 +43,10 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         /// <param name="fileName">File name</param>
         /// <param name="sourceMode">Source mode</param>
-        public TimeTraceSingleMeasurement(string fileName, SourceMode sourceMode)
+        public TimeTraceSingleMeasurement(string fileName, SourceMode sourceMode, Channels Channel)
         { 
             this._FileName = fileName;
+            this._Channel = Channel;
 
             _OutputSingleMeasureStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
             _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
@@ -51,13 +55,13 @@ namespace BreakJunctions.DataHandling
             {
                 case SourceMode.Voltage:
                     {
-                        _Header = "Distance\tI";
-                        _Subheader = "m\tA";
+                        _Header = "Distance\tR";
+                        _Subheader = "m\tOhm";
                     } break;
                 case SourceMode.Current:
                     {
-                        _Header = "Distance\tU";
-                        _Subheader = "m\tV";
+                        _Header = "Distance\tR";
+                        _Subheader = "m\tOhm";
                     } break;
                 default:
                     break;
@@ -72,8 +76,20 @@ namespace BreakJunctions.DataHandling
             _DataBuilder = new StringBuilder();
 
             _DataString = "{0}\t{1}";
-
-            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReceived;
+            
+            switch (_Channel)
+            {
+                case Channels.Channel_01:
+                    {
+                        AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReceivedChannel_01;
+                    } break;
+                case Channels.Channel_02:
+                    {
+                        AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += OnTimeTracePointReceivedChannel_02;
+                    } break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -93,7 +109,19 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         public void Dispose()
         {
-            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 -= OnTimeTracePointReceived;
+            switch (_Channel)
+            {
+                case Channels.Channel_01:
+                    {
+                        AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 -= OnTimeTracePointReceivedChannel_01;
+                    } break;
+                case Channels.Channel_02:
+                    {
+                        AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 -= OnTimeTracePointReceivedChannel_02;
+                    } break;
+                default:
+                    break;
+            }
 
             _FileName = string.Empty;
             _DataString = string.Empty;
@@ -104,7 +132,21 @@ namespace BreakJunctions.DataHandling
 
         #region Functionality implementation
 
-        private void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
+        private void OnTimeTracePointReceivedChannel_01(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
+        {
+            _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
+            _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
+
+            _DataBuilder = new StringBuilder();
+            _DataBuilder.AppendFormat(_DataString, e.X, e.Y);
+
+            _OutputSingleMeasureStreamWriter.WriteLine(_DataBuilder.ToString());
+
+            _OutputSingleMeasureStreamWriter.Close();
+            _OutputSingleMeasureStream.Close();
+        }
+
+        private void OnTimeTracePointReceivedChannel_02(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
         {
             _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
             _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);

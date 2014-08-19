@@ -135,11 +135,11 @@
 						
 						<Label x:Name="labelMeasurementStatusChannel_01" Grid.Column="0" Width="120" Content="Ready" HorizontalContentAlignment="Center"/>
 						<ProgressBar x:Name="progressBarMeasurementProgressChannel_01" Grid.Column="1" />
-						<TextBlock x:Name="textBlockProgressStatus" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarMeasurementProgress, StringFormat=\{0:0\}%}"/>
+                        <TextBlock x:Name="textBlockProgressStatus" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarMeasurementProgressChannel_01, StringFormat=\{0:0\}%}"/>
 
 						<Label x:Name="labelMeasurementStatusChannel_02" Grid.Column="2" Width="120" Content="Ready" HorizontalContentAlignment="Center"/>
 						<ProgressBar x:Name="progressBarMeasurementProgressChannel_02" Grid.Column="3" />
-						<TextBlock x:Name="textBlockProgressStatusChannel_02" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarMeasurementProgress, StringFormat=\{0:0\}%}"/>
+                        <TextBlock x:Name="textBlockProgressStatusChannel_02" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarMeasurementProgressChannel_02, StringFormat=\{0:0\}%}"/>
 					</Grid>	<!-- End progress bar panel -->	
 				</Grid> <!-- IVLayout -->
 			</TabItem>
