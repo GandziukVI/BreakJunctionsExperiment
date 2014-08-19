@@ -231,11 +231,11 @@ namespace BreakJunctions.Plotting
             {
                 case Channels.Channel_01:
                     {
-                        AllEventsHandler.Instance.TimetracePointReceivedChannel_01 += OnTimeTracePointReceived;
+                        AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReceived;
                     } break;
                 case Channels.Channel_02:
                     {
-                        AllEventsHandler.Instance.TimetracePointReceivedChannel_02 += OnTimeTracePointReceived;
+                        AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += OnTimeTracePointReceived;
                     } break;
                 default:
                     break;
@@ -248,11 +248,11 @@ namespace BreakJunctions.Plotting
             {
                 case Channels.Channel_01:
                     {
-                        AllEventsHandler.Instance.TimetracePointReceivedChannel_01 -= OnTimeTracePointReceived;
+                        AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 -= OnTimeTracePointReceived;
                     } break;
                 case Channels.Channel_02:
                     {
-                        AllEventsHandler.Instance.TimetracePointReceivedChannel_02 -= OnTimeTracePointReceived;
+                        AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 -= OnTimeTracePointReceived;
                     } break;
                 default:
                     break;

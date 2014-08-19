@@ -95,7 +95,7 @@
 						</Grid.ColumnDefinitions>
 							
 						<!-- Time trace chart -->
-						<d3:ChartPlotter x:Name="chartTimeTrace" Grid.Row="0" Grid.Column="0" Margin="10" LegendVisible="False">	
+						<d3:ChartPlotter x:Name="chartTimeTraceChannel_01" Grid.Row="0" Grid.Column="0" Margin="10" LegendVisible="False">	
 							<d3:Header Content="Time trace CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Distance"/>

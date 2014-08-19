@@ -78,10 +78,11 @@ namespace BreakJunctions.Measurements
         }
 
         private Channels _Channel;
+        private MeasureTimeTraceChannelController _ChannelController;
 
         private bool _CancelMeasures = false;
 
-        public MeasureTimeTrace(IMotion motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure, Channels Channel)
+        public MeasureTimeTrace(IMotion motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure, Channels Channel, MeasureTimeTraceChannelController ChannelController)
         {
             _Motor = motor;
             _StartPosition = startPosition;
@@ -91,6 +92,7 @@ namespace BreakJunctions.Measurements
             _MeasureMode = measureMode;
             _ValueThroughTheStructure = valueThroughTheStructure;
             _Channel = Channel;
+            _ChannelController = ChannelController;
 
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += OnTimeTraceMeasurementsStateChanged;
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;

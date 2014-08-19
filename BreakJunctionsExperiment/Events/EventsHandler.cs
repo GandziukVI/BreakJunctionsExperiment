@@ -193,7 +193,7 @@ namespace BreakJunctions.Events
 
         private readonly object TimeTracePointReceivedChannel_01_EventLock = new object();
         private EventHandler<TimeTracePointReceivedChannel_01_EventArgs> _TimeTracePointReceivedChannel_01;
-        public event EventHandler<TimeTracePointReceivedChannel_01_EventArgs> TimetracePointReceivedChannel_01
+        public event EventHandler<TimeTracePointReceivedChannel_01_EventArgs> TimeTracePointReceivedChannel_01
         {
             add
             {
@@ -232,7 +232,7 @@ namespace BreakJunctions.Events
 
         private readonly object TimeTracePointReceivedChannel_02_EventLock = new object();
         private EventHandler<TimeTracePointReceivedChannel_02_EventArgs> _TimeTracePointReceivedChannel_02;
-        public event EventHandler<TimeTracePointReceivedChannel_02_EventArgs> TimetracePointReceivedChannel_02
+        public event EventHandler<TimeTracePointReceivedChannel_02_EventArgs> TimeTracePointReceivedChannel_02
         {
             add
             {
@@ -260,6 +260,45 @@ namespace BreakJunctions.Events
                 handler = _TimeTracePointReceivedChannel_02;
             }
             if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        #endregion
+
+        #region Both channels point received
+
+        private readonly object TimeTraceBothChannelsPointsReceived_EventLock = new object();
+        private EventHandler<TimeTraceBothChannelsPointsReceived_EventArgs> _TimeTraceBothChannelsPointsReceived;
+        public event EventHandler<TimeTraceBothChannelsPointsReceived_EventArgs> TimeTraceBothChannelsPointsReceived
+        {
+            add
+            {
+                lock (TimeTraceBothChannelsPointsReceived_EventLock)
+                {
+                    if (_TimeTraceBothChannelsPointsReceived == null || !_TimeTraceBothChannelsPointsReceived.GetInvocationList().Contains(value))
+                    {
+                        _TimeTraceBothChannelsPointsReceived += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock (TimeTraceBothChannelsPointsReceived_EventLock)
+                {
+                    _TimeTraceBothChannelsPointsReceived -= value;
+                }
+            }
+        }
+        public virtual void OnTimeTraceBothChannelsPointsReceived(object sender, TimeTraceBothChannelsPointsReceived_EventArgs e)
+        {
+            EventHandler<TimeTraceBothChannelsPointsReceived_EventArgs> handler;
+            lock (TimeTraceBothChannelsPointsReceived_EventLock)
+            {
+                handler = _TimeTraceBothChannelsPointsReceived;
+            }
+            if(handler != null)
             {
                 handler(sender, e);
             }

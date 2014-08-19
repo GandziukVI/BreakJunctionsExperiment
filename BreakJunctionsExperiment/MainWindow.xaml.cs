@@ -174,6 +174,8 @@ namespace BreakJunctions
 
         #endregion
 
+        private MeasureTimeTraceChannelController _ChannelController;
+
         TimeTraceMeasurementSettingsDataModel _TimeTraceExperimentSettings;
 
         #endregion
@@ -181,6 +183,20 @@ namespace BreakJunctions
         public MainWindow()
 		{
 			this.InitializeComponent();
+
+            #region Removing Legend From Charts
+
+            chartIV_CurvesChannel_01.LegendVisible = false;
+            chartIV_CurvesChannel_02.LegendVisible = false;
+            chartTimeTraceChannel_01.LegendVisible = false;
+            chartTimeTraceChannel_02.LegendVisible = false;
+
+            chartIV_CurvesChannel_01.Children.Remove(chartIV_CurvesChannel_01.Legend);
+            chartIV_CurvesChannel_02.Children.Remove(chartIV_CurvesChannel_02.Legend);
+            chartTimeTraceChannel_01.Children.Remove(chartTimeTraceChannel_01.Legend);
+            chartTimeTraceChannel_02.Children.Remove(chartTimeTraceChannel_02.Legend);
+
+            #endregion
 
             #region Interface model-view interactions
 
@@ -196,7 +212,7 @@ namespace BreakJunctions
 
             #region TimeTrace Model-view interactions
 
-            controlTimeTraceMeasurementSettings.cmdTimeTraceDataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01;
+            controlTimeTraceMeasurementSettings.cmdTimeTraceChannel_01_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01;
             //controlTimeTraceMeasurementSettings.cmdTimeTraceDistanceMoveToInitialPosition +=
             controlTimeTraceMeasurementSettings.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceStartMeasurementClick;
             controlTimeTraceMeasurementSettings.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceStopMeasurementClick;
@@ -611,9 +627,11 @@ namespace BreakJunctions
         {
             #region SMU, rendering and save data configurations
 
-            if (sourceDeviceConfigurationChannel_01 != null)
+            if ((sourceDeviceConfigurationChannel_01 != null) && (sourceDeviceConfigurationChannel_01 != null))
             {
                 #region Chart rendering settings
+
+                #region 1-st channel
 
                 if (_TimeTraceLineGraphChannel_01 != null)
                 {
@@ -623,15 +641,38 @@ namespace BreakJunctions
                 }
 
                 _CurrentTimeTraceChannel_01 = new List<PointD>();
-                _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSource(_CurrentTimeTraceChannel_01);
+                _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_01, Channels.Channel_01);
                 _experimentalTimeTraceDataSourceChannel_01.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_01 = new LineGraph(_experimentalTimeTraceDataSourceChannel_01);
-                _TimeTraceLineGraphChannel_01.AddToPlotter(chartTimeTrace);
+                _TimeTraceLineGraphChannel_01.AddToPlotter(chartTimeTraceChannel_01);
+
+                #endregion
+
+                #region 2-nd channel
+
+                if (_TimeTraceLineGraphChannel_02 != null)
+                {
+                    _experimentalTimeTraceDataSourceChannel_02.DetachPointReceiveEvent();
+                    _TimeTraceLineGraphChannel_02.Remove();
+                    _CurrentTimeTraceChannel_02.Clear();
+                }
+
+                _CurrentTimeTraceChannel_02 = new List<PointD>();
+                _experimentalTimeTraceDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_02, Channels.Channel_02);
+                _experimentalTimeTraceDataSourceChannel_02.AttachPointReceiveEvent();
+                _TimeTraceLineGraphChannel_02 = new LineGraph(_experimentalTimeTraceDataSourceChannel_02);
+                _TimeTraceLineGraphChannel_02.AddToPlotter(chartTimeTraceChannel_02);
+
+                #endregion
 
                 #endregion
 
                 //Getting SMU device
+
+                /*     Better implementation needed to realize lot of SMU     */
+
                 DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
+                DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
 
                 #region Time trace measurement configuration
 
@@ -646,14 +687,22 @@ namespace BreakJunctions
 
                 Motor = motor;
 
-                if (TimeTraceCurveChannel_01 != null)
+                if ((TimeTraceCurveChannel_01 != null) && (TimeTraceCurveChannel_02 != null))
                 {
                     TimeTraceCurveChannel_01.Dispose();
+                    TimeTraceCurveChannel_02.Dispose();
                 }
 
-                var valueThroughTheStructure = ExperimentSettings.TimeTraceMeasurementValueThrougtTheStructure;
-                var isTimeTraceVoltageModeChecked = ExperimentSettings.IsTimeTraceMeasurementVoltageModeChecked;
-                var isTimeTraceCurrentModeChecked = ExperimentSettings.IsTimeTraceMeasurementCurrentModeChecked;
+                if (_ChannelController != null)
+                    _ChannelController.Dispose();
+                _ChannelController = new MeasureTimeTraceChannelController();
+
+                //Implementation needed!!!
+
+                var valueThroughTheStructure = ExperimentSettings.TimeTraceMeasurementChannel_01_ValueThrougtTheStructure;
+
+                var isTimeTraceVoltageModeChecked = ExperimentSettings.IsTimeTraceMeasurementChannel_01_VoltageModeChecked;
+                var isTimeTraceCurrentModeChecked = ExperimentSettings.IsTimeTraceMeasurementChannel_01_CurrentModeChecked;
 
                 var selectedTimeTraceModeItem = (controlTimeTraceMeasurementSettings.tabControlTimeTraceMeasurementParameters.SelectedItem as TabItem).Header.ToString();
 
@@ -666,13 +715,13 @@ namespace BreakJunctions
 
                             if (isTimeTraceVoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure, Channels.Channel_01, _ChannelController);
                                 TimeTraceCurveChannel_01.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceCurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure, Channels.Channel_01, _ChannelController);
                                 TimeTraceCurveChannel_01.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
@@ -684,13 +733,13 @@ namespace BreakJunctions
 
                             if (isTimeTraceVoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure, Channels.Channel_01, _ChannelController);
                                 TimeTraceCurveChannel_01.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceCurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure, Channels.Channel_01, _ChannelController);
                                 TimeTraceCurveChannel_01.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
@@ -726,11 +775,11 @@ namespace BreakJunctions
                 {
                     string fileName = (new FileInfo(newFileName)).Name;
 
-                    if (ExperimentSettings.IsTimeTraceMeasurementVoltageModeChecked == true)
+                    if (ExperimentSettings.IsTimeTraceMeasurementChannel_01_VoltageModeChecked == true)
                     {
                         sourceMode = "Source mode: Voltage";
                     }
-                    else if (ExperimentSettings.IsTimeTraceMeasurementCurrentModeChecked == true)
+                    else if (ExperimentSettings.IsTimeTraceMeasurementChannel_01_CurrentModeChecked == true)
                     {
                         sourceMode = "SourceMode: Current";
                     }
@@ -773,13 +822,18 @@ namespace BreakJunctions
             if (timeTtraceMeasurementsInitSuccess)
             {
                 backgroundTimeTraceMeasureChannel_01.RunWorkerAsync();
+                backgroundTimeTraceMeasureChannel_02.RunWorkerAsync();
             }
             else MessageBox.Show("The device was not initialized!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 
 		private void on_cmdTimeTraceStopMeasurementClick(object sender, RoutedEventArgs e)
 		{
-            backgroundTimeTraceMeasureChannel_01.CancelAsync();
+            if ((backgroundTimeTraceMeasureChannel_01.IsBusy == true) && (backgroundTimeTraceMeasureChannel_02.IsBusy == true))
+            {
+                backgroundTimeTraceMeasureChannel_01.CancelAsync();
+                backgroundTimeTraceMeasureChannel_02.CancelAsync();
+            }
 		}
 
         #region 1-st Channel Background Work
@@ -886,8 +940,20 @@ namespace BreakJunctions
             {
                 _TimeTraceFilesCounterChannel_01 = 0;
                 _SaveTimeTraceMeasuremrentFileNameChannel_01 = _SaveTimeTraceMeasureDialogChannel_01.FileName;
-                //this.controlTimeTraceMeasurementSettings.textBoxTimeTraceFileName.Text = _SaveTimeTraceMeasureDialog.SafeFileName;
-                this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDataFileName = _SaveTimeTraceMeasureDialogChannel_01.SafeFileName;
+                this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName = _SaveTimeTraceMeasureDialogChannel_01.SafeFileName;
+            }
+        }
+
+        private void on_cmdTimeTraceDataFileNameBrowseClickChannel_02(object sender, RoutedEventArgs e)
+        {
+            //Choosing file name to save data
+            Nullable<bool> dialogResult = _SaveTimeTraceMeasureDialogChannel_02.ShowDialog();
+
+            if (dialogResult == true)
+            {
+                _TimeTraceFilesCounterChannel_02 = 0;
+                _SaveTimeTraceMeasuremrentFileNameChannel_02 = _SaveTimeTraceMeasureDialogChannel_02.FileName;
+                this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName = _SaveTimeTraceMeasureDialogChannel_02.SafeFileName;
             }
         }
 

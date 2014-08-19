@@ -73,7 +73,7 @@ namespace BreakJunctions.DataHandling
 
             _DataString = "{0}\t{1}";
 
-            AllEventsHandler.Instance.TimetracePointReceivedChannel_01 += OnTimeTracePointReceived;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReceived;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         public void Dispose()
         {
-            AllEventsHandler.Instance.TimetracePointReceivedChannel_01 -= OnTimeTracePointReceived;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 -= OnTimeTracePointReceived;
 
             _FileName = string.Empty;
             _DataString = string.Empty;

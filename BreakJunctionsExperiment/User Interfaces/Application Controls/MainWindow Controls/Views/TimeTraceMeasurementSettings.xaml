@@ -9,33 +9,181 @@
     <Expander x:Name="ExpanderTimeTraceMeasurements" ExpandDirection="Left">
         <Expander.Header>
             <TextBlock Width="Auto" Height="Auto" Text="Time Trace Measurement Settings" RenderTransformOrigin="0.5,0.5" Margin="5">
-										<TextBlock.LayoutTransform>
-											<TransformGroup>
-												<ScaleTransform ScaleX="1" ScaleY="1"/>
-												<SkewTransform AngleX="0" AngleY="0"/>
-												<RotateTransform Angle="-90"/>
-												<TranslateTransform X="0" Y="0"/>
-											</TransformGroup>
-										</TextBlock.LayoutTransform>
-										<TextBlock.RenderTransform>
-											<TransformGroup>
-												<ScaleTransform ScaleX="1" ScaleY="1"/>
-												<SkewTransform AngleX="0" AngleY="0"/>
-												<RotateTransform Angle="0"/>
-												<TranslateTransform X="0" Y="0"/>
-											</TransformGroup>
-										</TextBlock.RenderTransform>
+				<TextBlock.LayoutTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="-90"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</TextBlock.LayoutTransform>
+				<TextBlock.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+						<TranslateTransform X="0" Y="0"/>
+					</TransformGroup>
+				</TextBlock.RenderTransform>
             </TextBlock>
         </Expander.Header>
         <!-- Time trace settings -->
         <StackPanel x:Name="TimeTraceChartPanel" Orientation="Vertical" Margin="20 0 30 0">
-            <GroupBox Header="Source Mode" HorizontalAlignment="Stretch" Margin="5">
-                <StackPanel Height="Auto">
-                    <RadioButton x:Name="radioTimeTraceSourceVoltage" Content="Voltage Mode" Margin="5 5 5 2.5" IsChecked="{Binding IsTimeTraceMeasurementVoltageModeChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <RadioButton x:Name="radioTimeTraceSourceCurrent" Content="Current Mode" Margin="5 2.5 5 5" IsChecked="{Binding IsTimeTraceMeasurementCurrentModeChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-            </GroupBox>
-            <!-- Source mode group box -->
+            
+            <!-- Begin 1-st Channel Parameters -->
+            
+            <Expander Margin="5">
+                <Expander.Header>
+                    <TextBlock>1-st Channel Parameters</TextBlock>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel Margin="5">
+                        <!-- Begin group box Channel 1 source mode -->
+                        <GroupBox Header="Source Mode" HorizontalAlignment="Stretch">
+                            <StackPanel>
+                                <RadioButton x:Name="radioTimeTraceChannel_01_SourceVoltage" Content="Voltage Mode" Margin="5 5 5 2.5" IsChecked="{Binding IsTimeTraceMeasurementChannel_01_VoltageModeChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <RadioButton x:Name="radioTimeTraceChannel_01_SourceCurrent" Content="Current Mode" Margin="5 2.5 5 5" IsChecked="{Binding IsTimeTraceMeasurementChannel_01_CurrentModeChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <!-- End group box Channel 1 source mode -->
+                        
+                        <!-- Begin 1-st channel value through the structure -->
+                        
+                        <Grid Margin="0 2.5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Content="Value through str."/>
+                            <Grid Grid.Row="0" Grid.Column="1" Margin="2.5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Grid.Column="0" x:Name="textBoxTimeTraceChannel_01_ValueThroughTheStructure" Text="{Binding TimeTraceMeasurementChannel_01_ValueThrougtTheStructure, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+                                <ComboBox Grid.Column="1" x:Name="comboBoxTimeTraceChannel_01_StartValueMultiplier" Text="{Binding TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="65">
+                                    <ComboBoxItem Content="Pico"/>
+                                    <ComboBoxItem Content="Nano"/>
+                                    <ComboBoxItem Content="Micro"/>
+                                    <ComboBoxItem Content="Mili"/>
+                                    <ComboBoxItem Content="Santi"/>
+                                    <ComboBoxItem Content="Decy"/>
+                                    <ComboBoxItem IsSelected="True" Content="None"/>
+                                </ComboBox>
+                            </Grid>
+                        </Grid>
+                        
+                        <!-- End 1-st channel value through the structure -->
+                        
+                        <!-- Begin 1-st channel data file name -->
+                        
+                        <Grid Margin="0 2.5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Data file name"/>
+                            <TextBox Grid.Row="1" Grid.Column="0" x:Name="textBoxTimeTraceChannel_01_FileName" Text="{Binding TimeTraceMeasurementChannel_01_DataFileName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5"/>
+                            <Button Grid.Row="1" Grid.Column="1" x:Name="cmdTimeTraceChannel_01_DataFileNameBrowse" Content="Browse ..." MinHeight="25" Margin="10 2.5 0 2.5" />
+                        </Grid>
+                        
+                        <!-- End 1-st channel data file name -->
+                        
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
+
+            <!-- End 1-st Channel Parameters -->
+
+            <!-- Begin 2-nd Channel Parameters -->
+
+            <Expander Margin="5">
+                <Expander.Header>
+                    <TextBlock>2-nd Channel Parameters</TextBlock>
+                </Expander.Header>
+                <Expander.Content>
+                    <StackPanel Margin="5">
+                        <!-- Begin group box Channel 1 source mode -->
+                        <GroupBox Header="Source Mode" HorizontalAlignment="Stretch">
+                            <StackPanel>
+                                <RadioButton x:Name="radioTimeTraceChannel_02_SourceVoltage" Content="Voltage Mode" Margin="5 5 5 2.5" IsChecked="{Binding IsTimeTraceMeasurementChannel_02_VoltageModeChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <RadioButton x:Name="radioTimeTraceChannel_02_SourceCurrent" Content="Current Mode" Margin="5 2.5 5 5" IsChecked="{Binding IsTimeTraceMeasurementChannel_02_CurrentModeChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <!-- End group box Channel 1 source mode -->
+
+                        <!-- Begin 1-st channel value through the structure -->
+
+                        <Grid Margin="0 2.5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Content="Value through str."/>
+                            <Grid Grid.Row="0" Grid.Column="1" Margin="2.5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Grid.Column="0" x:Name="textBoxTimeTraceChannel_02_ValueThroughTheStructure" Text="{Binding TimeTraceMeasurementChannel_02_ValueThrougtTheStructure, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+                                <ComboBox Grid.Column="1" x:Name="comboBoxTimeTraceChannel_02_StartValueMultiplier" Text="{Binding TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="65">
+                                    <ComboBoxItem Content="Pico"/>
+                                    <ComboBoxItem Content="Nano"/>
+                                    <ComboBoxItem Content="Micro"/>
+                                    <ComboBoxItem Content="Mili"/>
+                                    <ComboBoxItem Content="Santi"/>
+                                    <ComboBoxItem Content="Decy"/>
+                                    <ComboBoxItem IsSelected="True" Content="None"/>
+                                </ComboBox>
+                            </Grid>
+                        </Grid>
+
+                        <!-- End 2-nd channel value through the structure -->
+
+                        <!-- Begin 2-nd channel data file name -->
+
+                        <Grid Margin="0 2.5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Data file name"/>
+                            <TextBox Grid.Row="1" Grid.Column="0" x:Name="textBoxTimeTraceChannel_02_FileName" Text="{Binding TimeTraceMeasurementChannel_02_DataFileName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5"/>
+                            <Button Grid.Row="1" Grid.Column="1" x:Name="cmdTimeTraceChannel_02_DataFileNameBrowse" Content="Browse ..." MinHeight="25" Margin="10 2.5 0 2.5" />
+                        </Grid>
+
+                        <!-- End 2-nd channel data file name -->
+
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
+
+            <!-- End 1-st Channel Parameters -->
+
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -43,39 +191,20 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
-                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Content="Value through str."/>
-                <Grid Grid.Row="0" Grid.Column="1" Margin="2.5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="textBoxTimeTraceValueThroughTheStructure" Text="{Binding TimeTraceMeasurementValueThrougtTheStructure, Mode=OneWayToSource, UpdateSourceTrigger=LostFocus}" Grid.Column="0" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
-                    <ComboBox x:Name="comboBoxTimeTraceStartValueMultiplier" Text="{Binding TimeTraceMeasurementValueThrougtTheStructureMultiplier, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" MinWidth="65">
-                        <ComboBoxItem Content="Pico"/>
-                        <ComboBoxItem Content="Nano"/>
-                        <ComboBoxItem Content="Micro"/>
-                        <ComboBoxItem Content="Mili"/>
-                        <ComboBoxItem Content="Santi"/>
-                        <ComboBoxItem Content="Decy"/>
-                        <ComboBoxItem IsSelected="True" Content="None"/>
-                    </ComboBox>
-                </Grid>
                 <!-- Expander Time Trace Measurement Parameters -->
-                <Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
+                
+                <Expander Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
                     <Expander.Header>
                         <TextBlock><Run Text="Measurement Parameters"/></TextBlock>
                     </Expander.Header>
                     <Grid Margin="5 10 5 0">
                         <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
@@ -101,16 +230,17 @@
                                 <ComboBoxItem IsSelected="True" Content="None"/>
                             </ComboBox>
                         </StackPanel>
-                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Data file name"/>
-                        <TextBox Grid.Row="3" Grid.Column="0" x:Name="textBoxTimeTraceFileName" Text="{Binding TimeTraceMeasurementDataFileName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5"/>
-                        <Button Grid.Row="3" Grid.Column="1" x:Name="cmdTimeTraceDataFileNameBrowse" Content="Browse ..." MinHeight="25" Margin="10 2.5 0 2.5" />
-                        <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Comments:"/>
-                        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="textBoxTimeTraceComment" Text="{Binding TimeTraceMeasurementDataComment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250"  Margin="0 2.5" VerticalScrollBarVisibility="Auto"/>
+
+                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Comments:"/>
+                        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="textBoxTimeTraceComment" Text="{Binding TimeTraceMeasurementDataComment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250"  Margin="0 2.5" VerticalScrollBarVisibility="Auto"/>
                     </Grid>
                 </Expander>
+                
                 <!-- End Expander Time Trace Measurement Parameters -->
+                
                 <!-- Expander Time Trace Motion Parameters -->
-                <Expander Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
+                
+                <Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
                     <Expander.Header>
                         <TextBlock><Run Text="Motion Parameters"/></TextBlock>
                     </Expander.Header>
@@ -231,11 +361,14 @@
                         </TabControl>
                     </Grid>
                 </Expander>
+                
                 <!-- End Expander Time Trace Motion Parameters -->
-                <Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="10"/>
-                <Button x:Name="cmdTimeTraceStartMeasurement" Content="Start Measurement" MinHeight="30" Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFDDDDDD" />
-                <Button x:Name="cmdTimeTraceStopMeasurement" Content="Stop Measurement" MinHeight="30" Margin="0 5 0 0" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFDDDDDD" />
+                
+                <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="10"/>
+                <Button Grid.Row="3" Grid.Column="0" x:Name="cmdTimeTraceStartMeasurement" Content="Start Measurement" MinHeight="30" Margin="0 10 0 0" Grid.ColumnSpan="2" Background="#FFDDDDDD" />
+                <Button Grid.Row="4" Grid.Column="0" x:Name="cmdTimeTraceStopMeasurement" Content="Stop Measurement" MinHeight="30" Margin="0 5 0 0" Grid.ColumnSpan="2" Background="#FFDDDDDD" />
             </Grid>
+            
             <!-- IV measures settings grid -->
         </StackPanel>
     </Expander>

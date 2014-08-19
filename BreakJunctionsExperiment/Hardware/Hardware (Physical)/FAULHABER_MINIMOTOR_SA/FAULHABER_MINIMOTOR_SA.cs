@@ -171,7 +171,7 @@ namespace Hardware
         {           
             this.InitDevice();
 
-            AllEventsHandler.Instance.TimetracePointReceivedChannel_01 += OnTimeTracePointReceived;
+            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += OnTimeTraceBothChannelsPointsReceived;
         }
 
         ~FAULHABER_MINIMOTOR_SA()
@@ -203,7 +203,7 @@ namespace Hardware
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
+        private void OnTimeTraceBothChannelsPointsReceived(object sender, TimeTraceBothChannelsPointsReceived_EventArgs e)
         {
             var positionIncrement = _MetersPerRevolution / _NotificationsPerRevolution;
 
@@ -260,11 +260,6 @@ namespace Hardware
         #endregion
 
         #region Motor controlling functions
-
-        public void AnswerMode(AnswerMode mode)
-        {
-            SendCommandRequest(String.Format("ANSW{0}", (int)mode));
-        }
 
         public void EnableDevice()
         {
@@ -490,7 +485,7 @@ namespace Hardware
         /// </summary>
         public override void Dispose()
         {
-            AllEventsHandler.Instance.TimetracePointReceivedChannel_01 -= OnTimeTracePointReceived;
+            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived -= OnTimeTraceBothChannelsPointsReceived;
 
             DisableDevice();
             base.Dispose();

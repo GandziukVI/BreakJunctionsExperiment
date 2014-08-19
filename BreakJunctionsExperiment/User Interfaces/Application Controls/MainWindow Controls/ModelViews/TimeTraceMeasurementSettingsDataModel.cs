@@ -22,56 +22,135 @@ namespace BreakJunctions
 
         #region Time trace measurement model-view interactions
 
-        #region General settings
+        #region 1-st channel settings
 
         //Source mode settings
-        private bool _IsTimeTraceMeasurementVoltageModeChecked = true;
-        public bool IsTimeTraceMeasurementVoltageModeChecked
+        private bool _IsTimeTraceMeasurementChannel_01_VoltageModeChecked = true;
+        public bool IsTimeTraceMeasurementChannel_01_VoltageModeChecked
         {
-            get { return _IsTimeTraceMeasurementVoltageModeChecked; }
+            get { return _IsTimeTraceMeasurementChannel_01_VoltageModeChecked; }
             set
             {
-                _IsTimeTraceMeasurementVoltageModeChecked = value;
-                OnPropertyChanged("IsTimeTraceMeasurementVoltageModeChecked");
+                _IsTimeTraceMeasurementChannel_01_VoltageModeChecked = value;
+                OnPropertyChanged("IsTimeTraceMeasurementChannel_01_VoltageModeChecked");
             }
         }
-        private bool _IsTimeTraceMeasurementCurrentModeChecked = false;
-        public bool IsTimeTraceMeasurementCurrentModeChecked
+        private bool _IsTimeTraceMeasurementChannel_01_CurrentModeChecked = false;
+        public bool IsTimeTraceMeasurementChannel_01_CurrentModeChecked
         {
-            get { return _IsTimeTraceMeasurementCurrentModeChecked; }
+            get { return _IsTimeTraceMeasurementChannel_01_CurrentModeChecked; }
             set
             {
-                _IsTimeTraceMeasurementCurrentModeChecked = value;
-                OnPropertyChanged("IsTimeTraceMeasurementCurrentModeChecked");
+                _IsTimeTraceMeasurementChannel_01_CurrentModeChecked = value;
+                OnPropertyChanged("IsTimeTraceMeasurementChannel_01_CurrentModeChecked");
             }
         }
 
         //Measurement value settings
-        private double _TimeTraceMeasurementValueThrougtTheStructure = 0.0;
-        public double TimeTraceMeasurementValueThrougtTheStructure
+        private double _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = 0.02;
+        public double TimeTraceMeasurementChannel_01_ValueThrougtTheStructure
         {
             get
             {
-                return _TimeTraceMeasurementValueThrougtTheStructure * HandlingUserInput.GetMultiplier(_TimeTraceMeasurementValueThrougtTheStructureMultiplier);
+                return _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure * HandlingUserInput.GetMultiplier(_TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier);
             }
             set
             {
-                _TimeTraceMeasurementValueThrougtTheStructure = value;
-                OnPropertyChanged("TimeTraceMeasurementValueThrougtTheStructure");
+                _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = value;
+                OnPropertyChanged("TimeTraceMeasurementChannel_01_ValueThrougtTheStructure");
             }
         }
-        private string _TimeTraceMeasurementValueThrougtTheStructureMultiplier = "None";
-        public string TimeTraceMeasurementValueThrougtTheStructureMultiplier
+        private string _TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier = "None";
+        public string TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier
         {
-            get { return _TimeTraceMeasurementValueThrougtTheStructureMultiplier; }
+            get { return _TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier; }
             set
             {
-                _TimeTraceMeasurementValueThrougtTheStructureMultiplier = value;
-                OnPropertyChanged("TimeTraceMeasurementValueThrougtTheStructureMultiplier");
+                _TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier = value;
+                OnPropertyChanged("TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier");
             }
         }
 
-        //Measurement parameters
+        //File name settings
+        private string _TimeTraceMeasurementChannel_01_DataFileName = "TimeTraceMeasurementChannel_01_.dat";
+        public string TimeTraceMeasurementChannel_01_DataFileName
+        {
+            get { return _TimeTraceMeasurementChannel_01_DataFileName; }
+            set
+            {
+                _TimeTraceMeasurementChannel_01_DataFileName = value;
+                OnPropertyChanged("TimeTraceMeasurementChannel_01_DataFileName");
+            }
+        }
+
+        #endregion
+
+        #region 2-nd channel settings
+
+        //Source mode settings
+        private bool _IsTimeTraceMeasurementChannel_02_VoltageModeChecked = true;
+        public bool IsTimeTraceMeasurementChannel_02_VoltageModeChecked
+        {
+            get { return _IsTimeTraceMeasurementChannel_02_VoltageModeChecked; }
+            set
+            {
+                _IsTimeTraceMeasurementChannel_02_VoltageModeChecked = value;
+                OnPropertyChanged("IsTimeTraceMeasurementChannel_02_VoltageModeChecked");
+            }
+        }
+        private bool _IsTimeTraceMeasurementChannel_02_CurrentModeChecked = false;
+        public bool IsTimeTraceMeasurementChannel_02_CurrentModeChecked
+        {
+            get { return _IsTimeTraceMeasurementChannel_02_CurrentModeChecked; }
+            set
+            {
+                _IsTimeTraceMeasurementChannel_02_CurrentModeChecked = value;
+                OnPropertyChanged("IsTimeTraceMeasurementChannel_02_CurrentModeChecked");
+            }
+        }
+
+        //Measurement value settings
+        private double _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = 0.02;
+        public double TimeTraceMeasurementChannel_02_ValueThrougtTheStructure
+        {
+            get
+            {
+                return _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure * HandlingUserInput.GetMultiplier(_TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier);
+            }
+            set
+            {
+                _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = value;
+                OnPropertyChanged("TimeTraceMeasurementChannel_02_ValueThrougtTheStructure");
+            }
+        }
+        private string _TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier = "None";
+        public string TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier
+        {
+            get { return _TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier; }
+            set
+            {
+                _TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier = value;
+                OnPropertyChanged("TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier");
+            }
+        }
+
+        //File name settings
+        private string _TimeTraceMeasurementChannel_02_DataFileName = "TimeTraceMeasurementChannel_02_.dat";
+        public string TimeTraceMeasurementChannel_02_DataFileName
+        {
+            get { return _TimeTraceMeasurementChannel_02_DataFileName; }
+            set
+            {
+                _TimeTraceMeasurementChannel_02_DataFileName = value;
+                OnPropertyChanged("TimeTraceMeasurementChannel_02_DataFileName");
+            }
+        }
+
+        #endregion
+
+        #region General settings
+
+        //Measurement settings
         private int _TimeTraceMeasurementNumberOfAverages = 2;
         public int TimeTraceMeasurementNumberOfAverages
         {
@@ -107,16 +186,7 @@ namespace BreakJunctions
             }
         }
 
-        private string _TimeTraceMeasurementDataFileName = "TimeTraceMeasurement.dat";
-        public string TimeTraceMeasurementDataFileName
-        {
-            get { return _TimeTraceMeasurementDataFileName; }
-            set
-            {
-                _TimeTraceMeasurementDataFileName = value;
-                OnPropertyChanged("TimeTraceMeasurementDataFileName");
-            }
-        }
+        //Comments
         private string _TimeTraceMeasurementDataComment = "";
         public string TimeTraceMeasurementDataComment
         {

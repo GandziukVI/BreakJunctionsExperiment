@@ -82,6 +82,7 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_02_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTraceBothChannelsPointsReceived_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceReceivedChannel_02_EventArgs.cs" />
     <Compile Include="Events\EventsHandler.cs" />
@@ -93,7 +94,6 @@
     <Compile Include="Hardware\Hardware %28Abstract%29\IExperimentalDevice.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\IMotion.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\I_SMU.cs" />
-    <Compile Include="Hardware\Hardware %28Physical%29\FAULHABER_MINIMOTOR_SA\AnswerMode.cs" />
     <Compile Include="Hardware\Hardware %28Physical%29\FAULHABER_MINIMOTOR_SA\FAULHABER_MINIMOTOR_SA.cs" />
     <Compile Include="Hardware\Hardware %28Physical%29\HP_35670A.cs" />
     <Compile Include="Hardware\Hardware %28Physical%29\KEITHLEY_2602A\GPIB_KEITHLEY_2602A_CHANNEL.cs" />
@@ -123,7 +123,6 @@
     </Compile>
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\MVVM_Keithley2602A_Settings.cs" />
     <Compile Include="User Interfaces\ViewModel.cs" />
-    <Compile Include="VMMV interactions\IV_And_TimeTraceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.xaml.cs">
