@@ -8,7 +8,7 @@ namespace BreakJunctions.Events
     /// <summary>
     /// One IV point measured from 1-st channel event
     /// </summary>
-    class IV_PointReceivedChannel_02_EventArgs : EventArgs
+    public class IV_PointReceivedChannel_02_EventArgs : EventArgs
     {
         private double _X;
         public double X

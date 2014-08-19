@@ -18,6 +18,8 @@ using System.Windows;
 
 namespace BreakJunctions.Plotting
 {
+    #region Double precision point implementation
+
     /// <summary>
     /// Represents Point of double accuracy
     /// </summary>
@@ -33,6 +35,10 @@ namespace BreakJunctions.Plotting
         }
     }
 
+    #endregion
+
+    #region Experimental I-V data source implementation
+
     /// <summary>
     /// Represents data source for I-V measurements
     /// </summary>
@@ -45,23 +51,15 @@ namespace BreakJunctions.Plotting
             set { _ExperimentalData = value; }
         }
 
-        private string _ChannelIdentificator;
-        public string ChannelIdentificator
-        {
-            get { return _ChannelIdentificator; }
-            set { _ChannelIdentificator = value; }
-        }
-
         private Dispatcher dispatcher;
         private EnumerableDataSource<PointD> _ExperimentalDataSource;
 
-        public ExperimentalIV_DataSource(List<PointD> data, string ChannelIdentificator_Val)
+        public ExperimentalIV_DataSource(List<PointD> data)
         {
             _ExperimentalData = data;
             _ExperimentalDataSource = new EnumerableDataSource<PointD>(_ExperimentalData);
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
-            _ChannelIdentificator = ChannelIdentificator_Val;
 
             dispatcher = Dispatcher.CurrentDispatcher;
         }
@@ -73,23 +71,11 @@ namespace BreakJunctions.Plotting
             return new EnumerablePointEnumerator<PointD>(_ExperimentalDataSource);
         }
 
-        public void AttachPointReceiveEvent()
-        {
-            if (_ChannelIdentificator == "Channel_01")
-                AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceivedChannel_01;
-            else if (_ChannelIdentificator == "Channel_02")
-                AllEventsHandler.Instance.IV_PointReceivedChannel_02 += OnIV_PointReceivedChannel_02;
-        }
+        public virtual void AttachPointReceiveEvent() { }
 
-        public void DetachPointReceiveEvent()
-        {
-            if (_ChannelIdentificator == "Channel_01")
-                AllEventsHandler.Instance.IV_PointReceivedChannel_01 -= OnIV_PointReceivedChannel_01;
-            else if (_ChannelIdentificator == "Channel_02")
-                AllEventsHandler.Instance.IV_PointReceivedChannel_02 -= OnIV_PointReceivedChannel_02;
-        }
+        public virtual void DetachPointReceiveEvent() { }
 
-        private void OnIV_PointReceivedChannel_01(object sender, IV_PointReceivedChannel_01_EventArgs e)
+        public void OnIV_PointReceived(object sender, IV_PointReceivedChannel_01_EventArgs e)
         {
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
@@ -98,7 +84,8 @@ namespace BreakJunctions.Plotting
                 DataChanged(sender, new EventArgs());
             }));
         }
-        private void OnIV_PointReceivedChannel_02(object sender, IV_PointReceivedChannel_02_EventArgs e)
+
+        public void OnIV_PointReceived(object sender, IV_PointReceivedChannel_02_EventArgs e)
         {
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
@@ -109,6 +96,55 @@ namespace BreakJunctions.Plotting
             }));
         }
     }
+
+    public enum Channels { Channel_01, Channel_02 }
+
+    public class ExperimentalIV_DataSourceChannel : ExperimentalIV_DataSource
+    {
+        private Channels _Channel;
+
+        public ExperimentalIV_DataSourceChannel(List<PointD> data, Channels Channel) 
+            : base(data) 
+        {
+            _Channel = Channel;
+        }
+
+        public override void AttachPointReceiveEvent()
+        {
+            switch (_Channel)
+            {
+                case Channels.Channel_01:
+                    {
+                        AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceived;
+                    } break;
+                case Channels.Channel_02:
+                    {
+                        AllEventsHandler.Instance.IV_PointReceivedChannel_02 += OnIV_PointReceived;
+                    } break;
+                default:
+                    break;
+            }
+        }
+
+        public override void DetachPointReceiveEvent()
+        {
+            switch (_Channel)
+            {
+                case Channels.Channel_01:
+                    {
+                        AllEventsHandler.Instance.IV_PointReceivedChannel_01 -= OnIV_PointReceived;
+                    } break;
+                case Channels.Channel_02:
+                    {
+                        AllEventsHandler.Instance.IV_PointReceivedChannel_02 -= OnIV_PointReceived;
+                    } break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    #endregion
 
     public class ExperimentalTimetraceDataSource : IPointDataSource
     {

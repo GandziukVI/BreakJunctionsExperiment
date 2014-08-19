@@ -354,7 +354,7 @@ namespace BreakJunctions
                 }
                 //Creating new plot and attaching it to the chart
                 _CurrentIV_CurveChannel_01 = new List<PointD>();
-                _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSource(_CurrentIV_CurveChannel_01, "Channel_01");
+                _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_01, Channels.Channel_01);
                 _experimentalIV_DataSourceChannel_01.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_01 = new LineGraph(_experimentalIV_DataSourceChannel_01);
                 _IV_LineGraphChannel_01.AddToPlotter(chartIV_CurvesChannel_01);
@@ -372,7 +372,7 @@ namespace BreakJunctions
                 }
                 //Creating new plot and attaching it to the chart
                 _CurrentIV_CurveChannel_02 = new List<PointD>();
-                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSource(_CurrentIV_CurveChannel_02, "Channel_02");
+                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_02, Channels.Channel_02);
                 _experimentalIV_DataSourceChannel_02.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_02 = new LineGraph(_experimentalIV_DataSourceChannel_02);
                 _IV_LineGraphChannel_02.AddToPlotter(chartIV_CurvesChannel_02);
@@ -416,7 +416,7 @@ namespace BreakJunctions
                 var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueChannel_01;
                 var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepChannel_01;
 
-                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, "Channel_01");
+                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, Channels.Channel_01);
 
                 #endregion
 
@@ -426,7 +426,7 @@ namespace BreakJunctions
                 var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueChannel_02;
                 var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepChannel_02;
 
-                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, "Channel_02");
+                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, Channels.Channel_02);
 
                 #endregion
 

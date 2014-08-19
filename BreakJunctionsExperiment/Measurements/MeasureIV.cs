@@ -6,6 +6,7 @@ using System.Text;
 using Hardware;
 using BreakJunctions.Events;
 using System.ComponentModel;
+using BreakJunctions.Plotting;
 
 namespace BreakJunctions.Measurements
 {
@@ -58,14 +59,9 @@ namespace BreakJunctions.Measurements
             set { _Device = value; }
         }
 
-        private string _ChannelIdentificator;
-        public string ChannelIdentificator
-        {
-            get { return _ChannelIdentificator; }
-            set { _ChannelIdentificator = value; }
-        }
-        
-        public MeasureIV(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, string ChannelIdentificator_Val) 
+        Channels _Channel;
+
+        public MeasureIV(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, Channels Channel) 
         {
             _StartValue = startVal;
             _EndValue = endVal;
@@ -74,7 +70,7 @@ namespace BreakJunctions.Measurements
             _TimeDelay = timeDelay;
             _sourceMode = deviceSourceMode;
             _Device = device;
-            _ChannelIdentificator = ChannelIdentificator_Val;
+            _Channel = Channel;
         }
 
         public void StartMeasurement(object sender, DoWorkEventArgs e)
@@ -104,10 +100,19 @@ namespace BreakJunctions.Measurements
 
                                 if (!(double.IsNaN(X) || double.IsNaN(Y)))
                                 {
-                                    if(_ChannelIdentificator == "Channel_01")
-                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(null, new IV_PointReceivedChannel_01_EventArgs(X, Y));
-                                    else if(_ChannelIdentificator == "Channel_02")
-                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(null, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                    switch (_Channel)
+                                    {
+                                        case Channels.Channel_01:
+                                            { 
+                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(null, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                            } break;
+                                        case Channels.Channel_02:
+                                            {
+                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(null, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                            } break;
+                                        default:
+                                            break;
+                                    }
 
                                     worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
                                 }
@@ -137,10 +142,19 @@ namespace BreakJunctions.Measurements
 
                                 if (!(double.IsNaN(X) || double.IsNaN(Y)))
                                 {
-                                    if(_ChannelIdentificator == "Channel_01")
-                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(null, new IV_PointReceivedChannel_01_EventArgs(X, Y));
-                                    else if (_ChannelIdentificator == "Channel_02")
-                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(null, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                    switch (_Channel)
+                                    {
+                                        case Channels.Channel_01:
+                                            {
+                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(null, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                            } break;
+                                        case Channels.Channel_02:
+                                            {
+                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(null, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                            } break;
+                                        default:
+                                            break;
+                                    }
 
                                    worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
                                 }
