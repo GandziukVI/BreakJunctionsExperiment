@@ -213,6 +213,7 @@ namespace BreakJunctions
             #region TimeTrace Model-view interactions
 
             controlTimeTraceMeasurementSettings.cmdTimeTraceChannel_01_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01;
+            controlTimeTraceMeasurementSettings.cmdTimeTraceChannel_02_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_02;
             //controlTimeTraceMeasurementSettings.cmdTimeTraceDistanceMoveToInitialPosition +=
             controlTimeTraceMeasurementSettings.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceStartMeasurementClick;
             controlTimeTraceMeasurementSettings.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceStopMeasurementClick;
@@ -306,9 +307,16 @@ namespace BreakJunctions
             _SaveTimeTraceMeasuremrentFileNameChannel_01 = string.Empty;
 
             _SaveTimeTraceMeasureDialogChannel_01 = new SaveFileDialog();
-            _SaveTimeTraceMeasureDialogChannel_01.FileName = "TimeTraceMeasurement";
+            _SaveTimeTraceMeasureDialogChannel_01.FileName = "TimeTraceMeasurementChannel_01_";
             _SaveTimeTraceMeasureDialogChannel_01.DefaultExt = ".dat";
             _SaveTimeTraceMeasureDialogChannel_01.Filter = "Measure data (.dat)|*.dat";
+
+            _SaveTimeTraceMeasuremrentFileNameChannel_02 = string.Empty;
+
+            _SaveTimeTraceMeasureDialogChannel_02 = new SaveFileDialog();
+            _SaveTimeTraceMeasureDialogChannel_02.FileName = "TimeTraceMeasurementChannel_02_";
+            _SaveTimeTraceMeasureDialogChannel_02.DefaultExt = ".dat";
+            _SaveTimeTraceMeasureDialogChannel_02.Filter = "Measure data (.dat)|*.dat";
 
             #endregion
         }
@@ -697,12 +705,13 @@ namespace BreakJunctions
                     _ChannelController.Dispose();
                 _ChannelController = new MeasureTimeTraceChannelController();
 
-                //Implementation needed!!!
+                var timeTraceChannel_01_ValueThroughTheStructure = ExperimentSettings.TimeTraceMeasurementChannel_01_ValueThrougtTheStructure;
+                var isTimeTraceChannel_01_VoltageModeChecked = ExperimentSettings.IsTimeTraceMeasurementChannel_01_VoltageModeChecked;
+                var isTimeTraceChannel_01_CurrentModeChecked = ExperimentSettings.IsTimeTraceMeasurementChannel_01_CurrentModeChecked;
 
-                var valueThroughTheStructure = ExperimentSettings.TimeTraceMeasurementChannel_01_ValueThrougtTheStructure;
-
-                var isTimeTraceVoltageModeChecked = ExperimentSettings.IsTimeTraceMeasurementChannel_01_VoltageModeChecked;
-                var isTimeTraceCurrentModeChecked = ExperimentSettings.IsTimeTraceMeasurementChannel_01_CurrentModeChecked;
+                var timeTraceChannel_02_ValueThroughTheStructure = ExperimentSettings.TimeTraceMeasurementChannel_02_ValueThrougtTheStructure;
+                var isTimeTraceChannel_02_VoltageModeChecked = ExperimentSettings.IsTimeTraceMeasurementChannel_02_VoltageModeChecked;
+                var isTimeTraceChannel_02_CurrentModeChecked = ExperimentSettings.IsTimeTraceMeasurementChannel_02_CurrentModeChecked;
 
                 var selectedTimeTraceModeItem = (controlTimeTraceMeasurementSettings.tabControlTimeTraceMeasurementParameters.SelectedItem as TabItem).Header.ToString();
 
@@ -713,17 +722,30 @@ namespace BreakJunctions
                             var motionStartPosition = ExperimentSettings.TimeTraceMeasurementDistanceMotionStartPosition;
                             var motionFinalDestination = ExperimentSettings.TimeTraceMeasurementDistanceMotionFinalDestination;
 
-                            if (isTimeTraceVoltageModeChecked == true)
+                            if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure, Channels.Channel_01, _ChannelController);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController);
                                 TimeTraceCurveChannel_01.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
-                            else if (isTimeTraceCurrentModeChecked == true)
+                            else if (isTimeTraceChannel_01_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure, Channels.Channel_01, _ChannelController);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController);
                                 TimeTraceCurveChannel_01.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+
+                            if (isTimeTraceChannel_02_VoltageModeChecked == true)
+                            {
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController);
+                                TimeTraceCurveChannel_02.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceCurveChannel_02.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                            else if (isTimeTraceChannel_02_CurrentModeChecked == true)
+                            {
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(Motor, motionStartPosition, motionFinalDestination, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController);
+                                TimeTraceCurveChannel_02.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceCurveChannel_02.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                         } break;
                     case "Distance (Repetitive)":
@@ -731,17 +753,30 @@ namespace BreakJunctions
                             var motionRepetitiveStartPosition = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
                             var motionRepetitiveEndPosition = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
 
-                            if (isTimeTraceVoltageModeChecked == true)
+                            if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure, Channels.Channel_01, _ChannelController);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController);
                                 TimeTraceCurveChannel_01.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
-                            else if (isTimeTraceCurrentModeChecked == true)
+                            else if (isTimeTraceChannel_01_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, valueThroughTheStructure, Channels.Channel_01, _ChannelController);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController);
                                 TimeTraceCurveChannel_01.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+
+                            if (isTimeTraceChannel_02_VoltageModeChecked == true)
+                            {
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController);
+                                TimeTraceCurveChannel_02.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceCurveChannel_02.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                            else if (isTimeTraceChannel_02_CurrentModeChecked == true)
+                            {
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(Motor, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController);
+                                TimeTraceCurveChannel_02.NumberOfAverages = ExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceCurveChannel_02.TimeDelay = ExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                         } break;
                     case "Time":
@@ -758,50 +793,79 @@ namespace BreakJunctions
 
                 #region Saving Time Trace data into files
 
-                var _TimeTraceFileNumber = String.Format("_{0}{1}{2}", (_TimeTraceFilesCounterChannel_01 / 100) % 10, (_TimeTraceFilesCounterChannel_01 / 10) % 10, _TimeTraceFilesCounterChannel_01 % 10);
-                string newFileName = string.Empty;
+                var _TimeTraceChannel_01_FileNumber = String.Format("_{0}{1}{2}", (_TimeTraceFilesCounterChannel_01 / 100) % 10, (_TimeTraceFilesCounterChannel_01 / 10) % 10, _TimeTraceFilesCounterChannel_01 % 10);
+                var newFileNameChannel_01 = string.Empty;
 
-                if (!string.IsNullOrEmpty(_SaveTimeTraceMeasuremrentFileNameChannel_01))
+                var _TimeTraceChannel_02_FileNumber = String.Format("_{0}{1}{2}", (_TimeTraceFilesCounterChannel_01 / 100) % 10, (_TimeTraceFilesCounterChannel_01 / 10) % 10, _TimeTraceFilesCounterChannel_01 % 10);
+                var newFileNameChannel_02 = string.Empty;
+
+                if (!string.IsNullOrEmpty(_SaveTimeTraceMeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveTimeTraceMeasuremrentFileNameChannel_02))
                 {
                     _TimeTraceMeasurementLogChannel_01 = new TimeTraceMeasurementLog((new FileInfo(_SaveTimeTraceMeasuremrentFileNameChannel_01)).DirectoryName + "\\TimeTraceMeasurementLog.dat");
+                    _TimeTraceMeasurementLogChannel_02 = new TimeTraceMeasurementLog((new FileInfo(_SaveTimeTraceMeasuremrentFileNameChannel_02)).DirectoryName + "\\TimeTraceMeasurementLog.dat");
 
-                    newFileName = _SaveTimeTraceMeasuremrentFileNameChannel_01.Insert(_SaveTimeTraceMeasuremrentFileNameChannel_01.LastIndexOf('.'), _TimeTraceFileNumber);
+                    newFileNameChannel_01 = _SaveTimeTraceMeasuremrentFileNameChannel_01.Insert(_SaveTimeTraceMeasuremrentFileNameChannel_01.LastIndexOf('.'), _TimeTraceChannel_01_FileNumber);
+                    newFileNameChannel_02 = _SaveTimeTraceMeasuremrentFileNameChannel_02.Insert(_SaveTimeTraceMeasuremrentFileNameChannel_02.LastIndexOf('.'), _TimeTraceChannel_02_FileNumber);
+
                     ++_TimeTraceFilesCounterChannel_01;
+                    ++_TimeTraceFilesCounterChannel_02;
                 }
 
-                string sourceMode = string.Empty;
+                var sourceModeChannel_01 = string.Empty;
+                var sourceModeChannel_02 = string.Empty;
 
-                if (!string.IsNullOrEmpty(_SaveTimeTraceMeasuremrentFileNameChannel_01))
+                if (!string.IsNullOrEmpty(_SaveTimeTraceMeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveTimeTraceMeasuremrentFileNameChannel_02))
                 {
-                    string fileName = (new FileInfo(newFileName)).Name;
+                    var fileNameChannel_01 = (new FileInfo(newFileNameChannel_01)).Name;
+                    var fileNameChannel_02 = (new FileInfo(newFileNameChannel_02)).Name;
 
                     if (ExperimentSettings.IsTimeTraceMeasurementChannel_01_VoltageModeChecked == true)
                     {
-                        sourceMode = "Source mode: Voltage";
+                        sourceModeChannel_01 = "Source mode: Voltage";
                     }
                     else if (ExperimentSettings.IsTimeTraceMeasurementChannel_01_CurrentModeChecked == true)
                     {
-                        sourceMode = "SourceMode: Current";
+                        sourceModeChannel_01 = "SourceMode: Current";
+                    }
+
+                    if (ExperimentSettings.IsTimeTraceMeasurementChannel_02_VoltageModeChecked == true)
+                    {
+                        sourceModeChannel_02 = "Source mode: Voltage";
+                    }
+                    else if (ExperimentSettings.IsTimeTraceMeasurementChannel_02_CurrentModeChecked == true)
+                    {
+                        sourceModeChannel_02 = "SourceMode: Current";
                     }
 
                     var micrometricBoltPosition = ExperimentSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
 
                     var comment = ExperimentSettings.TimeTraceMeasurementDataComment;
 
-                    _TimeTraceMeasurementLogChannel_01.AddNewTimeTraceMeasurementLog(fileName, sourceMode, valueThroughTheStructure, comment);
+                    _TimeTraceMeasurementLogChannel_01.AddNewTimeTraceMeasurementLog(fileNameChannel_01, sourceModeChannel_01, timeTraceChannel_01_ValueThroughTheStructure, comment);
+                    _TimeTraceMeasurementLogChannel_02.AddNewTimeTraceMeasurementLog(fileNameChannel_02, sourceModeChannel_02, timeTraceChannel_02_ValueThroughTheStructure, comment);
                 }
 
-                SourceMode _sourceMode = SourceMode.Voltage; //Source mode is voltage by default
+                SourceMode _sourceModeChannel_01 = SourceMode.Voltage; //Source mode is voltage by default
+                SourceMode _sourceModeChannel_02 = SourceMode.Voltage;
 
-                if (sourceMode == "Source mode: Voltage")
-                    _sourceMode = SourceMode.Voltage;
-                else if (sourceMode == "SourceMode: Current")
-                    _sourceMode = SourceMode.Current;
+                if (sourceModeChannel_01 == "Source mode: Voltage")
+                    _sourceModeChannel_01 = SourceMode.Voltage;
+                else if (sourceModeChannel_01 == "SourceMode: Current")
+                    _sourceModeChannel_01 = SourceMode.Current;
+
+                if (sourceModeChannel_02 == "Source mode: Voltage")
+                    _sourceModeChannel_02 = SourceMode.Voltage;
+                else if (sourceModeChannel_02 == "SourceMode: Current")
+                    _sourceModeChannel_02 = SourceMode.Current;
 
                 if (_TimeTraceSingleMeasurementChannel_01 != null)
                     _TimeTraceSingleMeasurementChannel_01.Dispose();
 
-                _TimeTraceSingleMeasurementChannel_01 = new TimeTraceSingleMeasurement(newFileName, _sourceMode);
+                if (_TimeTraceSingleMeasurementChannel_02 != null)
+                    _TimeTraceSingleMeasurementChannel_02.Dispose();
+
+                _TimeTraceSingleMeasurementChannel_01 = new TimeTraceSingleMeasurement(newFileNameChannel_01, _sourceModeChannel_01);
+                _TimeTraceSingleMeasurementChannel_02 = new TimeTraceSingleMeasurement(newFileNameChannel_02, _sourceModeChannel_02);
 
                 #endregion
 
