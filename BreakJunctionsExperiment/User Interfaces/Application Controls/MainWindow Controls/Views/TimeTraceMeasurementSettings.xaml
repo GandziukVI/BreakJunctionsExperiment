@@ -56,8 +56,8 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="textBoxTimeTraceValueThroughTheStructure" Text="{Binding TimeTraceMeasurementValueThrougtTheStructure, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Column="0" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
-                    <ComboBox x:Name="comboBoxTimeTraceStartValueMultiplier" Text="{Binding TimeTraceMeasurementValueThrougtTheStructureMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" MinWidth="65">
+                    <TextBox x:Name="textBoxTimeTraceValueThroughTheStructure" Text="{Binding TimeTraceMeasurementValueThrougtTheStructure, Mode=OneWayToSource, UpdateSourceTrigger=LostFocus}" Grid.Column="0" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+                    <ComboBox x:Name="comboBoxTimeTraceStartValueMultiplier" Text="{Binding TimeTraceMeasurementValueThrougtTheStructureMultiplier, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" MinWidth="65">
                         <ComboBoxItem Content="Pico"/>
                         <ComboBoxItem Content="Nano"/>
                         <ComboBoxItem Content="Micro"/>

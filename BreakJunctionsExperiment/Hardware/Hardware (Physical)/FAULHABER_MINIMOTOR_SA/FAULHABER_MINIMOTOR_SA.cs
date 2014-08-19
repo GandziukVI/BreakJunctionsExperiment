@@ -171,7 +171,7 @@ namespace Hardware
         {           
             this.InitDevice();
 
-            AllEventsHandler.Instance.TimetracePointReceived += OnTimeTracePointReceived;
+            AllEventsHandler.Instance.TimetracePointReceivedChannel_01 += OnTimeTracePointReceived;
         }
 
         ~FAULHABER_MINIMOTOR_SA()
@@ -203,7 +203,7 @@ namespace Hardware
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnTimeTracePointReceived(object sender, TimeTracePointReceived_EventArgs e)
+        private void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
             var positionIncrement = _MetersPerRevolution / _NotificationsPerRevolution;
 
@@ -490,7 +490,7 @@ namespace Hardware
         /// </summary>
         public override void Dispose()
         {
-            AllEventsHandler.Instance.TimetracePointReceived -= OnTimeTracePointReceived;
+            AllEventsHandler.Instance.TimetracePointReceivedChannel_01 -= OnTimeTracePointReceived;
 
             DisableDevice();
             base.Dispose();

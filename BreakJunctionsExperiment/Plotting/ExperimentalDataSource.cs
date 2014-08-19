@@ -18,6 +18,12 @@ using System.Windows;
 
 namespace BreakJunctions.Plotting
 {
+    #region Representing plotting channels
+
+    public enum Channels { Channel_01, Channel_02 }
+
+    #endregion
+
     #region Double precision point implementation
 
     /// <summary>
@@ -97,8 +103,6 @@ namespace BreakJunctions.Plotting
         }
     }
 
-    public enum Channels { Channel_01, Channel_02 }
-
     public class ExperimentalIV_DataSourceChannel : ExperimentalIV_DataSource
     {
         private Channels _Channel;
@@ -146,6 +150,8 @@ namespace BreakJunctions.Plotting
 
     #endregion
 
+    #region TimeTrace data source implementation
+
     public class ExperimentalTimetraceDataSource : IPointDataSource
     {
         private List<PointD> _ExperimentalData;
@@ -175,17 +181,25 @@ namespace BreakJunctions.Plotting
             return new EnumerablePointEnumerator<PointD>(_ExperimentalDataSource);
         }
 
-        public void AttachPointReceiveEvent()
-        {
-            AllEventsHandler.Instance.TimetracePointReceived += OnTimeTracePointReceived;
-        }
+        public virtual void AttachPointReceiveEvent() { }
 
-        public void DetachPointReceiveEvent()
-        {
-            AllEventsHandler.Instance.TimetracePointReceived -= OnTimeTracePointReceived;
-        }
+        public virtual void DetachPointReceiveEvent() { }
 
-        private void OnTimeTracePointReceived(object sender, TimeTracePointReceived_EventArgs e)
+        public void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
+        {
+            _ExperimentalData.Add(new PointD(e.X, e.Y));
+            _ExperimentalDataSource.RaiseDataChanged();
+
+            dispatcher.BeginInvoke(new Action(delegate()
+            {
+                try
+                {
+                    DataChanged(sender, new EventArgs());
+                }
+                catch { }
+            }));
+        }
+        public void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
         {
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
@@ -200,4 +214,50 @@ namespace BreakJunctions.Plotting
             }));
         }
     }
+
+    public class ExperimentalTimetraceDataSourceChannel : ExperimentalTimetraceDataSource
+    {
+        private Channels _Channel;
+
+        public ExperimentalTimetraceDataSourceChannel(List<PointD> data, Channels Channel)
+            : base(data)
+        {
+            _Channel = Channel;
+        }
+
+        public override void AttachPointReceiveEvent()
+        {
+            switch (_Channel)
+            {
+                case Channels.Channel_01:
+                    {
+                        AllEventsHandler.Instance.TimetracePointReceivedChannel_01 += OnTimeTracePointReceived;
+                    } break;
+                case Channels.Channel_02:
+                    {
+                        AllEventsHandler.Instance.TimetracePointReceivedChannel_02 += OnTimeTracePointReceived;
+                    } break;
+                default:
+                    break;
+            }
+        }
+
+        public override void DetachPointReceiveEvent()
+        {
+            switch (_Channel)
+            {
+                case Channels.Channel_01:
+                    {
+                        AllEventsHandler.Instance.TimetracePointReceivedChannel_01 -= OnTimeTracePointReceived;
+                    } break;
+                case Channels.Channel_02:
+                    {
+                        AllEventsHandler.Instance.TimetracePointReceivedChannel_02 -= OnTimeTracePointReceived;
+                    } break;
+                default:
+                    break;
+            }
+        }
+    }
+    #endregion
 }

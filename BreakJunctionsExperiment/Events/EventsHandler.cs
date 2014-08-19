@@ -7,7 +7,7 @@ namespace BreakJunctions.Events
 {
     class AllEventsHandler
     {
-        //General
+        #region Singleton class implementation
 
         private static AllEventsHandler _Instance;
         public static AllEventsHandler Instance
@@ -19,9 +19,11 @@ namespace BreakJunctions.Events
             }
         }
 
+        #endregion
+
         #region I-V Curve Measurements Events
 
-        //I-V measurements stateChanged
+        #region I-V measurements state changed
 
         private readonly object IV_MeasurementsStateChanged_EventLock = new object();
         private EventHandler<IV_MeasurementStateChanged_EventArgs> _IV_MeasurementsStateChanged;
@@ -57,6 +59,8 @@ namespace BreakJunctions.Events
                 handler(sender, e);
             }
         }
+
+        #endregion
 
         #region I-V curve point received
 
@@ -144,7 +148,7 @@ namespace BreakJunctions.Events
 
         #region TimeTrace Curve Measurements Events
 
-        //Time trace measurements state changed
+        #region Time trace measurements state changed
 
         private readonly object TimeTraceMeasurementsStateChanged_EventLock = new object();
         private EventHandler<TimeTraceMeasurementStateChanged_EventArgs> _TimeTraceMeasurementsStateChanged;
@@ -181,42 +185,89 @@ namespace BreakJunctions.Events
             }
         }
 
-        //Time trace point received
+        #endregion
 
-        private readonly object TimeTracePointReceived_EventLock = new object();
-        private EventHandler<TimeTracePointReceived_EventArgs> _TimeTracePointReceived;
-        public event EventHandler<TimeTracePointReceived_EventArgs> TimetracePointReceived
+        #region Time trace point received
+
+        #region 1-st channel point received
+
+        private readonly object TimeTracePointReceivedChannel_01_EventLock = new object();
+        private EventHandler<TimeTracePointReceivedChannel_01_EventArgs> _TimeTracePointReceivedChannel_01;
+        public event EventHandler<TimeTracePointReceivedChannel_01_EventArgs> TimetracePointReceivedChannel_01
         {
             add
             {
-                lock(TimeTracePointReceived_EventLock)
+                lock(TimeTracePointReceivedChannel_01_EventLock)
                 {
-                    if (_TimeTracePointReceived == null || !_TimeTracePointReceived.GetInvocationList().Contains(value))
+                    if (_TimeTracePointReceivedChannel_01 == null || !_TimeTracePointReceivedChannel_01.GetInvocationList().Contains(value))
                     {
-                        _TimeTracePointReceived += value;
+                        _TimeTracePointReceivedChannel_01 += value;
                     }
                 }
             }
             remove
             {
-                lock (TimeTracePointReceived_EventLock)
+                lock (TimeTracePointReceivedChannel_01_EventLock)
                 {
-                    _TimeTracePointReceived -= value;
+                    _TimeTracePointReceivedChannel_01 -= value;
                 }
             }
         }
-        public virtual void OnTimeTracePointReceived(object sender, TimeTracePointReceived_EventArgs e)
+        public virtual void OnTimeTracePointReceivedChannel_01(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
-            EventHandler<TimeTracePointReceived_EventArgs> handler;
-            lock (TimeTracePointReceived_EventLock)
+            EventHandler<TimeTracePointReceivedChannel_01_EventArgs> handler;
+            lock (TimeTracePointReceivedChannel_01_EventLock)
             {
-                handler = _TimeTracePointReceived;
+                handler = _TimeTracePointReceivedChannel_01;
             }
             if (handler != null)
             {
                 handler(sender, e);
             }
         }
+
+        #endregion
+
+        #region 2-nd channel point received
+
+        private readonly object TimeTracePointReceivedChannel_02_EventLock = new object();
+        private EventHandler<TimeTracePointReceivedChannel_02_EventArgs> _TimeTracePointReceivedChannel_02;
+        public event EventHandler<TimeTracePointReceivedChannel_02_EventArgs> TimetracePointReceivedChannel_02
+        {
+            add
+            {
+                lock (TimeTracePointReceivedChannel_02_EventLock)
+                {
+                    if (_TimeTracePointReceivedChannel_02 == null || !_TimeTracePointReceivedChannel_02.GetInvocationList().Contains(value))
+                    {
+                        _TimeTracePointReceivedChannel_02 += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock (TimeTracePointReceivedChannel_02_EventLock)
+                {
+                    _TimeTracePointReceivedChannel_02 -= value;
+                }
+            }
+        }
+        public virtual void OnTimeTracePointReceivedChannel_02(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
+        {
+            EventHandler<TimeTracePointReceivedChannel_02_EventArgs> handler;
+            lock (TimeTracePointReceivedChannel_02_EventLock)
+            {
+                handler = _TimeTracePointReceivedChannel_02;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        #endregion
+
+        #endregion
 
         //Motion EventArgs
 

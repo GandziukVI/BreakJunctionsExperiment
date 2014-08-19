@@ -83,10 +83,11 @@
     <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTraceReceivedChannel_02_EventArgs.cs" />
     <Compile Include="Events\EventsHandler.cs" />
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
-    <Compile Include="Events\Custom Events\TimeTracePointReceived_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Hardware\Hardvare %28Interfaces%29\COM_Device.cs" />
     <Compile Include="Hardware\Hardvare %28Interfaces%29\GPIB_Device.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\IExperimentalDevice.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Hardware\Hardware %28Physical%29\ORDINARY_MOTOR.cs" />
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
+    <Compile Include="Measurements\MeasureTimeTraceChannelController.cs" />
     <Compile Include="Plotting\ExperimentalDataSource.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\IV_MeasurementSettingsDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\TimeTraceMeasurementSettingsDataModel.cs" />

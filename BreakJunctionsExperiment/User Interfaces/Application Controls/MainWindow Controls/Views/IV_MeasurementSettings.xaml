@@ -57,8 +57,8 @@
 
                             <Label Grid.Row="0" Grid.Column="0" Content="Start Value"/>
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-                                <TextBox x:Name="textBoxIV_StartValueChannel_01" Text="{Binding Path=IV_MeasurementStartValueChannel_01, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"></TextBox>
-                                <ComboBox x:Name="comboBoxIV_StartValueMultiplierChannel_01" Text="{Binding Path=IV_MeasurementStartValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
+                                <TextBox x:Name="textBoxIV_StartValueChannel_01" Text="{Binding Path=IV_MeasurementStartValueChannel_01, UpdateSourceTrigger=LostFocus, Mode=OneWayToSource}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"></TextBox>
+                                <ComboBox x:Name="comboBoxIV_StartValueMultiplierChannel_01" Text="{Binding Path=IV_MeasurementStartValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Micro</ComboBoxItem>
@@ -70,8 +70,8 @@
                             </StackPanel>
                             <Label Content="End Value" Grid.Row="1" Grid.Column="0"/>
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-                                <TextBox x:Name="textBoxIV_EndValueChannel_01" Text="{Binding Path=IV_MeasurementEndValueChannel_01, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" Height="21.96" VerticalAlignment="Top"/>
-                                <ComboBox x:Name="comboBoxIV_EndValueMultiplierChannel_01" Text="{Binding Path=IV_MeasurementEndValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
+                                <TextBox x:Name="textBoxIV_EndValueChannel_01" Text="{Binding Path=IV_MeasurementEndValueChannel_01, UpdateSourceTrigger=LostFocus, Mode=OneWayToSource}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" Height="21.96" VerticalAlignment="Top"/>
+                                <ComboBox x:Name="comboBoxIV_EndValueMultiplierChannel_01" Text="{Binding Path=IV_MeasurementEndValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Mikro</ComboBoxItem>
@@ -83,8 +83,8 @@
                             </StackPanel>
                             <Label Content="Step" Grid.Row="2" Grid.Column="0"/>
                             <StackPanel Grid.Row="2" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-                                <TextBox x:Name="textBoxIV_StepChannel_01" Text="{Binding Path=IV_MeasurementStepChannel_01, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"/>
-                                <ComboBox x:Name="comboBoxIV_StepMultiplierChannel_01" Text="{Binding Path=IV_MeasurementStepValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
+                                <TextBox x:Name="textBoxIV_StepChannel_01" Text="{Binding Path=IV_MeasurementStepChannel_01, UpdateSourceTrigger=LostFocus, Mode=OneWayToSource}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"/>
+                                <ComboBox x:Name="comboBoxIV_StepMultiplierChannel_01" Text="{Binding Path=IV_MeasurementStepValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Micro</ComboBoxItem>
@@ -126,8 +126,8 @@
 
                             <Label Grid.Row="0" Grid.Column="0" Content="Start Value"/>
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-                                <TextBox x:Name="textBoxIV_StartValueChannel_02" Text="{Binding Path=IV_MeasurementStartValueChannel_02, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"></TextBox>
-                                <ComboBox x:Name="comboBoxIV_StartValueMultiplierChannel_02" Text="{Binding Path=IV_MeasurementStartValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
+                                <TextBox x:Name="textBoxIV_StartValueChannel_02" Text="{Binding Path=IV_MeasurementStartValueChannel_02, UpdateSourceTrigger=LostFocus, Mode=OneWayToSource}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"></TextBox>
+                                <ComboBox x:Name="comboBoxIV_StartValueMultiplierChannel_02" Text="{Binding Path=IV_MeasurementStartValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Micro</ComboBoxItem>
@@ -139,8 +139,8 @@
                             </StackPanel>
                             <Label Content="End Value" Grid.Row="1" Grid.Column="0"/>
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-                                <TextBox x:Name="textBoxIV_EndValueChannel_02" Text="{Binding Path=IV_MeasurementEndValueChannel_02, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" Height="21.96" VerticalAlignment="Top"/>
-                                <ComboBox x:Name="comboBoxIV_EndValueMultiplierChannel_02" Text="{Binding Path=IV_MeasurementEndValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
+                                <TextBox x:Name="textBoxIV_EndValueChannel_02" Text="{Binding Path=IV_MeasurementEndValueChannel_02, UpdateSourceTrigger=LostFocus, Mode=OneWayToSource}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" Height="21.96" VerticalAlignment="Top"/>
+                                <ComboBox x:Name="comboBoxIV_EndValueMultiplierChannel_02" Text="{Binding Path=IV_MeasurementEndValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Mikro</ComboBoxItem>
@@ -152,8 +152,8 @@
                             </StackPanel>
                             <Label Content="Step" Grid.Row="2" Grid.Column="0"/>
                             <StackPanel Grid.Row="2" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
-                                <TextBox x:Name="textBoxIV_StepChannel_02" Text="{Binding Path=IV_MeasurementStepChannel_02, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"/>
-                                <ComboBox x:Name="comboBoxIV_StepMultiplierChannel_02" Text="{Binding Path=IV_MeasurementStepValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
+                                <TextBox x:Name="textBoxIV_StepChannel_02" Text="{Binding Path=IV_MeasurementStepChannel_02, UpdateSourceTrigger=LostFocus, Mode=OneWayToSource}" TextWrapping="Wrap"  Width="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"/>
+                                <ComboBox x:Name="comboBoxIV_StepMultiplierChannel_02" Text="{Binding Path=IV_MeasurementStepValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Micro</ComboBoxItem>
@@ -205,7 +205,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Label Grid.Row="0" Grid.Column="0">Number of Averages</Label>
-                                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxIV_NumberOfAverages" Text="{Binding Path=IV_MeasurementNumberOfAverages, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Margin="0 2.5" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged"></TextBox>
+                                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxIV_NumberOfAverages" Text="{Binding Path=IV_MeasurementNumberOfAverages, UpdateSourceTrigger=LostFocus, Mode=OneWayToSource}" Margin="0 2.5" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged"></TextBox>
                                     <Label Grid.Row="1" Grid.Column="0">Time Delay</Label>
 									<Grid Grid.Row="1" Grid.Column="1">
 										<Grid.ColumnDefinitions>
@@ -213,8 +213,8 @@
 											<ColumnDefinition />
 										</Grid.ColumnDefinitions>
 
-										<TextBox x:Name="textBoxIV_TimeDelay" Text="{Binding Path=IV_MeasurementTimeDelay, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" Grid.Column="0" Margin="0 2.5" Width="70"/>
-                                        <ComboBox x:Name="comboBoxIV_TimeDelayMultiplier" Text="{Binding Path=IV_MeasurementTimeDelayValueMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1" Margin="0 2.5" Width="65">
+										<TextBox x:Name="textBoxIV_TimeDelay" Text="{Binding Path=IV_MeasurementTimeDelay, UpdateSourceTrigger=LostFocus, Mode=OneWayToSource}" Grid.Column="0" Margin="0 2.5" Width="70"/>
+                                        <ComboBox x:Name="comboBoxIV_TimeDelayMultiplier" Text="{Binding Path=IV_MeasurementTimeDelayValueMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" Grid.Column="1" Margin="0 2.5" Width="65">
                                             <ComboBoxItem>Pico</ComboBoxItem>
                                             <ComboBoxItem>Nano</ComboBoxItem>
                                             <ComboBoxItem>Micro</ComboBoxItem>

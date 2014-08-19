@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BreakJunctions.Events
 {
-    class TimeTracePointReceived_EventArgs : EventArgs
+    public class TimeTracePointReceivedChannel_01_EventArgs : EventArgs
     {
         private double _X;
         public double X
@@ -20,7 +20,7 @@ namespace BreakJunctions.Events
             set { _Y = value; }
         }
 
-        public TimeTracePointReceived_EventArgs(double X_Val, double Y_Val)
+        public TimeTracePointReceivedChannel_01_EventArgs(double X_Val, double Y_Val)
             : base()
         {
             _X = X_Val;

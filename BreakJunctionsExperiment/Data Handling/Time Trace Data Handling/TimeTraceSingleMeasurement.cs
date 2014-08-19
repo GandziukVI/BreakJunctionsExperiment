@@ -73,7 +73,7 @@ namespace BreakJunctions.DataHandling
 
             _DataString = "{0}\t{1}";
 
-            AllEventsHandler.Instance.TimetracePointReceived += OnTimeTracePointReceived;
+            AllEventsHandler.Instance.TimetracePointReceivedChannel_01 += OnTimeTracePointReceived;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         public void Dispose()
         {
-            AllEventsHandler.Instance.TimetracePointReceived -= OnTimeTracePointReceived;
+            AllEventsHandler.Instance.TimetracePointReceivedChannel_01 -= OnTimeTracePointReceived;
 
             _FileName = string.Empty;
             _DataString = string.Empty;
@@ -104,7 +104,7 @@ namespace BreakJunctions.DataHandling
 
         #region Functionality implementation
 
-        private void OnTimeTracePointReceived(object sender, TimeTracePointReceived_EventArgs e)
+        private void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
             _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
             _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);

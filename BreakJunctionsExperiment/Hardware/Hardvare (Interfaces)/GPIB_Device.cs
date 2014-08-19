@@ -5,6 +5,7 @@ using System.Text;
 
 using System.Windows;
 using NationalInstruments.NI4882;
+using System.Threading;
 
 namespace Hardware
 {
@@ -68,6 +69,7 @@ namespace Hardware
             try
             {
                 _GPIB_Device.Write(RequestString);
+                Thread.Sleep(100);
                 return true;
             }
             catch { return false; }
@@ -82,7 +84,7 @@ namespace Hardware
             _GPIB_Device.IOTimeout = TimeoutValue.None;
             var GPIB_DeviceResponce = string.Empty;
 
-            try { GPIB_DeviceResponce = _GPIB_Device.ReadString(); }
+            try { GPIB_DeviceResponce = _GPIB_Device.ReadString(); Thread.Sleep(100); }
 
             catch (Exception ex)
             {

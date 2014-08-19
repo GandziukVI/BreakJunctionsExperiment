@@ -9,6 +9,7 @@ using Hardware.KEITHLEY_2602A;
 using BreakJunctions.Events;
 using System.ComponentModel;
 using System.Windows.Threading;
+using BreakJunctions.Plotting;
 
 namespace BreakJunctions.Measurements
 {
@@ -76,9 +77,11 @@ namespace BreakJunctions.Measurements
             set { _MeasureMode = value; }
         }
 
+        private Channels _Channel;
+
         private bool _CancelMeasures = false;
 
-        public MeasureTimeTrace(IMotion motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure)
+        public MeasureTimeTrace(IMotion motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure, Channels Channel)
         {
             _Motor = motor;
             _StartPosition = startPosition;
@@ -87,6 +90,7 @@ namespace BreakJunctions.Measurements
             _SourceMode = sourceMode;
             _MeasureMode = measureMode;
             _ValueThroughTheStructure = valueThroughTheStructure;
+            _Channel = Channel;
 
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += OnTimeTraceMeasurementsStateChanged;
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
@@ -154,13 +158,41 @@ namespace BreakJunctions.Measurements
                     {
                         var measuredVoltage = _MeasureDevice.MeasureVoltage(_NumberOfAverages, _TimeDelay);
                         if (!(double.IsNaN(e.Position) || double.IsNaN(measuredVoltage)))
-                            AllEventsHandler.Instance.OnTimeTracePointReceived(null, new TimeTracePointReceived_EventArgs(e.Position, measuredVoltage));
+                        {
+                            switch (_Channel)
+                            {
+                                case Channels.Channel_01:
+                                    {
+                                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredVoltage));
+                                    } break;
+                                case Channels.Channel_02:
+                                    {
+                                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredVoltage));
+                                    } break;
+                                default:
+                                    break;
+                            }
+                        }
                     } break;
                 case KEITHLEY_2601A_MeasureMode.Current:
                     {
                         var measuredCurrent = _MeasureDevice.MeasureCurrent(_NumberOfAverages, _TimeDelay);
                         if (!(double.IsNaN(e.Position) || double.IsNaN(measuredCurrent)))
-                            AllEventsHandler.Instance.OnTimeTracePointReceived(null, new TimeTracePointReceived_EventArgs(e.Position, measuredCurrent));
+                        {
+                            switch (_Channel)
+                            {
+                                case Channels.Channel_01:
+                                    {
+                                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredCurrent));
+                                    } break;
+                                case Channels.Channel_02:
+                                    {
+                                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredCurrent));
+                                    } break;
+                                default:
+                                    break;
+                            }
+                        }
                     } break;
                 case KEITHLEY_2601A_MeasureMode.Resistance:
                     {
@@ -170,13 +202,41 @@ namespace BreakJunctions.Measurements
                                 {
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Hardware.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
-                                        AllEventsHandler.Instance.OnTimeTracePointReceived(null, new TimeTracePointReceived_EventArgs(e.Position, measuredResistance));
+                                    {
+                                        switch (_Channel)
+                                        {
+                                            case Channels.Channel_01:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
+                                                } break;
+                                            case Channels.Channel_02:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
+                                                } break;
+                                            default:
+                                                break;
+                                        }
+                                    }
                                 } break;
                             case KEITHLEY_2601A_SourceMode.Current:
                                 {
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Hardware.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
-                                        AllEventsHandler.Instance.OnTimeTracePointReceived(null, new TimeTracePointReceived_EventArgs(e.Position, measuredResistance));
+                                    {
+                                        switch (_Channel)
+                                        {
+                                            case Channels.Channel_01:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
+                                                } break;
+                                            case Channels.Channel_02:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
+                                                } break;
+                                            default:
+                                                break;
+                                        }
+                                    }
                                 } break;
                             default:
                                 break;
@@ -190,13 +250,41 @@ namespace BreakJunctions.Measurements
                                 {
                                     var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Hardware.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
-                                        AllEventsHandler.Instance.OnTimeTracePointReceived(null, new TimeTracePointReceived_EventArgs(e.Position, measuredPower));
+                                    {
+                                        switch (_Channel)
+                                        {
+                                            case Channels.Channel_01:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
+                                                } break;
+                                            case Channels.Channel_02:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
+                                                } break;
+                                            default:
+                                                break;
+                                        }
+                                    }
                                 } break;
                             case KEITHLEY_2601A_SourceMode.Current:
                                 {
                                     var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Hardware.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
-                                        AllEventsHandler.Instance.OnTimeTracePointReceived(null, new TimeTracePointReceived_EventArgs(e.Position, measuredPower));
+                                    {
+                                        switch (_Channel)
+                                        {
+                                            case Channels.Channel_01:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
+                                                } break;
+                                            case Channels.Channel_02:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
+                                                } break;
+                                            default:
+                                                break;
+                                        }
+                                    }
                                 } break;
                             default:
                                 break;
