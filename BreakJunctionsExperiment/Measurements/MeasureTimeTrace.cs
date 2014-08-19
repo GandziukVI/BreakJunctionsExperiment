@@ -29,6 +29,12 @@ namespace BreakJunctions.Measurements
             set { _StartPosition = value; }
         }
 
+        private double _CurrentPosition = 0.0;
+        public double CurrentPosition
+        {
+            get { return _CurrentPosition; }
+        }
+
         private double _Destination;
         public double Destination
         {
@@ -77,6 +83,8 @@ namespace BreakJunctions.Measurements
             set { _MeasureMode = value; }
         }
 
+        private BackgroundWorker _worker;
+
         private Channels _Channel;
         private MeasureTimeTraceChannelController _ChannelController;
 
@@ -100,7 +108,7 @@ namespace BreakJunctions.Measurements
 
         public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind motionKind, int numberRepetities = 1)
         {
-            var worker = sender as BackgroundWorker;
+            _worker = sender as BackgroundWorker;
 
             switch (_SourceMode)
             {
@@ -136,7 +144,7 @@ namespace BreakJunctions.Measurements
 
             while (true)
             {
-                if (worker.CancellationPending == true)
+                if (_worker.CancellationPending == true)
                 {
                     _Motor.StopMotion();                    
                     e.Cancel = true;
@@ -168,12 +176,14 @@ namespace BreakJunctions.Measurements
                                 case Channels.Channel_01:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredVoltage));
-                                        worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                        _CurrentPosition = e.Position;
+                                        _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                     } break;
                                 case Channels.Channel_02:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredVoltage));
-                                        worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                        _CurrentPosition = e.Position;
+                                        _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                     } break;
                                 default:
                                     break;
@@ -190,12 +200,14 @@ namespace BreakJunctions.Measurements
                                 case Channels.Channel_01:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredCurrent));
-                                        worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                        _CurrentPosition = e.Position;
+                                        _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                     } break;
                                 case Channels.Channel_02:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredCurrent));
-                                        worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                        _CurrentPosition = e.Position;
+                                        _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                     } break;
                                 default:
                                     break;
@@ -216,12 +228,14 @@ namespace BreakJunctions.Measurements
                                             case Channels.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
-                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                                    _CurrentPosition = e.Position;
+                                                    _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
-                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                                    _CurrentPosition = e.Position;
+                                                    _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                                 } break;
                                             default:
                                                 break;
@@ -238,12 +252,14 @@ namespace BreakJunctions.Measurements
                                             case Channels.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
-                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                                    _CurrentPosition = e.Position;
+                                                    _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
-                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                                    _CurrentPosition = e.Position;
+                                                    _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                                 } break;
                                             default:
                                                 break;
@@ -268,12 +284,14 @@ namespace BreakJunctions.Measurements
                                             case Channels.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
-                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                                    _CurrentPosition = e.Position;
+                                                    _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
-                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                                    _CurrentPosition = e.Position;
+                                                    _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                                 } break;
                                             default:
                                                 break;
@@ -290,12 +308,14 @@ namespace BreakJunctions.Measurements
                                             case Channels.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
-                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                                    _CurrentPosition = e.Position;
+                                                    _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
-                                                    worker.ReportProgress(Convert.ToInt32(e.Position / _Destination * 100));
+                                                    _CurrentPosition = e.Position;
+                                                    _worker.ReportProgress(Convert.ToInt32(_CurrentPosition / _Destination * 100.0));
                                                 } break;
                                             default:
                                                 break;
