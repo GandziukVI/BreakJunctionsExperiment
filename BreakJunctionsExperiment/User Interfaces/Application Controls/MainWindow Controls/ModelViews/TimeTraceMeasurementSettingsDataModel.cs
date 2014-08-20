@@ -47,19 +47,6 @@ namespace BreakJunctions
         }
 
         //Measurement value settings
-        private double _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = 0.02;
-        public double TimeTraceMeasurementChannel_01_ValueThrougtTheStructure
-        {
-            get
-            {
-                return _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure * HandlingUserInput.GetMultiplier(_TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier);
-            }
-            set
-            {
-                _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = value;
-                OnPropertyChanged("TimeTraceMeasurementChannel_01_ValueThrougtTheStructure");
-            }
-        }
         private string _TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier = "None";
         public string TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier
         {
@@ -69,6 +56,20 @@ namespace BreakJunctions
                 _TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier = value;
                 OnPropertyChanged("TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier");
             }
+        }
+        private double _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = 0.02;
+        public double TimeTraceMeasurementChannel_01_ValueThrougtTheStructure
+        {
+            get { return _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure; }
+            set
+            {
+                _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = value;
+                OnPropertyChanged("TimeTraceMeasurementChannel_01_ValueThrougtTheStructure");
+            }
+        }
+        public double TimeTraceMeasurementChannel_01_ValueThrougtTheStructureWithMultiplier
+        {
+            get { return _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure * HandlingUserInput.GetMultiplier(_TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier); }
         }
 
         //File name settings
@@ -110,19 +111,6 @@ namespace BreakJunctions
         }
 
         //Measurement value settings
-        private double _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = 0.02;
-        public double TimeTraceMeasurementChannel_02_ValueThrougtTheStructure
-        {
-            get
-            {
-                return _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure * HandlingUserInput.GetMultiplier(_TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier);
-            }
-            set
-            {
-                _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = value;
-                OnPropertyChanged("TimeTraceMeasurementChannel_02_ValueThrougtTheStructure");
-            }
-        }
         private string _TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier = "None";
         public string TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier
         {
@@ -132,6 +120,20 @@ namespace BreakJunctions
                 _TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier = value;
                 OnPropertyChanged("TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier");
             }
+        }
+        private double _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = 0.02;
+        public double TimeTraceMeasurementChannel_02_ValueThrougtTheStructure
+        {
+            get { return _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure; }
+            set
+            {
+                _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = value;
+                OnPropertyChanged("TimeTraceMeasurementChannel_02_ValueThrougtTheStructure");
+            }
+        }
+        public double TimeTraceMeasurementChannel_02_ValueThrougtTheStructureWithMultiplier
+        {
+            get { return _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure * HandlingUserInput.GetMultiplier(_TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier); }
         }
 
         //File name settings

@@ -436,9 +436,9 @@ namespace BreakJunctions
 
                 #region 1-st channel settings
 
-                var StartValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementStartValueChannel_01;
-                var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueChannel_01;
-                var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepChannel_01;
+                var StartValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementStartValueWithMultiplierChannel_01;
+                var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_01;
+                var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_01;
 
                 IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, Channels.Channel_01);
 
@@ -446,9 +446,9 @@ namespace BreakJunctions
 
                 #region 2-nd channel settings
 
-                var StartValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementStartValueChannel_02;
-                var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueChannel_02;
-                var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepChannel_02;
+                var StartValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementStartValueWithMultiplierChannel_02;
+                var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_02;
+                var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_02;
 
                 IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, Channels.Channel_02);
 
@@ -705,11 +705,11 @@ namespace BreakJunctions
                     _ChannelController.Dispose();
                 _ChannelController = new MeasureTimeTraceChannelController();
 
-                var timeTraceChannel_01_ValueThroughTheStructure = _TimeTraceExperimentSettings.TimeTraceMeasurementChannel_01_ValueThrougtTheStructure;
+                var timeTraceChannel_01_ValueThroughTheStructure = _TimeTraceExperimentSettings.TimeTraceMeasurementChannel_01_ValueThrougtTheStructureWithMultiplier;
                 var isTimeTraceChannel_01_VoltageModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_01_VoltageModeChecked;
                 var isTimeTraceChannel_01_CurrentModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_01_CurrentModeChecked;
 
-                var timeTraceChannel_02_ValueThroughTheStructure = _TimeTraceExperimentSettings.TimeTraceMeasurementChannel_02_ValueThrougtTheStructure;
+                var timeTraceChannel_02_ValueThroughTheStructure = _TimeTraceExperimentSettings.TimeTraceMeasurementChannel_02_ValueThrougtTheStructureWithMultiplier;
                 var isTimeTraceChannel_02_VoltageModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_02_VoltageModeChecked;
                 var isTimeTraceChannel_02_CurrentModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_02_CurrentModeChecked;
 
