@@ -46,7 +46,11 @@ namespace Hardware
         /// <param name="FixedR"></param>
         void StartMotion(double FixedR);
         /// <summary>
-        /// Stopes the motion ofthe motor
+        /// Initiates the motion to zero position
+        /// </summary>
+        void MoveToZeroPosition();
+        /// <summary>
+        /// Stops the motion ofthe motor
         /// </summary>
         void StopMotion();
         /// <summary>

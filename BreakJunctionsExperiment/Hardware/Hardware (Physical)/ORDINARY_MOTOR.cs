@@ -196,5 +196,11 @@ namespace Hardware
         {
             throw new NotImplementedException();
         }
+
+
+        public void MoveToZeroPosition()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
