@@ -11,6 +11,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devices", "Devices\Devices.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaulhaberMinimotors", "FaulhaberMinimotors\FaulhaberMinimotors.csproj", "{DD0FD2E2-F6C7-4694-A4FA-9897786FFF56}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keithley Systems", "Keithley Systems", "{A775C2AD-15B5-4CE9-ADB6-F8CC0B9F89BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hewlett Packard Systems", "Hewlett Packard Systems", "{01EDC570-EC9F-49BA-B7E2-3ABAF4361FC9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SMU", "SMU", "{AB034273-BFB7-4C65-A294-3DDE74D73FD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keithley_2602A", "Keithley_2602A\Keithley_2602A.csproj", "{F98764A2-E410-4B56-8690-DB03DA26373B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dynamic Signal Analyzers", "Dynamic Signal Analyzers", "{D01A604C-D09B-44C7-90EB-D845184ED1A2}"
+	ProjectSection(SolutionItems) = preProject
+		BreakJunctionsExperiment\Hardware\Hardware (Physical)\HP_35670A.cs = BreakJunctionsExperiment\Hardware\Hardware (Physical)\HP_35670A.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HP_35670A", "HP_35670A\HP_35670A.csproj", "{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +66,26 @@ Global
 		{DD0FD2E2-F6C7-4694-A4FA-9897786FFF56}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DD0FD2E2-F6C7-4694-A4FA-9897786FFF56}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DD0FD2E2-F6C7-4694-A4FA-9897786FFF56}.Release|x86.ActiveCfg = Release|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F98764A2-E410-4B56-8690-DB03DA26373B}.Release|x86.ActiveCfg = Release|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +93,11 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AE52526E-D660-426E-A2EC-1A475B02AA9E} = {DD09C579-2A6E-4661-809B-686FDD7DDEF0}
 		{DD0FD2E2-F6C7-4694-A4FA-9897786FFF56} = {DD09C579-2A6E-4661-809B-686FDD7DDEF0}
+		{A775C2AD-15B5-4CE9-ADB6-F8CC0B9F89BD} = {DD09C579-2A6E-4661-809B-686FDD7DDEF0}
+		{01EDC570-EC9F-49BA-B7E2-3ABAF4361FC9} = {DD09C579-2A6E-4661-809B-686FDD7DDEF0}
+		{AB034273-BFB7-4C65-A294-3DDE74D73FD3} = {A775C2AD-15B5-4CE9-ADB6-F8CC0B9F89BD}
+		{D01A604C-D09B-44C7-90EB-D845184ED1A2} = {01EDC570-EC9F-49BA-B7E2-3ABAF4361FC9}
+		{F98764A2-E410-4B56-8690-DB03DA26373B} = {AB034273-BFB7-4C65-A294-3DDE74D73FD3}
+		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC} = {D01A604C-D09B-44C7-90EB-D845184ED1A2}
 	EndGlobalSection
 EndGlobal
