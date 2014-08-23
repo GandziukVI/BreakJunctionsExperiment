@@ -11,7 +11,7 @@ namespace FaulhaberMinimotors
     /// <summary>
     /// Device functionality for Faulhaber minimotor SA U012V K1155
     /// </summary>
-    class FaulhaberMinimotor_SA_2036U012V_K1155 : COM_Device
+    public class FaulhaberMinimotor_SA_2036U012V_K1155 : COM_Device
     {
         #region Configuration settings
 
