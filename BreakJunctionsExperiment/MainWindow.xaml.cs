@@ -689,7 +689,7 @@ namespace BreakJunctions
                 if (Motor != null)
                     Motor.Dispose();
 
-                var motor = new FAULHABER_MINIMOTOR_SA("COM4"); //Better realization needed
+                var motor = new FAULHABER_MINIMOTOR_SA_2036U012V_MOTION_CONTROLLER("COM4"); //Better realization needed
                 motor.NotificationsPerRevolution = _TimeTraceExperimentSettings.TimeTraceNotificationsPerRevolution;
                 motor.EnableDevice();
 
@@ -994,6 +994,7 @@ namespace BreakJunctions
 
         #endregion
 
+        #region General settings
 
         private void on_cmdTimeTraceDataFileNameBrowseClickChannel_01(object sender, RoutedEventArgs e)
         {
@@ -1020,6 +1021,8 @@ namespace BreakJunctions
                 this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName = _SaveTimeTraceMeasureDialogChannel_02.SafeFileName;
             }
         }
+
+        #endregion
 
         private void OnMotionPositionMeasured(object sender, Motion_EventArgs e)
         {

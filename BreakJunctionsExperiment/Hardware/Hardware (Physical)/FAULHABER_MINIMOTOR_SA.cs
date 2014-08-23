@@ -15,7 +15,7 @@ using Hardware;
 
 namespace Hardware
 {
-    class FAULHABER_MINIMOTOR_SA : COM_Device, IMotion
+    class FAULHABER_MINIMOTOR_SA_2036U012V_MOTION_CONTROLLER : COM_Device, IMotion
     {
         #region Motion settings
 
@@ -166,7 +166,7 @@ namespace Hardware
 
         #region Motor device initialization
 
-        public FAULHABER_MINIMOTOR_SA(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
+        public FAULHABER_MINIMOTOR_SA_2036U012V_MOTION_CONTROLLER(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
             : base (comPort, baud, parity, dataBits, stopBits, returnToken)
         {           
             this.InitDevice();
@@ -174,7 +174,7 @@ namespace Hardware
             AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += OnTimeTraceBothChannelsPointsReceived;
         }
 
-        ~FAULHABER_MINIMOTOR_SA()
+        ~FAULHABER_MINIMOTOR_SA_2036U012V_MOTION_CONTROLLER()
         {
             this.Dispose();
         }
