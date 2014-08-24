@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("Motion")]
+[assembly: AssemblyTitle("OrdinaryMotors")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Motion")]
+[assembly: AssemblyProduct("OrdinaryMotors")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("95c00dbe-aa87-45a2-8fe5-6405d19c4e91")]
+[assembly: Guid("e5aca42d-db6a-4213-b564-e4aa331100cd")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //

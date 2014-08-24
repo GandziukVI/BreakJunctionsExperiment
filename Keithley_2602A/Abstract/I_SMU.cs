@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hardware
+namespace SMU
 {
     public enum SourceMode { Voltage, Current }
 	/// <summary>

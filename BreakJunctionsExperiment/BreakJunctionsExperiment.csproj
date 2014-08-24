@@ -89,18 +89,16 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
-    <Compile Include="Hardware\Hardvare %28Interfaces%29\COM_Device.cs" />
-    <Compile Include="Hardware\Hardvare %28Interfaces%29\GPIB_Device.cs" />
-    <Compile Include="Hardware\Hardware %28Abstract%29\IExperimentalDevice.cs" />
     <Compile Include="Hardware\Hardware %28Abstract%29\IMotion.cs" />
-    <Compile Include="Hardware\Hardware %28Abstract%29\I_SMU.cs" />
     <Compile Include="Hardware\Hardware %28Physical%29\FAULHABER_MINIMOTOR_SA.cs" />
-    <Compile Include="Hardware\Hardware %28Physical%29\KEITHLEY_2602A\GPIB_KEITHLEY_2602A_CHANNEL.cs" />
-    <Compile Include="Hardware\Hardware %28Physical%29\KEITHLEY_2602A\KEITHLEY_2602A.cs" />
-    <Compile Include="Hardware\Hardware %28Physical%29\ORDINARY_MOTOR.cs" />
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
     <Compile Include="Measurements\MeasureTimeTraceChannelController.cs" />
+    <Compile Include="Motion\General Definitions\GeneralDefinitions.cs" />
+    <Compile Include="Motion\IMotionFactory.cs" />
+    <Compile Include="Motion\Motion Controllers Factories\FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory.cs" />
+    <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_MotionController.cs" />
+    <Compile Include="Motion\MotionController.cs" />
     <Compile Include="Plotting\ExperimentalDataSource.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\IV_MeasurementSettingsDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\TimeTraceMeasurementSettingsDataModel.cs" />
@@ -176,6 +174,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Devices\Devices.csproj">
+      <Project>{ae52526e-d660-426e-a2ec-1a475b02aa9e}</Project>
+      <Name>Devices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FaulhaberMinimotors\FaulhaberMinimotors.csproj">
+      <Project>{dd0fd2e2-f6c7-4694-a4fa-9897786fff56}</Project>
+      <Name>FaulhaberMinimotors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Keithley_2602A\Keithley_2602A.csproj">
+      <Project>{f98764a2-e410-4b56-8690-db03da26373b}</Project>
+      <Name>Keithley_2602A</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Windows.Threading;
+//using System.Windows.Threading;
 
-using BreakJunctions.Events;
+using Devices;
+using SMU;
 
-using Hardware.KEITHLEY_2602A;
+using SMU.KEITHLEY_2602A;
 
-namespace Hardware
+namespace OrdinaryMotors
 {
-    class ORDINARY_MOTOR : GPIB_KEITHLEY_2602A_CHANNEL, IMotion
+    /*public class ORDINARY_MOTOR : GPIB_KEITHLEY_2602A_CHANNEL//, IMotion
     {
         public static readonly double _metersPerSecond = 0.000003396739130434782608695652173913;
 
@@ -106,7 +107,7 @@ namespace Hardware
                 _MotionRepetitiveMeasurementTimer.Stop();
 
             SwitchChannelState(KEITHLEY_2602A_Channels.ChannelA, KEITHLEY_2602A_Channel_Status.Channel_OFF);
-            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
+            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         public void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
@@ -158,7 +159,7 @@ namespace Hardware
                     StopMotion();
             }
 
-            AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentPosition));
+            //AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentPosition));
         }
 
         void _MotionRepettiiveMeasurementTimer_Tick(object sender, EventArgs e)
@@ -182,7 +183,7 @@ namespace Hardware
 
             _CurrentPosition += (_CurrentDirection == MotionDirection.Up ? 1 : -1) * positionPerTick;
 
-            AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentTime / 1000));
+            //AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentTime / 1000));
         }
 
 
@@ -202,5 +203,5 @@ namespace Hardware
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

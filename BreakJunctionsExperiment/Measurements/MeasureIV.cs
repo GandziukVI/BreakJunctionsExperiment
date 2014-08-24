@@ -8,6 +8,8 @@ using BreakJunctions.Events;
 using System.ComponentModel;
 using BreakJunctions.Plotting;
 
+using SMU;
+
 namespace BreakJunctions.Measurements
 {
     class MeasureIV

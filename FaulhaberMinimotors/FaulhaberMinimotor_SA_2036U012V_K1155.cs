@@ -47,13 +47,10 @@ namespace FaulhaberMinimotors
 
         #endregion
 
-        #region Constructor and destructor
+        #region Constructor / Destructor
 
         public FaulhaberMinimotor_SA_2036U012V_K1155(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
-            : base(comPort, baud, parity, dataBits, stopBits, returnToken) 
-        {
-            this.InitDevice(); 
-        }
+            : base(comPort, baud, parity, dataBits, stopBits, returnToken) { }
 
         ~FaulhaberMinimotor_SA_2036U012V_K1155()
         {
@@ -215,19 +212,6 @@ namespace FaulhaberMinimotors
         public void DefineHomePosition()
         {
             throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Disposing of the instance
-
-        /// <summary>
-        /// Correctly disposing of the instance
-        /// </summary>
-        public override void Dispose()
-        {
-            DisableDevice();
-            base.Dispose();
         }
 
         #endregion

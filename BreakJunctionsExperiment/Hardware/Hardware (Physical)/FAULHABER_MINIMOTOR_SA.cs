@@ -13,6 +13,8 @@ using System.Windows.Threading;
 using BreakJunctions.Events;
 using Hardware;
 
+using Devices;
+
 namespace Hardware
 {
     class FAULHABER_MINIMOTOR_SA_2036U012V_MOTION_CONTROLLER : COM_Device, IMotion
@@ -188,7 +190,7 @@ namespace Hardware
         /// </summary>
         /// <param name="sender">SerialPort</param>
         /// <param name="e">SerialDataReceivedEventArgs</param>
-        public override void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        public void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             var motorPort = sender as SerialPort;
             var responce = motorPort.ReadExisting();

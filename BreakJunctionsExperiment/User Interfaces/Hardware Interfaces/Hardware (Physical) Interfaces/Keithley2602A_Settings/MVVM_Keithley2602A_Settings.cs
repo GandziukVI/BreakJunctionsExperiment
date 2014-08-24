@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-using Hardware.KEITHLEY_2602A;
+using SMU.KEITHLEY_2602A;
 
 namespace BreakJunctions
 {

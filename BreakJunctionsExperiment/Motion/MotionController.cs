@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Motion
 {
-    public abstract class MotionController
+    public abstract class MotionController : IDisposable
     {
         /// <summary>
         /// Initializes the device
@@ -51,5 +51,9 @@ namespace Motion
         /// </summary>
         /// <param name="motionDirection">The direction of motion</param>
         abstract public void SetDirection(MotionDirection motionDirection);
+        /// <summary>
+        /// Correctly disposing the instance
+        /// </summary>
+        abstract public void Dispose();
     }
 }

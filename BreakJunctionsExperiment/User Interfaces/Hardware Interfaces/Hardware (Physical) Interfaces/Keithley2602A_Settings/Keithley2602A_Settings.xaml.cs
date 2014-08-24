@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using Hardware;
-using Hardware.KEITHLEY_2602A;
+using SMU.KEITHLEY_2602A;
 using System.Text.RegularExpressions;
 using System.Globalization;
 
@@ -34,8 +34,8 @@ namespace BreakJunctions
 
         //The device
 
-        private I_SMU _Device;
-        public I_SMU Device
+        private SMU.I_SMU _Device;
+        public SMU.I_SMU Device
         {
             get { return _Device; }
         }
@@ -55,7 +55,7 @@ namespace BreakJunctions
             #endregion
         }
 
-        private I_SMU SetDevice()
+        private SMU.I_SMU SetDevice()
         {
             if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
             {

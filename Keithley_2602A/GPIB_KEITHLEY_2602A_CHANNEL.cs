@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Globalization;
 
-namespace Hardware.KEITHLEY_2602A
+using SMU;
+
+namespace SMU.KEITHLEY_2602A
 {
-    class GPIB_KEITHLEY_2602A_CHANNEL : GPIB_KEITHLEY_2602A, I_SMU
+    public class GPIB_KEITHLEY_2602A_CHANNEL : GPIB_KEITHLEY_2602A, I_SMU
     {
         private NumberStyles style;
         private CultureInfo culture;

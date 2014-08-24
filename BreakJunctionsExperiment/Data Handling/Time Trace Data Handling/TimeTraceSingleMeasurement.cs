@@ -8,6 +8,8 @@ using Hardware;
 using BreakJunctions.Events;
 using BreakJunctions.Plotting;
 
+using SMU;
+
 namespace BreakJunctions.DataHandling
 {
     #region Time trace single measurement file operations implementation

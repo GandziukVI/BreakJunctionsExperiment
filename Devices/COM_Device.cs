@@ -11,7 +11,11 @@ namespace Devices
     {
         #region COM Port settings
 
-        private SerialPort _COM_Device;
+        private SerialPort _COM_Port;
+        public SerialPort COM_Port
+        {
+            get { return _COM_Port; }
+        }
 
         private string _comPort;
         private int _baud;
@@ -33,22 +37,18 @@ namespace Devices
             this._stopBits = stopBits;
             this._returnToken = returnToken;
 
-            this._COM_Device = new SerialPort(comPort, baud, parity, dataBits, stopBits);
+            this._COM_Port = new SerialPort(comPort, baud, parity, dataBits, stopBits);
             
             //COM Device general settings
 
-            this._COM_Device.NewLine = returnToken;
-            this._COM_Device.RtsEnable = true;
-            this._COM_Device.DtrEnable = true;
+            this._COM_Port.NewLine = returnToken;
+            this._COM_Port.RtsEnable = true;
+            this._COM_Port.DtrEnable = true;
 
             //Setting max possible timeouts for IO operations
 
-            this._COM_Device.ReadTimeout = SerialPort.InfiniteTimeout;
-            this._COM_Device.WriteTimeout = SerialPort.InfiniteTimeout;
-
-            //Data received event handling
-            _COM_Device.DataReceived += _COM_Device_DataReceived;
-
+            this._COM_Port.ReadTimeout = SerialPort.InfiniteTimeout;
+            this._COM_Port.WriteTimeout = SerialPort.InfiniteTimeout;
         }
 
         public COM_Device(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
@@ -63,23 +63,14 @@ namespace Devices
 
         #endregion
 
-        #region Data received handler
-
-        public virtual void _COM_Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
         #region IExperimentalDevice implementation
 
         public virtual bool InitDevice()
         {
             try
             {
-                if (!_COM_Device.IsOpen == true)
-                    _COM_Device.Open();
+                if (!_COM_Port.IsOpen == true)
+                    _COM_Port.Open();
 
                 return true;
             }
@@ -94,7 +85,7 @@ namespace Devices
             try
             {
                 var strBytes = Encoding.ASCII.GetBytes(RequestString+'\n');
-                _COM_Device.Write(strBytes, 0, strBytes.Length);
+                _COM_Port.Write(strBytes, 0, strBytes.Length);
                 return true;
             }
             catch
@@ -105,7 +96,7 @@ namespace Devices
         {
             var COM_DeviceResponce = string.Empty;
 
-            try { COM_DeviceResponce = _COM_Device.ReadLine(); }
+            try { COM_DeviceResponce = _COM_Port.ReadLine(); }
             catch
             {
                 COM_DeviceResponce = string.Empty;
@@ -120,11 +111,11 @@ namespace Devices
 
         public virtual void Dispose()
         {
-            if (_COM_Device != null)
-                if (_COM_Device.IsOpen == true)
+            if (_COM_Port != null)
+                if (_COM_Port.IsOpen == true)
                 {
-                    _COM_Device.Close();
-                    _COM_Device.Dispose();
+                    _COM_Port.Close();
+                    _COM_Port.Dispose();
                 }
         }
 

@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Hardware;
-using Hardware.KEITHLEY_2602A;
-
 using BreakJunctions.Events;
 using System.ComponentModel;
 using System.Windows.Threading;
 using BreakJunctions.Plotting;
 
+using SMU;
+using SMU.KEITHLEY_2602A;
+
+using Motion;
+
 namespace BreakJunctions.Measurements
 {
     class MeasureTimeTrace : IDisposable
     {
-        private IMotion _Motor;
-        public IMotion Motor
+        private MotionController _Motor;
+        public MotionController Motor
         {
             get { return _Motor; }
             set { _Motor = value; }
@@ -90,7 +92,7 @@ namespace BreakJunctions.Measurements
 
         private bool _CancelMeasures = false;
 
-        public MeasureTimeTrace(IMotion motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure, Channels Channel, MeasureTimeTraceChannelController ChannelController)
+        public MeasureTimeTrace(MotionController motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure, Channels Channel, MeasureTimeTraceChannelController ChannelController)
         {
             _Motor = motor;
             _StartPosition = startPosition;
@@ -220,7 +222,7 @@ namespace BreakJunctions.Measurements
                         {
                             case KEITHLEY_2601A_SourceMode.Voltage:
                                 {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Hardware.SourceMode.Voltage);
+                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
                                     {
                                         switch (_Channel)
@@ -252,7 +254,7 @@ namespace BreakJunctions.Measurements
                                 } break;
                             case KEITHLEY_2601A_SourceMode.Current:
                                 {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Hardware.SourceMode.Current);
+                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
                                     {
                                         switch (_Channel)
@@ -292,7 +294,7 @@ namespace BreakJunctions.Measurements
                         {
                             case KEITHLEY_2601A_SourceMode.Voltage:
                                 {
-                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Hardware.SourceMode.Voltage);
+                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
                                     {
                                         switch (_Channel)
@@ -324,7 +326,7 @@ namespace BreakJunctions.Measurements
                                 } break;
                             case KEITHLEY_2601A_SourceMode.Current:
                                 {
-                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Hardware.SourceMode.Current);
+                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
                                     {
                                         switch (_Channel)
