@@ -34,6 +34,7 @@
 							<MenuItem x:Name="menuExit" Header="_Exit" Click="onMenuExitClick"/>
 						</MenuItem>
 						<MenuItem Header="_Measurement">
+                            <MenuItem x:Name="menuSetMotor" Header="Set _Motor" />
 							<MenuItem x:Name="menuSetSMU" Header="Set _SMU CH_01" Click="onSetSMU_Click"/>
 							<MenuItem x:Name="menuSetSMU_Channel_02" Header="Set S_MU CH_02" Click="onSetSMU_Channel_02_Click"/>
 						</MenuItem>

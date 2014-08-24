@@ -1,0 +1,20 @@
+﻿<Window x:Class="BreakJunctions.Faulhaber_2036_U012V"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Faulhaber_2036_U012V" Width="360" Height="200">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <Label Grid.Row="0" Grid.Column="0" Content="Select COM:" Margin="0 2.5" />
+        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="comboBoxSelectCOM_Port" ItemsSource="{Binding AvaliablePorts, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0 2.5" />
+        <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Save Settings" Margin="0 5" />
+    </Grid>
+</Window>

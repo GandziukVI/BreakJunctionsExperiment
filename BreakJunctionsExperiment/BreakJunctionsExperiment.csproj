@@ -89,6 +89,9 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\FaulhaberMinimotor\Faulhaber_2036_U012V.xaml.cs">
+      <DependentUpon>Faulhaber_2036_U012V.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
     <Compile Include="Measurements\MeasureTimeTraceChannelController.cs" />
@@ -97,7 +100,7 @@
     <Compile Include="Motion\Motion Controllers Factories\FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory.cs" />
     <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_MotionController.cs" />
     <Compile Include="Motion\MotionController.cs" />
-    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MotorConfiguration.xaml.cs">
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29\MotorConfiguration.xaml.cs">
       <DependentUpon>MotorConfiguration.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plotting\ExperimentalDataSource.cs" />
@@ -110,16 +113,17 @@
       <DependentUpon>TimeTraceMeasurementSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="User Interfaces\HandlingUserInput.cs" />
-    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml.cs">
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29\MeasureDeviceConfiguration.xaml.cs">
       <DependentUpon>MeasureDeviceConfiguration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml.cs">
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29\SourceDeviceConfiguration.xaml.cs">
       <DependentUpon>SourceDeviceConfiguration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml.cs">
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\FaulhaberMinimotor\MVVM_Faulhaber_2036_U012V.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\Keithley2602A_Settings\Keithley2602A_Settings.xaml.cs">
       <DependentUpon>Keithley2602A_Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\MVVM_Keithley2602A_Settings.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\Keithley2602A_Settings\MVVM_Keithley2602A_Settings.cs" />
     <Compile Include="User Interfaces\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -151,11 +155,15 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\FaulhaberMinimotor\Faulhaber_2036_U012V.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MotorConfiguration.xaml">
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29\MotorConfiguration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -167,15 +175,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MeasureDeviceConfiguration.xaml">
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29\MeasureDeviceConfiguration.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml">
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29\SourceDeviceConfiguration.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml">
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\Keithley2602A_Settings\Keithley2602A_Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
