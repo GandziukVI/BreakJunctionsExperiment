@@ -89,9 +89,6 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
-    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Faulhaber\Minimotor_SA_2036_U012V_K1155_Settings.xaml.cs">
-      <DependentUpon>Minimotor_SA_2036_U012V_K1155_Settings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
     <Compile Include="Measurements\MeasureTimeTraceChannelController.cs" />
@@ -119,10 +116,10 @@
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\SourceDeviceConfiguration.xaml.cs">
       <DependentUpon>SourceDeviceConfiguration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley\Keithley2602A_Settings.xaml.cs">
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml.cs">
       <DependentUpon>Keithley2602A_Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley\MVVM_Keithley2602A_Settings.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\MVVM_Keithley2602A_Settings.cs" />
     <Compile Include="User Interfaces\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,10 +151,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Faulhaber\Minimotor_SA_2036_U012V_K1155_Settings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -182,7 +175,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley\Keithley2602A_Settings.xaml">
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Keithley2602A_Settings\Keithley2602A_Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
