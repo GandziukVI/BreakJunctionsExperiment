@@ -217,7 +217,7 @@ namespace BreakJunctions
 
             controlTimeTraceMeasurementSettings.cmdTimeTraceChannel_01_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01;
             controlTimeTraceMeasurementSettings.cmdTimeTraceChannel_02_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_02;
-            //controlTimeTraceMeasurementSettings.cmdTimeTraceDistanceMoveToInitialPosition +=
+            controlTimeTraceMeasurementSettings.cmdTimeTraceDistanceMoveToInitialPosition.Click += on_cmdTimeTraceDistanceMoveToInitialPosition;
             controlTimeTraceMeasurementSettings.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceStartMeasurementClick;
             controlTimeTraceMeasurementSettings.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceStopMeasurementClick;
 
@@ -909,6 +909,14 @@ namespace BreakJunctions
 
             if (backgroundTimeTraceMeasureChannel_02.IsBusy == true)
                 backgroundTimeTraceMeasureChannel_02.CancelAsync();
+        }
+
+        private void on_cmdTimeTraceDistanceMoveToInitialPosition(object sender, RoutedEventArgs e)
+        {
+            if (_MotionController != null)
+            {
+                _MotionController.MoveToZeroPosition();
+            }
         }
 
         #region 1-st Channel Background Work
