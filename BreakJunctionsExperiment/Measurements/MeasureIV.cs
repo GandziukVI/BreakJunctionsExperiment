@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-using Hardware;
 using BreakJunctions.Events;
-using System.ComponentModel;
 using BreakJunctions.Plotting;
 
 using SMU;

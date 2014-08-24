@@ -89,8 +89,9 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
-    <Compile Include="Hardware\Hardware %28Abstract%29\IMotion.cs" />
-    <Compile Include="Hardware\Hardware %28Physical%29\FAULHABER_MINIMOTOR_SA.cs" />
+    <Compile Include="FaulhaberMinimotor_SA_2036_U012V_K1155_Settings.xaml.cs">
+      <DependentUpon>FaulhaberMinimotor_SA_2036_U012V_K1155_Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
     <Compile Include="Measurements\MeasureTimeTraceChannelController.cs" />
@@ -99,6 +100,9 @@
     <Compile Include="Motion\Motion Controllers Factories\FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory.cs" />
     <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_MotionController.cs" />
     <Compile Include="Motion\MotionController.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MotorConfiguration.xaml.cs">
+      <DependentUpon>MotorConfiguration.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plotting\ExperimentalDataSource.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\IV_MeasurementSettingsDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\TimeTraceMeasurementSettingsDataModel.cs" />
@@ -150,9 +154,17 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="FaulhaberMinimotor_SA_2036_U012V_K1155_Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29 Interfaces\MotorConfiguration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\IV_MeasurementSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -189,7 +201,9 @@
       <Name>Keithley_2602A</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Faulhaber_SA_2036_U012V_Settings\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

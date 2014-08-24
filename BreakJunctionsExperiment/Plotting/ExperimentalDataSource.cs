@@ -11,8 +11,6 @@ using System.Windows.Controls;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 
-using Hardware;
-
 using BreakJunctions.Events;
 using System.Windows;
 

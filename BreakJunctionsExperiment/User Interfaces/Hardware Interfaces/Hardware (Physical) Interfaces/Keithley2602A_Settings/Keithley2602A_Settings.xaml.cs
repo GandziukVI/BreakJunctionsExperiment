@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-using Hardware;
+using SMU;
 using SMU.KEITHLEY_2602A;
 using System.Text.RegularExpressions;
 using System.Globalization;
