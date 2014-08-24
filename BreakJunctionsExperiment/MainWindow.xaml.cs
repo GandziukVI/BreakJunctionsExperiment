@@ -693,9 +693,7 @@ namespace BreakJunctions
 
                 _MotionFactory = new FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory("COM4");
                 _MotionController = _MotionFactory.GetMotionController();
-
-                var motor = _MotionController as FaulhaberMinimotor_SA_2036U012V_K1155_MotionController;
-                motor.NotificationsPerRevolution = _TimeTraceExperimentSettings.TimeTraceNotificationsPerRevolution;
+                _MotionController.NotificationsPerMilimeter = _TimeTraceExperimentSettings.TimeTraceNotificationsPerRevolution;
 
                 if ((TimeTraceCurveChannel_01 != null) && (TimeTraceCurveChannel_02 != null))
                 {

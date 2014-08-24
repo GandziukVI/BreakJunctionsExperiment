@@ -7,6 +7,15 @@ namespace Motion
 {
     public abstract class MotionController : IDisposable
     {
+        private int _NotificationsPerMilimeter = 10000;
+        /// <summary>
+        /// The number of notifications per milimeter
+        /// </summary>
+        public int NotificationsPerMilimeter
+        {
+            get { return _NotificationsPerMilimeter; }
+            set { _NotificationsPerMilimeter = value; }
+        }
         /// <summary>
         /// Initializes the device
         /// </summary>
