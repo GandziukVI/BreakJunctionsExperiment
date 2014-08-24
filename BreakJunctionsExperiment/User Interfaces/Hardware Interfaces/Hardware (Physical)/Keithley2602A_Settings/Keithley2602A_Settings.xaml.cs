@@ -24,7 +24,7 @@ namespace BreakJunctions
     {
         #region MVVM for Keithley2602ASettings
 
-        private MVVM_Keithley2602A_Settings _DeviceSettings;
+        private MVVM_Keithley2602A_Settings _DeviceSettings = null;
         public MVVM_Keithley2602A_Settings DeviceSettings
         {
             get { return _DeviceSettings; }
@@ -34,8 +34,8 @@ namespace BreakJunctions
 
         //The device
 
-        private SMU.I_SMU _Device;
-        public SMU.I_SMU Device
+        private I_SMU _Device;
+        public I_SMU Device
         {
             get { return _Device; }
         }
@@ -55,7 +55,7 @@ namespace BreakJunctions
             #endregion
         }
 
-        private SMU.I_SMU SetDevice()
+        private I_SMU SetDevice()
         {
             if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
             {

@@ -19,6 +19,11 @@ namespace BreakJunctions
     public partial class MotorConfiguration : Window
     {
         //List of avaliable motor settings should be here
+        private Faulhaber_2036_U012V _Faulhaber_2036_U012V_Settings = null;
+        public Faulhaber_2036_U012V Faulhaber_2036_U012V_Settings
+        {
+            get { return _Faulhaber_2036_U012V_Settings; }
+        }
 
         public MotorConfiguration()
         {
@@ -31,7 +36,9 @@ namespace BreakJunctions
             {
                 case "Faulhaber minimotor SA 2036U012V K1155":
                     {
-
+                        this.Close();
+                        _Faulhaber_2036_U012V_Settings = new Faulhaber_2036_U012V();
+                        _Faulhaber_2036_U012V_Settings.ShowDialog();
                     }break;
                 default:
                     break;

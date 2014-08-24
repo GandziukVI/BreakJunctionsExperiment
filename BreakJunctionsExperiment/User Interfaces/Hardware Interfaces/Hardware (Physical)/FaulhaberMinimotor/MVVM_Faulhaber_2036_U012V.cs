@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BreakJunctions
 {
-    class MVVM_Faulhaber_2036_U012V : INotifyPropertyChanged
+    public class MVVM_Faulhaber_2036_U012V : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged implementation
 
@@ -31,6 +31,17 @@ namespace BreakJunctions
             {
                 _AvaliablePorts = value;
                 OnPropertyChanged("AvaliablePorts");
+            }
+        }
+
+        private string _SelectedPort;
+        public string SelectedPort
+        {
+            get { return _SelectedPort; }
+            set 
+            {
+                _SelectedPort = value;
+                OnPropertyChanged("SelectedPort");
             }
         }
 

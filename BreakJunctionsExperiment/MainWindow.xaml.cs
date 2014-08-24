@@ -60,12 +60,13 @@ namespace BreakJunctions
         I_SMU DeviceChannel_01;
         I_SMU DeviceChannel_02;
 
-        IMotionFactory _MotionFactory;
         MotionController _MotionController; 
 
         #endregion
 
-        #region User interfaces to realize SMUs (get SMU configuration)
+        #region User interfaces to set device settings
+
+        private MotorConfiguration motorConfiguration;
 
         private SourceDeviceConfiguration sourceDeviceConfigurationChannel_01;
         private SourceDeviceConfiguration sourceDeviceConfigurationChannel_02;
@@ -339,6 +340,12 @@ namespace BreakJunctions
 		{
 			Application.Current.Shutdown();
 		}
+
+        private void onSetMotor_Click(object sender, RoutedEventArgs e)
+        {
+            motorConfiguration = new MotorConfiguration();
+            motorConfiguration.ShowDialog();
+        }
 
 		private void onSetSMU_Click(object sender, RoutedEventArgs e)
 		{
@@ -677,12 +684,12 @@ namespace BreakJunctions
 
                 #endregion
 
-                //Getting SMU device
+                //Configurations for all kinds of SMUs should be listed here
 
-                /*     Better implementation needed to realize lot of SMU     */
-
-                DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
-                DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
+                if(sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings != null)
+                    DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
+                if (sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings != null)
+                    DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
 
                 #region Time trace measurement configuration
 
@@ -691,8 +698,11 @@ namespace BreakJunctions
                 if (_MotionController != null)
                     _MotionController.Dispose();
 
-                _MotionFactory = new FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory("COM4");
-                _MotionController = _MotionFactory.GetMotionController();
+                //Configurations for all kinds of motors should be listed here
+
+                if (motorConfiguration.Faulhaber_2036_U012V_Settings != null)
+                    _MotionController = motorConfiguration.Faulhaber_2036_U012V_Settings.motionController;
+
                 _MotionController.NotificationsPerMilimeter = _TimeTraceExperimentSettings.TimeTraceNotificationsPerRevolution;
 
                 if ((TimeTraceCurveChannel_01 != null) && (TimeTraceCurveChannel_02 != null))
@@ -703,6 +713,7 @@ namespace BreakJunctions
 
                 if (_ChannelController != null)
                     _ChannelController.Dispose();
+
                 _ChannelController = new MeasureTimeTraceChannelController();
 
                 var timeTraceChannel_01_ValueThroughTheStructure = _TimeTraceExperimentSettings.TimeTraceMeasurementChannel_01_ValueThrougtTheStructureWithMultiplier;

@@ -3,17 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MotorConfiguration" Width="360" Height="200">
     
-        <Grid x:Name="LayoutRoot">
+        <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Margin="5 5 5 2.5">Select needed instrument from measure device list</Label>
+            <Label Grid.Row="0" Margin="5 5 5 2.5">Select needed instrument from motors list</Label>
             <ComboBox x:Name="comboBoxSelectMotorDevice" Grid.Row="1" Margin="5 2.5">
                 <ComboBoxItem IsSelected="True" Margin="5 2.5">Faulhaber minimotor SA 2036U012V K1155</ComboBoxItem>
             </ComboBox>
-            <Button x:Name="cmdConfigureDevice" Grid.Row="2" Margin="5 2.5" Click="on_cmdConfigureDeviceClick">Configure Device</Button>
+            <Button x:Name="cmdConfigureDevice" Grid.Row="2" Margin="0 5 0 0" Click="on_cmdConfigureDeviceClick">Configure Device</Button>
         </Grid>
 </Window>
