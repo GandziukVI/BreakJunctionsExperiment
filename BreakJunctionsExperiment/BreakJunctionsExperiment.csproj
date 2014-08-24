@@ -89,9 +89,6 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
-    <Compile Include="FaulhaberMinimotor_SA_2036_U012V_K1155_Settings.xaml.cs">
-      <DependentUpon>FaulhaberMinimotor_SA_2036_U012V_K1155_Settings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Measurements\MeasureIV.cs" />
     <Compile Include="Measurements\MeasureTimeTrace.cs" />
     <Compile Include="Measurements\MeasureTimeTraceChannelController.cs" />
@@ -154,10 +151,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="FaulhaberMinimotor_SA_2036_U012V_K1155_Settings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -201,9 +194,7 @@
       <Name>Keithley_2602A</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29 Interfaces\Faulhaber_SA_2036_U012V_Settings\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
