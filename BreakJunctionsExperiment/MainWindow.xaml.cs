@@ -735,26 +735,26 @@ namespace BreakJunctions
 
                             if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceChannel_01_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
 
                             if (isTimeTraceChannel_02_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController);
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceChannel_02_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController);
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
@@ -766,26 +766,26 @@ namespace BreakJunctions
 
                             if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceChannel_01_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
 
                             if (isTimeTraceChannel_02_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController);
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceChannel_02_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController);
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
@@ -909,6 +909,8 @@ namespace BreakJunctions
 
             if (backgroundTimeTraceMeasureChannel_02.IsBusy == true)
                 backgroundTimeTraceMeasureChannel_02.CancelAsync();
+
+            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         private void on_cmdTimeTraceDistanceMoveToInitialPosition(object sender, RoutedEventArgs e)

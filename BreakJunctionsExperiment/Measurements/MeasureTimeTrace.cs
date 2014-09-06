@@ -85,6 +85,18 @@ namespace BreakJunctions.Measurements
             set { _MeasureMode = value; }
         }
 
+        private MotionKind _CurrentMotionKind;
+        public MotionKind CurrentMotionKind
+        {
+            get { return _CurrentMotionKind; }
+        }
+
+        private int _NumberRepetities = 1;
+        public int NumberRepetities
+        {
+            get { return _NumberRepetities; }
+        }
+
         private BackgroundWorker _worker;
 
         private Channels _Channel;
@@ -92,7 +104,7 @@ namespace BreakJunctions.Measurements
 
         private bool _CancelMeasures = false;
 
-        public MeasureTimeTrace(MotionController motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure, Channels Channel, MeasureTimeTraceChannelController ChannelController)
+        public MeasureTimeTrace(MotionController motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure, Channels Channel, MeasureTimeTraceChannelController ChannelController, ref BackgroundWorker measurementWorker)
         {
             _Motor = motor;
             _StartPosition = startPosition;
@@ -104,13 +116,16 @@ namespace BreakJunctions.Measurements
             _Channel = Channel;
             _ChannelController = ChannelController;
 
+            _worker = measurementWorker;
+
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += OnTimeTraceMeasurementsStateChanged;
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
        }
 
         public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind motionKind, int numberRepetities = 1)
         {
-            _worker = sender as BackgroundWorker;
+            _CurrentMotionKind = motionKind;
+            _NumberRepetities = numberRepetities;
 
             switch (_SourceMode)
             {
@@ -148,7 +163,7 @@ namespace BreakJunctions.Measurements
             {
                 if (_worker.CancellationPending == true)
                 {
-                    _Motor.StopMotion();                    
+                    _Motor.StopMotion();
                     e.Cancel = true;
                     break;
                 }
@@ -162,10 +177,14 @@ namespace BreakJunctions.Measurements
             _MeasureDevice.SwitchOFF();
         }
 
+        private void StopMeasurement()
+        {
+            _Motor.StopMotion();
+            _MeasureDevice.SwitchOFF();
+        }
+
         private void OnMotionPositionMeasured(object sender, Motion_EventArgs e)
         {
-            var worker = sender as BackgroundWorker;
-
             switch (_MeasureMode)
             {
                 case KEITHLEY_2601A_MeasureMode.Voltage:
