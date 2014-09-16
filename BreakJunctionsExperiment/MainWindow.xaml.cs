@@ -908,6 +908,8 @@ namespace BreakJunctions
             {
                 backgroundTimeTraceMeasureChannel_01.RunWorkerAsync();
                 backgroundTimeTraceMeasureChannel_02.RunWorkerAsync();
+
+                AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
             }
             else MessageBox.Show("The device was not initialized!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
@@ -920,7 +922,7 @@ namespace BreakJunctions
             if (backgroundTimeTraceMeasureChannel_02.IsBusy == true)
                 backgroundTimeTraceMeasureChannel_02.CancelAsync();
 
-            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
+            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         private void on_cmdTimeTraceDistanceMoveToInitialPosition(object sender, RoutedEventArgs e)

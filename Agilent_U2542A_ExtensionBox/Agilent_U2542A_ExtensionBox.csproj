@@ -41,6 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalogInputChannel.cs" />
+    <Compile Include="AnalogInputChannels.cs" />
+    <Compile Include="AnalogInputChannel_Latch.cs" />
+    <Compile Include="ImportantConstants.cs" />
+    <Compile Include="ProgrammableFilter.cs" />
+    <Compile Include="ProgrammableGainAmplifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

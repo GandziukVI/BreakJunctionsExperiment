@@ -16,6 +16,7 @@ namespace Agilent_U2542A
         public AgilentUSB_Device(string ID)
         {
             this._Id = ID;
+            this.InitDevice();
         }
 
         ~AgilentUSB_Device()

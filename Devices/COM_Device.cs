@@ -54,6 +54,7 @@ namespace Devices
         public COM_Device(string comPort = "COM1", int baud = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
             this.SetSerialPort(comPort, baud, parity, dataBits, stopBits, returnToken);
+            this.InitDevice();
         }
 
         ~COM_Device()
