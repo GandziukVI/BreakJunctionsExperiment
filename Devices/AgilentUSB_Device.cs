@@ -63,7 +63,7 @@ namespace Agilent_U2542A
 
         #region IExperimentalDevice implementation
 
-        public bool InitDevice()
+        public virtual bool InitDevice()
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Agilent_U2542A
             catch { return false; }
         }
 
-        public bool SendCommandRequest(string RequestString)
+        public virtual bool SendCommandRequest(string RequestString)
         {
             if (IsBusy) 
             {
@@ -117,7 +117,7 @@ namespace Agilent_U2542A
             return true;
         }
 
-        public string ReceiveDeviceAnswer()
+        public virtual string ReceiveDeviceAnswer()
         {
             if (IsBusy) 
                 throw new Exception("Device is busy"); 
@@ -144,7 +144,7 @@ namespace Agilent_U2542A
             }
         }
 
-        public string RequestQuery(string Query)
+        public virtual string RequestQuery(string Query)
         {
             SendCommandRequest(Query);
             return ReceiveDeviceAnswer();

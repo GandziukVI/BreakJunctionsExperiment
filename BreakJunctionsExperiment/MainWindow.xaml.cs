@@ -184,8 +184,18 @@ namespace BreakJunctions
         #endregion
 
         public MainWindow()
-		{
-			this.InitializeComponent();
+        {
+            #region Modifying current process to have real time priority
+
+            System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.RealTime;
+
+            #endregion
+
+            #region Initializing graphical components
+
+            this.InitializeComponent();
+
+            #endregion
 
             #region Removing Legend From Charts
 

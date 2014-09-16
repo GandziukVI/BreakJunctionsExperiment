@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agilent_U2542A.cs" />
+    <Compile Include="Agilent_U2542A_AnalogInput.cs" />
+    <Compile Include="Agilent_U2542A_AnalogOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

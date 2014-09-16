@@ -8,8 +8,10 @@ using System.Threading;
 
 namespace Devices
 {
-    public class GPIB_Device : IExperimentalDevice
+    public class GPIB_Device : IExperimentalDevice, IDisposable
     {
+        #region GPIB settings
+
         private byte _PrimaryAddress;
         public byte PrimaryAddress
         {
@@ -35,6 +37,10 @@ namespace Devices
         private Device _GPIB_Device;
         public Device GPIB_CurrentDevice { get { return _GPIB_Device; } }
 
+        #endregion
+
+        #region Constructor / destructor
+
         public GPIB_Device(byte primaryAddress, byte secondaryAddress, byte boardNumber)
         {
             this._PrimaryAddress = primaryAddress;
@@ -43,6 +49,16 @@ namespace Devices
 
             InitDevice();
         }
+
+        ~GPIB_Device()
+        {
+            this.Dispose();
+        }
+
+        #endregion
+
+        #region IExperimentalDevice implementation
+
         public virtual bool InitDevice()
         {
             try
@@ -98,5 +114,16 @@ namespace Devices
             SendCommandRequest(Query);
             return ReceiveDeviceAnswer();
         }
+
+        #endregion
+
+        #region Correctly disposing the instance
+
+        public void Dispose()
+        {
+            this._GPIB_Device = null;
+        }
+
+        #endregion
     }
 }
