@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Agilent_U2542A
 {
-    class Agilent_U2542A_AnalogInput : AgilentUSB_Device
+    public class Agilent_U2542A_AnalogInput : AgilentUSB_Device
     {
         #region Constructor
 
-        public Agilent_U2542A_AnalogInput(string ID)
+        public Agilent_U2542A_AnalogInput(string ID = "USB0::0x0957::0x1718::TW52524501::INSTR")
             : base(ID)
         {
             var _InitSuccess = false;

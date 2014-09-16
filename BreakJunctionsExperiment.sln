@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simultaneous Data Acquisiti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agilent_U2542A", "Agilent_U2542A\Agilent_U2542A.csproj", "{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agilent_U2542A_ExtensionBox", "Agilent_U2542A_ExtensionBox\Agilent_U2542A_ExtensionBox.csproj", "{5946EAFB-838A-4F4B-B96A-2C3072F712C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,16 @@ Global
 		{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F}.Release|x86.ActiveCfg = Release|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,5 +138,6 @@ Global
 		{F98764A2-E410-4B56-8690-DB03DA26373B} = {AB034273-BFB7-4C65-A294-3DDE74D73FD3}
 		{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC} = {D01A604C-D09B-44C7-90EB-D845184ED1A2}
 		{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F} = {D50AA62B-BB8C-42D7-931D-67670AC5ADDE}
+		{5946EAFB-838A-4F4B-B96A-2C3072F712C0} = {D50AA62B-BB8C-42D7-931D-67670AC5ADDE}
 	EndGlobalSection
 EndGlobal

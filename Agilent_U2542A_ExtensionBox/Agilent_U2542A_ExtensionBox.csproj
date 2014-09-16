@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F}</ProjectGuid>
+    <ProjectGuid>{5946EAFB-838A-4F4B-B96A-2C3072F712C0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Agilent_U2542A</RootNamespace>
-    <AssemblyName>Agilent_U2542A</AssemblyName>
+    <RootNamespace>Agilent_U2542A_ExtensionBox</RootNamespace>
+    <AssemblyName>Agilent_U2542A_ExtensionBox</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,19 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agilent_U2542A_AnalogInput.cs" />
-    <Compile Include="Agilent_U2542A_AnalogOutput.cs" />
-    <Compile Include="Agilent_U2542A_DigitalOutput.cs" />
-    <Compile Include="DAQ_Bit.cs" />
+    <Compile Include="AnalogInputChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Agilent_U2542A\Agilent_U2542A.csproj">
+      <Project>{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F}</Project>
+      <Name>Agilent_U2542A</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Devices\Devices.csproj">
       <Project>{AE52526E-D660-426E-A2EC-1A475B02AA9E}</Project>
       <Name>Devices</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

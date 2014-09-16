@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Agilent_U2542A
 {
-    class Agilent_U2542A_AnalogOutput : AgilentUSB_Device
+    public class Agilent_U2542A_AnalogOutput : AgilentUSB_Device
     {
         #region Analog output settings
 
@@ -15,7 +15,7 @@ namespace Agilent_U2542A
 
         #region Constructor
 
-        public Agilent_U2542A_AnalogOutput(int channelNumber, string ID)
+        public Agilent_U2542A_AnalogOutput(int channelNumber, string ID = "USB0::0x0957::0x1718::TW52524501::INSTR")
             : base(ID)
         {
             if (!this.IsAlive)

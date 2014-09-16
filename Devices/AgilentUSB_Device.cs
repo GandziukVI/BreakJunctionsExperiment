@@ -13,7 +13,7 @@ namespace Agilent_U2542A
     {
         #region Constructor / destructor
 
-        public AgilentUSB_Device(string ID = "USB0::0x0957::0x1718::TW52524501::INSTR")
+        public AgilentUSB_Device(string ID)
         {
             this._Id = ID;
         }
