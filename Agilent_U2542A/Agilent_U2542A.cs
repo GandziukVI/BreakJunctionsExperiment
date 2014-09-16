@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Agilent_U2542A
 {
-    public class USB_Agilent_U2542A
+    class Agilent_U2542A
     {
     }
 }

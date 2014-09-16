@@ -105,6 +105,12 @@ namespace Devices
             return COM_DeviceResponce;
         }
 
+        public virtual string RequestQuery(string Query)
+        {
+            SendCommandRequest(Query);
+            return ReceiveDeviceAnswer();
+        }
+
         #endregion
 
         #region Correctly disposing the instance
