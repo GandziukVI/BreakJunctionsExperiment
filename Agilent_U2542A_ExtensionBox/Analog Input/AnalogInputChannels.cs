@@ -83,10 +83,10 @@ namespace Agilent_U2542A_ExtensionBox
 
         #region Constructor
 
-        public AnalogInputChannels(string ID = "USB0::0x0957::0x1718::TW52524501::INSTR")
+        public AnalogInputChannels(string deviceID = "USB0::0x0957::0x1718::TW52524501::INSTR")
         {
-            this._Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1, ID), new AnalogInputChannel(2, ID), new AnalogInputChannel(3, ID), new AnalogInputChannel(4, ID) };
-            _AI = new Agilent_U2542A_AnalogInput(ID);
+            this._Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1, deviceID), new AnalogInputChannel(2, deviceID), new AnalogInputChannel(3, deviceID), new AnalogInputChannel(4, deviceID) };
+            _AI = new Agilent_U2542A_AnalogInput(deviceID);
         }
 
         #endregion

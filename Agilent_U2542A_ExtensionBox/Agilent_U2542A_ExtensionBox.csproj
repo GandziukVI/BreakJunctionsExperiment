@@ -40,12 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalogInputChannel.cs" />
-    <Compile Include="AnalogInputChannels.cs" />
-    <Compile Include="AnalogInputChannel_Latch.cs" />
+    <Compile Include="Analog Input\AnalogInputChannel.cs" />
+    <Compile Include="Analog Input\AnalogInputChannels.cs" />
+    <Compile Include="Analog Input\AnalogInputChannel_Latch.cs" />
+    <Compile Include="Analog Output\AnalogOutputChannel.cs" />
+    <Compile Include="Analog Output\AnalogOutputChannels.cs" />
     <Compile Include="ImportantConstants.cs" />
-    <Compile Include="ProgrammableFilter.cs" />
-    <Compile Include="ProgrammableGainAmplifier.cs" />
+    <Compile Include="Analog Input\ProgrammableFilter.cs" />
+    <Compile Include="Analog Input\ProgrammableGainAmplifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
