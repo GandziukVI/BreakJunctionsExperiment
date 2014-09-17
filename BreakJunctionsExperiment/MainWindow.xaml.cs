@@ -705,9 +705,6 @@ namespace BreakJunctions
 
                 _TimeTraceExperimentSettings = controlTimeTraceMeasurementSettings.MeasurementSettings;
 
-                if (_MotionController != null)
-                    _MotionController.Dispose();
-
                 //Configurations for all kinds of motors should be listed here
 
                 if (motorConfiguration.Faulhaber_2036_U012V_Settings != null)
