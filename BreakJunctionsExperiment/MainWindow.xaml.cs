@@ -34,6 +34,8 @@ using System.Globalization;
 using System.IO;
 using Motion;
 
+using Aids.Graphics;
+
 namespace BreakJunctions
 {
     //View models for devices

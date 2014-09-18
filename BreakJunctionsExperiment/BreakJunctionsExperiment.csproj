@@ -89,6 +89,11 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
+    <Compile Include="Measurements\Real Time Measurement\IRealTime_TimeTrace_Factory.cs" />
+    <Compile Include="Measurements\Real Time Measurement\RealTime_TimeTrace_Controller.cs" />
+    <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RealTime_Agilent_U2542A_TimeTrace_Controller.cs" />
+    <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
+    <Compile Include="Measurements\RealTime_Agilent_U2542A_TimeTrace_Controller_Factory.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\FaulhaberMinimotor\Faulhaber_2036_U012V.xaml.cs">
       <DependentUpon>Faulhaber_2036_U012V.xaml</DependentUpon>
     </Compile>
@@ -189,6 +194,18 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Agilent_U2542A\Agilent_U2542A.csproj">
+      <Project>{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F}</Project>
+      <Name>Agilent_U2542A</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Agilent_U2542A_ExtensionBox\Agilent_U2542A_ExtensionBox.csproj">
+      <Project>{5946EAFB-838A-4F4B-B96A-2C3072F712C0}</Project>
+      <Name>Agilent_U2542A_ExtensionBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Aids\Aids.csproj">
+      <Project>{153732F0-30F4-4425-843D-ED3F337E5791}</Project>
+      <Name>Aids</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Devices\Devices.csproj">
       <Project>{ae52526e-d660-426e-a2ec-1a475b02aa9e}</Project>
       <Name>Devices</Name>
@@ -197,12 +214,18 @@
       <Project>{dd0fd2e2-f6c7-4694-a4fa-9897786fff56}</Project>
       <Name>FaulhaberMinimotors</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HP_35670A\HP_35670A.csproj">
+      <Project>{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}</Project>
+      <Name>HP_35670A</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Keithley_2602A\Keithley_2602A.csproj">
       <Project>{f98764a2-e410-4b56-8690-db03da26373b}</Project>
       <Name>Keithley_2602A</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Measurements\Real Time Measurement\Real time Time Trace Controllers Facttories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

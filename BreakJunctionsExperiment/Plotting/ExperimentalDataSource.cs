@@ -14,30 +14,13 @@ using Microsoft.Research.DynamicDataDisplay.DataSources;
 using BreakJunctions.Events;
 using System.Windows;
 
+using Aids.Graphics;
+
 namespace BreakJunctions.Plotting
 {
     #region Representing plotting channels
 
     public enum Channels { Channel_01, Channel_02 }
-
-    #endregion
-
-    #region Double precision point implementation
-
-    /// <summary>
-    /// Represents Point of double accuracy
-    /// </summary>
-    public struct PointD
-    {
-        public double X;
-        public double Y;
-
-        public PointD(double X, double Y)
-        {
-            this.X = X;
-            this.Y = Y;
-        }
-    }
 
     #endregion
 

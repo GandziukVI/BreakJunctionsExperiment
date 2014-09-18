@@ -7,7 +7,7 @@ using Agilent_U2542A;
 
 namespace Agilent_U2542A_ExtensionBox
 {
-    class AnalogInputChannels
+    public class AnalogInputChannels
     {
         #region AnalogInputChannels settings
 
@@ -79,14 +79,38 @@ namespace Agilent_U2542A_ExtensionBox
             }
         }
 
+        private string _DeviceID = "USB0::0x0957::0x1718::TW52524501::INSTR";
+        public string DeviceID
+        {
+            get { return _DeviceID; }
+            set 
+            {
+                _DeviceID = value;
+                
+                _Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1, _DeviceID), new AnalogInputChannel(2, _DeviceID), new AnalogInputChannel(3, _DeviceID), new AnalogInputChannel(4, _DeviceID) };
+                _AI = new Agilent_U2542A_AnalogInput(_DeviceID);
+            }
+        }
+
         #endregion
 
-        #region Constructor
+        #region Singleton pattern implementation
 
-        public AnalogInputChannels(string deviceID = "USB0::0x0957::0x1718::TW52524501::INSTR")
+        private static AnalogInputChannels _Instance;
+        public static AnalogInputChannels Instance
         {
-            this._Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1, deviceID), new AnalogInputChannel(2, deviceID), new AnalogInputChannel(3, deviceID), new AnalogInputChannel(4, deviceID) };
-            _AI = new Agilent_U2542A_AnalogInput(deviceID);
+            get
+            {
+                if (_Instance == null)
+                    _Instance = new AnalogInputChannels();
+                return _Instance;
+            }
+        }
+
+        private AnalogInputChannels()
+        {
+            _Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1, _DeviceID), new AnalogInputChannel(2, _DeviceID), new AnalogInputChannel(3, _DeviceID), new AnalogInputChannel(4, _DeviceID) };
+            _AI = new Agilent_U2542A_AnalogInput(_DeviceID);
         }
 
         #endregion

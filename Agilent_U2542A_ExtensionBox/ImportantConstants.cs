@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace Agilent_U2542A_ExtensionBox
 {
-    static class ImportantConstants
+    public static class ImportantConstants
     {
         public static NumberFormatInfo NumberFormat()
         {

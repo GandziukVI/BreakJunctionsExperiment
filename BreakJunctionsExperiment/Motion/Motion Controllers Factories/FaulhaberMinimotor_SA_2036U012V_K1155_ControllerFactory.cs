@@ -14,6 +14,7 @@ namespace Motion
         {
             _MotionController = new FaulhaberMinimotor_SA_2036U012V_K1155_MotionController(comPort, baud, parity, dataBits, stopBits, returnToken);
         }
+
         public MotionController GetMotionController()
         {
             return _MotionController;
