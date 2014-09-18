@@ -10,7 +10,12 @@ namespace Agilent_U2542A
     {
         #region Constructor
 
-        public Agilent_U2542A_DigitalOutput(string ID = "USB0::0x0957::0x1718::TW52524501::INSTR")
+        /// <summary>
+        /// Creates the Agilent_U2542A_DigitalOutput instance for
+        /// managing digital output of the device
+        /// </summary>
+        /// <param name="ID"></param>
+        public Agilent_U2542A_DigitalOutput(string ID)
             : base(ID)
         {
             if (!this.IsAlive)
@@ -23,10 +28,12 @@ namespace Agilent_U2542A
             _byte502 = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
             _byte503 = new byte[4] { 0, 0, 0, 0 };
             _byte504 = new byte[4] { 0, 0, 0, 0 };
+            
             _byte501_pinNumbers = new byte[8] { 68, 34, 67, 33, 66, 32, 65, 31 };
             _byte502_pinNumbers = new byte[8] { 59, 25, 58, 24, 57, 23, 56, 22 };
             _byte503_pinNumbers = new byte[4] { 64, 30, 63, 29 };
             _byte504_pinNumbers = new byte[4] { 61, 27, 60, 26 };
+            
             _bytes = new List<byte[]> { _byte501_pinNumbers, _byte502_pinNumbers, _byte503_pinNumbers, _byte504_pinNumbers };
             
             SendCommandRequest("CONF:DIG:DIR OUTP,(@501:504)");
