@@ -7,6 +7,6 @@ namespace BreakJunctions.Measurements
 {
     public interface IRealTime_TimeTrace_Factory
     {
-        RealTime_TimeTrace_Controller GetRealTime_TimeTraceController();
+        RealTime_TimeTrace_Controller GetRealTime_TimeTraceController(string _deviceID);
     }
 }

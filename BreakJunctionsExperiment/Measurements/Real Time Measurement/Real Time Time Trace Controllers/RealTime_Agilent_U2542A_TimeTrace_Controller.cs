@@ -27,7 +27,7 @@ namespace BreakJunctions.Measurements
 
         #endregion
 
-        #region Constructor
+        #region Constructor / Destructor
 
         public RealTime_Agilent_U2542A_TimeTrace_Controller(string deviceID)
         {
@@ -38,6 +38,11 @@ namespace BreakJunctions.Measurements
 
             _DataConverter = new DataStringConverter();
             _VoltageMeasurement = new VoltageMeasurement();
+        }
+
+        ~RealTime_Agilent_U2542A_TimeTrace_Controller()
+        {
+            this.Dispose();
         }
 
         #endregion
@@ -161,9 +166,14 @@ namespace BreakJunctions.Measurements
             }
         }
 
+        #endregion
+
+        #region Disposing the instance
+
         public override void Dispose()
         {
-            throw new NotImplementedException();
+            _DIO.Dispose();
+            _VoltageMeasurement.Dispose();
         }
 
         #endregion

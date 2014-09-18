@@ -67,8 +67,6 @@ namespace Agilent_U2542A_ExtensionBox
                 {
                     result[not_workingChannel.number - 101].Add(new PointD(time, 0));
                 }
-
-
             }
             return result;
         }

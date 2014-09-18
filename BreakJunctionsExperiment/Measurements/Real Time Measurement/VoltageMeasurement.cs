@@ -8,7 +8,7 @@ using Agilent_U2542A_ExtensionBox;
 
 namespace BreakJunctions.Measurements
 {
-    class VoltageMeasurement
+    class VoltageMeasurement : IDisposable
     {
         #region VoltageMeasurement settings
 
@@ -24,11 +24,16 @@ namespace BreakJunctions.Measurements
 
         #endregion
 
-        #region Constructor
+        #region Constructor / Destructor
 
         public VoltageMeasurement()
         {
             _AI = new Agilent_U2542A_AnalogInput(_Channels.DeviceID);
+        }
+
+        ~VoltageMeasurement()
+        {
+            this.Dispose();
         }
 
         #endregion
@@ -88,6 +93,15 @@ namespace BreakJunctions.Measurements
             double[] result = _Channels.VoltageMeasurement101_104();
             if (_MeasurementInProcess == false)
                 return;
+        }
+
+        #endregion
+
+        #region Disposing the instance
+
+        public void Dispose()
+        {
+            _AI.Dispose();
         }
 
         #endregion
