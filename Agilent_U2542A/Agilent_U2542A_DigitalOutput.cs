@@ -53,6 +53,11 @@ namespace Agilent_U2542A
 
         #region Agilent Ditital Output functionality
 
+        /// <summary>
+        /// Parses number to bit mask
+        /// </summary>
+        /// <param name="byteX"></param>
+        /// <param name="number"></param>
         private void parseNumberToBitMask(ref byte[] byteX, byte number)
         {
             for (byte i = 0; i < byteX.Length; i++)
