@@ -16,7 +16,7 @@ namespace Agilent_U2542A_ExtensionBox
             {
                 dataString = dataString.Substring(10);
             }
-            catch (ArgumentOutOfRangeException e)
+            catch //(ArgumentOutOfRangeException e)
             {
                 return new short[] { };
             }

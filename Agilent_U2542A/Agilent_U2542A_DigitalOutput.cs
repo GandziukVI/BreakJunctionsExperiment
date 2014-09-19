@@ -8,7 +8,7 @@ namespace Agilent_U2542A
 {
     public class Agilent_U2542A_DigitalOutput : AgilentUSB_Device
     {
-        #region Constructor
+        #region Constructor / Destructor
 
         /// <summary>
         /// Creates the Agilent_U2542A_DigitalOutput instance for
@@ -37,6 +37,11 @@ namespace Agilent_U2542A
             _bytes = new List<byte[]> { _byte501_pinNumbers, _byte502_pinNumbers, _byte503_pinNumbers, _byte504_pinNumbers };
             
             SendCommandRequest("CONF:DIG:DIR OUTP,(@501:504)");
+        }
+
+        ~Agilent_U2542A_DigitalOutput()
+        {
+            this.Dispose();
         }
 
         #endregion

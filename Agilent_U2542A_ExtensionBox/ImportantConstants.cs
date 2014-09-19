@@ -15,11 +15,19 @@ namespace Agilent_U2542A_ExtensionBox
             a.NumberGroupSeparator = "";
             return a;
         }
+        
         public static double[] Ranges = new double[] { 1.25, 2.5, 5, 10 };
         public static int[] CutOffFrequencies = new int[] { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150 };
         public static int[] FilterGains = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
         public static int[] ProgrammableAmplifierGains = new int[] { 1, 10, 100 };
         public static double Rload;
         public static double K_Ampl_first_Channel;
+
+        private static string _DeviceID = "USB0::0x0957::0x1718::TW52524501::INSTR";
+        public static string DeviceID
+        {
+            get { return _DeviceID; }
+            set { _DeviceID = value; }
+        }
     }
 }

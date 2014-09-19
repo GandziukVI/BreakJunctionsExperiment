@@ -28,7 +28,7 @@ namespace BreakJunctions.Measurements
 
         public VoltageMeasurement()
         {
-            _AI = new Agilent_U2542A_AnalogInput(_Channels.DeviceID);
+            _AI = new Agilent_U2542A_AnalogInput(ImportantConstants.DeviceID);
         }
 
         ~VoltageMeasurement()

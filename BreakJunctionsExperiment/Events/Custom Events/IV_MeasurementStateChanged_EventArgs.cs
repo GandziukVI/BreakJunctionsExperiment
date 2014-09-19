@@ -7,11 +7,11 @@ namespace BreakJunctions.Events
 {
     class IV_MeasurementStateChanged_EventArgs : EventArgs
     {
+        private bool _IV_MeasurementState = false;
         /// <summary>
         /// Is true, if the measurement started
         /// and false, if the measurement stopped
         /// </summary>
-        private bool _IV_MeasurementState = false;
         public bool IV_MeasurementState
         {
             get { return _IV_MeasurementState; }
@@ -21,7 +21,7 @@ namespace BreakJunctions.Events
         public IV_MeasurementStateChanged_EventArgs(bool _IV_measurementState) 
             : base() 
         {
-            _IV_MeasurementState = _IV_measurementState;
+            this._IV_MeasurementState = _IV_measurementState;
         }
     }
 }

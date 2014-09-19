@@ -7,7 +7,7 @@ using Agilent_U2542A;
 
 namespace Agilent_U2542A_ExtensionBox
 {
-    public class AnalogInputChannel
+    public class AnalogInputChannel : IDisposable
     {
         #region AnalogInputChannelSettings
 
@@ -21,9 +21,13 @@ namespace Agilent_U2542A_ExtensionBox
             set
             {
                 _number = 0;
-                if ((value < 5) && (value > 0))     _number = value + 100;
-                if ((value < 105) && (value > 100)) _number = value;
-                if (_number == 0)                   throw new Exception("Wrong number of channel set");
+
+                if ((value < 5) && (value > 0))
+                    _number = value + 100;
+                if ((value < 105) && (value > 100))
+                    _number = value;
+                if (_number == 0)
+                    throw new Exception("Wrong number of channel set");
             }
         }
 
@@ -121,14 +125,19 @@ namespace Agilent_U2542A_ExtensionBox
 
         #endregion
 
-        #region Constructor
+        #region Constructor / Destructor
 
-        public AnalogInputChannel(int ChannelNumber, string ID = "USB0::0x0957::0x1718::TW52524501::INSTR")
+        public AnalogInputChannel(int ChannelNumber)
         {
             number = ChannelNumber;
             ChannelProperties = new AnalogInputChannel_Latch(ChannelNumber);
-            _AI = new Agilent_U2542A_AnalogInput(ID);
-            _DIO = new Agilent_U2542A_DigitalOutput(ID);
+            _AI = new Agilent_U2542A_AnalogInput(ImportantConstants.DeviceID);
+            _DIO = new Agilent_U2542A_DigitalOutput(ImportantConstants.DeviceID);
+        }
+
+        ~AnalogInputChannel()
+        {
+            this.Dispose();
         }
 
         #endregion
@@ -203,6 +212,17 @@ namespace Agilent_U2542A_ExtensionBox
             getACPolarity();
             getDC_Range();
             getDC_Polarity();
+        }
+
+        #endregion
+
+        #region Correctly disposing the instance
+
+        public void Dispose()
+        {
+            _AI.Dispose();
+            _DIO.Dispose();
+            ChannelProperties.Dispose();
         }
 
         #endregion

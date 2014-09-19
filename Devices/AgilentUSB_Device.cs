@@ -35,7 +35,12 @@ namespace Agilent_U2542A
         public string Id
         {
             get { return _Id; }
-            set { _Id = value; }
+            set 
+            {
+                _Id = value;
+                this.Dispose();
+                this.InitDevice();
+            }
         }
 
         private bool _Alive;

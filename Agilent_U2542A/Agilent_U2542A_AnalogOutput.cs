@@ -13,7 +13,7 @@ namespace Agilent_U2542A
 
         #endregion
 
-        #region Constructor
+        #region Constructor / Destructor
 
         /// <summary>
         /// Creates the instance of Agilent_U2542A_AnalogOutput
@@ -35,6 +35,11 @@ namespace Agilent_U2542A
             SendCommandRequest("SOUR:VOLT:POL BIP, (@201:202)");
             SendCommandRequest("OUTP:WAV:ITER 0");
             SendCommandRequest("OUTP:WAV:SRAT 0");
+        }
+
+        ~Agilent_U2542A_AnalogOutput()
+        {
+            this.Dispose();
         }
 
         #endregion

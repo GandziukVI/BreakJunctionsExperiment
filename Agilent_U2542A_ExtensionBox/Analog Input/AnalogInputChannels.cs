@@ -79,19 +79,6 @@ namespace Agilent_U2542A_ExtensionBox
             }
         }
 
-        private string _DeviceID = "USB0::0x0957::0x1718::TW52524501::INSTR";
-        public string DeviceID
-        {
-            get { return _DeviceID; }
-            set 
-            {
-                _DeviceID = value;
-                
-                _Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1, _DeviceID), new AnalogInputChannel(2, _DeviceID), new AnalogInputChannel(3, _DeviceID), new AnalogInputChannel(4, _DeviceID) };
-                _AI = new Agilent_U2542A_AnalogInput(_DeviceID);
-            }
-        }
-
         #endregion
 
         #region Singleton pattern implementation
@@ -109,8 +96,8 @@ namespace Agilent_U2542A_ExtensionBox
 
         private AnalogInputChannels()
         {
-            _Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1, _DeviceID), new AnalogInputChannel(2, _DeviceID), new AnalogInputChannel(3, _DeviceID), new AnalogInputChannel(4, _DeviceID) };
-            _AI = new Agilent_U2542A_AnalogInput(_DeviceID);
+            _Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1), new AnalogInputChannel(2), new AnalogInputChannel(3), new AnalogInputChannel(4) };
+            _AI = new Agilent_U2542A_AnalogInput(ImportantConstants.DeviceID);
         }
 
         #endregion

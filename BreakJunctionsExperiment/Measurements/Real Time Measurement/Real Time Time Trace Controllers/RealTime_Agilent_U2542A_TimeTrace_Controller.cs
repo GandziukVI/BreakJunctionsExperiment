@@ -33,7 +33,6 @@ namespace BreakJunctions.Measurements
         {
             _DIO = new Agilent_U2542A_DigitalOutput(deviceID);
 
-            _Channels.DeviceID = deviceID;
             _Channels.Read_AI_Channel_Status();
 
             _DataConverter = new DataStringConverter();

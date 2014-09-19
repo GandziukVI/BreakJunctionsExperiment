@@ -18,10 +18,10 @@ namespace Agilent_U2542A_ExtensionBox
 
         #region Constructor
 
-        private AnalogOutputChannels(string deviceID)
+        private AnalogOutputChannels()
         {
-            Channels = new AnalogOutputChannel[] { new AnalogOutputChannel(201, deviceID), new AnalogOutputChannel(202, deviceID) };
-            AO_Channels_LatchEnable = new DAQ_Bit(504, 3);
+            Channels = new AnalogOutputChannel[] { new AnalogOutputChannel(201), new AnalogOutputChannel(202) };
+            AO_Channels_LatchEnable = new DAQ_Bit(504, 3, ImportantConstants.DeviceID);
         }
 
         #endregion

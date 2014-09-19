@@ -7,14 +7,14 @@ namespace Agilent_U2542A
 {
     public class Agilent_U2542A_AnalogInput : AgilentUSB_Device
     {
-        #region Constructor
+        #region Constructor / Destructor
 
         /// <summary>
         /// Creates the instance of Agilent_U2542A_AnalogInput class
         /// for managing analog input of the device
         /// </summary>
         /// <param name="ID"></param>
-        public Agilent_U2542A_AnalogInput(string ID = "USB0::0x0957::0x1718::TW52524501::INSTR")
+        public Agilent_U2542A_AnalogInput(string ID)
             : base(ID)
         {
             var _InitSuccess = false;
@@ -23,6 +23,11 @@ namespace Agilent_U2542A
                 _InitSuccess = this.InitDevice();
 
             if (!_InitSuccess) throw new Exception("Device Not Connected");
+        }
+
+        ~Agilent_U2542A_AnalogInput()
+        {
+            this.Dispose();
         }
 
         #endregion
