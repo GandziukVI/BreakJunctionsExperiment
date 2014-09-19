@@ -15,27 +15,27 @@ using System.Windows.Shapes;
 namespace BreakJunctions
 {
     /// <summary>
-    /// Interaction logic for RealTimeTimeTraceMeasurementSettings.xaml
+    /// Interaction logic for MotionParameters.xaml
     /// </summary>
-    public partial class RealTimeTimeTraceMeasurementSettings : UserControl
+    public partial class MotionParameters : UserControl
     {
         #region MVVM interactions
 
-        private RealTimeTimeTraceMeasurementSettingsDataModel _MeasurementSettings;
-        public RealTimeTimeTraceMeasurementSettingsDataModel MeasurementSettings
+        private MotionParametersDataModel _MeasurementSettings;
+        public MotionParametersDataModel MeasurementSettings
         {
             get { return _MeasurementSettings; }
         }
 
         #endregion
 
-        public RealTimeTimeTraceMeasurementSettings()
+        public MotionParameters()
         {
             InitializeComponent();
 
             #region MVVM setup
 
-            _MeasurementSettings = new RealTimeTimeTraceMeasurementSettingsDataModel();
+            _MeasurementSettings = new MotionParametersDataModel();
             this.DataContext = _MeasurementSettings;
 
             #endregion

@@ -229,7 +229,7 @@ namespace BreakJunctions
 
             controlTimeTraceMeasurementSettings.cmdTimeTraceChannel_01_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01;
             controlTimeTraceMeasurementSettings.cmdTimeTraceChannel_02_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_02;
-            controlTimeTraceMeasurementSettings.cmdTimeTraceDistanceMoveToInitialPosition.Click += on_cmdTimeTraceDistanceMoveToInitialPosition;
+            controlTimeTraceMeasurementSettings.MotionParameters.cmdTimeTraceDistanceMoveToInitialPosition.Click += on_cmdTimeTraceDistanceMoveToInitialPosition;
             controlTimeTraceMeasurementSettings.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceStartMeasurementClick;
             controlTimeTraceMeasurementSettings.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceStopMeasurementClick;
 
@@ -514,7 +514,7 @@ namespace BreakJunctions
                     }
 
                     //Some Comment
-                    double micrometricBoltPosition = controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
+                    double micrometricBoltPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
 
                     string comment = _IV_ExperimentSettings.IV_MeasurementDataComment;
 
@@ -712,7 +712,7 @@ namespace BreakJunctions
                 if (motorConfiguration.Faulhaber_2036_U012V_Settings != null)
                     _MotionController = motorConfiguration.Faulhaber_2036_U012V_Settings.motionController;
 
-                _MotionController.NotificationsPerMilimeter = _TimeTraceExperimentSettings.TimeTraceNotificationsPerRevolution;
+                _MotionController.NotificationsPerMilimeter = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceNotificationsPerRevolution;
 
                 if ((TimeTraceCurveChannel_01 != null) && (TimeTraceCurveChannel_02 != null))
                 {
@@ -733,14 +733,14 @@ namespace BreakJunctions
                 var isTimeTraceChannel_02_VoltageModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_02_VoltageModeChecked;
                 var isTimeTraceChannel_02_CurrentModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_02_CurrentModeChecked;
 
-                var selectedTimeTraceModeItem = (controlTimeTraceMeasurementSettings.tabControlTimeTraceMeasurementParameters.SelectedItem as TabItem).Header.ToString();
+                var selectedTimeTraceModeItem = (controlTimeTraceMeasurementSettings.MotionParameters.tabControlTimeTraceMeasurementParameters.SelectedItem as TabItem).Header.ToString();
 
                 switch (selectedTimeTraceModeItem)
                 {
                     case "Distance":
                         {
-                            var motionStartPosition = _TimeTraceExperimentSettings.TimeTraceMeasurementDistanceMotionStartPosition;
-                            var motionFinalDestination = _TimeTraceExperimentSettings.TimeTraceMeasurementDistanceMotionFinalDestination;
+                            var motionStartPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionStartPosition;
+                            var motionFinalDestination = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionFinalDestination;
 
                             if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
@@ -770,8 +770,8 @@ namespace BreakJunctions
                         } break;
                     case "Distance (Repetitive)":
                         {
-                            var motionRepetitiveStartPosition = _TimeTraceExperimentSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
-                            var motionRepetitiveEndPosition = _TimeTraceExperimentSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
+                            var motionRepetitiveStartPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
+                            var motionRepetitiveEndPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
 
                             if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
@@ -857,7 +857,7 @@ namespace BreakJunctions
                         sourceModeChannel_02 = "SourceMode: Current";
                     }
 
-                    var micrometricBoltPosition = _TimeTraceExperimentSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
+                    var micrometricBoltPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
 
                     var comment = _TimeTraceExperimentSettings.TimeTraceMeasurementDataComment;
 
@@ -939,7 +939,7 @@ namespace BreakJunctions
             if ((DeviceChannel_01 != null) && (DeviceChannel_01.InitDevice()))
             {
 
-                var ExperimentSettings = controlTimeTraceMeasurementSettings.MeasurementSettings;
+                var ExperimentSettings = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings;
                 var numerCycles = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
 
                 var selectedTimeTraceModeHeader = ExperimentSettings.TimeTraceMeasurementSelectedTabIndex;
@@ -986,7 +986,7 @@ namespace BreakJunctions
             if ((DeviceChannel_02 != null) && (DeviceChannel_02.InitDevice()))
             {
 
-                var ExperimentSettings = controlTimeTraceMeasurementSettings.MeasurementSettings;
+                var ExperimentSettings = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings;
                 var numerCycles = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
 
                 var selectedTimeTraceModeHeader = ExperimentSettings.TimeTraceMeasurementSelectedTabIndex;
@@ -1058,7 +1058,7 @@ namespace BreakJunctions
 
         private void OnMotionPositionMeasured(object sender, Motion_EventArgs e)
         {
-            this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
+            this.controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
             this.controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementMicrometricBoltPosition = e.Position;
         }
 

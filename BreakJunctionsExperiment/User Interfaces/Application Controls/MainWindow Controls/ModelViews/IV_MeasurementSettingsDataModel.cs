@@ -158,7 +158,7 @@ namespace BreakJunctions
         private double _IV_MeasurementStartValueChannel_02 = 0.0;
         public double IV_MeasurementStartValueChannel_02
         {
-            get { return _IV_MeasurementStartValueChannel_02 * HandlingUserInput.GetMultiplier(_IV_MeasurementStartValueMultiplierChannel_02); return _IV_MeasurementStartValueChannel_02; }
+            get { return _IV_MeasurementStartValueChannel_02; }
             set
             {
                 _IV_MeasurementStartValueChannel_02 = value;

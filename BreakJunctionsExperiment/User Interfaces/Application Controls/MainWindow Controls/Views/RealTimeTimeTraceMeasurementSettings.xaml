@@ -2,10 +2,65 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:BreakJunctions"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
+    
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5 2.5" />
+            <Setter Property="FontSize" Value="28" />
+        </Style>
+        <Style BasedOn="{StaticResource{x:Type TextBox}}" TargetType ="TextBox" x:Key="NormalSizeTextBox">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+            <TextBox x:Name="Channel_01" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox x:Name="Channel_02" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox x:Name="Channel_03" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox x:Name="Channel_04" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        </StackPanel>
+        
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
             
+            <Label Grid.Column="0">Applied voltage</Label>
+            <TextBox Grid.Column="1" x:Name="textBoxAppliedVoltage" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Path=RealTimeTimeTraceMeasurementAppliedVoltage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+        
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical">
+            <GroupBox Header="Channels">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    
+                    <CheckBox Grid.Row="0" Grid.Column="0" x:Name="checkBoxChannel_01" />
+                </Grid>
+            </GroupBox>
+        </StackPanel>
     </Grid>
 </UserControl>

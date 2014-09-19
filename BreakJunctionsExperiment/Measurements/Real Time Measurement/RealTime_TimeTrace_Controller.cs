@@ -11,12 +11,6 @@ namespace BreakJunctions.Measurements
     public abstract class RealTime_TimeTrace_Controller : IDisposable
     {
         /// <summary>
-        /// Initializes the device, that realizes the
-        /// real-time time trace aquistion
-        /// </summary>
-        /// <returns></returns>
-        public abstract bool InitDevice();
-        /// <summary>
         /// Realizes the continious time trace acquisition
         /// </summary>
         public abstract void ContiniousAcquisition();

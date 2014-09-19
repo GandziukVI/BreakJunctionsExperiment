@@ -94,7 +94,11 @@
     <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RealTime_Agilent_U2542A_TimeTrace_Controller.cs" />
     <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real time Time Trace Controllers Facttories\RealTime_Agilent_U2542A_TimeTrace_Controller_Factory.cs" />
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\MotionParametersDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\RealTimeTimeTraceMeasurementSettingsDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\MotionParameters.xaml.cs">
+      <DependentUpon>MotionParameters.xaml</DependentUpon>
+    </Compile>
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\RealTimeTimeTraceMeasurementSettings.xaml.cs">
       <DependentUpon>RealTimeTimeTraceMeasurementSettings.xaml</DependentUpon>
     </Compile>
@@ -164,6 +168,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\MotionParameters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\RealTimeTimeTraceMeasurementSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

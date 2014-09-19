@@ -48,11 +48,6 @@ namespace BreakJunctions.Measurements
 
         #region RealTime_TimeTrace_Controller implementation
 
-        public override bool InitDevice()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void ContiniousAcquisition()
         {
             _DIO.AllToZero();
@@ -165,8 +160,6 @@ namespace BreakJunctions.Measurements
             }
         }
 
-        #endregion
-
         #region Disposing the instance
 
         public override void Dispose()
@@ -174,6 +167,8 @@ namespace BreakJunctions.Measurements
             _DIO.Dispose();
             _VoltageMeasurement.Dispose();
         }
+
+        #endregion
 
         #endregion
     }
