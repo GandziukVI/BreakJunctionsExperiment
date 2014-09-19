@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BreakJunctions
 {
-    class RealTimeTimeTraceMeasurementSettingsDataModel : INotifyPropertyChanged
+    public class RealTimeTimeTraceMeasurementSettingsDataModel : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged implementation
 

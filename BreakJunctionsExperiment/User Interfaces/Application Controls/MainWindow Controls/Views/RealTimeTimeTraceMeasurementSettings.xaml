@@ -12,7 +12,7 @@
             <Setter Property="Margin" Value="5 2.5" />
             <Setter Property="FontSize" Value="28" />
         </Style>
-        <Style BasedOn="{StaticResource{x:Type TextBox}}" TargetType ="TextBox" x:Key="NormalSizeTextBox">
+        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType ="TextBox" x:Key="NormalSizeTextBox">
             <Setter Property="FontSize" Value="14" />
         </Style>
     </UserControl.Resources>
