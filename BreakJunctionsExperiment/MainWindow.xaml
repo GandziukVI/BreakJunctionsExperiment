@@ -26,6 +26,7 @@
 					</Grid.ColumnDefinitions>
 					
 					<!-- Menu -->
+                    
 					<Menu Grid.Row="0" Grid.Column="0">
 						<MenuItem Header="_File">
 							<MenuItem x:Name="menuOpen" Header="_Open..." Click="onMenuOpenClick"/>
@@ -39,6 +40,8 @@
 							<MenuItem x:Name="menuSetSMU_Channel_02" Header="Set S_MU CH_02" Click="onSetSMU_Channel_02_Click"/>
 						</MenuItem>
 					</Menu>
+                    
+                    <!--End Menu-->
 					
 					<Grid x:Name="ScrollableRow1" Grid.Row="1" Grid.Column="0">
 						<Grid.RowDefinitions>
@@ -144,6 +147,88 @@
 					</Grid>	<!-- End progress bar panel -->	
 				</Grid> <!-- IVLayout -->
 			</TabItem>
+            
+            <TabItem Header="Real Time Time Trace">
+                <!--Begin Real Time Tame Trace Measurements Layout-->
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Menu -->
+
+                    <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <MenuItem Header="_File">
+                            <MenuItem x:Name="menuOpenRealTimeTimeTrace" Header="_Open..." Click="onMenuOpenClick"/>
+                            <MenuItem x:Name="menuSaveRealTimeTimeTrace" Header="_Save..." Click="onMenuSaveClick"/>
+                            <Separator />
+                            <MenuItem x:Name="menuExitRealTimeTimeTrace" Header="_Exit" Click="onMenuExitClick"/>
+                        </MenuItem>
+                        <MenuItem Header="_Measurement">
+                            <MenuItem x:Name="menuSetMotorRealTimeTimeTrace" Header="Set _Motor" Click="onSetMotor_Click" />
+                        </MenuItem>
+                    </Menu>
+
+                    <!--End Menu-->
+                    
+                    <!--Begin Sample 01 Resistance-->
+
+                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisible="False">
+                        <d3:Header Content="Real Time Resistance Sample_01"/>
+                        <d3:HorizontalAxis>
+                            <d3:HorizontalAxisTitle Content="Time"/>
+                        </d3:HorizontalAxis>
+                        <d3:VerticalAxis>
+                            <d3:VerticalAxisTitle Content="Resistance"/>
+                        </d3:VerticalAxis>
+                        <d3:Viewport2D AutoFitToView="True"/>
+                    </d3:ChartPlotter>
+
+                    <!--End Sample 01 Resistance-->
+                    
+                    <GridSplitter Grid.Row="2" Grid.Column="0" MinHeight="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+
+                    <!--Begin Sample 01 Resistance-->
+
+                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisible="False">
+                        <d3:Header Content="Real Time Resistance Sample_02"/>
+                        <d3:HorizontalAxis>
+                            <d3:HorizontalAxisTitle Content="Time"/>
+                        </d3:HorizontalAxis>
+                        <d3:VerticalAxis>
+                            <d3:VerticalAxisTitle Content="Resistance"/>
+                        </d3:VerticalAxis>
+                        <d3:Viewport2D AutoFitToView="True"/>
+                    </d3:ChartPlotter>
+
+                    <!--End Sample 01 Resistance-->
+                    
+                    <local:RealTimeTimeTraceMeasurementSettings Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" />
+
+                    <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        
+                        <Label Grid.Column="0" Content="Ready" />
+                        <ProgressBar Grid.Column="1" x:Name="progressBarRealTimeTimeTraceMeasurementProgress"/>
+                        <TextBlock x:Name="textBlockRealTimeTimeTraceProgressStatus" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarRealTimeTimeTraceMeasurementProgress, StringFormat=\{0:0\}%}"/>
+                    </Grid>
+                </Grid>
+                
+                <!--End Real Time Tame Trace Measurements Layout-->
+            </TabItem>
+            
 			<TabItem Header="Noise Measurements"/>
 		</TabControl>
 	</Grid>  <!-- LayoutRoot -->

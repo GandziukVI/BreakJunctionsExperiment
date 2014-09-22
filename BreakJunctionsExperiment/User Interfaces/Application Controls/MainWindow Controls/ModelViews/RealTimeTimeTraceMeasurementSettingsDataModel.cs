@@ -130,6 +130,37 @@ namespace BreakJunctions
 
         #endregion
 
+        #region Start / Stop motor
+
+        private string _cmdStartStopTextContent = "Stop Motor";
+        public string cmdStartStopTextContent
+        {
+            get { return _cmdStartStopTextContent; }
+            set
+            {
+                _cmdStartStopTextContent = value;
+                OnPropertyChanged("cmdStartStopTextContent");
+            }
+        }
+
+        private bool _IsMotorStopped = false;
+        public bool IsMotorStopped
+        {
+            get { return _IsMotorStopped; }
+            set
+            {
+                _IsMotorStopped = value;
+                OnPropertyChanged("MotorStopped");
+
+                if (_IsMotorStopped == true)
+                    cmdStartStopTextContent = "Start Motor";
+                else
+                    cmdStartStopTextContent = "Stop Motor";
+            }
+        }
+
+        #endregion
+
         #region Amplification coefficient
 
         private double _AmplificationCoefficient = 1000000.0;

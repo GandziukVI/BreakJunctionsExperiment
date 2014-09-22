@@ -143,7 +143,7 @@
 
                 <Grid Grid.Row="1" Grid.Column="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
@@ -151,7 +151,7 @@
                     <TextBox Grid.Column="1" x:Name="textBoxAppliedVoltage" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Path=AmplificationCoefficient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
-                <ToggleButton Grid.Row="1" Grid.Column="1" x:Name="cmdToggleStartStopMotor">Stop Motor</ToggleButton>
+                <ToggleButton Grid.Row="1" Grid.Column="1" x:Name="cmdToggleStartStopMotor" Content="{Binding Path=cmdStartStopTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding Path=IsMotorStopped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Grid Grid.Row="2" Grid.Column="0">
                     <Grid.RowDefinitions>
