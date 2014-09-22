@@ -4,49 +4,77 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:BreakJunctions"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
+             mc:Ignorable="d">
     
     <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="2.5" />
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="2.5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="Expander">
+            <Setter Property="Margin" Value="0 5 0 0" />
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="2.5 5" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0 0 5 0" />
+        </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="5 2.5" />
+            <Setter Property="MinWidth" Value="200" />
             <Setter Property="FontSize" Value="28" />
         </Style>
         <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType ="TextBox" x:Key="NormalSizeTextBox">
             <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinWidth" Value="75" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="ToggleButton">
+            <Setter Property="Margin" Value="2.5" />
         </Style>
     </UserControl.Resources>
     
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-            <TextBox x:Name="Channel_01" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBox x:Name="Channel_02" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBox x:Name="Channel_03" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBox x:Name="Channel_04" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        </StackPanel>
-        
-        <Grid Grid.Row="1" Grid.Column="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            
-            <Label Grid.Column="0">Applied voltage</Label>
-            <TextBox Grid.Column="1" x:Name="textBoxAppliedVoltage" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Path=RealTimeTimeTraceMeasurementAppliedVoltage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </Grid>
-        
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical">
-            <GroupBox Header="Channels">
-                <Grid>
+    <Expander ExpandDirection="Left">
+        <Expander.Header>
+            <TextBlock Text="Real Time Measurements">
+                <TextBlock.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                        <SkewTransform AngleX="0" AngleY="0" />
+                        <RotateTransform Angle="-90" />
+                        <TranslateTransform X="0" Y="0" />
+                    </TransformGroup>
+                </TextBlock.LayoutTransform>
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+						<SkewTransform AngleX="0" AngleY="0"/>
+						<RotateTransform Angle="0"/>
+						<TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Expander.Header>
+        <Expander.Content>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0" Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -54,13 +82,104 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    
-                    <CheckBox Grid.Row="0" Grid.Column="0" x:Name="checkBoxChannel_01" />
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="CH 01 Voltage" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="CH 02 Voltage" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="CH 03 Voltage" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="CH 04 Voltage" />
+
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="Channel_01" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="Channel_02" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="Channel_03" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="Channel_04" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
                 </Grid>
-            </GroupBox>
-        </StackPanel>
-    </Grid>
+
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical">
+                    <GroupBox Header="Channels">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox Grid.Row="0" Grid.Column="0" x:Name="checkBoxChannel_01" IsChecked="{Binding Path=IsChannel_01_Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Grid.Row="1" Grid.Column="0" x:Name="checkBoxChannel_02" IsChecked="{Binding Path=IsChannel_02_Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Grid.Row="2" Grid.Column="0" x:Name="checkBoxChannel_03" IsChecked="{Binding Path=IsChannel_03_Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Grid.Row="3" Grid.Column="0" x:Name="checkBoxChannel_04" IsChecked="{Binding Path=IsChannel_04_Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="0" Grid.Column="1" x:Name="labelChannel_01" Content="Channel 01" />
+                            <Label Grid.Row="1" Grid.Column="1" x:Name="labelChannel_02" Content="Channel 02" />
+                            <Label Grid.Row="2" Grid.Column="1" x:Name="labelChannel_03" Content="Channel 03" />
+                            <Label Grid.Row="3" Grid.Column="1" x:Name="labelChannel_04" Content="Channel 04" />
+                        </Grid>
+                    </GroupBox>
+
+                    <local:MotionParameters x:Name="MotionSettings" Margin="5 2.5"/>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Save to file" />
+                        <TextBox Grid.Row="1" Grid.Column="0" Style="{StaticResource NormalSizeTextBox}" x:Name="textBoxSaveFile" Text="{Binding Path=SaveFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Grid.Row="1" Grid.Column="1" x:Name="cmdSaveFile" Content="..." MinWidth="30" />
+                    </Grid>
+                </StackPanel>
+
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0">Amplification coefficient</Label>
+                    <TextBox Grid.Column="1" x:Name="textBoxAppliedVoltage" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Path=AmplificationCoefficient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+                <ToggleButton Grid.Row="1" Grid.Column="1" x:Name="cmdToggleStartStopMotor">Stop Motor</ToggleButton>
+
+                <Grid Grid.Row="2" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Resistance 1-st sample" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Resistance 2-nd sample" />
+
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="Resistance_1st_sample" Text="{Binding Path=Resistance_1st_Sample, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False" />
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="Resistance_2nd_sample" Text="{Binding Path=Resistance_2nd_Sample, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False" />
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" x:Name="cmdStartMeasurement">Start Measurement</Button>
+                    <Button Grid.Row="1" x:Name="cmdStopMeasurement">Stop Measurement</Button>
+                </Grid>
+            </Grid>
+        </Expander.Content>
+    </Expander>
 </UserControl>
