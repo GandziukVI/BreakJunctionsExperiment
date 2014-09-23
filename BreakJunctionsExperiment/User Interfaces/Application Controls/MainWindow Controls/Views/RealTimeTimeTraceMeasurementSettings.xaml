@@ -69,42 +69,24 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="193" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="61" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="30" />
-                        <RowDefinition Height="96" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="116" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="100" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Row="0" Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <Label Grid.Row="0" Grid.Column="0" Content="CH 01 Voltage" />
-                        <Label Grid.Row="1" Grid.Column="0" Content="CH 02 Voltage" />
-                        <Label Grid.Row="2" Grid.Column="0" Content="CH 03 Voltage" />
-                        <Label Grid.Row="3" Grid.Column="0" Content="CH 04 Voltage" />
-
-                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="Channel_01" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="Channel_02" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="Channel_03" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="Channel_04" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                    </Grid>
-
-                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical">
-                        <GroupBox Header="Channels">
+                    <Expander Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5 2.5">
+                        <Expander.Header>
+                            <TextBlock>Samples Voltages &amp; Current</TextBlock>
+                        </Expander.Header>
+                        <Expander.Content>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -113,41 +95,74 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0" Grid.Column="0" Content="1-st sample soltage" />
+                                <Label Grid.Row="1" Grid.Column="0" Content="1-st sample current" />
+                                <Label Grid.Row="2" Grid.Column="0" Content="2-nd sample voltage" />
+                                <Label Grid.Row="3" Grid.Column="0" Content="2-nd sample current" />
+
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="Channel_01" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="Channel_02" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="Channel_03" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="3" Grid.Column="1" x:Name="Channel_04" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                            </Grid>
+                        </Expander.Content>
+                    </Expander>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical">
+                        <GroupBox Header="Samples Measurement Enable">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
-                                <CheckBox Grid.Row="0" Grid.Column="0" x:Name="checkBoxChannel_01" IsChecked="{Binding Path=IsChannel_01_Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <CheckBox Grid.Row="1" Grid.Column="0" x:Name="checkBoxChannel_02" IsChecked="{Binding Path=IsChannel_02_Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <CheckBox Grid.Row="2" Grid.Column="0" x:Name="checkBoxChannel_03" IsChecked="{Binding Path=IsChannel_03_Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <CheckBox Grid.Row="3" Grid.Column="0" x:Name="checkBoxChannel_04" IsChecked="{Binding Path=IsChannel_04_Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox Grid.Row="0" Grid.Column="0" x:Name="checkBoxSample_01" IsChecked="{Binding Path=IsSample_01_MeasurementEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox Grid.Row="1" Grid.Column="0" x:Name="checkBoxSample_02" IsChecked="{Binding Path=IsSample_02_MeasurementEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <Label Grid.Row="0" Grid.Column="1" x:Name="labelChannel_01" Content="Channel 01" />
-                                <Label Grid.Row="1" Grid.Column="1" x:Name="labelChannel_02" Content="Channel 02" />
-                                <Label Grid.Row="2" Grid.Column="1" x:Name="labelChannel_03" Content="Channel 03" />
-                                <Label Grid.Row="3" Grid.Column="1" x:Name="labelChannel_04" Content="Channel 04" />
+                                <Label Grid.Row="0" Grid.Column="1" x:Name="labelChannel_01" Content="Sample 01 Enable">
+                                    <Label.ToolTip>
+                                        <TextBlock>
+                                            First sample measureemnt enable.
+                                        </TextBlock>
+                                    </Label.ToolTip>
+                                </Label>
+                                <Label Grid.Row="1" Grid.Column="1" x:Name="labelChannel_02" Content="Sample 02 Enable">
+                                    <Label.ToolTip>
+                                        <TextBlock>
+                                            Second sample measurement enable.
+                                        </TextBlock>
+                                    </Label.ToolTip>
+                                </Label>
                             </Grid>
                         </GroupBox>
-
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Save to file" />
-                            <TextBox Grid.Row="1" Grid.Column="0" Style="{StaticResource NormalSizeTextBox}" x:Name="textBoxSaveFile" Text="{Binding Path=SaveFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button Grid.Row="1" Grid.Column="1" x:Name="cmdSaveFile" Content="..." MinWidth="30" />
-                        </Grid>
                     </StackPanel>
 
-                    <local:MotionParameters Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MotionSettings" Margin="5 2.5"/>
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5 2.5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Save to file" />
+                        <TextBox Grid.Row="1" Grid.Column="0" Style="{StaticResource NormalSizeTextBox}" x:Name="textBoxSaveFile" Text="{Binding Path=SaveFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Grid.Row="1" Grid.Column="1" x:Name="cmdSaveFile" Content="..." MinWidth="30" />
+                    </Grid>
+
+                    <local:MotionParameters Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MotionSettings" Margin="5 2.5 5 20"/>
+
+                    <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
@@ -157,33 +172,33 @@
                         <TextBox Grid.Column="1" x:Name="textBoxAmplificationCoefficient" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Path=AmplificationCoefficient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
 
-                    <ToggleButton Grid.Row="2" Grid.Column="1" x:Name="cmdToggleStartStopMotor" Content="{Binding Path=cmdStartStopTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding Path=IsMotorStopped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                    <Grid Grid.Row="3" Grid.Column="0">
+                    <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 0 0 20">
                         <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="0" Content="Resistance 1-st sample" />
-                        <Label Grid.Row="1" Grid.Column="0" Content="Resistance 2-nd sample" />
+                        <Label Grid.Row="0" Grid.Column="0" Content="1-st sample resistance" />
+                        <Label Grid.Row="1" Grid.Column="0" Content="2-nd sample resistance" />
 
                         <TextBox Grid.Row="0" Grid.Column="1" x:Name="Resistance_1st_sample" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Path=Resistance_1st_Sample, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False" />
                         <TextBox Grid.Row="1" Grid.Column="1" x:Name="Resistance_2nd_sample" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Path=Resistance_2nd_Sample, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False" />
                     </Grid>
 
-                    <Grid Grid.Row="3" Grid.Column="1">
+                    <ToggleButton Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdToggleStartStopMotor" Content="{Binding Path=cmdStartStopTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding Path=IsMotorStopped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=IsStartStopEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="45" />
+
+                    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition />
+                            <RowDefinition Height="*" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Row="0" x:Name="cmdStartMeasurement">Start Measurement</Button>
-                        <Button Grid.Row="1" x:Name="cmdStopMeasurement">Stop Measurement</Button>
+                        <Button Grid.Row="0" x:Name="cmdStartMeasurement" MinHeight="45">Start Measurement</Button>
+                        <Button Grid.Row="1" x:Name="cmdStopMeasurement" MinHeight="45">Stop Measurement</Button>
                     </Grid>
                 </Grid>
             </ScrollViewer>

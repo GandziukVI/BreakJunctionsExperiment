@@ -130,7 +130,50 @@ namespace BreakJunctions
 
         #endregion
 
+        #region Samples measurement enable
+
+        private bool _IsSample_01_MeasurementEnabled = true;
+        public bool IsSample_01_MeasurementEnabled
+        {
+            get { return _IsSample_01_MeasurementEnabled; }
+            set
+            {
+                IsChannel_01_Checked = value;
+                IsChannel_02_Checked = value;
+
+                _IsSample_01_MeasurementEnabled = value;
+                OnPropertyChanged("IsSample_01_MeasurementEnabled");
+            }
+        }
+
+        private bool _IsSample_02_MeasurementEnabled = true;
+        public bool IsSample_02_MeasurementEnabled
+        {
+            get { return _IsSample_02_MeasurementEnabled; }
+            set
+            {
+                IsChannel_03_Checked = value;
+                IsChannel_04_Checked = value;
+
+                _IsSample_02_MeasurementEnabled = value;
+                OnPropertyChanged("IsSample_02_MeasurementEnabled");
+            }
+        }
+
+        #endregion
+
         #region Start / Stop motor
+
+        private bool _IsStartStopEnabled = false;
+        public bool IsStartStopEnabled
+        {
+            get { return _IsStartStopEnabled; }
+            set
+            {
+                _IsStartStopEnabled = value;
+                OnPropertyChanged("IsStartStopEnabled");
+            }
+        }
 
         private string _cmdStartStopTextContent = "Stop Motor";
         public string cmdStartStopTextContent
