@@ -72,7 +72,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="61" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="30" />
+                        <RowDefinition Height="50" />
                         <RowDefinition Height="116" />
                         <RowDefinition Height="50" />
                         <RowDefinition Height="100" />
@@ -86,6 +86,12 @@
                         <Expander.Header>
                             <TextBlock>Samples Voltages &amp; Current</TextBlock>
                         </Expander.Header>
+                        <Expander.ToolTip>
+                            <TextBlock MaxWidth="250" TextWrapping="Wrap">
+                                Displays the current values for voltage and current through the structures.
+                                Is used for pre measurement configuration.
+                            </TextBlock>
+                        </Expander.ToolTip>
                         <Expander.Content>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -113,7 +119,7 @@
                     </Expander>
 
                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical">
-                        <GroupBox Header="Samples Measurement Enable">
+                        <GroupBox Header="Measurement Enable">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -127,14 +133,14 @@
                                 <CheckBox Grid.Row="0" Grid.Column="0" x:Name="checkBoxSample_01" IsChecked="{Binding Path=IsSample_01_MeasurementEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <CheckBox Grid.Row="1" Grid.Column="0" x:Name="checkBoxSample_02" IsChecked="{Binding Path=IsSample_02_MeasurementEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <Label Grid.Row="0" Grid.Column="1" x:Name="labelChannel_01" Content="Sample 01 Enable">
+                                <Label Grid.Row="0" Grid.Column="1" x:Name="labelChannel_01" Content="Sample 01 Measurement">
                                     <Label.ToolTip>
                                         <TextBlock>
                                             First sample measureemnt enable.
                                         </TextBlock>
                                     </Label.ToolTip>
                                 </Label>
-                                <Label Grid.Row="1" Grid.Column="1" x:Name="labelChannel_02" Content="Sample 02 Enable">
+                                <Label Grid.Row="1" Grid.Column="1" x:Name="labelChannel_02" Content="Sample 02 Measurement">
                                     <Label.ToolTip>
                                         <TextBlock>
                                             Second sample measurement enable.
@@ -162,7 +168,7 @@
 
                     <local:MotionParameters Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MotionSettings" Margin="5 2.5 5 20"/>
 
-                    <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 0 0 20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
