@@ -181,7 +181,33 @@ namespace BreakJunctions
 
         private MeasureTimeTraceChannelController _ChannelController;
 
-        TimeTraceMeasurementSettingsDataModel _TimeTraceExperimentSettings;
+        private TimeTraceMeasurementSettingsDataModel _TimeTraceExperimentSettings;
+
+        #endregion
+
+        #region Real Time Time Trace data handling and presenting
+
+        #region Sample 01
+
+        private List<PointD> _RealTimeTimeTraceSample_01;
+        public List<PointD> RealTimeTimeTraceSample_01
+        {
+            get { return _RealTimeTimeTraceSample_01; }
+            set { _RealTimeTimeTraceSample_01 = value; }
+        }
+
+        private ExperimentalTimetraceDataSource _experimentalRealTimeTimetraceDataSourceSample_01;
+        private LineGraph _RealTimeTimeTraceLineGraphSample_01;
+
+        #endregion
+
+        private RealTime_TimeTrace_Controller _RealTimeTimeTraceMeasurementController;
+        private RealTimeTimeTraceMeasurementSettingsDataModel _RealTimeTimeTraceExperimentSettings;
+        private BackgroundWorker backgroundRealTimeTimeTraceMeasurementSamples;
+
+        private SaveFileDialog _SaveRealTimeTraceMeasureDialogSamples;
+        private string _SaveRealTimeTraceMeasuremrentFileNameSamples;
+        private static int _RealTimeTraceFilesCounterSamples = 0;
 
         #endregion
 
@@ -1061,6 +1087,12 @@ namespace BreakJunctions
             this.controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
             this.controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementMicrometricBoltPosition = e.Position;
         }
+
+        #endregion
+
+        #region Real Time Time Trace Measurement Interface Interactions
+
+
 
         #endregion
 

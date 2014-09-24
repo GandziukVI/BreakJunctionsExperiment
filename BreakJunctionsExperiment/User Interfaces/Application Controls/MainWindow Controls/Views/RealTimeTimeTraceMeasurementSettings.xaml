@@ -34,7 +34,7 @@
             <Setter Property="Margin" Value="5 2.5" />
             <Setter Property="MinWidth" Value="200" />
             <Setter Property="FontSize" Value="14" />
-            <Setter Property="MinWidth" Value="75" />
+            <Setter Property="MinWidth" Value="150" />
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="5" />
@@ -110,10 +110,10 @@
                                 <Label Grid.Row="2" Grid.Column="0" Content="2-nd sample voltage" />
                                 <Label Grid.Row="3" Grid.Column="0" Content="2-nd sample current" />
 
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="Channel_01" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="Channel_02" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="Channel_03" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                                <TextBox Grid.Row="3" Grid.Column="1" x:Name="Channel_04" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="Channel_01" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="Channel_02" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="Channel_03" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="3" Grid.Column="1" x:Name="Channel_04" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
                             </Grid>
                         </Expander.Content>
                     </Expander>
