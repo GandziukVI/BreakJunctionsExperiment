@@ -47,7 +47,7 @@ namespace BreakJunctions.Measurements
 
         #region Constructor / Destructor
 
-
+        
 
         #endregion
 
