@@ -423,6 +423,45 @@ namespace BreakJunctions.Events
 
         #endregion
 
+        #region Real time TieTrace Curve Measureemnts Events
+
+        private readonly object RealTime_TimeTraceDataArrived_EventLock = new object();
+        private EventHandler<RealTime_TimeTrace_DataArrived_EventArgs> _RealTime_TimeTraceDataArrived;
+        public event EventHandler<RealTime_TimeTrace_DataArrived_EventArgs> RealTime_TimeTraceDataArrived
+        {
+            add
+            {
+                lock(RealTime_TimeTraceDataArrived_EventLock)
+                {
+                    if(_RealTime_TimeTraceDataArrived == null || !_RealTime_TimeTraceDataArrived.GetInvocationList().Contains(value))
+                    {
+                        _RealTime_TimeTraceDataArrived += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock(RealTime_TimeTraceDataArrived_EventLock)
+                {
+                    _RealTime_TimeTraceDataArrived -= value;
+                }
+            }
+        }
+        public virtual void OnRealTime_TimeTraceDataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
+        {
+            EventHandler<RealTime_TimeTrace_DataArrived_EventArgs> handler;
+            lock(RealTime_TimeTraceDataArrived_EventLock)
+            {
+                handler = _RealTime_TimeTraceDataArrived;
+            }
+            if(handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        #endregion
+
         #endregion
     }
 }

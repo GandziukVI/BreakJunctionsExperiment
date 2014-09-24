@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BreakJunctions</RootNamespace>
     <AssemblyName>BreakJunctionsExperiment</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -36,6 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DynamicDataDisplay">
@@ -76,12 +78,15 @@
     </Compile>
     <Compile Include="Data Handling\I-V Data Handling\IV_MeasurementLog.cs" />
     <Compile Include="Data Handling\I-V Data Handling\IV_SingleMeasurement.cs" />
+    <Compile Include="Data Handling\Time Trace Data Handling\RealTime_TimeTraceMeasurementLog.cs" />
+    <Compile Include="Data Handling\Time Trace Data Handling\RealTime_TimeTraceSingleMeasurement.cs" />
     <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceMeasurementLog.cs" />
     <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceSingleMeasurement.cs" />
     <Compile Include="Events\Custom Events\IV_MeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_02_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\RealTime_TimeTrace_DataArrived_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceBothChannelsPointsReceived_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_02_EventArgs.cs" />

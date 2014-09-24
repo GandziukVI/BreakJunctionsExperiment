@@ -7,13 +7,15 @@ using Aids.Graphics;
 using Agilent_U2542A;
 using Agilent_U2542A_ExtensionBox;
 
+using BreakJunctions.Events;
+
 namespace BreakJunctions.Measurements
 {
     class RealTime_Agilent_U2542A_TimeTrace_Controller : RealTime_TimeTrace_Controller
     {
         #region RealTime_Agilent_U2542A_TimeTrace_Controller settings
 
-        private bool _MeasurementInProcess;
+        private bool _MeasurementInProcess = false;
         public bool MeasurementInProcess
         {
             get { return _MeasurementInProcess; }
@@ -63,6 +65,8 @@ namespace BreakJunctions.Measurements
                 string result = _Channels.AcquireStringWithData();
                 Int16[] resultInt = _DataConverter.ParseDataStringToInt(result);
                 List<PointD>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
+
+                AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(null, new RealTime_TimeTrace_DataArrived_EventArgs(ChannelData));
             }
 
             _Channels.StopAnalogAcqusition();
@@ -94,6 +98,7 @@ namespace BreakJunctions.Measurements
                 
                 List<PointD>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
             }
+
             _Channels.StopAnalogAcqusition();
 
             if (!_MeasurementInProcess)

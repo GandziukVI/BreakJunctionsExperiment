@@ -32,7 +32,30 @@ namespace BreakJunctions.Measurements
             set { _AcquistionRate = value; }
         }
 
+        private bool _IsSample_01_MeasurementEnabled = true;
+        /// <summary>
+        /// Sample 01 measurement enable indicator
+        /// </summary>
+        public bool IsSample_01_MeasurementEnabled
+        {
+            get { return _IsSample_01_MeasurementEnabled; }
+            set { _IsSample_01_MeasurementEnabled = value; }
+        }
+
+        private bool _IsSample_02_MeasurementEnabled = true;
+        /// <summary>
+        /// Sample 02 measurement enable indicator
+        /// </summary>
+        public bool IsSample_02_MeasurementEnabled
+        {
+            get { return _IsSample_02_MeasurementEnabled; }
+            set { _IsSample_02_MeasurementEnabled = value; }
+        }
+
         private AnalogInputChannels _Channels;
+
+        private IRealTime_TimeTrace_Factory _ITimeTraceControllerFactory;
+        private RealTime_TimeTrace_Controller _TimeTraceMeasurementControler;
 
         #endregion
 
@@ -40,14 +63,43 @@ namespace BreakJunctions.Measurements
 
         private void _initDAC()
         {
+            _Channels = AnalogInputChannels.Instance;
 
+            _Channels.DisableAllChannelsForContiniousDataAcquisition();
+            _Channels.PointsPerBlock = this.PointsPerBlock;
+            _Channels.ACQ_Rate = AcquistionRate;
+            this.ReloadChannels();
+        }
+
+        private void ReloadChannels()
+        {
+            _Channels.DisableAllChannelsForContiniousDataAcquisition();
+            if(_IsSample_01_MeasurementEnabled == true)
+            {
+                _Channels.ChannelArray[0].Enabled = true;
+                _Channels.ChannelArray[1].Enabled = true;
+            }
+            if (_IsSample_02_MeasurementEnabled == true)
+            {
+                _Channels.ChannelArray[2].Enabled = true;
+                _Channels.ChannelArray[3].Enabled = true;
+            }
         }
 
         #endregion
 
         #region Constructor / Destructor
 
-        
+        public MeasureRealTimeTimeTrace()
+        {
+            _ITimeTraceControllerFactory = new RealTime_Agilent_U2542A_TimeTrace_Controller_Factory();
+            _TimeTraceMeasurementControler = _ITimeTraceControllerFactory.GetRealTime_TimeTraceController(ImportantConstants.DeviceID);
+        }
+
+        ~MeasureRealTimeTimeTrace()
+        {
+            this.Dispose();
+        }
 
         #endregion
 
@@ -55,7 +107,7 @@ namespace BreakJunctions.Measurements
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _TimeTraceMeasurementControler.Dispose();
         }
 
         #endregion
