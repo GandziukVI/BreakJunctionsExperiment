@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 using Aids.Graphics;
 using BreakJunctions.Events;
 
-namespace BreakJunctions.Data_Handling
+namespace BreakJunctions.DataHandling
 {
     #region Real time time trace single measurement file operations implementation
 
     /// <summary>
     /// Represents real time time trace single measurement data file
     /// </summary>
-    class RealTime_TimeTraceSingleMeasurement : IDisposable
+    public class RealTime_TimeTraceSingleMeasurement : IDisposable
     {
 
         #region RealTime_TimeTraceSingleMeasurement settings
@@ -27,12 +27,15 @@ namespace BreakJunctions.Data_Handling
             set { _FileName = value; }
         }
 
+        private ASCIIEncoding _asciiEncoding;
+
         #endregion
 
         #region Constructor / Destructor
 
         public RealTime_TimeTraceSingleMeasurement(string filename, double appliedVoltage, string sampleNumber)
         {
+            _asciiEncoding = new ASCIIEncoding();
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
         }
 
@@ -45,6 +48,11 @@ namespace BreakJunctions.Data_Handling
 
         #region RealTime_TimeTraceSingleMeasurement functionality
 
+        /// <summary>
+        /// Converts the List of PointD to the byte array
+        /// </summary>
+        /// <param name="Data">List of data points</param>
+        /// <returns>Appropriate byte array</returns>
         private byte[] _GetDataBytes(List<PointD>[] Data)
         {
             string result = string.Empty;
@@ -54,11 +62,14 @@ namespace BreakJunctions.Data_Handling
             for (int i = 0; i < PointsNumber; i++)
                 result += String.Format("{0}\t{1}\t{2}\t{3}\t{4}\r\n", Data[0][i].X, Data[0][i].Y, Data[1][i].Y, Data[2][i].Y, Data[3][i].Y);
 
-            ASCIIEncoding asciiEncoding = new ASCIIEncoding();
-
-            return asciiEncoding.GetBytes(result);
+            return _asciiEncoding.GetBytes(result);
         }
 
+        /// <summary>
+        /// Writes arrived data to the file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public async void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
             byte[] result = _GetDataBytes(e.Data);
@@ -71,7 +82,7 @@ namespace BreakJunctions.Data_Handling
         }
 
         #endregion
-
+        
         #region Correctly disposing the instance
 
         public void Dispose()

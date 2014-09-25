@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 using Agilent_U2542A_ExtensionBox;
+
+using Motion;
+
+using BreakJunctions.Events;
 
 namespace BreakJunctions.Measurements
 {
@@ -59,6 +64,21 @@ namespace BreakJunctions.Measurements
 
         #endregion
 
+        #region Constructor / Destructor
+
+        public MeasureRealTimeTimeTrace()
+        {
+            _ITimeTraceControllerFactory = new RealTime_Agilent_U2542A_TimeTrace_Controller_Factory();
+            _TimeTraceMeasurementControler = _ITimeTraceControllerFactory.GetRealTime_TimeTraceController(ImportantConstants.DeviceID);
+        }
+
+        ~MeasureRealTimeTimeTrace()
+        {
+            this.Dispose();
+        }
+
+        #endregion
+
         #region MeasureRealTimeTimeTrace functionality
 
         private void _initDAC()
@@ -86,19 +106,18 @@ namespace BreakJunctions.Measurements
             }
         }
 
-        #endregion
-
-        #region Constructor / Destructor
-
-        public MeasureRealTimeTimeTrace()
+        public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind motionKind, int numberOfRepetities = 1)
         {
-            _ITimeTraceControllerFactory = new RealTime_Agilent_U2542A_TimeTrace_Controller_Factory();
-            _TimeTraceMeasurementControler = _ITimeTraceControllerFactory.GetRealTime_TimeTraceController(ImportantConstants.DeviceID);
+            _initDAC();
+            ReloadChannels();
+            
+            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(null, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
+            _TimeTraceMeasurementControler.ContiniousAcquisition();
         }
 
-        ~MeasureRealTimeTimeTrace()
+        public void StopMeasurement()
         {
-            this.Dispose();
+            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(null, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         #endregion

@@ -460,6 +460,41 @@ namespace BreakJunctions.Events
             }
         }
 
+        private readonly object RealTime_TimeTraceMeasurementStateChanged_EventLock = new object();
+        private EventHandler<RealTime_TimeTraceMeasurementStateChanged_EventArgs> _RealTime_TimeTraceMeasurementStateChanged;
+        public event EventHandler<RealTime_TimeTraceMeasurementStateChanged_EventArgs> RealTime_TimeTraceMeasurementStateChanged
+        {
+            add
+            {
+                lock(RealTime_TimeTraceMeasurementStateChanged_EventLock)
+                {
+                    if(_RealTime_TimeTraceMeasurementStateChanged == null || !_RealTime_TimeTraceMeasurementStateChanged.GetInvocationList().Contains(value))
+                    {
+                        _RealTime_TimeTraceMeasurementStateChanged += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock(RealTime_TimeTraceMeasurementStateChanged_EventLock)
+                {
+                    _RealTime_TimeTraceMeasurementStateChanged -= value;
+                }
+            }
+        }
+        public virtual void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
+        {
+            EventHandler<RealTime_TimeTraceMeasurementStateChanged_EventArgs> handler;
+            lock(RealTime_TimeTraceMeasurementStateChanged_EventLock)
+            {
+                handler = _RealTime_TimeTraceMeasurementStateChanged;
+            }
+            if(handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
         #endregion
 
         #endregion

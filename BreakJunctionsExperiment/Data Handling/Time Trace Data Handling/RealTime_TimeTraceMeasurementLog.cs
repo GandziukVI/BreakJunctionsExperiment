@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BreakJunctions.Data_Handling
+namespace BreakJunctions.DataHandling
 {
-    class RealTime_TimeTraceMeasurementLog
+    public class RealTime_TimeTraceMeasurementLog
     {
     }
 }

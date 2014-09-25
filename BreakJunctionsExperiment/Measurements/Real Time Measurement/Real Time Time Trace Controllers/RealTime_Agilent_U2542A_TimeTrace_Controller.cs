@@ -19,7 +19,6 @@ namespace BreakJunctions.Measurements
         public bool MeasurementInProcess
         {
             get { return _MeasurementInProcess; }
-            set { _MeasurementInProcess = value; }
         }
 
         private Agilent_U2542A_DigitalOutput _DIO;
@@ -39,6 +38,8 @@ namespace BreakJunctions.Measurements
 
             _DataConverter = new DataStringConverter();
             _VoltageMeasurement = new VoltageMeasurement();
+
+            AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurementStateChanged;
         }
 
         ~RealTime_Agilent_U2542A_TimeTrace_Controller()
@@ -88,7 +89,7 @@ namespace BreakJunctions.Measurements
             _Channels.SetChannelsToAC();
             _Channels.StartAnalogAcqusition();
 
-            while ((_MeasurementInProcess))// && (TimeTraceFileManager.Instance.WritingInProgress))
+            while ((_MeasurementInProcess))
             {
                 while (!_Channels.CheckAcquisitionStatus()) ;
 
@@ -111,6 +112,11 @@ namespace BreakJunctions.Measurements
             }
         }
 
+        /// <summary>
+        /// Makes "Single Shot" measurement
+        /// </summary>
+        /// <param name="NumberOfChannel"></param>
+        /// <returns></returns>
         public override List<PointD> MakeSingleShot(int NumberOfChannel)
         {
             _Channels.DisableAllChannelsForContiniousDataAcquisition();
@@ -165,12 +171,20 @@ namespace BreakJunctions.Measurements
             }
         }
 
+        public void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
+        {
+            this._MeasurementInProcess = e.MeasurementInProcess;
+        }
+
         #region Disposing the instance
 
         public override void Dispose()
         {
+            AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged -= OnRealTime_TimeTraceMeasurementStateChanged;
+
             _DIO.Dispose();
-            _VoltageMeasurement.Dispose();
+            if(_VoltageMeasurement != null)
+                _VoltageMeasurement.Dispose();
         }
 
         #endregion

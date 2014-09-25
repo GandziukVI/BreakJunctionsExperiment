@@ -16,7 +16,7 @@ namespace BreakJunctions.DataHandling
     /// <summary>
     /// Represents time trace single measurement data file
     /// </summary>
-    class TimeTraceSingleMeasurement : IDisposable
+    public class TimeTraceSingleMeasurement : IDisposable
     {
         #region Single measurement paremeters
 
@@ -103,7 +103,7 @@ namespace BreakJunctions.DataHandling
 
         #endregion
 
-        #region Destroying instance
+        #region Correctly disposing the instance
 
         /// <summary>
         /// Correctly destroy the instance

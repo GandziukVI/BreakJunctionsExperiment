@@ -201,9 +201,27 @@ namespace BreakJunctions
 
         #endregion
 
-        private RealTime_TimeTrace_Controller _RealTimeTimeTraceMeasurementController;
+        #region Sample 02
+
+        private List<PointD> _RealTimeTimeTraceSample_02;
+        public List<PointD> RealTimeTimeTraceSample_02
+        {
+            get { return _RealTimeTimeTraceSample_02; }
+            set { _RealTimeTimeTraceSample_02 = value; }
+        }
+
+        private ExperimentalTimetraceDataSource _experimentalRealTimeTimetraceDataSourceSample_02;
+        private LineGraph _RealTimeTimeTraceLineGraphSample_02;
+
+        #endregion
+
+        private RealTime_TimeTraceMeasurementLog _RealTime_TimeTraceMeasurementLogSamples;
+        private RealTime_TimeTraceSingleMeasurement _RealTime_TimeTraceSingleMeasurementSamples;
+
         private RealTimeTimeTraceMeasurementSettingsDataModel _RealTimeTimeTraceExperimentSettings;
+
         private BackgroundWorker backgroundRealTimeTimeTraceMeasurementSamples;
+        private MeasureRealTimeTimeTrace RealTimeTimeTraceCurve_Samples;
 
         private SaveFileDialog _SaveRealTimeTraceMeasureDialogSamples;
         private string _SaveRealTimeTraceMeasuremrentFileNameSamples;
@@ -261,6 +279,13 @@ namespace BreakJunctions
 
             #endregion
 
+            #region Real time TimeTrace Model-view interactions
+
+            controlRealTimeTimeTraceMeasurementSettings.cmdStartMeasurement.Click += on_cmdRealTime_TimeTraceStartMeasurementClick;
+            controlRealTimeTimeTraceMeasurementSettings.cmdStopMeasurement.Click += on_cmdRealTime_TimeTraceStopMeasurementClick;
+
+            #endregion
+
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
 
             #endregion
@@ -314,6 +339,15 @@ namespace BreakJunctions
             backgroundTimeTraceMeasureChannel_02.RunWorkerCompleted += backgroundTimeTrace_RunWorkerCompletedChannel_02;
 
             #endregion
+
+            #endregion
+
+            #region Background Real Time Time Trace Measurement
+
+            backgroundRealTimeTimeTraceMeasurementSamples = new BackgroundWorker();
+            backgroundRealTimeTimeTraceMeasurementSamples.WorkerSupportsCancellation = true;
+            backgroundRealTimeTimeTraceMeasurementSamples.WorkerReportsProgress = true;
+            backgroundRealTimeTimeTraceMeasurementSamples.DoWork += backgroundRealTime_TimeTraceMeasureDoWork;
 
             #endregion
 
@@ -1092,7 +1126,27 @@ namespace BreakJunctions
 
         #region Real Time Time Trace Measurement Interface Interactions
 
+        private void on_cmdRealTime_TimeTraceStartMeasurementClick(object senger, RoutedEventArgs e)
+        {
+            backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
+        }
 
+        private void on_cmdRealTime_TimeTraceStopMeasurementClick(object senger, RoutedEventArgs e)
+        {
+            backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
+            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(null, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
+        }
+
+        #region Background work
+
+        private void backgroundRealTime_TimeTraceMeasureDoWork(object sender, DoWorkEventArgs e)
+        {
+            _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement("F:\\MegaMeasurement.txt", 0.02, "");
+            RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
+            RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Single);
+        }
+
+        #endregion
 
         #endregion
 

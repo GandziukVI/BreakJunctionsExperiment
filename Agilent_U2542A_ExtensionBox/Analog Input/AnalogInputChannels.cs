@@ -143,7 +143,7 @@ namespace Agilent_U2542A_ExtensionBox
             }
         }
 
-        //=========================binary data acquisition=========================
+        //========================= binary data acquisition =========================
 
         public void DisableAllChannelsForContiniousDataAcquisition()
         {

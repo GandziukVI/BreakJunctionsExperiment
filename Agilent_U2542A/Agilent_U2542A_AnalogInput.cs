@@ -47,9 +47,9 @@ namespace Agilent_U2542A
         {
             string status = RequestQuery("WAV:STAT?");
 
-            if (status == "OVER\n")
+            if (status == "OVER")
                 throw new Exception("Device buffer overload");
-            if (status == "DATA\n") 
+            if (status == "DATA") 
                 return true;
 
             return false;
@@ -65,9 +65,9 @@ namespace Agilent_U2542A
         {
             string status = RequestQuery("WAV:COMP?");
 
-            if (status == "NO\n") 
+            if (status == "NO") 
                 return false;
-            if (status == "YES\n") 
+            if (status == "YES") 
                 return true;
 
             return false;

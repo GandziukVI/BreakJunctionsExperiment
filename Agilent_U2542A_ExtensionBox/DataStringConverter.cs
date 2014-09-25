@@ -23,7 +23,7 @@ namespace Agilent_U2542A_ExtensionBox
 
             byte[] data = Encoding.Default.GetBytes(dataString);
             short[] result = new short[(data.Length / 2)];
-            for (int i = 0; i < data.Length; i += 2)
+            for (int i = 0; i < data.Length - 1; i += 2)
             {
                 result[i / 2] = (short)((short)data[i] + (short)256 * ((short)data[i + 1]));
 

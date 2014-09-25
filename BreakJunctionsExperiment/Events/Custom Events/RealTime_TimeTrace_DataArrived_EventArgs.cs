@@ -17,6 +17,7 @@ namespace BreakJunctions.Events
         }
 
         public RealTime_TimeTrace_DataArrived_EventArgs(List<PointD>[] data)
+            : base()
         {
             _Data = data;
         }
