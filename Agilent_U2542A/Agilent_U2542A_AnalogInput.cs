@@ -86,8 +86,7 @@ namespace Agilent_U2542A
         {
             try
             {
-                string result = base.RequestQuery(Query);
-                return result.Substring(0, result.Length - 1);
+                return base.RequestQuery(Query).TrimEnd('\n');
             }
             catch { return null; }
         }

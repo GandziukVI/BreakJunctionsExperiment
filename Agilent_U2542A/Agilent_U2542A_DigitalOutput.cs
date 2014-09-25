@@ -220,6 +220,11 @@ namespace Agilent_U2542A
             return true;
         }
 
+        public override string RequestQuery(string Query)
+        {
+            return base.RequestQuery(Query).TrimEnd('\n');
+        }
+
         #endregion
     }
 }
