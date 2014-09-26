@@ -33,8 +33,8 @@ namespace Agilent_U2542A_ExtensionBox
         public List<PointD>[] ParseIntArrayIntoChannelData(Int16[] IntArray, int ACQ_Rate)
         {
             List<PointD>[] result = new List<PointD>[4];
-            
-            for (int i = 0; i < 4; i++) 
+
+            for (int i = 0; i < 4; i++)
                 result[i] = new List<PointD>();
 
             List<AnalogInputChannel> not_workingChannels = new List<AnalogInputChannel>();

@@ -162,7 +162,8 @@ namespace Agilent_U2542A
 
         public void Dispose()
         {
-            _src.IO.Close();
+            if(_src != null)
+                _src.IO.Close();
         }
 
         #endregion

@@ -27,6 +27,8 @@ namespace BreakJunctions.DataHandling
             set { _FileName = value; }
         }
 
+        private static int _FileCounter = 0;
+
         private ASCIIEncoding _asciiEncoding;
 
         #endregion
@@ -35,7 +37,9 @@ namespace BreakJunctions.DataHandling
 
         public RealTime_TimeTraceSingleMeasurement(string filename, double appliedVoltage, string sampleNumber)
         {
+            _FileName = filename;
             _asciiEncoding = new ASCIIEncoding();
+
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
         }
 
@@ -73,6 +77,24 @@ namespace BreakJunctions.DataHandling
         public async void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
             byte[] result = _GetDataBytes(e.Data);
+
+            if (File.Exists(_FileName))
+            {
+                while(true)
+                {
+                    var info = new FileInfo(_FileName);
+                    if (info.Length >= 52428800)
+                    {
+                        var _Directory = info.DirectoryName;
+                        _FileName = String.Format("{0}\\MegaMeasurement_{1}.txt", _Directory, _FileCounter);
+                        ++_FileCounter;
+                        if (!File.Exists(_FileName))
+                            break;
+                    }
+                    else break;
+
+                }
+            }
 
             using (FileStream WriteDataStream = File.Open(_FileName, FileMode.OpenOrCreate))
             {

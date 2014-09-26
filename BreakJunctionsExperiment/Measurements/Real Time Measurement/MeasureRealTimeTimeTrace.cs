@@ -16,7 +16,7 @@ namespace BreakJunctions.Measurements
     {
         #region MeasureRealTimeTimeTrace settings
 
-        private int _PointsPerBlock = 100;
+        private int _PointsPerBlock = 10000;
         /// <summary>
         /// The value of points per block for Agilent U2542A
         /// </summary>
@@ -88,6 +88,7 @@ namespace BreakJunctions.Measurements
             _Channels.DisableAllChannelsForContiniousDataAcquisition();
             _Channels.PointsPerBlock = this.PointsPerBlock;
             _Channels.ACQ_Rate = AcquistionRate;
+
             this.ReloadChannels();
         }
 
@@ -99,17 +100,26 @@ namespace BreakJunctions.Measurements
                 _Channels.ChannelArray[0].Enabled = true;
                 _Channels.ChannelArray[1].Enabled = true;
             }
+            else
+            {
+                _Channels.ChannelArray[0].Enabled = false;
+                _Channels.ChannelArray[1].Enabled = false;
+            }
             if (_IsSample_02_MeasurementEnabled == true)
             {
                 _Channels.ChannelArray[2].Enabled = true;
                 _Channels.ChannelArray[3].Enabled = true;
+            }
+            else
+            {
+                _Channels.ChannelArray[2].Enabled = false;
+                _Channels.ChannelArray[3].Enabled = false;
             }
         }
 
         public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind motionKind, int numberOfRepetities = 1)
         {
             _initDAC();
-            ReloadChannels();
             
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(null, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
             _TimeTraceMeasurementControler.ContiniousAcquisition();

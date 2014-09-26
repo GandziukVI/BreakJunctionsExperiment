@@ -143,7 +143,7 @@ namespace Agilent_U2542A_ExtensionBox
             }
         }
 
-        //========================= binary data acquisition =========================
+        //========================= Binary data acquisition =========================
 
         public void DisableAllChannelsForContiniousDataAcquisition()
         {
@@ -182,7 +182,7 @@ namespace Agilent_U2542A_ExtensionBox
             return _AI.AcquireRawADC_Data();
         }
 
-        //=========================Numeric data acquisition=========================
+        //========================= Numeric data acquisition =========================
 
         private int _DC_Average;
         public int DC_Average
@@ -195,7 +195,9 @@ namespace Agilent_U2542A_ExtensionBox
             }
             set
             {
-                if ((value < 1) || (value > 1000)) value = 100;
+                if ((value < 1) || (value > 1000))
+                    value = 100;
+                
                 _AI.SendCommandRequest(String.Format("VOLT:AVER {0}", value));
                 _DC_Average = value;
             }
