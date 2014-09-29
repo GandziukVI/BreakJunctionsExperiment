@@ -78,24 +78,6 @@ namespace BreakJunctions.DataHandling
         {
             byte[] result = _GetDataBytes(e.Data);
 
-            if (File.Exists(_FileName))
-            {
-                while(true)
-                {
-                    var info = new FileInfo(_FileName);
-                    if (info.Length >= 52428800)
-                    {
-                        var _Directory = info.DirectoryName;
-                        _FileName = String.Format("{0}\\MegaMeasurement_{1}.txt", _Directory, _FileCounter);
-                        ++_FileCounter;
-                        if (!File.Exists(_FileName))
-                            break;
-                    }
-                    else break;
-
-                }
-            }
-
             using (FileStream WriteDataStream = File.Open(_FileName, FileMode.OpenOrCreate))
             {
                 WriteDataStream.Seek(0, SeekOrigin.End);

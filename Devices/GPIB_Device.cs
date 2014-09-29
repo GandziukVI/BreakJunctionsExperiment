@@ -37,6 +37,13 @@ namespace Devices
         private Device _GPIB_Device;
         public Device GPIB_CurrentDevice { get { return _GPIB_Device; } }
 
+        private int _TimeDelay = 25;
+        public int TimeDelay
+        {
+            get { return _TimeDelay; }
+            set { _TimeDelay = value; }
+        }
+
         #endregion
 
         #region Constructor / destructor
@@ -84,7 +91,7 @@ namespace Devices
             try
             {
                 _GPIB_Device.Write(RequestString);
-                Thread.Sleep(100);
+                Thread.Sleep(_TimeDelay);
                 return true;
             }
             catch { return false; }
@@ -99,7 +106,7 @@ namespace Devices
             _GPIB_Device.IOTimeout = TimeoutValue.None;
             var GPIB_DeviceResponce = string.Empty;
 
-            try { GPIB_DeviceResponce = _GPIB_Device.ReadString(); Thread.Sleep(100); }
+            try { GPIB_DeviceResponce = _GPIB_Device.ReadString(); }
 
             catch
             {

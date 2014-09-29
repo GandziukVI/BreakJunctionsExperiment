@@ -55,7 +55,7 @@ namespace Agilent_U2542A_ExtensionBox
                 foreach (AnalogInputChannel workingChannel in workingChannels)
                 {
 
-                    if (workingChannel.isBiPolarAC)
+                    if (workingChannel.IsBiPolarAC)
                         value = IntArray[j] * 2 * workingChannel.AC_Range / 65536;
                     else
                         value = (IntArray[j] / 65536 + 0.5) * workingChannel.AC_Range;

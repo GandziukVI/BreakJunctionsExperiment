@@ -16,7 +16,7 @@ namespace BreakJunctions.Measurements
     {
         #region MeasureRealTimeTimeTrace settings
 
-        private int _PointsPerBlock = 10000;
+        private int _PointsPerBlock = 2000;
         /// <summary>
         /// The value of points per block for Agilent U2542A
         /// </summary>

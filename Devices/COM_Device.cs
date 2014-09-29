@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using System.IO.Ports;
+using System.Threading;
 
 namespace Devices
 {
@@ -15,6 +16,13 @@ namespace Devices
         public SerialPort COM_Port
         {
             get { return _COM_Port; }
+        }
+
+        private int _TimeDelay = 25;
+        public int TimeDelay
+        {
+            get { return _TimeDelay; }
+            set { _TimeDelay = value; }
         }
 
         private string _comPort;
@@ -87,6 +95,7 @@ namespace Devices
             {
                 var strBytes = Encoding.ASCII.GetBytes(RequestString+'\n');
                 _COM_Port.Write(strBytes, 0, strBytes.Length);
+                Thread.Sleep(_TimeDelay);
                 return true;
             }
             catch

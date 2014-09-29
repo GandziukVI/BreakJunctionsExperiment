@@ -59,24 +59,24 @@ namespace Agilent_U2542A_ExtensionBox
             }
         }
 
-        private bool _enabled;
+        private bool _Enabled;
         public bool Enabled
         {
-            get { return _enabled; }
+            get { return _Enabled; }
             set
             {
                 if (value)
                     _AI.SendCommandRequest(String.Format("ROUT:ENAB ON,(@{0})", number));
                 else
                     _AI.SendCommandRequest(String.Format("ROUT:ENAB OFF,(@{0})", number));
-                _enabled = value;
+                _Enabled = value;
             }            
         }
 
-        private bool _isBipolarAC;
-        public bool isBiPolarAC
+        private bool _IsBipolarAC;
+        public bool IsBiPolarAC
         {
-            get { return _isBipolarAC; }
+            get { return _IsBipolarAC; }
             set
             {
                 if (value)
@@ -84,7 +84,7 @@ namespace Agilent_U2542A_ExtensionBox
                 else
                     _AI.SendCommandRequest(String.Format("ROUT:CHAN:POL UNIP, (@{0})", number));
 
-                _isBipolarAC = value;
+                _IsBipolarAC = value;
             }
         }
 
@@ -108,10 +108,10 @@ namespace Agilent_U2542A_ExtensionBox
             }
         }
 
-        private bool _isBipolarDC;
-        public bool isBiPolarDC
+        private bool _IsBipolarDC;
+        public bool IsBiPolarDC
         {
-            get { return _isBipolarDC; }
+            get { return _IsBipolarDC; }
             set
             {
                 if (value)
@@ -119,7 +119,7 @@ namespace Agilent_U2542A_ExtensionBox
                 else
                     _AI.SendCommandRequest(String.Format("VOLT:POL UNIP, (@{0})", number));
 
-                _isBipolarDC = value;
+                _IsBipolarDC = value;
             }
         }
 
@@ -153,12 +153,12 @@ namespace Agilent_U2542A_ExtensionBox
 
         public void SetEnabled(bool Enabled)
         {
-            this._enabled = Enabled;
+            this._Enabled = Enabled;
         }
 
         public void SetACPolarity(bool Polarity)
         {
-            _isBipolarAC = Polarity;
+            _IsBipolarAC = Polarity;
         }
 
         //==============Binary analog Data aqcuisition===============
@@ -168,17 +168,19 @@ namespace Agilent_U2542A_ExtensionBox
             string range = _AI.RequestQuery(String.Format("ROUT:CHAN:RANG? (@{0})", _number));
             this._ACrange = Convert.ToDouble(range, ImportantConstants.NumberFormat());
         }
+
         private void getACPolarity()
         {
             string polarity = _AI.RequestQuery(String.Format("ROUT:CHAN:POL? (@{0})", _number));
-            if (polarity == "BIP") this._isBipolarAC = true;
+            if (polarity == "BIP") this._IsBipolarAC = true;
         }
+
         private void isEnabled()
         {
             string result = _AI.RequestQuery(String.Format("ROUT:ENAB? (@{0})", _number));
             
-            if (result[0] == '1') this._enabled = true;
-            if (result[0] == '0') this._enabled = false;
+            if (result[0] == '1') this._Enabled = true;
+            if (result[0] == '0') this._Enabled = false;
         }
 
         //==============Numeric analog Data aqcuisition===============
@@ -192,12 +194,13 @@ namespace Agilent_U2542A_ExtensionBox
             else
                 this._DCrange = Convert.ToDouble(range, ImportantConstants.NumberFormat());
         }
+
         private void getDC_Polarity()
         {
             string polarity = _AI.RequestQuery(String.Format("VOLT:POL? (@{0})", _number));
             
             if (polarity == "BIP") 
-                this._isBipolarDC = true;
+                this._IsBipolarDC = true;
         }
 
         private double singleVoltageMeasurement()

@@ -6,6 +6,7 @@ using System.Text;
 using Devices;
 
 using Ivi.Visa.Interop;
+using System.Threading;
 
 namespace Agilent_U2542A
 {
@@ -16,7 +17,6 @@ namespace Agilent_U2542A
         public AgilentUSB_Device(string ID)
         {
             this._Id = ID;
-            //this.InitDevice();
         }
 
         ~AgilentUSB_Device()
@@ -49,20 +49,27 @@ namespace Agilent_U2542A
             get { return _Alive; }
         }
 
-        private bool _Busy;
+        private bool _IsBusy;
         public bool IsBusy
         {
-            get { return _Busy; }
+            get { return _IsBusy; }
+        }
+
+        private int _TimeDelay = 25;
+        public int TimeDelay
+        {
+            get { return _TimeDelay; }
+            set { _TimeDelay = value; }
         }
 
         private void _SetBusy()
         {
-            _Busy = true;
+            _IsBusy = true;
         }
 
         private void _SetNotBusy()
         {
-            _Busy = false;
+            _IsBusy = false;
         }
 
         #endregion
@@ -76,11 +83,12 @@ namespace Agilent_U2542A
                 _rMgr = new ResourceManager();
                 _src = new FormattedIO488();
                 _Alive = false;
-                _Busy = false;
+                _IsBusy = false;
 
                 _SetBusy();
 
                 _src.IO = (IMessage)_rMgr.Open(_Id);
+                //_src.IO.Timeout = int.MaxValue;
                 _Alive = true;
 
                 _SetNotBusy();
@@ -111,6 +119,8 @@ namespace Agilent_U2542A
             try
             {
                 _src.WriteString(RequestString);
+                _src.FlushWrite();
+                //Thread.Sleep(_TimeDelay);
             }
             catch 
             {

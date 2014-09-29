@@ -155,8 +155,8 @@ namespace BreakJunctions.Measurements
             double Max = AcquidredYData.Max();
             double Min = AcquidredYData.Min();
 
-            if (Min < 0) _Channels.ChannelArray[NumberOfChannel - 1].isBiPolarAC = true;
-            else _Channels.ChannelArray[NumberOfChannel - 1].isBiPolarAC = false;
+            if (Min < 0) _Channels.ChannelArray[NumberOfChannel - 1].IsBiPolarAC = true;
+            else _Channels.ChannelArray[NumberOfChannel - 1].IsBiPolarAC = false;
 
             Min = Math.Abs(Min);
             Max = Math.Max(Min, Max);
