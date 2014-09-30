@@ -5,30 +5,11 @@ using System.Text;
 
 namespace Agilent_U2542A
 {
-    public class Agilent_U2542A_AnalogInput : AgilentUSB_Device
+    public class Agilent_U2542A_AnalogInput
     {
-        #region Constructor / Destructor
+        #region Agilent_U2542A_AnalogInput settings
 
-        /// <summary>
-        /// Creates the instance of Agilent_U2542A_AnalogInput class
-        /// for managing analog input of the device
-        /// </summary>
-        /// <param name="ID"></param>
-        public Agilent_U2542A_AnalogInput(string ID)
-            : base(ID)
-        {
-            var _InitSuccess = false;
-
-            if (!this.IsAlive)
-                _InitSuccess = this.InitDevice();
-
-            if (!_InitSuccess) throw new Exception("Device Not Connected");
-        }
-
-        ~Agilent_U2542A_AnalogInput()
-        {
-            this.Dispose();
-        }
+        private AgilentUSB_Device _TheDevice = AgilentUSB_Device.Instance;
 
         #endregion
 
@@ -82,11 +63,11 @@ namespace Agilent_U2542A
         /// </summary>
         /// <param name="Query">Query to be sent to the device</param>
         /// <returns>Result of quer request</returns>
-        public override string RequestQuery(string Query)
+        public string RequestQuery(string Query)
         {
             try
             {
-                return base.RequestQuery(Query).TrimEnd('\n');
+                return _TheDevice.RequestQuery(Query).TrimEnd('\n');
             }
             catch { return null; }
         }

@@ -12,11 +12,33 @@ namespace Agilent_U2542A
 {
     public class AgilentUSB_Device : IExperimentalDevice, IDisposable
     {
+        #region Singleton pattern implementation
+
+        private static AgilentUSB_Device _Instance;
+        public static AgilentUSB_Device Instance
+        {
+            get 
+            {
+                if (_Instance == null)
+                    _Instance = new AgilentUSB_Device();
+
+                return _Instance; 
+            }
+        }
+
+        #endregion
+
         #region Constructor / destructor
+
+        public AgilentUSB_Device() 
+        {
+            this.InitDevice();
+        }
 
         public AgilentUSB_Device(string ID)
         {
             this._Id = ID;
+            this.InitDevice();
         }
 
         ~AgilentUSB_Device()
@@ -31,7 +53,7 @@ namespace Agilent_U2542A
         private ResourceManager _rMgr;
         private FormattedIO488 _src;
 
-        private string _Id;
+        private string _Id = "USB0::0x0957::0x1718::TW52524501::INSTR";
         public string Id
         {
             get { return _Id; }
@@ -88,7 +110,6 @@ namespace Agilent_U2542A
                 _SetBusy();
 
                 _src.IO = (IMessage)_rMgr.Open(_Id);
-                //_src.IO.Timeout = int.MaxValue;
                 _Alive = true;
 
                 _SetNotBusy();
@@ -119,8 +140,7 @@ namespace Agilent_U2542A
             try
             {
                 _src.WriteString(RequestString);
-                _src.FlushWrite();
-                //Thread.Sleep(_TimeDelay);
+                Thread.Sleep(_TimeDelay);
             }
             catch 
             {
