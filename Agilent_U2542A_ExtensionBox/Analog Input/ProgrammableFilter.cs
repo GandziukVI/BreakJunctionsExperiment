@@ -7,7 +7,7 @@ using Agilent_U2542A;
 
 namespace Agilent_U2542A_ExtensionBox
 {
-    class ProgrammableFilter : IDisposable
+    class ProgrammableFilter
     {
         #region ProgrammableFilter settings
 
@@ -63,43 +63,21 @@ namespace Agilent_U2542A_ExtensionBox
 
         public ProgrammableFilter()
         {
-            FilterGain_Bit0 = new DAQ_Bit(501, 4, ImportantConstants.DeviceID);
-            FilterGain_Bit1 = new DAQ_Bit(501, 5, ImportantConstants.DeviceID);
-            FilterGain_Bit2 = new DAQ_Bit(501, 6, ImportantConstants.DeviceID);
-            FilterGain_Bit3 = new DAQ_Bit(501, 7, ImportantConstants.DeviceID);
+            FilterGain_Bit0 = new DAQ_Bit(501, 4);
+            FilterGain_Bit1 = new DAQ_Bit(501, 5);
+            FilterGain_Bit2 = new DAQ_Bit(501, 6);
+            FilterGain_Bit3 = new DAQ_Bit(501, 7);
 
-            Frequency_Bit0 = new DAQ_Bit(501, 0, ImportantConstants.DeviceID);
-            Frequency_Bit1 = new DAQ_Bit(501, 1, ImportantConstants.DeviceID);
-            Frequency_Bit2 = new DAQ_Bit(501, 2, ImportantConstants.DeviceID);
-            Frequency_Bit3 = new DAQ_Bit(501, 3, ImportantConstants.DeviceID);
+            Frequency_Bit0 = new DAQ_Bit(501, 0);
+            Frequency_Bit1 = new DAQ_Bit(501, 1);
+            Frequency_Bit2 = new DAQ_Bit(501, 2);
+            Frequency_Bit3 = new DAQ_Bit(501, 3);
 
             FrequencyBits = new DAQ_Bit[] { Frequency_Bit0, Frequency_Bit1, Frequency_Bit2, Frequency_Bit3 };
             GainBits = new DAQ_Bit[] { FilterGain_Bit0, FilterGain_Bit1, FilterGain_Bit2, FilterGain_Bit3 };
             
-            HOLD_CS = new DAQ_Bit(503, 2, ImportantConstants.DeviceID);
+            HOLD_CS = new DAQ_Bit(503, 2);
             HOLD_CS.value = 0;
-        }
-
-        ~ProgrammableFilter()
-        {
-            this.Dispose();
-        }
-
-        #endregion
-
-        #region Correctly disposing the instance
-
-        public void Dispose()
-        {
-            FilterGain_Bit0.Dispose();
-            FilterGain_Bit1.Dispose();
-            FilterGain_Bit2.Dispose();
-            FilterGain_Bit3.Dispose();
-
-            Frequency_Bit0.Dispose();
-            Frequency_Bit1.Dispose();
-            Frequency_Bit2.Dispose();
-            Frequency_Bit3.Dispose();
         }
 
         #endregion

@@ -5,15 +5,16 @@ using System.Text;
 
 namespace Agilent_U2542A
 {
-    public class Agilent_U2542A_AnalogOutput : AgilentUSB_Device
+    public class Agilent_U2542A_AnalogOutput
     {
         #region Analog output settings
 
         private int DAQ_Number;
+        private AgilentUSB_Device _Device = AgilentUSB_Device.Instance;
 
         #endregion
 
-        #region Constructor / Destructor
+        #region Constructor
 
         /// <summary>
         /// Creates the instance of Agilent_U2542A_AnalogOutput
@@ -21,25 +22,18 @@ namespace Agilent_U2542A
         /// </summary>
         /// <param name="channelNumber">Channel number</param>
         /// <param name="ID">Device ID</param>
-        public Agilent_U2542A_AnalogOutput(int channelNumber, string ID)
-            : base(ID)
+        public Agilent_U2542A_AnalogOutput(int channelNumber)
         {
-            if (!this.IsAlive)
-                this.InitDevice();
+            if (!_Device.IsAlive)
+                _Device.InitDevice();
+            if (!_Device.IsAlive)
+                throw new Exception("Device Not Connected");
 
             DAQ_Number = channelNumber;
 
-            if (!this.IsAlive) 
-                throw new Exception("Device Not Connected");
-
-            SendCommandRequest("SOUR:VOLT:POL BIP, (@201:202)");
-            SendCommandRequest("OUTP:WAV:ITER 0");
-            SendCommandRequest("OUTP:WAV:SRAT 0");
-        }
-
-        ~Agilent_U2542A_AnalogOutput()
-        {
-            this.Dispose();
+            _Device.SendCommandRequest("SOUR:VOLT:POL BIP, (@201:202)");
+            _Device.SendCommandRequest("OUTP:WAV:ITER 0");
+            _Device.SendCommandRequest("OUTP:WAV:SRAT 0");
         }
 
         #endregion
@@ -55,7 +49,7 @@ namespace Agilent_U2542A
             if (!((Voltage < 10) && ((Voltage > -10)))) 
                 return;
 
-            SendCommandRequest(String.Format("SOUR:VOLT {0}, (@{1})", Voltage.ToString("G3"), DAQ_Number));
+            _Device.SendCommandRequest(String.Format("SOUR:VOLT {0}, (@{1})", Voltage.ToString("G3"), DAQ_Number));
         }
 
         /// <summary>
@@ -64,7 +58,7 @@ namespace Agilent_U2542A
         /// <param name="Iter"></param>
         public void SetIterations(int Iter)
         {
-            SendCommandRequest(String.Format("OUTP:WAV:ITER {0}", Iter));
+            _Device.SendCommandRequest(String.Format("OUTP:WAV:ITER {0}", Iter));
         }
 
         /// <summary>
@@ -77,8 +71,8 @@ namespace Agilent_U2542A
                 return;
             if (Frequency < 0)
                 return;
-            
-            SendCommandRequest(String.Format("OUTP:WAV:FREQ {0}", Frequency));
+
+            _Device.SendCommandRequest(String.Format("OUTP:WAV:FREQ {0}", Frequency));
         }
 
         /// <summary>
@@ -86,7 +80,7 @@ namespace Agilent_U2542A
         /// </summary>
         public void Enable()
         {
-            SendCommandRequest(String.Format("ROUT:ENAB ON,(@{0})", DAQ_Number));
+            _Device.SendCommandRequest(String.Format("ROUT:ENAB ON,(@{0})", DAQ_Number));
         }
 
         /// <summary>
@@ -94,7 +88,7 @@ namespace Agilent_U2542A
         /// </summary>
         public void Disable()
         {
-            SendCommandRequest(String.Format("ROUT:ENAB OFF,(@{0})", DAQ_Number));
+            _Device.SendCommandRequest(String.Format("ROUT:ENAB OFF,(@{0})", DAQ_Number));
         }
 
         /// <summary>
@@ -109,7 +103,7 @@ namespace Agilent_U2542A
             if (offset > 10)    return;
             if (offset < -10)   return;
 
-            SendCommandRequest(String.Format("APPL:SIN {0},{1}, (@{2})", amplitude.ToString("G3"), offset.ToString("G3"), DAQ_Number));
+            _Device.SendCommandRequest(String.Format("APPL:SIN {0},{1}, (@{2})", amplitude.ToString("G3"), offset.ToString("G3"), DAQ_Number));
         }
 
         /// <summary>
@@ -117,7 +111,7 @@ namespace Agilent_U2542A
         /// </summary>
         public void OutputON()
         {
-            SendCommandRequest("OUTP ON");
+            _Device.SendCommandRequest("OUTP ON");
         }
 
         /// <summary>
@@ -125,7 +119,7 @@ namespace Agilent_U2542A
         /// </summary>
         public void OutputOFF()
         {
-            SendCommandRequest("OUTP OFF");
+            _Device.SendCommandRequest("OUTP OFF");
         }
 
         #endregion

@@ -7,7 +7,7 @@ using Agilent_U2542A;
 
 namespace Agilent_U2542A_ExtensionBox
 {
-    public class ProgrammableGainAmplifier : IDisposable
+    public class ProgrammableGainAmplifier
     {
         #region ProgrammableGainAmplifier settings
 
@@ -32,27 +32,12 @@ namespace Agilent_U2542A_ExtensionBox
 
         #endregion
 
-        #region Constructor / Destructor
+        #region Constructor
 
         public ProgrammableGainAmplifier()
         {
-            PGA_Bit0 = new DAQ_Bit(503, 0, ImportantConstants.DeviceID);
-            PGA_Bit1 = new DAQ_Bit(503, 1, ImportantConstants.DeviceID);
-        }
-
-        ~ProgrammableGainAmplifier()
-        {
-            this.Dispose();
-        }
-
-        #endregion
-
-        #region Correctly disposing the instance
-
-        public void Dispose()
-        {
-            PGA_Bit0.Dispose();
-            PGA_Bit1.Dispose();
+            PGA_Bit0 = new DAQ_Bit(503, 0);
+            PGA_Bit1 = new DAQ_Bit(503, 1);
         }
 
         #endregion

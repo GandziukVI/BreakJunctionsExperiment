@@ -140,7 +140,7 @@ namespace Agilent_U2542A
             try
             {
                 _src.WriteString(RequestString);
-                Thread.Sleep(_TimeDelay);
+                //Thread.Sleep(_TimeDelay);
             }
             catch 
             {

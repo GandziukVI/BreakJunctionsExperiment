@@ -5,28 +5,30 @@ using System.Text;
 
 namespace Agilent_U2542A
 {
-    public class DAQ_Bit : IDisposable
+    public class DAQ_Bit
     {
         #region DAQ_Bit settings
 
         private int _byteNumber, _bitNumber, _value;
-        private Agilent_U2542A_DigitalOutput _DIO;
+
+        private Agilent_U2542A_DigitalOutput _DIO = Agilent_U2542A_DigitalOutput.Instance;
 
         #endregion
 
         #region Constructor
 
-        public DAQ_Bit(int byteNumber, byte bitNumber, string deviceID)
+        public DAQ_Bit(int byteNumber, byte bitNumber)
         {
             if ((byteNumber < 505) && (byteNumber > 500)) _byteNumber = byteNumber;
             else throw new Exception("Wrong byte number" + byteNumber);
 
             if ((bitNumber < 8)) _bitNumber = bitNumber;
             else throw new Exception("Wrong byte number" + bitNumber);
-
-            _DIO = new Agilent_U2542A_DigitalOutput(deviceID);
-            _DIO.InitDevice();
         }
+
+        #endregion
+
+        #region DAQ_Bit functioality
 
         public int value
         {
@@ -52,15 +54,6 @@ namespace Agilent_U2542A
         public void longPulse()
         {
             _DIO.BitRelayPulse(_byteNumber, (byte)_bitNumber);
-        }
-
-        #endregion
-
-        #region Correctly disposing the instance
-
-        public void Dispose()
-        {
-            _DIO.Dispose();
         }
 
         #endregion

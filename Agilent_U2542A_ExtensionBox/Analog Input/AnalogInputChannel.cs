@@ -7,12 +7,13 @@ using Agilent_U2542A;
 
 namespace Agilent_U2542A_ExtensionBox
 {
-    public class AnalogInputChannel : IDisposable
+    public class AnalogInputChannel
     {
         #region AnalogInputChannelSettings
 
         private Agilent_U2542A_AnalogInput _AI;
         private Agilent_U2542A_DigitalOutput _DIO;
+        private AgilentUSB_Device _Device = AgilentUSB_Device.Instance;
 
         private int _number;
         public int number
@@ -54,7 +55,7 @@ namespace Agilent_U2542A_ExtensionBox
 
                 if (!ImportantConstants.Ranges.Contains(value)) throw new Exception("Incorect range " + value + "set for channel" + number);
 
-                _AI.SendCommandRequest(String.Format("ROUT:CHAN:RANG {0}, (@{1})", Convert.ToString(value, ImportantConstants.NumberFormat()), number));
+                _Device.SendCommandRequest(String.Format("ROUT:CHAN:RANG {0}, (@{1})", Convert.ToString(value, ImportantConstants.NumberFormat()), number));
                 _ACrange = value;
             }
         }
@@ -66,9 +67,9 @@ namespace Agilent_U2542A_ExtensionBox
             set
             {
                 if (value)
-                    _AI.SendCommandRequest(String.Format("ROUT:ENAB ON,(@{0})", number));
+                    _Device.SendCommandRequest(String.Format("ROUT:ENAB ON,(@{0})", number));
                 else
-                    _AI.SendCommandRequest(String.Format("ROUT:ENAB OFF,(@{0})", number));
+                    _Device.SendCommandRequest(String.Format("ROUT:ENAB OFF,(@{0})", number));
                 _Enabled = value;
             }            
         }
@@ -80,9 +81,9 @@ namespace Agilent_U2542A_ExtensionBox
             set
             {
                 if (value)
-                    _AI.SendCommandRequest(String.Format("ROUT:CHAN:POL BIP, (@{0})", number));
+                    _Device.SendCommandRequest(String.Format("ROUT:CHAN:POL BIP, (@{0})", number));
                 else
-                    _AI.SendCommandRequest(String.Format("ROUT:CHAN:POL UNIP, (@{0})", number));
+                    _Device.SendCommandRequest(String.Format("ROUT:CHAN:POL UNIP, (@{0})", number));
 
                 _IsBipolarAC = value;
             }
@@ -103,7 +104,7 @@ namespace Agilent_U2542A_ExtensionBox
                 else 
                     ToWrite = Convert.ToString(value, ImportantConstants.NumberFormat());
 
-                _AI.SendCommandRequest(String.Format("SENS:VOLT:RANG {0}, (@{1})", ToWrite, number));
+                _Device.SendCommandRequest(String.Format("SENS:VOLT:RANG {0}, (@{1})", ToWrite, number));
                 _DCrange = value;
             }
         }
@@ -115,9 +116,9 @@ namespace Agilent_U2542A_ExtensionBox
             set
             {
                 if (value)
-                    _AI.SendCommandRequest(String.Format("VOLT:POL BIP, (@{0})", number));
+                    _Device.SendCommandRequest(String.Format("VOLT:POL BIP, (@{0})", number));
                 else
-                    _AI.SendCommandRequest(String.Format("VOLT:POL UNIP, (@{0})", number));
+                    _Device.SendCommandRequest(String.Format("VOLT:POL UNIP, (@{0})", number));
 
                 _IsBipolarDC = value;
             }
@@ -125,19 +126,15 @@ namespace Agilent_U2542A_ExtensionBox
 
         #endregion
 
-        #region Constructor / Destructor
+        #region Constructor
 
         public AnalogInputChannel(int ChannelNumber)
         {
             number = ChannelNumber;
             ChannelProperties = new AnalogInputChannel_Latch(ChannelNumber);
-            _AI = new Agilent_U2542A_AnalogInput(ImportantConstants.DeviceID);
-            _DIO = new Agilent_U2542A_DigitalOutput(ImportantConstants.DeviceID);
-        }
-
-        ~AnalogInputChannel()
-        {
-            this.Dispose();
+            
+            _AI = new Agilent_U2542A_AnalogInput();
+            _DIO = Agilent_U2542A_DigitalOutput.Instance;
         }
 
         #endregion
@@ -215,17 +212,6 @@ namespace Agilent_U2542A_ExtensionBox
             getACPolarity();
             getDC_Range();
             getDC_Polarity();
-        }
-
-        #endregion
-
-        #region Correctly disposing the instance
-
-        public void Dispose()
-        {
-            _AI.Dispose();
-            _DIO.Dispose();
-            ChannelProperties.Dispose();
         }
 
         #endregion

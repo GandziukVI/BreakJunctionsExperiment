@@ -7,7 +7,7 @@ using Agilent_U2542A;
 
 namespace Agilent_U2542A_ExtensionBox
 {
-    public class AnalogInputChannel_Latch : IDisposable
+    public class AnalogInputChannel_Latch
     {
         #region AnalogInputChannel_Latch settings
 
@@ -52,7 +52,7 @@ namespace Agilent_U2542A_ExtensionBox
 
         #endregion
 
-        #region Constructor / Destructor
+        #region Constructor
 
         public AnalogInputChannel_Latch(int ChannelNumber)
         {
@@ -60,21 +60,16 @@ namespace Agilent_U2542A_ExtensionBox
 
             _ChannelNumber = ChannelNumber;
 
-            Channel_Selector_A0 = new DAQ_Bit(502, 0, ImportantConstants.DeviceID);
-            Channel_Selector_A1 = new DAQ_Bit(502, 1, ImportantConstants.DeviceID);
+            Channel_Selector_A0 = new DAQ_Bit(502, 0);
+            Channel_Selector_A1 = new DAQ_Bit(502, 1);
 
-            Relay_Pulse = new DAQ_Bit(504, 0, ImportantConstants.DeviceID);
-            Relay_SetReset = new DAQ_Bit(504, 1, ImportantConstants.DeviceID);
+            Relay_Pulse = new DAQ_Bit(504, 0);
+            Relay_SetReset = new DAQ_Bit(504, 1);
 
-            Latch_Enabled = new DAQ_Bit(504, 2, ImportantConstants.DeviceID);
+            Latch_Enabled = new DAQ_Bit(504, 2);
 
             _PGA = new ProgrammableGainAmplifier();
             _Filter = new ProgrammableFilter();
-        }
-
-        ~AnalogInputChannel_Latch()
-        {
-            this.Dispose();
         }
 
         #endregion
@@ -122,24 +117,6 @@ namespace Agilent_U2542A_ExtensionBox
             Relay_SetReset.value = 0;
             Relay_Pulse.longPulse();
             _isAC = true;
-        }
-
-        #endregion
-
-        #region Correctly disposing the instance
-
-        public void Dispose()
-        {
-            Channel_Selector_A0.Dispose();
-            Channel_Selector_A1.Dispose();
-
-            Relay_Pulse.Dispose();
-            Relay_SetReset.Dispose();
-
-            Latch_Enabled.Dispose();
-
-            _PGA.Dispose();
-            _Filter.Dispose();
         }
 
         #endregion

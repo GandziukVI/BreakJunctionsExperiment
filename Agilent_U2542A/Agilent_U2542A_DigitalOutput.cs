@@ -6,21 +6,47 @@ using System.Threading;
 
 namespace Agilent_U2542A
 {
-    public class Agilent_U2542A_DigitalOutput : AgilentUSB_Device
+    public class Agilent_U2542A_DigitalOutput
     {
-        #region Constructor / Destructor
+        #region Agilent Digital Output settings
+
+        private byte[] _bitmask,
+                       _byte501, _byte502, _byte503, _byte504,
+                       _byte501_pinNumbers, _byte502_pinNumbers, _byte503_pinNumbers, _byte504_pinNumbers;
+
+        private List<byte[]> _bytes;
+
+        private AgilentUSB_Device _Device = AgilentUSB_Device.Instance;
+
+        #endregion
+
+        #region Singleton pattern implementation
+
+        private static Agilent_U2542A_DigitalOutput _Instance;
+        public static Agilent_U2542A_DigitalOutput Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                    _Instance = new Agilent_U2542A_DigitalOutput();
+
+                return _Instance;
+            }
+        }
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Creates the Agilent_U2542A_DigitalOutput instance for
         /// managing digital output of the device
         /// </summary>
-        /// <param name="ID"></param>
-        public Agilent_U2542A_DigitalOutput(string ID)
-            : base(ID)
+        public Agilent_U2542A_DigitalOutput()
         {
-            if (!this.IsAlive)
-                this.InitDevice();
-            if (!this.IsAlive) 
+            if (!_Device.IsAlive)
+                _Device.InitDevice();
+            if (!_Device.IsAlive) 
                 throw new Exception("Device Not Connected");
             
             _bitmask = new byte[8] { 1, 2, 4, 8, 16, 32, 64, 128 };
@@ -35,24 +61,9 @@ namespace Agilent_U2542A
             _byte504_pinNumbers = new byte[4] { 61, 27, 60, 26 };
             
             _bytes = new List<byte[]> { _byte501_pinNumbers, _byte502_pinNumbers, _byte503_pinNumbers, _byte504_pinNumbers };
-            
-            SendCommandRequest("CONF:DIG:DIR OUTP,(@501:504)");
+
+            _Device.SendCommandRequest("CONF:DIG:DIR OUTP, (@501:504)");
         }
-
-        ~Agilent_U2542A_DigitalOutput()
-        {
-            this.Dispose();
-        }
-
-        #endregion
-
-        #region Agilent Digital Output settings
-
-        private byte[] _bitmask,
-                       _byte501, _byte502, _byte503, _byte504,
-                       _byte501_pinNumbers, _byte502_pinNumbers, _byte503_pinNumbers, _byte504_pinNumbers;
-
-        private List<byte[]> _bytes;
 
         #endregion
 
@@ -91,14 +102,14 @@ namespace Agilent_U2542A
             byte WhatToWrite = byteToNumber(byteX);
             try
             {
-                SendCommandRequest(String.Format("SOUR:DIG:DATA {0},(@{1})", WhatToWrite, byteNumber));
+                _Device.SendCommandRequest(String.Format("SOUR:DIG:DATA {0},(@{1})", WhatToWrite, byteNumber));
             }
             catch (Exception e) { throw e; }
         }
 
         public void AllToZero()
         {
-            try { SendCommandRequest("SOUR:DIG:DATA 256, (@501:504)"); }
+            try { _Device.SendCommandRequest("SOUR:DIG:DATA 256, (@501:504)"); }
             catch (Exception e) { throw e; }
         }
 
@@ -220,9 +231,9 @@ namespace Agilent_U2542A
             return true;
         }
 
-        public override string RequestQuery(string Query)
+        public string RequestQuery(string Query)
         {
-            return base.RequestQuery(Query).TrimEnd('\n');
+            return _Device.RequestQuery(Query).TrimEnd('\n');
         }
 
         #endregion

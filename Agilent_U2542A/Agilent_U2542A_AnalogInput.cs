@@ -9,7 +9,19 @@ namespace Agilent_U2542A
     {
         #region Agilent_U2542A_AnalogInput settings
 
-        private AgilentUSB_Device _TheDevice = AgilentUSB_Device.Instance;
+        private AgilentUSB_Device _Device = AgilentUSB_Device.Instance;
+
+        #endregion
+
+        #region Constructor
+
+        public Agilent_U2542A_AnalogInput()
+        {
+            if (!_Device.IsAlive)
+                _Device.InitDevice();
+            if (!_Device.IsAlive)
+                throw new Exception("Device Not Connected");
+        }
 
         #endregion
 
@@ -67,7 +79,7 @@ namespace Agilent_U2542A
         {
             try
             {
-                return _TheDevice.RequestQuery(Query).TrimEnd('\n');
+                return _Device.RequestQuery(Query).TrimEnd('\n');
             }
             catch { return null; }
         }

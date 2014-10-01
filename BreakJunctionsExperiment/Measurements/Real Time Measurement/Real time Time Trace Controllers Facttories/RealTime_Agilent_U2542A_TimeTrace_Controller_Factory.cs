@@ -11,9 +11,9 @@ namespace BreakJunctions.Measurements
     {
         private RealTime_Agilent_U2542A_TimeTrace_Controller _RealTime_TimeTrace_Controller;
 
-        public RealTime_TimeTrace_Controller GetRealTime_TimeTraceController(string _deviceID)
+        public RealTime_TimeTrace_Controller GetRealTime_TimeTraceController()
         {
-            _RealTime_TimeTrace_Controller = new RealTime_Agilent_U2542A_TimeTrace_Controller(_deviceID);
+            _RealTime_TimeTrace_Controller = new RealTime_Agilent_U2542A_TimeTrace_Controller();
             return _RealTime_TimeTrace_Controller;
         }
     }

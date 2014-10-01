@@ -129,23 +129,23 @@ namespace Agilent_U2542A_ExtensionBox
         {
             _id = outputID;
 
-            _AO = new Agilent_U2542A_AnalogOutput(_id, ImportantConstants.DeviceID);
+            _AO = new Agilent_U2542A_AnalogOutput(_id);
             if (_id == 201)
             {
-                A0 = new DAQ_Bit(501, 4, ImportantConstants.DeviceID);
-                A1 = new DAQ_Bit(501, 5, ImportantConstants.DeviceID);
-                A2 = new DAQ_Bit(501, 6, ImportantConstants.DeviceID);
-                EN = new DAQ_Bit(501, 7, ImportantConstants.DeviceID);
+                A0 = new DAQ_Bit(501, 4);
+                A1 = new DAQ_Bit(501, 5);
+                A2 = new DAQ_Bit(501, 6);
+                EN = new DAQ_Bit(501, 7);
                 this.OutputNumber = 1;
             }
             else
             {
                 if (_id == 202)
                 {
-                    A0 = new DAQ_Bit(501, 0, ImportantConstants.DeviceID);
-                    A1 = new DAQ_Bit(501, 1, ImportantConstants.DeviceID);
-                    A2 = new DAQ_Bit(501, 2, ImportantConstants.DeviceID);
-                    EN = new DAQ_Bit(501, 3, ImportantConstants.DeviceID);
+                    A0 = new DAQ_Bit(501, 0);
+                    A1 = new DAQ_Bit(501, 1);
+                    A2 = new DAQ_Bit(501, 2);
+                    EN = new DAQ_Bit(501, 3);
                     this.OutputNumber = 9;
                 }
                 else throw new Exception("Not Correct number of AO channel");

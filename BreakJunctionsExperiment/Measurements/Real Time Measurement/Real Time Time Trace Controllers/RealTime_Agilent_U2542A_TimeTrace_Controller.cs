@@ -21,7 +21,7 @@ namespace BreakJunctions.Measurements
             get { return _MeasurementInProcess; }
         }
 
-        private Agilent_U2542A_DigitalOutput _DIO;
+        private Agilent_U2542A_DigitalOutput _DIO = Agilent_U2542A_DigitalOutput.Instance;
         private AnalogInputChannels _Channels = AnalogInputChannels.Instance;
         private DataStringConverter _DataConverter;
         private VoltageMeasurement _VoltageMeasurement;
@@ -30,9 +30,8 @@ namespace BreakJunctions.Measurements
 
         #region Constructor / Destructor
 
-        public RealTime_Agilent_U2542A_TimeTrace_Controller(string deviceID)
+        public RealTime_Agilent_U2542A_TimeTrace_Controller()
         {
-            _DIO = new Agilent_U2542A_DigitalOutput(deviceID);
 
             _Channels.Read_AI_Channel_Status();
 
@@ -181,10 +180,6 @@ namespace BreakJunctions.Measurements
         public override void Dispose()
         {
             AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged -= OnRealTime_TimeTraceMeasurementStateChanged;
-
-            _DIO.Dispose();
-            if(_VoltageMeasurement != null)
-                _VoltageMeasurement.Dispose();
         }
 
         #endregion
