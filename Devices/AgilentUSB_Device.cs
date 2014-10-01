@@ -178,7 +178,7 @@ namespace Agilent_U2542A
         public string RequestQuery(string Query)
         {
             SendCommandRequest(Query);
-            return ReceiveDeviceAnswer().TrimEnd('\r', '\n');
+            return ReceiveDeviceAnswer().TrimEnd('\n');
         }
 
         #endregion
