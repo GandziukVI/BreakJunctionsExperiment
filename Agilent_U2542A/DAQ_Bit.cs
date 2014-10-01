@@ -11,7 +11,7 @@ namespace Agilent_U2542A
 
         private int _byteNumber, _bitNumber, _value;
 
-        private Agilent_U2542A_DigitalOutput _DIO = Agilent_U2542A_DigitalOutput.Instance;
+        private Agilent_U2542A_DigitalOutput _DIO;
 
         #endregion
 
@@ -24,6 +24,8 @@ namespace Agilent_U2542A
 
             if ((bitNumber < 8)) _bitNumber = bitNumber;
             else throw new Exception("Wrong byte number" + bitNumber);
+
+            _DIO = Agilent_U2542A_DigitalOutput.Instance;
         }
 
         #endregion

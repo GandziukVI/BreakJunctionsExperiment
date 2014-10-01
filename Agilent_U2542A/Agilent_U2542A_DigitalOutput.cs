@@ -16,8 +16,6 @@ namespace Agilent_U2542A
 
         private List<byte[]> _bytes;
 
-        private AgilentUSB_Device _Device = AgilentUSB_Device.Instance;
-
         #endregion
 
         #region Singleton pattern implementation
@@ -44,9 +42,9 @@ namespace Agilent_U2542A
         /// </summary>
         public Agilent_U2542A_DigitalOutput()
         {
-            if (!_Device.IsAlive)
-                _Device.InitDevice();
-            if (!_Device.IsAlive) 
+            if (!AgilentUSB_Device.Instance.IsAlive)
+                AgilentUSB_Device.Instance.InitDevice();
+            if (!AgilentUSB_Device.Instance.IsAlive) 
                 throw new Exception("Device Not Connected");
             
             _bitmask = new byte[8] { 1, 2, 4, 8, 16, 32, 64, 128 };
@@ -62,7 +60,7 @@ namespace Agilent_U2542A
             
             _bytes = new List<byte[]> { _byte501_pinNumbers, _byte502_pinNumbers, _byte503_pinNumbers, _byte504_pinNumbers };
 
-            _Device.SendCommandRequest("CONF:DIG:DIR OUTP, (@501:504)");
+            AgilentUSB_Device.Instance.SendCommandRequest("CONF:DIG:DIR OUTP, (@501:504)");
         }
 
         #endregion
@@ -102,14 +100,14 @@ namespace Agilent_U2542A
             byte WhatToWrite = byteToNumber(byteX);
             try
             {
-                _Device.SendCommandRequest(String.Format("SOUR:DIG:DATA {0},(@{1})", WhatToWrite, byteNumber));
+                AgilentUSB_Device.Instance.SendCommandRequest(String.Format("SOUR:DIG:DATA {0},(@{1})", WhatToWrite, byteNumber));
             }
             catch (Exception e) { throw e; }
         }
 
         public void AllToZero()
         {
-            try { _Device.SendCommandRequest("SOUR:DIG:DATA 256, (@501:504)"); }
+            try { AgilentUSB_Device.Instance.SendCommandRequest("SOUR:DIG:DATA 256, (@501:504)"); }
             catch (Exception e) { throw e; }
         }
 
@@ -190,7 +188,7 @@ namespace Agilent_U2542A
         {
             try
             {
-                return Convert.ToByte(RequestQuery(String.Format("SOURce:DIGital:DATA? (@{0})", byteNumber)));
+                return Convert.ToByte(AgilentUSB_Device.Instance.RequestQuery(String.Format("SOURce:DIGital:DATA? (@{0})", byteNumber)));
             }
             catch { return 0; }
         }
@@ -229,11 +227,6 @@ namespace Agilent_U2542A
             }
 
             return true;
-        }
-
-        public string RequestQuery(string Query)
-        {
-            return _Device.RequestQuery(Query).TrimEnd('\n');
         }
 
         #endregion

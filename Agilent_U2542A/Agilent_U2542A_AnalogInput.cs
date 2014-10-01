@@ -9,7 +9,7 @@ namespace Agilent_U2542A
     {
         #region Agilent_U2542A_AnalogInput settings
 
-        private AgilentUSB_Device _Device = AgilentUSB_Device.Instance;
+        private AgilentUSB_Device _Device;
 
         #endregion
 
@@ -17,6 +17,8 @@ namespace Agilent_U2542A
 
         public Agilent_U2542A_AnalogInput()
         {
+            _Device = AgilentUSB_Device.Instance;
+
             if (!_Device.IsAlive)
                 _Device.InitDevice();
             if (!_Device.IsAlive)
@@ -38,7 +40,7 @@ namespace Agilent_U2542A
         /// </returns>
         public bool CheckAcquisitionStatus()
         {
-            string status = RequestQuery("WAV:STAT?");
+            string status = _Device.RequestQuery("WAV:STAT?");
 
             if (status == "OVER")
                 throw new Exception("Device buffer overload");
@@ -56,7 +58,7 @@ namespace Agilent_U2542A
         /// </returns>
         public bool CheckSingleShotAcquisitionStatus()
         {
-            string status = RequestQuery("WAV:COMP?");
+            string status = _Device.RequestQuery("WAV:COMP?");
 
             if (status == "NO") 
                 return false;
@@ -71,26 +73,12 @@ namespace Agilent_U2542A
         #region Read / Write operations
 
         /// <summary>
-        /// Sends command to the device and receives answer
-        /// </summary>
-        /// <param name="Query">Query to be sent to the device</param>
-        /// <returns>Result of quer request</returns>
-        public string RequestQuery(string Query)
-        {
-            try
-            {
-                return _Device.RequestQuery(Query).TrimEnd('\n');
-            }
-            catch { return null; }
-        }
-
-        /// <summary>
         /// Requests raw ADC data
         /// </summary>
         /// <returns></returns>
         public string AcquireRawADC_Data()
         {
-            return RequestQuery("WAV:DATA?");
+            return _Device.RequestQuery("WAV:DATA?");
         }
 
         #endregion

@@ -32,12 +32,12 @@ namespace Agilent_U2542A
 
         public AgilentUSB_Device() 
         {
-            this.InitDevice();
-        }
+            _Id = "USB0::0x0957::0x1718::TW52524501::INSTR";
+            _rMgr = new ResourceManager();
+            _src = new FormattedIO488();
+            _Alive = false;
+            _IsBusy = false;
 
-        public AgilentUSB_Device(string ID)
-        {
-            this._Id = ID;
             this.InitDevice();
         }
 
@@ -53,7 +53,7 @@ namespace Agilent_U2542A
         private ResourceManager _rMgr;
         private FormattedIO488 _src;
 
-        private string _Id = "USB0::0x0957::0x1718::TW52524501::INSTR";
+        private string _Id;
         public string Id
         {
             get { return _Id; }
@@ -102,14 +102,9 @@ namespace Agilent_U2542A
         {
             try
             {
-                _rMgr = new ResourceManager();
-                _src = new FormattedIO488();
-                _Alive = false;
-                _IsBusy = false;
-
                 _SetBusy();
 
-                _src.IO = (IMessage)_rMgr.Open(_Id);
+                _src.IO = (IMessage)_rMgr.Open(this._Id);
                 _Alive = true;
 
                 _SetNotBusy();
@@ -180,10 +175,10 @@ namespace Agilent_U2542A
             }
         }
 
-        public virtual string RequestQuery(string Query)
+        public string RequestQuery(string Query)
         {
             SendCommandRequest(Query);
-            return ReceiveDeviceAnswer();
+            return ReceiveDeviceAnswer().TrimEnd('\r', '\n');
         }
 
         #endregion

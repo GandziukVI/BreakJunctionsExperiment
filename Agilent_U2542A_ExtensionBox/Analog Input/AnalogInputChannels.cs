@@ -11,8 +11,6 @@ namespace Agilent_U2542A_ExtensionBox
     {
         #region AnalogInputChannels settings
 
-        private AgilentUSB_Device _Device = AgilentUSB_Device.Instance;
-
         private Agilent_U2542A_AnalogInput _AI;
         
         private AnalogInputChannel[] _Channels;
@@ -28,7 +26,7 @@ namespace Agilent_U2542A_ExtensionBox
             {
                 if (_ACQ_Rate == 0)
                 {
-                    string AcquisitionRate = _AI.RequestQuery("ACQ:SRAT?");
+                    string AcquisitionRate = AgilentUSB_Device.Instance.RequestQuery("ACQ:SRAT?");
                     int ACQ = Convert.ToInt32(AcquisitionRate);
                     this._ACQ_Rate = ACQ;
                     return ACQ;
@@ -38,7 +36,7 @@ namespace Agilent_U2542A_ExtensionBox
             }
             set
             {
-                _Device.SendCommandRequest(String.Format("ACQ:SRAT {0}", value));
+                AgilentUSB_Device.Instance.SendCommandRequest(String.Format("ACQ:SRAT {0}", value));
                 _ACQ_Rate = value;
             }
         }
@@ -50,14 +48,14 @@ namespace Agilent_U2542A_ExtensionBox
             {
                 if (_PointsPerBlock == 0)
                 {
-                    string PperBlck = _AI.RequestQuery("WAV:POIN?");
+                    string PperBlck = AgilentUSB_Device.Instance.RequestQuery("WAV:POIN?");
                     this._PointsPerBlock = Convert.ToInt32(PperBlck);
                 }
                 return _PointsPerBlock;
             }
             set
             {
-                _Device.SendCommandRequest(String.Format("WAV:POIN {0}", value));
+                AgilentUSB_Device.Instance.SendCommandRequest(String.Format("WAV:POIN {0}", value));
                 _PointsPerBlock = value;
             }
         }
@@ -69,14 +67,14 @@ namespace Agilent_U2542A_ExtensionBox
             {
                 if (_SingleShotPointsPerBlock == 0)
                 {
-                    string PperBlck = _AI.RequestQuery("ACQ:POIN?");
+                    string PperBlck = AgilentUSB_Device.Instance.RequestQuery("ACQ:POIN?");
                     this._SingleShotPointsPerBlock = Convert.ToInt32(PperBlck);
                 }
                 return _SingleShotPointsPerBlock;
             }
             set
             {
-                _Device.SendCommandRequest(String.Format("ACQ:POIN {0}", value));
+                AgilentUSB_Device.Instance.SendCommandRequest(String.Format("ACQ:POIN {0}", value));
                 _SingleShotPointsPerBlock = value;
             }
         }
@@ -108,11 +106,11 @@ namespace Agilent_U2542A_ExtensionBox
 
         public void Read_AI_Channel_Status()
         {
-            string devicePolarity = _AI.RequestQuery("ROUT:CHAN:POL? (@101:104)");
+            string devicePolarity = AgilentUSB_Device.Instance.RequestQuery("ROUT:CHAN:POL? (@101:104)");
             string[] ChannelPolarities = devicePolarity.Split(',');
-            string deviceRanges = _AI.RequestQuery("ROUT:CHAN:RANG? (@101:104)");
+            string deviceRanges = AgilentUSB_Device.Instance.RequestQuery("ROUT:CHAN:RANG? (@101:104)");
             string[] ChannelRanges = deviceRanges.Split(',');
-            string DeviceEnabled = _AI.RequestQuery("ROUT:ENAB? (@101:104)");
+            string DeviceEnabled = AgilentUSB_Device.Instance.RequestQuery("ROUT:ENAB? (@101:104)");
             string[] ChannelEnabled = DeviceEnabled.Split(',');
 
 
@@ -149,27 +147,27 @@ namespace Agilent_U2542A_ExtensionBox
 
         public void DisableAllChannelsForContiniousDataAcquisition()
         {
-            _Device.SendCommandRequest("ROUT:ENAB OFF,(@101:104)");
+            AgilentUSB_Device.Instance.SendCommandRequest("ROUT:ENAB OFF,(@101:104)");
         }
 
 
         public void SetSingleShotPointsPerBlockValue(int PointsPerBlock)
         {
-            _Device.SendCommandRequest(String.Format("ACQ:POIN {0}", PointsPerBlock));
+            AgilentUSB_Device.Instance.SendCommandRequest(String.Format("ACQ:POIN {0}", PointsPerBlock));
 
         }
         public void StartAnalogAcqusition()
         {
-            _Device.SendCommandRequest("RUN");
+            AgilentUSB_Device.Instance.SendCommandRequest("RUN");
         }
 
         public void AcquireSingleShot()
         {
-            _Device.SendCommandRequest("DIG");
+            AgilentUSB_Device.Instance.SendCommandRequest("DIG");
         }
         public void StopAnalogAcqusition()
         {
-            _Device.SendCommandRequest("STOP");
+            AgilentUSB_Device.Instance.SendCommandRequest("STOP");
         }
         public bool CheckAcquisitionStatus()
         {
@@ -191,7 +189,7 @@ namespace Agilent_U2542A_ExtensionBox
         {
             get
             {
-                string result = _AI.RequestQuery("VOLT:AVER?");
+                string result = AgilentUSB_Device.Instance.RequestQuery("VOLT:AVER?");
                 _DC_Average = Convert.ToInt32(result);
                 return _DC_Average;
             }
@@ -200,7 +198,7 @@ namespace Agilent_U2542A_ExtensionBox
                 if ((value < 1) || (value > 1000))
                     value = 100;
 
-                _Device.SendCommandRequest(String.Format("VOLT:AVER {0}", value));
+                AgilentUSB_Device.Instance.SendCommandRequest(String.Format("VOLT:AVER {0}", value));
                 _DC_Average = value;
             }
         }
@@ -214,7 +212,7 @@ namespace Agilent_U2542A_ExtensionBox
             }
             
             double[] result = new double[4];
-            string resultStr = _AI.RequestQuery("MEAS? (@101:104)");
+            string resultStr = AgilentUSB_Device.Instance.RequestQuery("MEAS? (@101:104)");
             string[] parsedResultStr = resultStr.Split(',');
             
             for (int i = 0; i < 4; i++)
