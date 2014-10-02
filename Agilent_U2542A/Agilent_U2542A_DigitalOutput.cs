@@ -60,7 +60,7 @@ namespace Agilent_U2542A
             
             _bytes = new List<byte[]> { _byte501_pinNumbers, _byte502_pinNumbers, _byte503_pinNumbers, _byte504_pinNumbers };
 
-            AgilentUSB_Device.Instance.SendCommandRequest("CONF:DIG:DIR OUTP, (@501:504)");
+            AgilentUSB_Device.Instance.SendCommandRequest("CONF:DIG:DIR OUTP,(@501:504)");
         }
 
         #endregion

@@ -72,6 +72,25 @@ namespace Agilent_U2542A
 
         #region Read / Write operations
 
+        public void tryToWriteString(string WhatToWrite)
+        {
+            try { _Device.SendCommandRequest(WhatToWrite); }
+            catch (Exception e) { throw e; }
+        }
+
+        public string tryToQueryString(string WhatToWrite)
+        {
+            try
+            {
+                return _Device.RequestQuery(WhatToWrite);
+            }
+            catch (Exception e) 
+            {
+                var mes = e.Message;
+                return null; 
+            }
+        }
+
         /// <summary>
         /// Requests raw ADC data
         /// </summary>

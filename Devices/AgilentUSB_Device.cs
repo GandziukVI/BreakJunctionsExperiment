@@ -12,6 +12,44 @@ namespace Agilent_U2542A
 {
     public class AgilentUSB_Device : IExperimentalDevice, IDisposable
     {
+        #region AgilentUSB_Device settings
+
+        private ResourceManager _rMgr;
+        private FormattedIO488 _src;
+
+        private string _Id;
+        public string Id
+        {
+            get { return _Id; }
+            set
+            {
+                _Id = value;
+                this.Dispose();
+                this.InitDevice();
+            }
+        }
+
+        private bool _IsAlive;
+        public bool IsAlive
+        {
+            get { return _IsAlive; }
+        }
+
+        private bool _IsBusy;
+        public bool IsBusy
+        {
+            get { return _IsBusy; }
+        }
+
+        private int _TimeDelay = 25;
+        public int TimeDelay
+        {
+            get { return _TimeDelay; }
+            set { _TimeDelay = value; }
+        }
+
+        #endregion
+
         #region Singleton pattern implementation
 
         private static AgilentUSB_Device _Instance;
@@ -35,10 +73,8 @@ namespace Agilent_U2542A
             _Id = "USB0::0x0957::0x1718::TW52524501::INSTR";
             _rMgr = new ResourceManager();
             _src = new FormattedIO488();
-            _Alive = false;
+            _IsAlive = false;
             _IsBusy = false;
-
-            this.InitDevice();
         }
 
         ~AgilentUSB_Device()
@@ -49,40 +85,6 @@ namespace Agilent_U2542A
         #endregion
 
         #region Internal implementation variables and functions
-
-        private ResourceManager _rMgr;
-        private FormattedIO488 _src;
-
-        private string _Id;
-        public string Id
-        {
-            get { return _Id; }
-            set 
-            {
-                _Id = value;
-                this.Dispose();
-                this.InitDevice();
-            }
-        }
-
-        private bool _Alive;
-        public bool IsAlive
-        {
-            get { return _Alive; }
-        }
-
-        private bool _IsBusy;
-        public bool IsBusy
-        {
-            get { return _IsBusy; }
-        }
-
-        private int _TimeDelay = 25;
-        public int TimeDelay
-        {
-            get { return _TimeDelay; }
-            set { _TimeDelay = value; }
-        }
 
         private void _SetBusy()
         {
@@ -100,31 +102,34 @@ namespace Agilent_U2542A
 
         public virtual bool InitDevice()
         {
+            this._SetBusy();
+
             try
             {
-                _SetBusy();
-
                 _src.IO = (IMessage)_rMgr.Open(this._Id);
-                _Alive = true;
+                _IsAlive = true;
 
                 _SetNotBusy();
 
                 return true;
             }
-            catch { return false; }
+            catch
+            {
+                this._SetNotBusy();
+                return false;
+            }
         }
 
         public virtual bool SendCommandRequest(string RequestString)
         {
-            if (IsBusy) 
-            {
+            if (IsBusy)
                 throw new Exception("Device is busy"); 
-            }
-            _SetBusy();
+
+            this._SetBusy();
             
             try 
             {
-                CheckValue.assertTrue(_Alive, "No Device Opened"); 
+                CheckValue.assertTrue(_IsAlive, "No Device Opened"); 
             }
             catch 
             {
@@ -134,16 +139,20 @@ namespace Agilent_U2542A
             
             try
             {
+                //_src.IO.LockRsrc();
                 _src.WriteString(RequestString);
+
                 //Thread.Sleep(_TimeDelay);
+
+                //_src.IO.UnlockRsrc();
             }
             catch 
             {
-                _SetNotBusy();
+                this._SetNotBusy();
                 return false; 
             }
             
-            _SetNotBusy();
+            this._SetNotBusy();
             
             return true;
         }
@@ -155,30 +164,33 @@ namespace Agilent_U2542A
             
             _SetBusy();
             
-            try  { CheckValue.assertTrue(_Alive, "No Device Opened"); }
+            try  { CheckValue.assertTrue(_IsAlive, "No Device Opened"); }
             catch 
             {
-                _SetNotBusy();
+                this._SetNotBusy();
                 return null; 
             }
             
             try
             {
+                //_src.IO.LockRsrc();
                 string result = _src.ReadString();
-                _SetNotBusy();
+                //_src.IO.UnlockRsrc();
+
+                this._SetNotBusy();
                 return result;
             }
             catch
             {
-                _SetNotBusy();
+                this._SetNotBusy();
                 return null;
             }
         }
 
         public string RequestQuery(string Query)
         {
-            SendCommandRequest(Query);
-            return ReceiveDeviceAnswer().TrimEnd('\n');
+            this.SendCommandRequest(Query);
+            return this.ReceiveDeviceAnswer().TrimEnd('\n');
         }
 
         #endregion

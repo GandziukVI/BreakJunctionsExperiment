@@ -56,7 +56,8 @@ namespace Agilent_U2542A_ExtensionBox
 
         public AnalogInputChannel_Latch(int ChannelNumber)
         {
-            if ((ChannelNumber < 1) && (ChannelNumber > 4)) throw new Exception("incorrect channel number" + ChannelNumber);
+            if ((ChannelNumber < 1) && (ChannelNumber > 4))
+                throw new Exception("incorrect channel number" + ChannelNumber);
 
             _ChannelNumber = ChannelNumber;
 

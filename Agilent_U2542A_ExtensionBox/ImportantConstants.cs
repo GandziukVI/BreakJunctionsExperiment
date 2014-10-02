@@ -22,12 +22,5 @@ namespace Agilent_U2542A_ExtensionBox
         public static int[] ProgrammableAmplifierGains = new int[] { 1, 10, 100 };
         public static double Rload;
         public static double K_Ampl_first_Channel;
-
-        private static string _DeviceID = "USB0::0x0957::0x1718::TW52524501::INSTR";
-        public static string DeviceID
-        {
-            get { return _DeviceID; }
-            set { _DeviceID = value; }
-        }
     }
 }

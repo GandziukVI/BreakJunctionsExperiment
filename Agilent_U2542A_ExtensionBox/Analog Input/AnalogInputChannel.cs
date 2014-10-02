@@ -54,7 +54,7 @@ namespace Agilent_U2542A_ExtensionBox
 
                 if (!ImportantConstants.Ranges.Contains(value)) throw new Exception("Incorect range " + value + "set for channel" + number);
 
-                AgilentUSB_Device.Instance.SendCommandRequest(String.Format("ROUT:CHAN:RANG {0}, (@{1})", Convert.ToString(value, ImportantConstants.NumberFormat()), number));
+                _AI.tryToWriteString(String.Format("ROUT:CHAN:RANG {0}, (@{1})", Convert.ToString(value, ImportantConstants.NumberFormat()), number));
                 _ACrange = value;
             }
         }
@@ -66,9 +66,9 @@ namespace Agilent_U2542A_ExtensionBox
             set
             {
                 if (value)
-                    AgilentUSB_Device.Instance.SendCommandRequest(String.Format("ROUT:ENAB ON,(@{0})", number));
+                    _AI.tryToWriteString(String.Format("ROUT:ENAB ON,(@{0})", number));
                 else
-                    AgilentUSB_Device.Instance.SendCommandRequest(String.Format("ROUT:ENAB OFF,(@{0})", number));
+                    _AI.tryToWriteString(String.Format("ROUT:ENAB OFF,(@{0})", number));
                 _Enabled = value;
             }            
         }
@@ -80,9 +80,9 @@ namespace Agilent_U2542A_ExtensionBox
             set
             {
                 if (value)
-                    AgilentUSB_Device.Instance.SendCommandRequest(String.Format("ROUT:CHAN:POL BIP, (@{0})", number));
+                    _AI.tryToWriteString(String.Format("ROUT:CHAN:POL BIP, (@{0})", number));
                 else
-                    AgilentUSB_Device.Instance.SendCommandRequest(String.Format("ROUT:CHAN:POL UNIP, (@{0})", number));
+                    _AI.tryToWriteString(String.Format("ROUT:CHAN:POL UNIP, (@{0})", number));
 
                 _IsBipolarAC = value;
             }
@@ -103,7 +103,7 @@ namespace Agilent_U2542A_ExtensionBox
                 else 
                     ToWrite = Convert.ToString(value, ImportantConstants.NumberFormat());
 
-                AgilentUSB_Device.Instance.SendCommandRequest(String.Format("SENS:VOLT:RANG {0}, (@{1})", ToWrite, number));
+                _AI.tryToWriteString(String.Format("SENS:VOLT:RANG {0}, (@{1})", ToWrite, number));
                 _DCrange = value;
             }
         }
@@ -115,9 +115,9 @@ namespace Agilent_U2542A_ExtensionBox
             set
             {
                 if (value)
-                    AgilentUSB_Device.Instance.SendCommandRequest(String.Format("VOLT:POL BIP, (@{0})", number));
+                    _AI.tryToWriteString(String.Format("VOLT:POL BIP, (@{0})", number));
                 else
-                    AgilentUSB_Device.Instance.SendCommandRequest(String.Format("VOLT:POL UNIP, (@{0})", number));
+                    _AI.tryToWriteString(String.Format("VOLT:POL UNIP, (@{0})", number));
 
                 _IsBipolarDC = value;
             }
@@ -157,33 +157,33 @@ namespace Agilent_U2542A_ExtensionBox
             _IsBipolarAC = Polarity;
         }
 
-        //==============Binary analog Data aqcuisition===============
+        //============== Binary analog Data aqcuisition ===============
 
         private void getACRange()
         {
-            string range = AgilentUSB_Device.Instance.RequestQuery(String.Format("ROUT:CHAN:RANG? (@{0})", _number));
+            string range = _AI.tryToQueryString(String.Format("ROUT:CHAN:RANG? (@{0})", _number));
             this._ACrange = Convert.ToDouble(range, ImportantConstants.NumberFormat());
         }
 
         private void getACPolarity()
         {
-            string polarity = AgilentUSB_Device.Instance.RequestQuery(String.Format("ROUT:CHAN:POL? (@{0})", _number));
+            string polarity = _AI.tryToQueryString(String.Format("ROUT:CHAN:POL? (@{0})", _number));
             if (polarity == "BIP") this._IsBipolarAC = true;
         }
 
         private void isEnabled()
         {
-            string result = AgilentUSB_Device.Instance.RequestQuery(String.Format("ROUT:ENAB? (@{0})", _number));
+            string result = _AI.tryToQueryString(String.Format("ROUT:ENAB? (@{0})", _number));
             
             if (result[0] == '1') this._Enabled = true;
             if (result[0] == '0') this._Enabled = false;
         }
 
-        //==============Numeric analog Data aqcuisition===============
+        //============== Numeric analog Data aqcuisition ===============
 
         private void getDC_Range()
         {
-            string range = AgilentUSB_Device.Instance.RequestQuery(String.Format("VOLT:RANG? (@{0})", _number));
+            string range = _AI.tryToQueryString(String.Format("VOLT:RANG? (@{0})", _number));
 
             if (range == "AUTO")
                 this._DCrange = 0;
@@ -193,7 +193,7 @@ namespace Agilent_U2542A_ExtensionBox
 
         private void getDC_Polarity()
         {
-            string polarity = AgilentUSB_Device.Instance.RequestQuery(String.Format("VOLT:POL? (@{0})", _number));
+            string polarity = _AI.tryToQueryString(String.Format("VOLT:POL? (@{0})", _number));
             
             if (polarity == "BIP") 
                 this._IsBipolarDC = true;
@@ -201,7 +201,7 @@ namespace Agilent_U2542A_ExtensionBox
 
         private double singleVoltageMeasurement()
         {
-            string resultStr = AgilentUSB_Device.Instance.RequestQuery(String.Format("MEAS? (@{0})", number));
+            string resultStr = _AI.tryToQueryString(String.Format("MEAS? (@{0})", number));
             return Convert.ToDouble(resultStr, ImportantConstants.NumberFormat());
         }
 
