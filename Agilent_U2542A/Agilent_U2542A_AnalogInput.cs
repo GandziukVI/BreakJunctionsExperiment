@@ -97,7 +97,7 @@ namespace Agilent_U2542A
         /// <returns></returns>
         public string AcquireRawADC_Data()
         {
-            return _Device.RequestQuery("WAV:DATA?");
+            return tryToQueryString("WAV:DATA?");//_Device.RequestQuery("WAV:DATA?");
         }
 
         #endregion

@@ -139,12 +139,12 @@ namespace Agilent_U2542A
             
             try
             {
-                //_src.IO.LockRsrc();
-                _src.WriteString(RequestString);
+                _src.IO.LockRsrc();
 
-                //Thread.Sleep(_TimeDelay);
+                var writeBytes = Encoding.ASCII.GetBytes(RequestString + '\n');
+                _src.IO.Write(writeBytes, writeBytes.Length);
 
-                //_src.IO.UnlockRsrc();
+                _src.IO.UnlockRsrc();
             }
             catch 
             {
@@ -170,14 +170,17 @@ namespace Agilent_U2542A
                 this._SetNotBusy();
                 return null; 
             }
-            
+
             try
             {
-                //_src.IO.LockRsrc();
+                _src.IO.LockRsrc();
+
                 string result = _src.ReadString();
-                //_src.IO.UnlockRsrc();
+                
+                _src.IO.UnlockRsrc();
 
                 this._SetNotBusy();
+
                 return result;
             }
             catch
@@ -190,6 +193,7 @@ namespace Agilent_U2542A
         public string RequestQuery(string Query)
         {
             this.SendCommandRequest(Query);
+
             return this.ReceiveDeviceAnswer().TrimEnd('\n');
         }
 
