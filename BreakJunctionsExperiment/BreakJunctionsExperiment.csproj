@@ -97,6 +97,8 @@
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Measurements\Real Time Measurement\IRealTime_TimeTrace_Factory.cs" />
     <Compile Include="Measurements\Real Time Measurement\MeasureRealTimeTimeTrace.cs" />
+    <Compile Include="Measurements\Real Time Measurement\Real time Time Trace Controllers Facttories\RT_Agilent_U2542A_TimeTrace_Controller_Factory.cs" />
+    <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RT_Agilent_U2542A_TimeTrace_Controller.cs" />
     <Compile Include="Measurements\Real Time Measurement\RealTime_TimeTrace_Controller.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RealTime_Agilent_U2542A_TimeTrace_Controller.cs" />
     <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
@@ -224,6 +226,10 @@
     <ProjectReference Include="..\Agilent_U2542A_ExtensionBox\Agilent_U2542A_ExtensionBox.csproj">
       <Project>{5946EAFB-838A-4F4B-B96A-2C3072F712C0}</Project>
       <Name>Agilent_U2542A_ExtensionBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Agilent_U2542A_With_ExtensionBox\Agilent_U2542A_With_ExtensionBox.csproj">
+      <Project>{addccb27-7df4-40f2-afc7-344b300363b1}</Project>
+      <Name>Agilent_U2542A_With_ExtensionBox</Name>
     </ProjectReference>
     <ProjectReference Include="..\Aids\Aids.csproj">
       <Project>{153732F0-30F4-4425-843D-ED3F337E5791}</Project>
