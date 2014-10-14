@@ -40,8 +40,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Agilent.AgilentU254x.Interop, Version=1.0.16.0, Culture=neutral, PublicKeyToken=ced78d295d1e0f2b">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Agilent.AgilentU254x.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="DynamicDataDisplay">
       <HintPath>.\DynamicDataDisplay.dll</HintPath>
+    </Reference>
+    <Reference Include="Ivi.Driver.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Ivi.Driver.Interop.dll</HintPath>
     </Reference>
     <Reference Include="NationalInstruments.Common, Version=13.0.40.190, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL" />
     <Reference Include="NationalInstruments.Common.Native, Version=13.0.40.190, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=x86" />
@@ -98,7 +108,9 @@
     <Compile Include="Measurements\Real Time Measurement\IRealTime_TimeTrace_Factory.cs" />
     <Compile Include="Measurements\Real Time Measurement\MeasureRealTimeTimeTrace.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real time Time Trace Controllers Facttories\RT_Agilent_U2542A_TimeTrace_Controller_Factory.cs" />
+    <Compile Include="Measurements\Real Time Measurement\Real time Time Trace Controllers Facttories\RT_Controller_Factory.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RT_Agilent_U2542A_TimeTrace_Controller.cs" />
+    <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RT_Controller.cs" />
     <Compile Include="Measurements\Real Time Measurement\RealTime_TimeTrace_Controller.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RealTime_Agilent_U2542A_TimeTrace_Controller.cs" />
     <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
@@ -227,6 +239,10 @@
       <Project>{5946EAFB-838A-4F4B-B96A-2C3072F712C0}</Project>
       <Name>Agilent_U2542A_ExtensionBox</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Agilent_U2542A_Setup\Agilent_U2542A_Setup\Agilent_U2542A_Setup.csproj">
+      <Project>{f5e2a0a2-7166-472e-943c-a3cf4a7bbfd0}</Project>
+      <Name>Agilent_U2542A_Setup</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Agilent_U2542A_With_ExtensionBox\Agilent_U2542A_With_ExtensionBox.csproj">
       <Project>{addccb27-7df4-40f2-afc7-344b300363b1}</Project>
       <Name>Agilent_U2542A_With_ExtensionBox</Name>
@@ -252,7 +268,17 @@
       <Name>Keithley_2602A</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="VisaComLib">
+      <Guid>{DB8CBF00-D6D3-11D4-AA51-00A024EE30BD}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>2</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
