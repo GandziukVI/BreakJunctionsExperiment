@@ -155,7 +155,7 @@ namespace Agilent_U2542A_Setup
                     throw new Exception("Incorect range " + value + "set for channel" + ChannelNumber);
 
                 if (value == 0)
-                    _Driver.System.DirectIO.WriteString(String.Format("SENS:VOLT:RANG AUTO,(@{0})", _ChannelNumber));
+                    _Driver.System.DirectIO.WriteString(String.Format("SENS:VOLT:RANG AUTO,(@{0})", ChannelNumber));
                 else
                     _Driver.AnalogIn.Channels.get_Item(ChName).Range = value;
 
@@ -174,11 +174,11 @@ namespace Agilent_U2542A_Setup
         /// <param name="__ChannelNumber">Channel number</param>
         public AnalogInputChannel(int __ChannelNumber)
         {
-            this.ChannelNumber = __ChannelNumber;
-            this.ChannelProperties = new AnalogInputChannel_Latch(ChannelNumber);
-
             this._Driver = AgilentU254xDriver.Instance.Driver;
             this._Driver.AnalogIn.Measurement.AutoScaleEnabled = true;
+
+            this.ChannelNumber = __ChannelNumber;
+            this.ChannelProperties = new AnalogInputChannel_Latch(__ChannelNumber);
         }
 
         #endregion

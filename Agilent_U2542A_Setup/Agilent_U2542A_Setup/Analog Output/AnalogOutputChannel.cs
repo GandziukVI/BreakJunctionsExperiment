@@ -165,9 +165,9 @@ namespace Agilent_U2542A_Setup
 
         public AnalogOutputChannel(int outputID)
         {
-            _id = outputID;
-
             _Driver = AgilentU254xDriver.Instance.Driver;
+
+            _id = outputID;
 
             if (_id == 201)
             {

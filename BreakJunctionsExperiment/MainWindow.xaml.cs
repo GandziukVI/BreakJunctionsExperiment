@@ -1134,7 +1134,7 @@ namespace BreakJunctions
         private void on_cmdRealTime_TimeTraceStopMeasurementClick(object senger, RoutedEventArgs e)
         {
             backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
-            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(null, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
+            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         #region Background work

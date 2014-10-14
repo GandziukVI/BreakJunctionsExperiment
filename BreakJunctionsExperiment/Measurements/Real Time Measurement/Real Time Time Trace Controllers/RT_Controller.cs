@@ -62,7 +62,7 @@ namespace BreakJunctions.Measurements
                 var resultInt = _Channels.AcquireArrayWithData();
                 var ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
 
-                AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(null, new RealTime_TimeTrace_DataArrived_EventArgs(ChannelData));
+                AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(this, new RealTime_TimeTrace_DataArrived_EventArgs(ref ChannelData));
             }
 
             _Channels.StopAnalogAcqusition();

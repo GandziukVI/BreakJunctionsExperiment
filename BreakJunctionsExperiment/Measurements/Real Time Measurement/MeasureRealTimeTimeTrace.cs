@@ -138,7 +138,8 @@ namespace BreakJunctions.Measurements
 
         public void Dispose()
         {
-            _TimeTraceMeasurementControler.Dispose();
+            if(_TimeTraceMeasurementControler != null)
+                _TimeTraceMeasurementControler.Dispose();
         }
 
         #endregion

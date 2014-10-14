@@ -125,6 +125,7 @@ namespace Agilent_U2542A_Setup
             byte WhatToWrite = _ByteToNumber(byteX);
             try
             {
+                //_Driver.System.DirectIO.WriteString("SOUR:DIG:DATA " + WhatToWrite + ",(@" + byteNumber + ")");
                 _Driver.Digital.WriteByte(_FindChannelByByteNumber(byteNumber), WhatToWrite);
             }
             catch (Exception e) { MessageBox.Show(e.Message); }

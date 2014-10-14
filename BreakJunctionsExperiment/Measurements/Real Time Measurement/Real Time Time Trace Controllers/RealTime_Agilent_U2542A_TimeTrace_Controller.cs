@@ -66,7 +66,7 @@ namespace BreakJunctions.Measurements
                 Int16[] resultInt = _DataConverter.ParseDataStringToInt(result);
                 List<PointD>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
 
-                AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(null, new RealTime_TimeTrace_DataArrived_EventArgs(ChannelData));
+                AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(null, new RealTime_TimeTrace_DataArrived_EventArgs(ref ChannelData));
             }
 
             _Channels.StopAnalogAcqusition();

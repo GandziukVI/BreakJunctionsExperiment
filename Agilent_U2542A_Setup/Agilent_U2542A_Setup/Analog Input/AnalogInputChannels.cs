@@ -115,8 +115,8 @@ namespace Agilent_U2542A_Setup
 
         private AnalogInputChannels()
         {
-            _Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1), new AnalogInputChannel(2), new AnalogInputChannel(3), new AnalogInputChannel(4) };
             _Driver = AgilentU254xDriver.Instance.Driver;
+            _Channels = new AnalogInputChannel[4] { new AnalogInputChannel(1), new AnalogInputChannel(2), new AnalogInputChannel(3), new AnalogInputChannel(4) };
         }
 
         #endregion

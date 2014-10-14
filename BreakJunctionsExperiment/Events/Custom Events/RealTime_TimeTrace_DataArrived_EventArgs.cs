@@ -16,7 +16,7 @@ namespace BreakJunctions.Events
             set { _Data = value; }
         }
 
-        public RealTime_TimeTrace_DataArrived_EventArgs(List<PointD>[] data)
+        public RealTime_TimeTrace_DataArrived_EventArgs(ref List<PointD>[] data)
             : base()
         {
             _Data = data;
