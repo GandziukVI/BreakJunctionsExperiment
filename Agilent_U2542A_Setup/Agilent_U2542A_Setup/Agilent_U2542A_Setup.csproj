@@ -43,9 +43,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Agilent.TMFramework.InstrumentIO\2.1.8910.0__7a01cdb2a9131f73\Agilent.TMFramework.InstrumentIO.dll</HintPath>
     </Reference>
-    <Reference Include="Aids">
-      <HintPath>..\..\..\..\Visual Studio 2010\Projects\BreakJunctionsExperiment\Aids\bin\Release\Aids.dll</HintPath>
-    </Reference>
     <Reference Include="Ivi.Driver.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -86,6 +83,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Aids\Aids.csproj">
+      <Project>{153732f0-30f4-4425-843d-ed3f337e5791}</Project>
+      <Name>Aids</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

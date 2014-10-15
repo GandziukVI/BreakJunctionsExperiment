@@ -228,7 +228,7 @@ namespace Agilent_U2542A_Setup
         public short[] AcquireArrayWithData()
         {
             short[] Results = { 0 };
-            Thread.Sleep((int)(1000 * _Driver.AnalogIn.MultiScan.TimePerScan));
+            Thread.Sleep((int)(1000.0 * _Driver.AnalogIn.MultiScan.TimePerScan * (double)PointsPerBlock / (double)ACQ_Rate));
             _Driver.AnalogIn.Acquisition.Fetch(ref Results);
 
             return Results;
