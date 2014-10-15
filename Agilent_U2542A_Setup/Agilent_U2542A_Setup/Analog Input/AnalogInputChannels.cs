@@ -113,6 +113,10 @@ namespace Agilent_U2542A_Setup
             }
         }
 
+        #endregion
+
+        #region Constructor
+
         private AnalogInputChannels()
         {
             _Driver = AgilentU254xDriver.Instance.Driver;
@@ -228,7 +232,7 @@ namespace Agilent_U2542A_Setup
         public short[] AcquireArrayWithData()
         {
             short[] Results = { 0 };
-            Thread.Sleep((int)(1000.0 * _Driver.AnalogIn.MultiScan.TimePerScan * (double)PointsPerBlock / (double)ACQ_Rate));
+            //Thread.Sleep((int)(1000.0 * _Driver.AnalogIn.MultiScan.TimePerScan * (double)PointsPerBlock / (double)ACQ_Rate));
             _Driver.AnalogIn.Acquisition.Fetch(ref Results);
 
             return Results;

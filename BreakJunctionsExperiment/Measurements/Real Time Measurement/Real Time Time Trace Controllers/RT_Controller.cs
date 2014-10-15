@@ -57,7 +57,7 @@ namespace BreakJunctions.Measurements
 
             while (_MeasurementInProcess == true)
             {
-                //while (!_Channels.CheckAcquisitionStatus()) ;
+                while (!_Channels.CheckAcquisitionStatus()) ;
 
                 var resultInt = _Channels.AcquireArrayWithData();
                 var ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);

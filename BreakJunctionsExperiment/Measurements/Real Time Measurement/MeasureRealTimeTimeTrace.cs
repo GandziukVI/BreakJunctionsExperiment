@@ -69,8 +69,8 @@ namespace BreakJunctions.Measurements
         public MeasureRealTimeTimeTrace()
         {
             //_ITimeTraceControllerFactory = new RealTime_Agilent_U2542A_TimeTrace_Controller_Factory();
-            //_ITimeTraceControllerFactory = new RT_Agilent_U2542A_TimeTrace_Controller_Factory();
-            _ITimeTraceControllerFactory = new RT_Controller_Factory();
+            _ITimeTraceControllerFactory = new RT_Agilent_U2542A_TimeTrace_Controller_Factory();
+            //_ITimeTraceControllerFactory = new RT_Controller_Factory();
             _TimeTraceMeasurementControler = _ITimeTraceControllerFactory.GetRealTime_TimeTraceController();
         }
 
@@ -123,13 +123,13 @@ namespace BreakJunctions.Measurements
         {
             _initDAC();
             
-            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(null, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
+            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
             _TimeTraceMeasurementControler.ContiniousAcquisition();
         }
 
         public void StopMeasurement()
         {
-            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(null, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
+            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         #endregion
