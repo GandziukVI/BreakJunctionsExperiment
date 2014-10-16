@@ -55,13 +55,15 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
                 int j = i;
                 foreach (AI_Channel workingChannel in workingChannels)
                 {
-
-                    if (workingChannel.isBiPolarAC)
-                        value = IntArray[j] * 2 * workingChannel.AC_Range / 65536;
-                    else
-                        value = (IntArray[j] / 65536 + 0.5) * workingChannel.AC_Range;
-                    result[workingChannel.number - 101].Add(new PointD(time, value));
-                    j++;
+                    if (j < IntArray.Length)
+                    {
+                        if (workingChannel.isBiPolarAC)
+                            value = IntArray[j] * 2 * workingChannel.AC_Range / 65536;
+                        else
+                            value = (IntArray[j] / 65536 + 0.5) * workingChannel.AC_Range;
+                        result[workingChannel.number - 101].Add(new PointD(time, value));
+                        j++;
+                    }
                 }
 
                 foreach (AI_Channel not_workingChannel in not_workingChannels)
