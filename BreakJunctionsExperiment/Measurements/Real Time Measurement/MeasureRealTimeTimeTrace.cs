@@ -124,6 +124,8 @@ namespace BreakJunctions.Measurements
             _initDAC();
             
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
+            AllEventsHandler.Instance.OnRealTime_TimeTrace_ResetTimeShift(this, new RealTime_TimeTrace_ResetTimeShift_EventArgs());
+
             _TimeTraceMeasurementControler.ContiniousAcquisition();
         }
 

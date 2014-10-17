@@ -140,7 +140,7 @@ namespace BreakJunctions
             set { _CurrentIV_CurveChannel_01 = value; }
         }
 
-        private ExperimentalTimetraceDataSource _experimentalTimeTraceDataSourceChannel_01;
+        private ExperimentalTimeTraceDataSource _experimentalTimeTraceDataSourceChannel_01;
         private LineGraph _TimeTraceLineGraphChannel_01;
 
         MeasureTimeTrace TimeTraceCurveChannel_01;
@@ -164,7 +164,7 @@ namespace BreakJunctions
             set { _CurrentIV_CurveChannel_02 = value; }
         }
 
-        private ExperimentalTimetraceDataSource _experimentalTimeTraceDataSourceChannel_02;
+        private ExperimentalTimeTraceDataSource _experimentalTimeTraceDataSourceChannel_02;
         private LineGraph _TimeTraceLineGraphChannel_02;
 
         MeasureTimeTrace TimeTraceCurveChannel_02;
@@ -196,7 +196,7 @@ namespace BreakJunctions
             set { _RealTimeTimeTraceSample_01 = value; }
         }
 
-        private ExperimentalTimetraceDataSource _experimentalRealTimeTimetraceDataSourceSample_01;
+        private ExperimentalTimeTraceDataSource _experimentalRealTimeTimetraceDataSourceSample_01;
         private LineGraph _RealTimeTimeTraceLineGraphSample_01;
 
         #endregion
@@ -210,7 +210,7 @@ namespace BreakJunctions
             set { _RealTimeTimeTraceSample_02 = value; }
         }
 
-        private ExperimentalTimetraceDataSource _experimentalRealTimeTimetraceDataSourceSample_02;
+        private ExperimentalTimeTraceDataSource _experimentalRealTimeTimetraceDataSourceSample_02;
         private LineGraph _RealTimeTimeTraceLineGraphSample_02;
 
         #endregion

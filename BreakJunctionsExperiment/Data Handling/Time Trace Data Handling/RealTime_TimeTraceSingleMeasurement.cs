@@ -31,6 +31,9 @@ namespace BreakJunctions.DataHandling
 
         private ASCIIEncoding _asciiEncoding;
 
+        private int _PointsNumber = 0;
+        private double _TimeShift = 0.0;
+
         #endregion
 
         #region Constructor / Destructor
@@ -40,6 +43,7 @@ namespace BreakJunctions.DataHandling
             _FileName = filename;
             _asciiEncoding = new ASCIIEncoding();
 
+            AllEventsHandler.Instance.RealTime_TimeTrace_ResetTimeShift += OnRealTime_TimeTrace_ResetTimeShift;
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
         }
 
@@ -61,12 +65,21 @@ namespace BreakJunctions.DataHandling
         {
             string result = string.Empty;
 
-            double PointsNumber = (new double[] { Data[0].Count, Data[1].Count, Data[2].Count, Data[3].Count }).Min();
-
-            for (int i = 0; i < PointsNumber; i++)
-                result += String.Format("{0}\t{1}\t{2}\t{3}\t{4}\r\n", Data[0][i].X, Data[0][i].Y, Data[1][i].Y, Data[2][i].Y, Data[3][i].Y);
+            for (int i = 0; i < this._PointsNumber; i++)
+                result += String.Format("{0}\t{1}\t{2}\t{3}\t{4}\r\n", Data[0][i].X + _TimeShift, Data[0][i].Y, Data[1][i].Y, Data[2][i].Y, Data[3][i].Y);
 
             return _asciiEncoding.GetBytes(result);
+        }
+
+        /// <summary>
+        /// Resets the time shift to zero for
+        /// the new mwasurement
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnRealTime_TimeTrace_ResetTimeShift(object sender, RealTime_TimeTrace_ResetTimeShift_EventArgs e)
+        {
+            this._TimeShift = 0.0;
         }
 
         /// <summary>
@@ -74,9 +87,13 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public async void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
+        private async void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
+            this._PointsNumber = (new int[] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
+
             byte[] result = _GetDataBytes(e.Data);
+
+            this._TimeShift += e.Data[0][this._PointsNumber - 1].X;
 
             using (FileStream WriteDataStream = File.Open(_FileName, FileMode.OpenOrCreate))
             {

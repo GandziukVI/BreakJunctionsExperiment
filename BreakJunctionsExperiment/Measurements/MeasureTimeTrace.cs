@@ -248,7 +248,7 @@ namespace BreakJunctions.Measurements
                                         {
                                             case Channels.Channel_01:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
@@ -258,7 +258,7 @@ namespace BreakJunctions.Measurements
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
@@ -280,7 +280,7 @@ namespace BreakJunctions.Measurements
                                         {
                                             case Channels.Channel_01:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
@@ -290,7 +290,7 @@ namespace BreakJunctions.Measurements
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
@@ -320,7 +320,7 @@ namespace BreakJunctions.Measurements
                                         {
                                             case Channels.Channel_01:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
@@ -330,7 +330,7 @@ namespace BreakJunctions.Measurements
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
@@ -352,7 +352,7 @@ namespace BreakJunctions.Measurements
                                         {
                                             case Channels.Channel_01:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
@@ -362,7 +362,7 @@ namespace BreakJunctions.Measurements
                                                 } break;
                                             case Channels.Channel_02:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {

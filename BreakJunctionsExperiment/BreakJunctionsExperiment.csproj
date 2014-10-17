@@ -102,6 +102,7 @@
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTraceMeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTrace_DataArrived_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\RealTime_TimeTrace_ResetTimeShift_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceBothChannelsPointsReceived_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_02_EventArgs.cs" />

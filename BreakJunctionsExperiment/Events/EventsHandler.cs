@@ -495,6 +495,41 @@ namespace BreakJunctions.Events
             }
         }
 
+        private readonly object RealTime_TimeTrace_ResetTimeShift_EventLock = new object();
+        private EventHandler<RealTime_TimeTrace_ResetTimeShift_EventArgs> _RealTime_TimeTrace_ResetTimeShift;
+        public event EventHandler<RealTime_TimeTrace_ResetTimeShift_EventArgs> RealTime_TimeTrace_ResetTimeShift
+        {
+            add
+            {
+                lock(RealTime_TimeTrace_ResetTimeShift_EventLock)
+                {
+                    if(_RealTime_TimeTrace_ResetTimeShift == null || !_RealTime_TimeTrace_ResetTimeShift.GetInvocationList().Contains(value))
+                    {
+                        _RealTime_TimeTrace_ResetTimeShift += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock(RealTime_TimeTrace_ResetTimeShift_EventLock)
+                {
+                    _RealTime_TimeTrace_ResetTimeShift -= value;
+                }
+            }
+        }
+        public virtual void OnRealTime_TimeTrace_ResetTimeShift(object sender, RealTime_TimeTrace_ResetTimeShift_EventArgs e)
+        {
+            EventHandler<RealTime_TimeTrace_ResetTimeShift_EventArgs> handler;
+            lock(RealTime_TimeTrace_ResetTimeShift_EventLock)
+            {
+                handler = _RealTime_TimeTrace_ResetTimeShift;
+            }
+            if(handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
         #endregion
 
         #endregion

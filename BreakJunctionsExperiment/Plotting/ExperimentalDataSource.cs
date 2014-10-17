@@ -21,6 +21,7 @@ namespace BreakJunctions.Plotting
     #region Representing plotting channels
 
     public enum Channels { Channel_01, Channel_02 }
+    public enum Samples { Sample_01, Sample_02 }
 
     #endregion
 
@@ -37,18 +38,18 @@ namespace BreakJunctions.Plotting
             get { return _ExperimentalData; }
             set { _ExperimentalData = value; }
         }
-
-        private Dispatcher dispatcher;
+        
+        private Dispatcher _Dispatcher;
         private EnumerableDataSource<PointD> _ExperimentalDataSource;
 
-        public ExperimentalIV_DataSource(List<PointD> data)
+        public ExperimentalIV_DataSource(List<PointD> _Data)
         {
-            _ExperimentalData = data;
+            _ExperimentalData = _Data;
             _ExperimentalDataSource = new EnumerableDataSource<PointD>(_ExperimentalData);
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
 
-            dispatcher = Dispatcher.CurrentDispatcher;
+            _Dispatcher = Dispatcher.CurrentDispatcher;
         }
 
         public event EventHandler DataChanged;
@@ -67,7 +68,7 @@ namespace BreakJunctions.Plotting
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
 
-            dispatcher.BeginInvoke(new Action(delegate() {
+            _Dispatcher.BeginInvoke(new Action(delegate() {
                 DataChanged(sender, new EventArgs());
             }));
         }
@@ -77,7 +78,7 @@ namespace BreakJunctions.Plotting
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
 
-            dispatcher.BeginInvoke(new Action(delegate()
+            _Dispatcher.BeginInvoke(new Action(delegate()
             {
                 DataChanged(sender, new EventArgs());
             }));
@@ -131,9 +132,9 @@ namespace BreakJunctions.Plotting
 
     #endregion
 
-    #region TimeTrace data source implementation
+    #region Experimental TimeTrace data source implementation
 
-    public class ExperimentalTimetraceDataSource : IPointDataSource
+    public class ExperimentalTimeTraceDataSource : IPointDataSource
     {
         private List<PointD> _ExperimentalData;
         public List<PointD> ExperimentalData
@@ -145,7 +146,7 @@ namespace BreakJunctions.Plotting
         private Dispatcher dispatcher;
         private EnumerableDataSource<PointD> _ExperimentalDataSource;
 
-        public ExperimentalTimetraceDataSource(List<PointD> data)
+        public ExperimentalTimeTraceDataSource(List<PointD> data)
         {
             _ExperimentalData = data;
             _ExperimentalDataSource = new EnumerableDataSource<PointD>(_ExperimentalData);
@@ -196,7 +197,7 @@ namespace BreakJunctions.Plotting
         }
     }
 
-    public class ExperimentalTimetraceDataSourceChannel : ExperimentalTimetraceDataSource
+    public class ExperimentalTimetraceDataSourceChannel : ExperimentalTimeTraceDataSource
     {
         private Channels _Channel;
 
@@ -240,5 +241,31 @@ namespace BreakJunctions.Plotting
             }
         }
     }
+
+    #endregion
+    
+    #region Experimental RealTimeTimeTrace data source implementation
+
+    public class ExperimentalRealTimeTimeTrace_DataSource : IPointDataSource
+    {
+        private List<PointD> _ExperimentalData;
+        public List<PointD> ExperimentalData
+        {
+            get { return _ExperimentalData; }
+            set { _ExperimentalData = value; }
+        }
+
+        private Dispatcher _Dispatcher;
+        private EnumerableDataSource<PointD> _ExperimentalDataSource;
+        
+        public event EventHandler DataChanged;
+
+        public IPointEnumerator GetEnumerator(DependencyObject context)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
     #endregion
 }

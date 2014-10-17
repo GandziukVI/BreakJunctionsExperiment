@@ -105,11 +105,11 @@ namespace BreakJunctions.Measurements
                                     {
                                         case Channels.Channel_01:
                                             { 
-                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(null, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
                                             } break;
                                         case Channels.Channel_02:
                                             {
-                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(null, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
                                             } break;
                                         default:
                                             break;
@@ -147,11 +147,11 @@ namespace BreakJunctions.Measurements
                                     {
                                         case Channels.Channel_01:
                                             {
-                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(null, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
                                             } break;
                                         case Channels.Channel_02:
                                             {
-                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(null, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
                                             } break;
                                         default:
                                             break;
