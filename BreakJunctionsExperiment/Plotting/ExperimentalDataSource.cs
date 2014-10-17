@@ -143,7 +143,7 @@ namespace BreakJunctions.Plotting
             set { _ExperimentalData = value; }
         }
 
-        private Dispatcher dispatcher;
+        private Dispatcher _Dispatcher;
         private EnumerableDataSource<PointD> _ExperimentalDataSource;
 
         public ExperimentalTimeTraceDataSource(List<PointD> data)
@@ -153,7 +153,7 @@ namespace BreakJunctions.Plotting
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
 
-            dispatcher = Dispatcher.CurrentDispatcher;
+            _Dispatcher = Dispatcher.CurrentDispatcher;
         }
 
         public event EventHandler DataChanged;
@@ -172,7 +172,7 @@ namespace BreakJunctions.Plotting
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
 
-            dispatcher.BeginInvoke(new Action(delegate()
+            _Dispatcher.BeginInvoke(new Action(delegate()
             {
                 try
                 {
@@ -186,7 +186,7 @@ namespace BreakJunctions.Plotting
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
 
-            dispatcher.BeginInvoke(new Action(delegate()
+            _Dispatcher.BeginInvoke(new Action(delegate()
             {
                 try
                 {
@@ -241,31 +241,6 @@ namespace BreakJunctions.Plotting
             }
         }
     }
-
-    #endregion
-    
-    #region Experimental RealTimeTimeTrace data source implementation
-
-    public class ExperimentalRealTimeTimeTrace_DataSource : IPointDataSource
-    {
-        private List<PointD> _ExperimentalData;
-        public List<PointD> ExperimentalData
-        {
-            get { return _ExperimentalData; }
-            set { _ExperimentalData = value; }
-        }
-
-        private Dispatcher _Dispatcher;
-        private EnumerableDataSource<PointD> _ExperimentalDataSource;
-        
-        public event EventHandler DataChanged;
-
-        public IPointEnumerator GetEnumerator(DependencyObject context)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
 
     #endregion
 }
