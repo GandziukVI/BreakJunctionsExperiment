@@ -46,30 +46,53 @@ namespace BreakJunctions.Plotting
             return new EnumerablePointEnumerator<PointD>(_ExperimentalDataSource);
         }
 
-        public virtual void AttachPointReceiveEvent() { }
+        public virtual void AttachPointReceiveEvent() 
+        {
+            AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived; 
+        }
 
-        public virtual void DetachPointReceiveEvent() { }
+        public virtual void DetachPointReceiveEvent()
+        {
+            AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
+        }
 
         public void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
             _ExperimentalData.Clear();
             var DataLendgth = (new int[4] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
 
+            var number = 0;
+
             switch (_SampleNumber)
             {
                 case Samples.Sample_01:
                     {
-                        for (int i = 0; i < DataLendgth; i++)
-                        {
-                            _ExperimentalData.Add(new PointD(e.Data[0][i].X, e.Data[1][i].Y / e.Data[0][i].Y));
-                        }
+                        number = 0;
                     } break;
                 case Samples.Sample_02:
-                    { 
+                    {
+                        number = 2;
                     } break;
                 default:
                     break;
             }
+
+            for (int i = 0; i < DataLendgth; i++)
+            {
+                if(e.Data[number][i].Y != 0.0)
+                    _ExperimentalData.Add(new PointD(e.Data[number][i].X, e.Data[number + 1][i].Y / e.Data[number][i].Y));
+            }
+
+            _ExperimentalDataSource.RaiseDataChanged();
+            
+            _Dispatcher.BeginInvoke(new Action(delegate()
+            {
+                try
+                {
+                    DataChanged(sender, new EventArgs());
+                }
+                catch { }
+            }));
         }
     }
 }

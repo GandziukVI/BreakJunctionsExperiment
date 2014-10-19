@@ -16,15 +16,15 @@ namespace BreakJunctions.Measurements
 
         public MeasureTimeTraceChannelController()
         {
-            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReecivedChannel_01;
-            AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += OnTimeTracePointReecivedChannel_02;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReceivedChannel_01;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += OnTimeTracePointReceivedChannel_02;
         }
         ~MeasureTimeTraceChannelController()
         {
             this.Dispose();
         }
 
-        public virtual void OnTimeTracePointReecivedChannel_01(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
+        public virtual void OnTimeTracePointReceivedChannel_01(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
             _FirstChannelGaveResponce = true;
             _BothChannelsGaveResponce = _FirstChannelGaveResponce && _SecondChannelGaveResponce;
@@ -39,7 +39,7 @@ namespace BreakJunctions.Measurements
             }
         }
 
-        public virtual void OnTimeTracePointReecivedChannel_02(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
+        public virtual void OnTimeTracePointReceivedChannel_02(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
         {
             _SecondChannelGaveResponce = true;
             _BothChannelsGaveResponce = _FirstChannelGaveResponce && _SecondChannelGaveResponce;
@@ -56,8 +56,8 @@ namespace BreakJunctions.Measurements
 
         public void Dispose()
         {
-            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReecivedChannel_01;
-            AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += OnTimeTracePointReecivedChannel_02;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReceivedChannel_01;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += OnTimeTracePointReceivedChannel_02;
         }
     }
 }

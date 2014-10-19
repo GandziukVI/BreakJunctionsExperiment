@@ -196,7 +196,7 @@ namespace BreakJunctions
             set { _RealTimeTimeTraceSample_01 = value; }
         }
 
-        private ExperimentalTimeTraceDataSource _experimentalRealTimeTimetraceDataSourceSample_01;
+        private Experimental_RealTime_TimeTrace_DataSource_Sample _ExperimentalRealTimeTimetraceDataSourceSample_01;
         private LineGraph _RealTimeTimeTraceLineGraphSample_01;
 
         #endregion
@@ -210,7 +210,7 @@ namespace BreakJunctions
             set { _RealTimeTimeTraceSample_02 = value; }
         }
 
-        private ExperimentalTimeTraceDataSource _experimentalRealTimeTimetraceDataSourceSample_02;
+        private Experimental_RealTime_TimeTrace_DataSource_Sample _ExperimentalRealTimeTimetraceDataSourceSample_02;
         private LineGraph _RealTimeTimeTraceLineGraphSample_02;
 
         #endregion
@@ -254,6 +254,12 @@ namespace BreakJunctions
             chartIV_CurvesChannel_02.Children.Remove(chartIV_CurvesChannel_02.Legend);
             chartTimeTraceChannel_01.Children.Remove(chartTimeTraceChannel_01.Legend);
             chartTimeTraceChannel_02.Children.Remove(chartTimeTraceChannel_02.Legend);
+
+            chartRealTimeTimeTraceSample_01.LegendVisible = false;
+            chartRealTimeTimeTraceSample_02.LegendVisible = false;
+
+            chartRealTimeTimeTraceSample_01.Children.Remove(chartRealTimeTimeTraceSample_01.Legend);
+            chartRealTimeTimeTraceSample_02.Children.Remove(chartRealTimeTimeTraceSample_02.Legend);
 
             #endregion
 
@@ -1126,8 +1132,50 @@ namespace BreakJunctions
 
         #region Real Time Time Trace Measurement Interface Interactions
 
+        private void InitRealTime_TimeTraceMeasurement()
+        {
+            #region Chart rendering settings
+
+            #region Sample 01
+
+            if(_RealTimeTimeTraceLineGraphSample_01 != null)
+            {
+                _ExperimentalRealTimeTimetraceDataSourceSample_01.DetachPointReceiveEvent();
+                _RealTimeTimeTraceLineGraphSample_01.Remove();
+                _RealTimeTimeTraceSample_01.Clear();
+            }
+
+            _RealTimeTimeTraceSample_01 = new List<PointD>();
+            _ExperimentalRealTimeTimetraceDataSourceSample_01 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_01, Samples.Sample_01);
+            _ExperimentalRealTimeTimetraceDataSourceSample_01.AttachPointReceiveEvent();
+            _RealTimeTimeTraceLineGraphSample_01 = new LineGraph(_ExperimentalRealTimeTimetraceDataSourceSample_01);
+            _RealTimeTimeTraceLineGraphSample_01.AddToPlotter(chartRealTimeTimeTraceSample_01);
+
+            #endregion
+
+            #region Sample 02
+
+            if (_RealTimeTimeTraceLineGraphSample_02 != null)
+            {
+                _ExperimentalRealTimeTimetraceDataSourceSample_02.DetachPointReceiveEvent();
+                _RealTimeTimeTraceLineGraphSample_02.Remove();
+                _RealTimeTimeTraceSample_02.Clear();
+            }
+
+            _RealTimeTimeTraceSample_02 = new List<PointD>();
+            _ExperimentalRealTimeTimetraceDataSourceSample_02 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_02, Samples.Sample_02);
+            _ExperimentalRealTimeTimetraceDataSourceSample_02.AttachPointReceiveEvent();
+            _RealTimeTimeTraceLineGraphSample_02 = new LineGraph(_ExperimentalRealTimeTimetraceDataSourceSample_02);
+            _RealTimeTimeTraceLineGraphSample_02.AddToPlotter(chartRealTimeTimeTraceSample_02);
+
+            #endregion
+
+            #endregion
+        }
+
         private void on_cmdRealTime_TimeTraceStartMeasurementClick(object senger, RoutedEventArgs e)
         {
+            InitRealTime_TimeTraceMeasurement();
             backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
         }
 

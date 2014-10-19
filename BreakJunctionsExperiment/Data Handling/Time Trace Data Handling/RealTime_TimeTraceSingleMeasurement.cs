@@ -34,6 +34,8 @@ namespace BreakJunctions.DataHandling
         private int _PointsNumber = 0;
         private double _TimeShift = 0.0;
 
+        private FileStream _WriteDataStream;
+
         #endregion
 
         #region Constructor / Destructor
@@ -42,6 +44,8 @@ namespace BreakJunctions.DataHandling
         {
             _FileName = filename;
             _asciiEncoding = new ASCIIEncoding();
+
+            _WriteDataStream = File.Open(_FileName, FileMode.OpenOrCreate);
 
             AllEventsHandler.Instance.RealTime_TimeTrace_ResetTimeShift += OnRealTime_TimeTrace_ResetTimeShift;
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
@@ -87,19 +91,20 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
+        private void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
-            this._PointsNumber = (new int[] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
-
-            byte[] result = _GetDataBytes(e.Data);
-
-            this._TimeShift += e.Data[0][this._PointsNumber - 1].X;
-
-            using (FileStream WriteDataStream = File.Open(_FileName, FileMode.OpenOrCreate))
+            try
             {
-                WriteDataStream.Seek(0, SeekOrigin.End);
-                await WriteDataStream.WriteAsync(result, 0, result.Length);
+                if (e.Data != null)
+                {
+                    this._PointsNumber = (new int[] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
+
+                    byte[] result = _GetDataBytes(e.Data);
+                    this._TimeShift += e.Data[0].Last().X;
+                    this._WriteDataStream.Write(result, 0, result.Length);
+                }
             }
+            catch { }
         }
 
         #endregion
@@ -108,6 +113,7 @@ namespace BreakJunctions.DataHandling
 
         public void Dispose()
         {
+            _WriteDataStream.Close();
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
         }
 
