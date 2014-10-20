@@ -290,6 +290,9 @@ namespace BreakJunctions
             controlRealTimeTimeTraceMeasurementSettings.cmdStartMeasurement.Click += on_cmdRealTime_TimeTraceStartMeasurementClick;
             controlRealTimeTimeTraceMeasurementSettings.cmdStopMeasurement.Click += on_cmdRealTime_TimeTraceStopMeasurementClick;
 
+            AllEventsHandler.Instance.RealTime_TimeTrace_AveragedDataArrived_Sample_01 += OnRealTime_TimeTrace_AveragedDataArrived_Sample_01;
+            AllEventsHandler.Instance.RealTime_TimeTrace_AveragedDataArrived_Sample_02 += OnRealTime_TimeTrace_AveragedDataArrived_Sample_02;
+
             #endregion
 
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
@@ -1183,6 +1186,22 @@ namespace BreakJunctions
         {
             backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
+        }
+
+        private void OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01 e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(delegate() 
+                {
+                    this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_1st_Sample = e.Averaged_RealTime_TimeTrace_Data;
+            }));
+        }
+
+        private void OnRealTime_TimeTrace_AveragedDataArrived_Sample_02(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02 e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(delegate()
+            {
+                this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_2nd_Sample = e.Averaged_RealTime_TimeTrace_Data;
+            }));
         }
 
         #region Background work

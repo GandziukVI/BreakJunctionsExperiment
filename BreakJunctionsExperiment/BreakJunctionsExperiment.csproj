@@ -101,6 +101,8 @@
     <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTraceMeasurementStateChanged_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01.cs" />
+    <Compile Include="Events\Custom Events\RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTrace_DataArrived_EventArgs.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTrace_ResetTimeShift_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceBothChannelsPointsReceived_EventArgs.cs" />
@@ -120,6 +122,8 @@
     <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RealTime_Agilent_U2542A_TimeTrace_Controller.cs" />
     <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real time Time Trace Controllers Facttories\RealTime_Agilent_U2542A_TimeTrace_Controller_Factory.cs" />
+    <Compile Include="Plotting\ExperimentalIV_DataSource.cs" />
+    <Compile Include="Plotting\ExperimentalTimeTraceDataSource.cs" />
     <Compile Include="Plotting\Experimental_RealTime_TimeTrace_DataSource.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\MotionParametersDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\RealTimeTimeTraceMeasurementSettingsDataModel.cs" />
@@ -143,7 +147,7 @@
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Abstract%29\MotorConfiguration.xaml.cs">
       <DependentUpon>MotorConfiguration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plotting\ExperimentalDataSource.cs" />
+    <Compile Include="Plotting\ExperimentaDataSourceSettings.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\IV_MeasurementSettingsDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\TimeTraceMeasurementSettingsDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\IV_MeasurementSettings.xaml.cs">

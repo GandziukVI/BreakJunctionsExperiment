@@ -530,6 +530,72 @@ namespace BreakJunctions.Events
             }
         }
 
+        private readonly object RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock = new object();
+        private EventHandler<RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01> _RealTime_TimeTrace_AveragedDataArrived_Sample_01;
+        public event EventHandler<RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01> RealTime_TimeTrace_AveragedDataArrived_Sample_01
+        {
+            add
+            {
+                lock (RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock)
+                {
+                    if (_RealTime_TimeTrace_AveragedDataArrived_Sample_01 == null || !_RealTime_TimeTrace_AveragedDataArrived_Sample_01.GetInvocationList().Contains(value))
+                        _RealTime_TimeTrace_AveragedDataArrived_Sample_01 += value;
+                }
+            }
+            remove
+            {
+                lock(RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock)
+                {
+                    _RealTime_TimeTrace_AveragedDataArrived_Sample_01 -= value;
+                }
+            }
+        }
+        public virtual void OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01 e)
+        {
+            EventHandler<RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01> handler;
+            lock(RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock)
+            {
+                handler = _RealTime_TimeTrace_AveragedDataArrived_Sample_01;
+            }
+            if(handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        private readonly object RealTime_TimeTrace_AveragedDataArrived_Sample_02_EventLock = new object();
+        private EventHandler<RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02> _RealTime_TimeTrace_AveragedDataArrived_Sample_02;
+        public event EventHandler<RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02> RealTime_TimeTrace_AveragedDataArrived_Sample_02
+        {
+            add
+            {
+                lock (RealTime_TimeTrace_AveragedDataArrived_Sample_02_EventLock)
+                {
+                    if (_RealTime_TimeTrace_AveragedDataArrived_Sample_02 == null || !_RealTime_TimeTrace_AveragedDataArrived_Sample_02.GetInvocationList().Contains(value))
+                        _RealTime_TimeTrace_AveragedDataArrived_Sample_02 += value;
+                }
+            }
+            remove
+            {
+                lock (RealTime_TimeTrace_AveragedDataArrived_Sample_02_EventLock)
+                {
+                    _RealTime_TimeTrace_AveragedDataArrived_Sample_02 -= value;
+                }
+            }
+        }
+        public virtual void OnRealTime_TimeTrace_AveragedDataArrived_Sample_02(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02 e)
+        {
+            EventHandler<RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02> handler;
+            lock (RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock)
+            {
+                handler = _RealTime_TimeTrace_AveragedDataArrived_Sample_02;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
         #endregion
 
         #endregion

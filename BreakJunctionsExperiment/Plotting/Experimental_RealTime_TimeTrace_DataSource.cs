@@ -83,6 +83,22 @@ namespace BreakJunctions.Plotting
                     _ExperimentalData.Add(new PointD(e.Data[number][i].X, e.Data[number + 1][i].Y / e.Data[number][i].Y));
             }
 
+            switch (_SampleNumber)
+            {
+                case Samples.Sample_01:
+                    {
+                        if (_ExperimentalData != null && _ExperimentalData.Count > 0)
+                            AllEventsHandler.Instance.OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(this, new RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01(_ExperimentalData.Average(o => o.Y)));
+                    } break;
+                case Samples.Sample_02:
+                    {
+                        if (_ExperimentalData != null && _ExperimentalData.Count > 0)
+                            AllEventsHandler.Instance.OnRealTime_TimeTrace_AveragedDataArrived_Sample_02(this, new RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02(_ExperimentalData.Average(o => o.Y)));
+                    } break;
+                default:
+                    break;
+            }
+
             _ExperimentalDataSource.RaiseDataChanged();
             
             _Dispatcher.BeginInvoke(new Action(delegate()
