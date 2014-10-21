@@ -296,8 +296,8 @@ namespace BreakJunctions.Measurements
                             case KEITHLEY_2601A_SourceMode.Voltage:
                                 {
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Voltage);
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance) || measuredResistance <= 0.0 || measuredResistance > _ResistanceValueOverflow))
-                                    {
+                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
+                                    { 
                                         switch (_Channel)
                                         {
                                             case Channels.Channel_01:
