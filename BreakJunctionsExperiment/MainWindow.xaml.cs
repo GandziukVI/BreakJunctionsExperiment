@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,6 +38,9 @@ using Motion;
 using Aids.Graphics;
 using Microsoft.Research.DynamicDataDisplay.Charts;
 using Microsoft.Research.DynamicDataDisplay.Charts.Axes.Numeric;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
+using System.Windows.Controls.Primitives;
 
 namespace BreakJunctions
 {
@@ -236,6 +240,7 @@ namespace BreakJunctions
             #region Modifying current process to have real time priority
 
             System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.RealTime;
+            Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
             #endregion
 
@@ -313,6 +318,7 @@ namespace BreakJunctions
 
             #region Real time TimeTrace Model-view interactions
 
+            controlRealTimeTimeTraceMeasurementSettings.cmdQuickSampleCheck.Click += on_cmdRealTime_TimeTrace_QuickSampleCheckClick;
             controlRealTimeTimeTraceMeasurementSettings.cmdStartMeasurement.Click += on_cmdRealTime_TimeTraceStartMeasurementClick;
             controlRealTimeTimeTraceMeasurementSettings.cmdStopMeasurement.Click += on_cmdRealTime_TimeTraceStopMeasurementClick;
 
@@ -1212,22 +1218,63 @@ namespace BreakJunctions
             #endregion
 
             #endregion
+        }
 
+        private void on_cmdRealTime_TimeTrace_QuickSampleCheckClick(object sender, RoutedEventArgs e)
+        {
+            var cmdQuickSampleCheck = sender as ToggleButton;
 
+            if (cmdQuickSampleCheck.IsChecked == true)
+            {
+                if (_RealTimeTimeTraceLineGraphSample_01 != null)
+                {
+                    _ExperimentalRealTimeTimetraceDataSourceSample_01.DetachPointReceiveEvent();
+                    _RealTimeTimeTraceLineGraphSample_01.RemoveFromPlotter();
+                    _RealTimeTimeTraceSample_01.Clear();
+                }
+                if (_RealTimeTimeTraceLineGraphSample_02 != null)
+                {
+                    _ExperimentalRealTimeTimetraceDataSourceSample_02.DetachPointReceiveEvent();
+                    _RealTimeTimeTraceLineGraphSample_02.RemoveFromPlotter();
+                    _RealTimeTimeTraceSample_02.Clear();
+                }
+
+                AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
+
+                AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
+                backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
+            }
+            else 
+            {
+                AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
+                AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
+                backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
+            }
+        }
+
+        private void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(delegate() 
+                {
+                    if (e.Data != null)
+                    {
+                        var minCount = (new int[4] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
+                        if (minCount > 0)
+                        {
+                            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Channel_001_Value = e.Data[0].Average(o => o.Y);
+                            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Channel_002_Value = e.Data[1].Average(o => o.Y);
+                            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Channel_003_Value = e.Data[2].Average(o => o.Y);
+                            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Channel_004_Value = e.Data[3].Average(o => o.Y);
+                        }
+                    }
+                }));
         }
 
         private void on_cmdRealTime_TimeTraceStartMeasurementClick(object sender, RoutedEventArgs e)
         {
-            if (backgroundRealTimeTimeTraceMeasurementSamples.IsBusy == true)
-            {
-                this.on_cmdRealTime_TimeTraceStopMeasurementClick(sender, e);
-                
-                AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
-
-                Thread.Sleep(1000);
-            }
-
             this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = true;
+            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartMeasurementButtonEnabled = false;
+            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStopMeasurementButtonEnabled = true;
 
             InitRealTime_TimeTraceMeasurement();
             
@@ -1237,6 +1284,8 @@ namespace BreakJunctions
         private void on_cmdRealTime_TimeTraceStopMeasurementClick(object sender, RoutedEventArgs e)
         {
             this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = false;
+            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartMeasurementButtonEnabled = true;
+            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStopMeasurementButtonEnabled = false;
 
             backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));

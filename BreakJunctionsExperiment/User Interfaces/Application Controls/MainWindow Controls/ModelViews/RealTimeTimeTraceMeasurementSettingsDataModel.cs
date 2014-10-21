@@ -261,7 +261,7 @@ namespace BreakJunctions
             }
         }
 
-        private bool _IsStopMeasurementButtonEnabled = true;
+        private bool _IsStopMeasurementButtonEnabled = false;
         public bool IsStopMeasurementButtonEnabled
         {
             get { return _IsStopMeasurementButtonEnabled; }
