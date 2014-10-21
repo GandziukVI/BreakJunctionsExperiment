@@ -162,6 +162,48 @@ namespace BreakJunctions
 
         #endregion
 
+        #region Start / Stop Quick sample check
+
+        private bool _IsStartStopQuickSampleCheckChecked = false;
+        public bool IsStartStopQuickSampleCheckChecked
+        {
+            get { return _IsStartStopQuickSampleCheckChecked; }
+            set
+            {
+                _IsStartStopQuickSampleCheckChecked = value;
+                OnPropertyChanged("IsStartStopQuickSampleCheckChecked");
+
+                if (_IsStartStopQuickSampleCheckChecked == false)
+                    cmdStartStopQuickSampleCheckTextContent = "Start Quick Sample Check";
+                else
+                    cmdStartStopQuickSampleCheckTextContent = "Stop Quick Sample Check";
+            }
+        }
+
+        private bool _IsStartStopQuickSampleCheckEnabled = true;
+        public bool IsStartStopQuickSampleCheckEnabled
+        {
+            get { return _IsStartStopQuickSampleCheckEnabled; }
+            set
+            {
+                _IsStartStopQuickSampleCheckEnabled = value;
+                OnPropertyChanged("IsStartStopQuickSampleCheckEnabled");
+            }
+        }
+
+        private string _cmdStartStopQuickSampleCheckTextContent = "Start Quick Sample Check";
+        public string cmdStartStopQuickSampleCheckTextContent
+        {
+            get { return _cmdStartStopQuickSampleCheckTextContent; }
+            set
+            {
+                _cmdStartStopQuickSampleCheckTextContent = value;
+                OnPropertyChanged("cmdStartStopQuickSampleCheckTextContent");
+            }
+        }
+
+        #endregion
+
         #region Start / Stop motor
 
         private bool _IsStartStopEnabled = false;
@@ -171,6 +213,8 @@ namespace BreakJunctions
             set
             {
                 _IsStartStopEnabled = value;
+                IsStartStopQuickSampleCheckEnabled = !value;
+
                 OnPropertyChanged("IsStartStopEnabled");
             }
         }
@@ -199,6 +243,32 @@ namespace BreakJunctions
                     cmdStartStopTextContent = "Start Motor";
                 else
                     cmdStartStopTextContent = "Stop Motor";
+            }
+        }
+
+        #endregion
+
+        #region Start / Stop Measurement enabled
+
+        private bool _IsStartMeasurementButtonEnabled = true;
+        public bool IsStartMeasurementButtonEnabled
+        {
+            get { return _IsStartMeasurementButtonEnabled; }
+            set
+            {
+                _IsStartMeasurementButtonEnabled = value;
+                OnPropertyChanged("IsStartMeasurementButtonEnabled");
+            }
+        }
+
+        private bool _IsStopMeasurementButtonEnabled = true;
+        public bool IsStopMeasurementButtonEnabled
+        {
+            get { return _IsStopMeasurementButtonEnabled; }
+            set
+            {
+                _IsStopMeasurementButtonEnabled = value;
+                OnPropertyChanged("IsStopMeasurementButtonEnabled");
             }
         }
 

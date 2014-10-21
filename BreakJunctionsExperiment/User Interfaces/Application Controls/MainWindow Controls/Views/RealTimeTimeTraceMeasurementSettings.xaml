@@ -99,6 +99,7 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -114,6 +115,8 @@
                                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="Channel_02" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
                                 <TextBox Grid.Row="2" Grid.Column="1" x:Name="Channel_03" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
                                 <TextBox Grid.Row="3" Grid.Column="1" x:Name="Channel_04" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+
+                                <ToggleButton Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdQuickSampleCheck" Content="{Binding Path=cmdStartStopQuickSampleCheckTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding Path=IsStartStopQuickSampleCheckChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=IsStartStopQuickSampleCheckEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2.5 5 2.2 2.5" MinHeight="25" />
                             </Grid>
                         </Expander.Content>
                     </Expander>

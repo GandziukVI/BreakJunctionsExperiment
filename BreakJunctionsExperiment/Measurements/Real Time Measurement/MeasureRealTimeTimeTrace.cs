@@ -127,6 +127,8 @@ namespace BreakJunctions.Measurements
             AllEventsHandler.Instance.OnRealTime_TimeTrace_ResetTimeShift(this, new RealTime_TimeTrace_ResetTimeShift_EventArgs());
 
             _TimeTraceMeasurementControler.ContiniousAcquisition();
+
+            e.Cancel = true;
         }
 
         public void StopMeasurement()

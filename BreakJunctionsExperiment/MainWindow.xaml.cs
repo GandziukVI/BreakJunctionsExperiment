@@ -642,6 +642,12 @@ namespace BreakJunctions
 
         private void on_cmdIV_StartMeasurementClick(object sender, RoutedEventArgs e)
         {
+            if(backgroundIV_MeasureChannel_01.IsBusy==true || backgroundIV_MeasureChannel_02.IsBusy == true)
+            {
+                on_cmdIV_StopMeasurementClick(sender, e);
+                Thread.Sleep(1000);
+            }
+
             var isInitSuccess = InitIV_Measurements();
             
             //Starting I-V measurements in background
@@ -996,6 +1002,12 @@ namespace BreakJunctions
 
         private void on_cmdTimeTraceStartMeasurementClick(object sender, RoutedEventArgs e)
 		{
+            if (backgroundTimeTraceMeasureChannel_01.IsBusy == true || backgroundTimeTraceMeasureChannel_02.IsBusy == true)
+            {
+                on_cmdRealTime_TimeTraceStopMeasurementClick(sender, e);
+                Thread.Sleep(1000);
+            }
+
             var timeTtraceMeasurementsInitSuccess = InitTimeTraceMeasurements();
 
             if (timeTtraceMeasurementsInitSuccess)
@@ -1200,16 +1212,32 @@ namespace BreakJunctions
             #endregion
 
             #endregion
+
+
         }
 
-        private void on_cmdRealTime_TimeTraceStartMeasurementClick(object senger, RoutedEventArgs e)
+        private void on_cmdRealTime_TimeTraceStartMeasurementClick(object sender, RoutedEventArgs e)
         {
+            if (backgroundRealTimeTimeTraceMeasurementSamples.IsBusy == true)
+            {
+                this.on_cmdRealTime_TimeTraceStopMeasurementClick(sender, e);
+                
+                AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
+
+                Thread.Sleep(1000);
+            }
+
+            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = true;
+
             InitRealTime_TimeTraceMeasurement();
+            
             backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
         }
 
-        private void on_cmdRealTime_TimeTraceStopMeasurementClick(object senger, RoutedEventArgs e)
+        private void on_cmdRealTime_TimeTraceStopMeasurementClick(object sender, RoutedEventArgs e)
         {
+            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = false;
+
             backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
         }
@@ -1234,6 +1262,11 @@ namespace BreakJunctions
 
         private void backgroundRealTime_TimeTraceMeasureDoWork(object sender, DoWorkEventArgs e)
         {
+            if (_RealTime_TimeTraceSingleMeasurementSamples != null)
+                _RealTime_TimeTraceSingleMeasurementSamples.Dispose();
+            if (RealTimeTimeTraceCurve_Samples != null)
+                RealTimeTimeTraceCurve_Samples.Dispose();
+
             _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement("E:\\MegaMeasurement.txt", 0.02, "");
             RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
             RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Single);

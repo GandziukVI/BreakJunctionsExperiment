@@ -18,6 +18,10 @@ namespace BreakJunctions.Measurements
     class MeasureTimeTrace : IDisposable
     {
         private MotionController _Motor;
+        /// <summary>
+        /// Gets or sets motion controller to be responsible for
+        /// the motion
+        /// </summary>
         public MotionController Motor
         {
             get { return _Motor; }
@@ -25,6 +29,9 @@ namespace BreakJunctions.Measurements
         }
 
         private double _StartPosition;
+        /// <summary>
+        /// Gets or sets the start potition of the motor (meters)
+        /// </summary>
         public double StartPosition
         {
             get { return _StartPosition; }
@@ -32,19 +39,30 @@ namespace BreakJunctions.Measurements
         }
 
         private double _CurrentPosition = 0.0;
+        /// <summary>
+        /// Gets the current position of the motor (meters)
+        /// </summary>
         public double CurrentPosition
         {
             get { return _CurrentPosition; }
         }
 
-        private double _Destination;
-        public double Destination
+        private double _FinalDestination;
+        /// <summary>
+        /// Gets or sets the final position of the motor, to be
+        /// reached in measurement process (meters)
+        /// </summary>
+        public double FinalDestination
         {
-            get { return _Destination; }
-            set { _Destination = value; }
+            get { return _FinalDestination; }
+            set { _FinalDestination = value; }
         }
 
         private double _ResistanceValueOverflow = 10000000000.0;
+        /// <summary>
+        /// All measured values, higher then this would
+        /// be ignored either in displaying or in saving on HDD
+        /// </summary>
         public double ResistanceValueOverflow
         {
             get { return _ResistanceValueOverflow; }
@@ -52,6 +70,10 @@ namespace BreakJunctions.Measurements
         }
 
         private I_SMU _MeasureDevice;
+        /// <summary>
+        /// Source mesaure unit, responsible for the measurements of
+        /// voltage, current, resistance, etc.
+        /// </summary>
         public I_SMU MeasureDevice
         {
             get { return _MeasureDevice; }
@@ -59,6 +81,10 @@ namespace BreakJunctions.Measurements
         }
         
         private double _ValueThroughTheStructure;
+        /// <summary>
+        /// Gets or sets the value of voltage or current througt the structrue
+        /// according to the power supply mode
+        /// </summary>
         public double ValueThroughTheStructure
         {
             get { return _ValueThroughTheStructure; }
@@ -66,12 +92,20 @@ namespace BreakJunctions.Measurements
         }
 
         private int _NumberOfAverages = 2;
+        /// <summary>
+        /// Gets or sets the number of scans at the same value of
+        /// current or voltage through the structure
+        /// </summary>
         public int NumberOfAverages
         {
             get { return _NumberOfAverages; }
             set { _NumberOfAverages = value; }
         }
         private double _TimeDelay = 0.005;
+        /// <summary>
+        /// Gets or sets the value of time delay between scans, if
+        /// NumberOfAverages > 1
+        /// </summary>
         public double TimeDelay
         {
             get { return _TimeDelay; }
@@ -79,6 +113,9 @@ namespace BreakJunctions.Measurements
         }
         
         private KEITHLEY_2601A_SourceMode _SourceMode;
+        /// <summary>
+        /// The source mode of SMU
+        /// </summary>
         public KEITHLEY_2601A_SourceMode SourceMode
         {
             get { return _SourceMode; }
@@ -86,6 +123,9 @@ namespace BreakJunctions.Measurements
         }
 
         private KEITHLEY_2601A_MeasureMode _MeasureMode;
+        /// <summary>
+        /// The measure mode of SMU
+        /// </summary>
         public KEITHLEY_2601A_MeasureMode MeasureMode
         {
             get { return _MeasureMode; }
@@ -93,12 +133,18 @@ namespace BreakJunctions.Measurements
         }
 
         private MotionKind _CurrentMotionKind;
+        /// <summary>
+        /// The motion kind of motion controller: single / repetitive
+        /// </summary>
         public MotionKind CurrentMotionKind
         {
             get { return _CurrentMotionKind; }
         }
 
         private int _NumberRepetities = 1;
+        /// <summary>
+        /// The number of repetities for the cycle measurement
+        /// </summary>
         public int NumberRepetities
         {
             get { return _NumberRepetities; }
@@ -115,7 +161,7 @@ namespace BreakJunctions.Measurements
         {
             _Motor = motor;
             _StartPosition = startPosition;
-            _Destination = destination;
+            _FinalDestination = destination;
             _MeasureDevice = measureDevice;
             _SourceMode = sourceMode;
             _MeasureMode = measureMode;
@@ -156,11 +202,11 @@ namespace BreakJunctions.Measurements
             {
                 case MotionKind.Single:
                     {
-                        _Motor.StartMotion(_StartPosition, _Destination, MotionKind.Single);
+                        _Motor.StartMotion(_StartPosition, _FinalDestination, MotionKind.Single);
                     } break;
                 case MotionKind.Repetitive:
                     {
-                        _Motor.StartMotion(_StartPosition, _Destination, MotionKind.Repetitive, numberRepetities);
+                        _Motor.StartMotion(_StartPosition, _FinalDestination, MotionKind.Repetitive, numberRepetities);
                     } break;
                 default:
                     break;
@@ -177,6 +223,7 @@ namespace BreakJunctions.Measurements
                 if (_CancelMeasures == true)
                 {
                     _Motor.StopMotion();
+                    e.Cancel = true;
                     break;
                 }
             }
@@ -205,13 +252,13 @@ namespace BreakJunctions.Measurements
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredVoltage));
                                         _CurrentPosition = e.Position;
-                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                     } break;
                                 case Channels.Channel_02:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredVoltage));
                                         _CurrentPosition = e.Position;
-                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                     } break;
                                 default:
                                     break;
@@ -229,13 +276,13 @@ namespace BreakJunctions.Measurements
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredCurrent));
                                         _CurrentPosition = e.Position;
-                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                     } break;
                                 case Channels.Channel_02:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredCurrent));
                                         _CurrentPosition = e.Position;
-                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                     } break;
                                 default:
                                     break;
@@ -259,7 +306,7 @@ namespace BreakJunctions.Measurements
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
-                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                                     }
                                                     catch { }
                                                 } break;
@@ -269,7 +316,7 @@ namespace BreakJunctions.Measurements
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
-                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                                     }
                                                     catch { }
                                                 } break;
@@ -291,7 +338,7 @@ namespace BreakJunctions.Measurements
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
-                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                                     }
                                                     catch { }
                                                 } break;
@@ -301,7 +348,7 @@ namespace BreakJunctions.Measurements
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
-                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                                     }
                                                     catch { }
                                                 } break;
@@ -331,7 +378,7 @@ namespace BreakJunctions.Measurements
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
-                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                                     }
                                                     catch { }
                                                 } break;
@@ -341,7 +388,7 @@ namespace BreakJunctions.Measurements
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
-                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                                     }
                                                     catch { }
                                                 } break;
@@ -363,7 +410,7 @@ namespace BreakJunctions.Measurements
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
-                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                                     }
                                                     catch { }
                                                 } break;
@@ -373,7 +420,7 @@ namespace BreakJunctions.Measurements
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
-                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                                     }
                                                     catch { }
                                                 } break;
@@ -402,7 +449,7 @@ namespace BreakJunctions.Measurements
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged -= OnTimeTraceMeasurementsStateChanged;
 
             this._Motor = null;
-            this._Destination = 0.0;
+            this._FinalDestination = 0.0;
             this._MeasureDevice = null;
             this._ValueThroughTheStructure = 0.0;
         }
