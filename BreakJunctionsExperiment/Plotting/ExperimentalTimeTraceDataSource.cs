@@ -14,6 +14,17 @@ namespace BreakJunctions.Plotting
 
     public class ExperimentalTimeTraceDataSource : IPointDataSource
     {
+        private double _ResistanceValueOverflow = 10000000000.0;
+        /// <summary>
+        /// All measured values, higher then this would
+        /// be ignored either in displaying or in saving on HDD
+        /// </summary>
+        public double ResistanceValueOverflow
+        {
+            get { return _ResistanceValueOverflow; }
+            set { _ResistanceValueOverflow = value; }
+        }
+
         private List<PointD> _ExperimentalData;
         public List<PointD> ExperimentalData
         {
@@ -50,31 +61,40 @@ namespace BreakJunctions.Plotting
             if (_ExperimentalData.Count > 10000)
                 _ExperimentalData.RemoveAt(0);
 
-            _ExperimentalData.Add(new PointD(e.X, e.Y));
-            _ExperimentalDataSource.RaiseDataChanged();
-
-            _Dispatcher.BeginInvoke(new Action(delegate()
+            if (e.Y <= _ResistanceValueOverflow)
             {
-                try
+                _ExperimentalData.Add(new PointD(e.X, e.Y));
+                _ExperimentalDataSource.RaiseDataChanged();
+
+                _Dispatcher.BeginInvoke(new Action(delegate()
                 {
-                    DataChanged(sender, new EventArgs());
-                }
-                catch { }
-            }));
+                    try
+                    {
+                        DataChanged(sender, new EventArgs());
+                    }
+                    catch { }
+                }));
+            }
         }
         public void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
         {
-            _ExperimentalData.Add(new PointD(e.X, e.Y));
-            _ExperimentalDataSource.RaiseDataChanged();
+            if (_ExperimentalData.Count > 10000)
+                _ExperimentalData.RemoveAt(0);
 
-            _Dispatcher.BeginInvoke(new Action(delegate()
+            if (e.Y <= _ResistanceValueOverflow)
             {
-                try
+                _ExperimentalData.Add(new PointD(e.X, e.Y));
+                _ExperimentalDataSource.RaiseDataChanged();
+
+                _Dispatcher.BeginInvoke(new Action(delegate()
                 {
-                    DataChanged(sender, new EventArgs());
-                }
-                catch { }
-            }));
+                    try
+                    {
+                        DataChanged(sender, new EventArgs());
+                    }
+                    catch { }
+                }));
+            }
         }
     }
 

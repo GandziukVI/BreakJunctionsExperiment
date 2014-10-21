@@ -206,8 +206,8 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Row="0" x:Name="cmdStartMeasurement" MinHeight="45">Start Measurement</Button>
-                        <Button Grid.Row="1" x:Name="cmdStopMeasurement" MinHeight="45">Stop Measurement</Button>
+                        <Button Grid.Row="0" x:Name="cmdStartMeasurement" MinHeight="45" IsEnabled="{Binding Path=IsStartMeasurementButtonEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >Start Measurement</Button>
+                        <Button Grid.Row="1" x:Name="cmdStopMeasurement" MinHeight="45" IsEnabled="{Binding Path=IsStopMeasurementButtonEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >Stop Measurement</Button>
                     </Grid>
                 </Grid>
             </ScrollViewer>

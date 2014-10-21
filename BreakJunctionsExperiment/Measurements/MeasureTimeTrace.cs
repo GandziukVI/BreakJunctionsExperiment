@@ -58,17 +58,6 @@ namespace BreakJunctions.Measurements
             set { _FinalDestination = value; }
         }
 
-        private double _ResistanceValueOverflow = 10000000000.0;
-        /// <summary>
-        /// All measured values, higher then this would
-        /// be ignored either in displaying or in saving on HDD
-        /// </summary>
-        public double ResistanceValueOverflow
-        {
-            get { return _ResistanceValueOverflow; }
-            set { _ResistanceValueOverflow = value; }
-        }
-
         private I_SMU _MeasureDevice;
         /// <summary>
         /// Source mesaure unit, responsible for the measurements of
@@ -297,7 +286,7 @@ namespace BreakJunctions.Measurements
                                 {
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
-                                    { 
+                                    {
                                         switch (_Channel)
                                         {
                                             case Channels.Channel_01:
