@@ -1258,6 +1258,7 @@ namespace BreakJunctions
                 {
                     if (e.Data != null)
                     {
+                        //Checking, if the input has data points
                         var minCount = (new int[4] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
 
                         if (minCount > 0)
