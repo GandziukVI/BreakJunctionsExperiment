@@ -1272,6 +1272,11 @@ namespace BreakJunctions
                 }));
         }
 
+        /// <summary>
+        /// Starts the real time time trace measurement
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void on_cmdRealTime_TimeTraceStartMeasurementClick(object sender, RoutedEventArgs e)
         {
             this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = true;
@@ -1283,6 +1288,11 @@ namespace BreakJunctions
             backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
         }
 
+        /// <summary>
+        /// Stops the real time measurement
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void on_cmdRealTime_TimeTraceStopMeasurementClick(object sender, RoutedEventArgs e)
         {
             this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = false;
