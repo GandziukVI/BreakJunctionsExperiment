@@ -1259,6 +1259,7 @@ namespace BreakJunctions
                     if (e.Data != null)
                     {
                         var minCount = (new int[4] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
+
                         if (minCount > 0)
                         {
                             this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Channel_001_Value = e.Data[0].Average(o => o.Y);
