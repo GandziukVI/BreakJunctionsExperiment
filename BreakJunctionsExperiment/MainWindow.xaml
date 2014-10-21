@@ -55,7 +55,7 @@
 						</Grid.ColumnDefinitions>
 							
 						<!-- Chart plotter to plot I-V curves -->
-						<d3:ChartPlotter Grid.Row="0" Grid.Column="0" x:Name="chartIV_CurvesChannel_01" Margin="10" LegendVisible="False">
+						<d3:ChartPlotter Grid.Row="0" Grid.Column="0" x:Name="chartIV_CurvesChannel_01" Margin="10" LegendVisibility="Hidden">
 							<d3:Header Content="I-V characteristics CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>
@@ -63,12 +63,12 @@
 							<d3:VerticalAxis>
 								<d3:VerticalAxisTitle Content="Current"/>
 							</d3:VerticalAxis>
-							<d3:Viewport2D AutoFitToView="True"/>
+							<!--<d3:Viewport2D AutoFitToView="True"/>-->
 						</d3:ChartPlotter>
 							
 						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-						<d3:ChartPlotter Grid.Row="0" Grid.Column="2" x:Name="chartIV_CurvesChannel_02" Margin="10" LegendVisible="False">
+						<d3:ChartPlotter Grid.Row="0" Grid.Column="2" x:Name="chartIV_CurvesChannel_02" Margin="10" LegendVisibility="Hidden">
 							<d3:Header Content="I-V characteristics CH_02"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>
@@ -76,7 +76,7 @@
 							<d3:VerticalAxis>
 								<d3:VerticalAxisTitle Content="Current"/>
 							</d3:VerticalAxis>
-							<d3:Viewport2D AutoFitToView="True"/>
+							<!--<d3:Viewport2D AutoFitToView="True"/>-->
 						</d3:ChartPlotter>
 
 						<ScrollViewer Grid.Row="0" Grid.Column="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -99,7 +99,7 @@
 						</Grid.ColumnDefinitions>
 							
 						<!-- Time trace chart -->
-						<d3:ChartPlotter x:Name="chartTimeTraceChannel_01" Grid.Row="0" Grid.Column="0" Margin="10" LegendVisible="False">	
+						<d3:ChartPlotter x:Name="chartTimeTraceChannel_01" Grid.Row="0" Grid.Column="0" Margin="10" LegendVisibility="Hidden">	
 							<d3:Header Content="Time trace CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Distance"/>
@@ -107,12 +107,12 @@
 							<d3:VerticalAxis>
 								<d3:VerticalAxisTitle Content="Resistance"/>
 							</d3:VerticalAxis>
-							<d3:Viewport2D AutoFitToView="True"/>
+							<!--<d3:Viewport2D AutoFitToView="True"/>-->
 						</d3:ChartPlotter>
 						
 						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-						<d3:ChartPlotter x:Name="chartTimeTraceChannel_02" Grid.Row="0" Grid.Column="2" Margin="10" LegendVisible="False">	
+						<d3:ChartPlotter x:Name="chartTimeTraceChannel_02" Grid.Row="0" Grid.Column="2" Margin="10" LegendVisibility="Hidden">	
 							<d3:Header Content="Time trace CH_02"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Distance"/>
@@ -120,7 +120,7 @@
 							<d3:VerticalAxis>
 								<d3:VerticalAxisTitle Content="Resistance"/>
 							</d3:VerticalAxis>
-							<d3:Viewport2D AutoFitToView="True"/>
+							<!--<d3:Viewport2D AutoFitToView="True"/>-->
 						</d3:ChartPlotter>
 
 						<!-- Time trace scroll viever -->
@@ -182,7 +182,7 @@
                     
                     <!--Begin Sample 01 Resistance-->
 
-                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisible="False">
+                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisibility="Hidden">
                         <d3:Header Content="Real Time Resistance Sample_01"/>
                         <d3:HorizontalAxis>
                             <d3:HorizontalAxisTitle Content="Time"/>
@@ -190,7 +190,7 @@
                         <d3:VerticalAxis>
                             <d3:VerticalAxisTitle Content="Resistance"/>
                         </d3:VerticalAxis>
-                        <d3:Viewport2D AutoFitToView="True"/>
+                        <!--<d3:Viewport2D AutoFitToView="True"/>-->
                     </d3:ChartPlotter>
 
                     <!--End Sample 01 Resistance-->
@@ -199,7 +199,7 @@
 
                     <!--Begin Sample 01 Resistance-->
 
-                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisible="False">
+                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisibility="Hidden">
                         <d3:Header Content="Real Time Resistance Sample_02"/>
                         <d3:HorizontalAxis>
                             <d3:HorizontalAxisTitle Content="Time"/>
@@ -207,7 +207,7 @@
                         <d3:VerticalAxis>
                             <d3:VerticalAxisTitle Content="Resistance"/>
                         </d3:VerticalAxis>
-                        <d3:Viewport2D AutoFitToView="True"/>
+                        <!--<d3:Viewport2D AutoFitToView="True"/>-->
                     </d3:ChartPlotter>
 
                     <!--End Sample 01 Resistance-->

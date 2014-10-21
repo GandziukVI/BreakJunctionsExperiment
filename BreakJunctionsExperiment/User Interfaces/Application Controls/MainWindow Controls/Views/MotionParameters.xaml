@@ -55,7 +55,7 @@
                                 </ToolTip>
                             </Label.ToolTip>
                         </Label>
-                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMiscometricBoltStartPosition" Text="{Binding TimeTraceMeasurementDistanceMotionStartPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMiscometricBoltStartPosition" Text="{Binding TimeTraceMeasurementDistanceMotionStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
 
                         <Label Grid.Row="2" Grid.Column="0" Margin="0 2.5" Content="Motion current pos.">
                             <Label.ToolTip>

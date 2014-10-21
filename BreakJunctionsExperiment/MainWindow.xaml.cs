@@ -35,6 +35,8 @@ using System.IO;
 using Motion;
 
 using Aids.Graphics;
+using Microsoft.Research.DynamicDataDisplay.Charts;
+using Microsoft.Research.DynamicDataDisplay.Charts.Axes.Numeric;
 
 namespace BreakJunctions
 {
@@ -245,21 +247,45 @@ namespace BreakJunctions
 
             #region Removing Legend From Charts
 
-            chartIV_CurvesChannel_01.LegendVisible = false;
-            chartIV_CurvesChannel_02.LegendVisible = false;
-            chartTimeTraceChannel_01.LegendVisible = false;
-            chartTimeTraceChannel_02.LegendVisible = false;
+            chartIV_CurvesChannel_01.LegendVisibility = System.Windows.Visibility.Hidden;
+            chartIV_CurvesChannel_02.LegendVisibility = System.Windows.Visibility.Hidden;
+            chartTimeTraceChannel_01.LegendVisibility = System.Windows.Visibility.Hidden;
+            chartTimeTraceChannel_02.LegendVisibility = System.Windows.Visibility.Hidden;
 
             chartIV_CurvesChannel_01.Children.Remove(chartIV_CurvesChannel_01.Legend);
             chartIV_CurvesChannel_02.Children.Remove(chartIV_CurvesChannel_02.Legend);
             chartTimeTraceChannel_01.Children.Remove(chartTimeTraceChannel_01.Legend);
             chartTimeTraceChannel_02.Children.Remove(chartTimeTraceChannel_02.Legend);
 
-            chartRealTimeTimeTraceSample_01.LegendVisible = false;
-            chartRealTimeTimeTraceSample_02.LegendVisible = false;
+            chartRealTimeTimeTraceSample_01.LegendVisibility = System.Windows.Visibility.Hidden;
+            chartRealTimeTimeTraceSample_02.LegendVisibility = System.Windows.Visibility.Hidden;
 
             chartRealTimeTimeTraceSample_01.Children.Remove(chartRealTimeTimeTraceSample_01.Legend);
             chartRealTimeTimeTraceSample_02.Children.Remove(chartRealTimeTimeTraceSample_02.Legend);
+
+            #endregion
+
+            #region Implementing logarithmic Y scale for TimeTrace Approach
+
+            chartTimeTraceChannel_01.DataTransform = new Log10YTransform();
+            VerticalAxis LogarifmicTimeTraceAxis_Channel_01 = new VerticalAxis
+            {
+                TicksProvider = new LogarithmNumericTicksProvider(10),
+                LabelProvider = new UnroundingLabelProvider()
+            };
+
+            chartTimeTraceChannel_01.MainVerticalAxis = LogarifmicTimeTraceAxis_Channel_01;
+            chartTimeTraceChannel_01.AxisGrid.DrawVerticalMinorTicks = true;
+
+            chartTimeTraceChannel_02.DataTransform = new Log10YTransform();
+            VerticalAxis LogarifmicTimeTraceAxis_Channel_02 = new VerticalAxis
+            {
+                TicksProvider = new LogarithmNumericTicksProvider(10),
+                LabelProvider = new UnroundingLabelProvider()
+            };
+
+            chartTimeTraceChannel_02.MainVerticalAxis = LogarifmicTimeTraceAxis_Channel_02;
+            chartTimeTraceChannel_02.AxisGrid.DrawVerticalMinorTicks = true;
 
             #endregion
 
@@ -464,7 +490,7 @@ namespace BreakJunctions
                 {
                     //Detaching receive event from "old" data source
                     _experimentalIV_DataSourceChannel_01.DetachPointReceiveEvent();
-                    _IV_LineGraphChannel_01.Remove();
+                    _IV_LineGraphChannel_01.RemoveFromPlotter();
                 }
                 //Creating new plot and attaching it to the chart
                 _CurrentIV_CurveChannel_01 = new List<PointD>();
@@ -482,7 +508,7 @@ namespace BreakJunctions
                 {
                     //Detaching receive event from "old" data source
                     _experimentalIV_DataSourceChannel_02.DetachPointReceiveEvent();
-                    _IV_LineGraphChannel_02.Remove();
+                    _IV_LineGraphChannel_02.RemoveFromPlotter();
                 }
                 //Creating new plot and attaching it to the chart
                 _CurrentIV_CurveChannel_02 = new List<PointD>();
@@ -734,7 +760,7 @@ namespace BreakJunctions
                 if (_TimeTraceLineGraphChannel_01 != null)
                 {
                     _experimentalTimeTraceDataSourceChannel_01.DetachPointReceiveEvent();
-                    _TimeTraceLineGraphChannel_01.Remove();
+                    _TimeTraceLineGraphChannel_01.RemoveFromPlotter();
                     _CurrentTimeTraceChannel_01.Clear();
                 }
 
@@ -751,7 +777,7 @@ namespace BreakJunctions
                 if (_TimeTraceLineGraphChannel_02 != null)
                 {
                     _experimentalTimeTraceDataSourceChannel_02.DetachPointReceiveEvent();
-                    _TimeTraceLineGraphChannel_02.Remove();
+                    _TimeTraceLineGraphChannel_02.RemoveFromPlotter();
                     _CurrentTimeTraceChannel_02.Clear();
                 }
 
@@ -1144,7 +1170,7 @@ namespace BreakJunctions
             if(_RealTimeTimeTraceLineGraphSample_01 != null)
             {
                 _ExperimentalRealTimeTimetraceDataSourceSample_01.DetachPointReceiveEvent();
-                _RealTimeTimeTraceLineGraphSample_01.Remove();
+                _RealTimeTimeTraceLineGraphSample_01.RemoveFromPlotter();
                 _RealTimeTimeTraceSample_01.Clear();
             }
 
@@ -1161,7 +1187,7 @@ namespace BreakJunctions
             if (_RealTimeTimeTraceLineGraphSample_02 != null)
             {
                 _ExperimentalRealTimeTimetraceDataSourceSample_02.DetachPointReceiveEvent();
-                _RealTimeTimeTraceLineGraphSample_02.Remove();
+                _RealTimeTimeTraceLineGraphSample_02.RemoveFromPlotter();
                 _RealTimeTimeTraceSample_02.Clear();
             }
 

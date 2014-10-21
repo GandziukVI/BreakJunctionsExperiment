@@ -196,13 +196,13 @@ namespace BreakJunctions.Measurements
                             {
                                 case Channels.Channel_01:
                                     {
-                                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredVoltage));
+                                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredVoltage));
                                         _CurrentPosition = e.Position;
                                         _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
                                     } break;
                                 case Channels.Channel_02:
                                     {
-                                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredVoltage));
+                                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredVoltage));
                                         _CurrentPosition = e.Position;
                                         _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_Destination - _StartPosition) * 100.0));
                                     } break;
@@ -242,7 +242,7 @@ namespace BreakJunctions.Measurements
                             case KEITHLEY_2601A_SourceMode.Voltage:
                                 {
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Voltage);
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
+                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance) || measuredResistance < 0.0 || measuredResistance > 10000000000.0))
                                     {
                                         switch (_Channel)
                                         {
