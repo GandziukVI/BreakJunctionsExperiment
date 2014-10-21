@@ -44,6 +44,13 @@ namespace BreakJunctions.Measurements
             set { _Destination = value; }
         }
 
+        private double _ResistanceValueOverflow = 10000000000.0;
+        public double ResistanceValueOverflow
+        {
+            get { return _ResistanceValueOverflow; }
+            set { _ResistanceValueOverflow = value; }
+        }
+
         private I_SMU _MeasureDevice;
         public I_SMU MeasureDevice
         {
@@ -242,7 +249,7 @@ namespace BreakJunctions.Measurements
                             case KEITHLEY_2601A_SourceMode.Voltage:
                                 {
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Voltage);
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance) || measuredResistance < 0.0 || measuredResistance > 10000000000.0))
+                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance) || measuredResistance <= 0.0 || measuredResistance > _ResistanceValueOverflow))
                                     {
                                         switch (_Channel)
                                         {
