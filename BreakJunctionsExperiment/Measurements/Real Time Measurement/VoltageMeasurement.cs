@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Agilent_U2542A;
-using Agilent_U2542A_ExtensionBox;
+using Agilent_U2542A_With_ExtensionBox.Classes;
+using Agilent_U2542A_With_ExtensionBox.Interfaces;
 
 namespace BreakJunctions.Measurements
 {
@@ -12,8 +12,8 @@ namespace BreakJunctions.Measurements
     {
         #region VoltageMeasurement settings
 
-        private Agilent_U2542A_AnalogInput _AI;
-        private AnalogInputChannels _Channels = AnalogInputChannels.Instance;
+        private Agilent_AnalogInput_LowLevel _AI;
+        private AI_Channels _Channels = AI_Channels.Instance;
 
         private bool _MeasurementInProcess;
         private bool MeasurementInProcess
@@ -28,7 +28,7 @@ namespace BreakJunctions.Measurements
 
         public VoltageMeasurement()
         {
-            _AI = new Agilent_U2542A_AnalogInput();
+            _AI = new Agilent_AnalogInput_LowLevel();
         }
 
         #endregion
