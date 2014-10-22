@@ -21,13 +21,13 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
 
         
 
-        private static Agilent_USB_DAQ _instance;
+        private static Agilent_USB_DAQ _Instance;
         public static Agilent_USB_DAQ Instance
         {
             get
             {
-                if (_instance == null) _instance = new Agilent_USB_DAQ();
-                return _instance;
+                if (_Instance == null) _Instance = new Agilent_USB_DAQ();
+                return _Instance;
 
             }
         }
@@ -35,6 +35,7 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
         private Agilent_USB_DAQ()
         {
             _Id = "USB0::0x0957::0x1718::TW52524501::INSTR";
+            //_Id = "USB0::0x0957::0x1718::TW54334510::0::INSTR";
             _Alive = false;
             _Busy = false;
         }

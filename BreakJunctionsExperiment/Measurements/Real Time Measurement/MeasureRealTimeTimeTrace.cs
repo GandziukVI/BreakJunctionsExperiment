@@ -4,7 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-using Agilent_U2542A_ExtensionBox;
+using Agilent_U2542A_With_ExtensionBox.Classes;
+using Agilent_U2542A_With_ExtensionBox.Interfaces;
 
 using Motion;
 
@@ -57,7 +58,7 @@ namespace BreakJunctions.Measurements
             set { _IsSample_02_MeasurementEnabled = value; }
         }
 
-        private AnalogInputChannels _Channels;
+        private AI_Channels _Channels;
 
         private IRealTime_TimeTrace_Factory _ITimeTraceControllerFactory;
         private RealTime_TimeTrace_Controller _TimeTraceMeasurementControler;
@@ -85,7 +86,7 @@ namespace BreakJunctions.Measurements
 
         private void _initDAC()
         {
-            _Channels = AnalogInputChannels.Instance;
+            _Channels = AI_Channels.Instance;
 
             _Channels.DisableAllChannelsForContiniousDataAcquisition();
             _Channels.PointsPerBlock = this.PointsPerBlock;
@@ -97,6 +98,7 @@ namespace BreakJunctions.Measurements
         private void ReloadChannels()
         {
             _Channels.DisableAllChannelsForContiniousDataAcquisition();
+
             if(_IsSample_01_MeasurementEnabled == true)
             {
                 _Channels.ChannelArray[0].Enabled = true;

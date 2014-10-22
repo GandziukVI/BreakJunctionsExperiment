@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Agilent_U2542A_With_ExtensionBox.Classes;
+using Agilent_U2542A_With_ExtensionBox.Interfaces;
+
 using Aids.Graphics;
 using BreakJunctions.Events;
 

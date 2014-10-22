@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+
 namespace Agilent_U2542A_With_ExtensionBox.Classes
 {
     public class Agilent_DigitalOutput_LowLevel

@@ -5,6 +5,7 @@ using System.Text;
 
 using Aids.Graphics;
 using Agilent_U2542A;
+
 using Agilent_U2542A_ExtensionBox;
 
 using BreakJunctions.Events;
@@ -53,9 +54,9 @@ namespace BreakJunctions.Measurements
         public override void ContiniousAcquisition()
         {
             _DIO.AllToZero();
-            
+
             int ACQ_Rate = _Channels.ACQ_Rate;
-            
+
             _Channels.SetChannelsToAC();
             _Channels.StartAnalogAcqusition();
 
@@ -77,14 +78,14 @@ namespace BreakJunctions.Measurements
             _DIO.AllToZero();
 
             _VoltageMeasurement.PerformVoltagePresiseMeasurement();
-            
+
             if (!_MeasurementInProcess)
                 return;
 
             _Channels.Read_AI_Channel_Status();
 
             int ACQ_Rate = _Channels.ACQ_Rate;
-            
+
             _Channels.SetChannelsToAC();
             _Channels.StartAnalogAcqusition();
 
@@ -93,9 +94,9 @@ namespace BreakJunctions.Measurements
                 while (!_Channels.CheckAcquisitionStatus()) ;
 
                 string result = _Channels.AcquireStringWithData();
-                
+
                 Int16[] resultInt = _DataConverter.ParseDataStringToInt(result);
-                
+
                 List<PointD>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
             }
 
@@ -130,14 +131,14 @@ namespace BreakJunctions.Measurements
             _Channels.AcquireSingleShot();
 
             while ((!_Channels.CheckSingleShotAcquisitionStatus()) && _MeasurementInProcess) ;
-            
-            if (!_MeasurementInProcess) 
+
+            if (!_MeasurementInProcess)
                 return null;
 
             string result = _Channels.AcquireStringWithData();
 
             Int16[] resultInt = _DataConverter.ParseDataStringToInt(result);
-            
+
             List<PointD>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
 
             return ChannelData[NumberOfChannel - 1];
@@ -147,7 +148,7 @@ namespace BreakJunctions.Measurements
         {
             _Channels.SingleShotPointsPerBlock = 10000;
             _Channels.ChannelArray[NumberOfChannel - 1].AC_Range = 10;
-            
+
             List<PointD> data = MakeSingleShot(NumberOfChannel);
 
             double[] AcquidredYData = data.Select(p => p.Y).ToArray();

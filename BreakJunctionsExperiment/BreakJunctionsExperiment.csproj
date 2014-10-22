@@ -289,11 +289,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agilent_U2542A\Agilent_U2542A.csproj">
-      <Project>{B659DA56-2BAC-46CD-BEBE-5A5A8F82FE1F}</Project>
+      <Project>{b659da56-2bac-46cd-bebe-5a5a8f82fe1f}</Project>
       <Name>Agilent_U2542A</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agilent_U2542A_ExtensionBox\Agilent_U2542A_ExtensionBox.csproj">
-      <Project>{5946EAFB-838A-4F4B-B96A-2C3072F712C0}</Project>
+      <Project>{5946eafb-838a-4f4b-b96a-2c3072f712c0}</Project>
       <Name>Agilent_U2542A_ExtensionBox</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agilent_U2542A_Setup\Agilent_U2542A_Setup\Agilent_U2542A_Setup.csproj">
