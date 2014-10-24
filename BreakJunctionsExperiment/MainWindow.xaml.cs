@@ -1328,7 +1328,7 @@ namespace BreakJunctions
             if (RealTimeTimeTraceCurve_Samples != null)
                 RealTimeTimeTraceCurve_Samples.Dispose();
 
-            _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement("D:\\MegaMeasurement.txt", 0.02, "");
+            _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement("E:\\MegaMeasurement.txt", 0.02, "");
             RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
             RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Single);
         }
