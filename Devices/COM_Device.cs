@@ -95,7 +95,7 @@ namespace Devices
             {
                 var strBytes = Encoding.ASCII.GetBytes(RequestString + '\n');
                 _COM_Port.Write(strBytes, 0, strBytes.Length);
-                Thread.Sleep(_TimeDelay);
+                //Thread.Sleep(_TimeDelay);
                 return true;
             }
             catch

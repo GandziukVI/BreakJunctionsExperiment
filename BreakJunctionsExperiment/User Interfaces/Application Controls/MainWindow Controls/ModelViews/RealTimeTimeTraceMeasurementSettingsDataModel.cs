@@ -204,6 +204,21 @@ namespace BreakJunctions
 
         #endregion
 
+        #region SaveFile TextBox text
+
+        private string _SaveFileName = string.Empty;
+        public string SaveFileName
+        {
+            get { return _SaveFileName; }
+            set
+            {
+                _SaveFileName = value;
+                OnPropertyChanged("SaveFileName");
+            }
+        }
+
+        #endregion
+
         #region Start / Stop motor
 
         private bool _IsStartStopEnabled = false;

@@ -103,7 +103,6 @@ namespace BreakJunctions
 
         private SaveFileDialog _SaveIV_MeasureDialogChannel_01;
         private string _SaveIV_MeasuremrentFileNameChannel_01;
-        private static int _IV_FilesCounterChannel_01 = 0;
 
         #endregion
 
@@ -127,7 +126,6 @@ namespace BreakJunctions
 
         private SaveFileDialog _SaveIV_MeasureDialogChannel_02;
         private string _SaveIV_MeasuremrentFileNameChannel_02;
-        private static int _IV_FilesCounterChannel_02 = 0;
 
         #endregion
 
@@ -157,7 +155,6 @@ namespace BreakJunctions
 
         private SaveFileDialog _SaveTimeTraceMeasureDialogChannel_01;
         private string _SaveTimeTraceMeasuremrentFileNameChannel_01;
-        private static int _TimeTraceFilesCounterChannel_01 = 0;
 
         #endregion
 
@@ -181,7 +178,6 @@ namespace BreakJunctions
 
         private SaveFileDialog _SaveTimeTraceMeasureDialogChannel_02;
         private string _SaveTimeTraceMeasuremrentFileNameChannel_02;
-        private static int _TimeTraceFilesCounterChannel_02 = 0;
 
         #endregion
 
@@ -229,9 +225,8 @@ namespace BreakJunctions
         private BackgroundWorker backgroundRealTimeTimeTraceMeasurementSamples;
         private MeasureRealTimeTimeTrace RealTimeTimeTraceCurve_Samples;
 
-        private SaveFileDialog _SaveRealTimeTraceMeasureDialogSamples;
-        private string _SaveRealTimeTraceMeasuremrentFileNameSamples;
-        private static int _RealTimeTraceFilesCounterSamples = 0;
+        private SaveFileDialog _SaveRealTimeTraceMeasureDataDialog;
+        private string _SaveRealTimeTraceMeasuremrentDataFileName;
 
         #endregion
 
@@ -321,6 +316,7 @@ namespace BreakJunctions
             controlRealTimeTimeTraceMeasurementSettings.cmdQuickSampleCheck.Click += on_cmdRealTime_TimeTrace_QuickSampleCheckClick;
             controlRealTimeTimeTraceMeasurementSettings.cmdStartMeasurement.Click += on_cmdRealTime_TimeTraceStartMeasurementClick;
             controlRealTimeTimeTraceMeasurementSettings.cmdStopMeasurement.Click += on_cmdRealTime_TimeTraceStopMeasurementClick;
+            controlRealTimeTimeTraceMeasurementSettings.cmdSaveFile.Click += on_cmdRealTime_TimeTrace_SaveFileClick;
 
             AllEventsHandler.Instance.RealTime_TimeTrace_AveragedDataArrived_Sample_01 += OnRealTime_TimeTrace_AveragedDataArrived_Sample_01;
             AllEventsHandler.Instance.RealTime_TimeTrace_AveragedDataArrived_Sample_02 += OnRealTime_TimeTrace_AveragedDataArrived_Sample_02;
@@ -389,6 +385,7 @@ namespace BreakJunctions
             backgroundRealTimeTimeTraceMeasurementSamples.WorkerSupportsCancellation = true;
             backgroundRealTimeTimeTraceMeasurementSamples.WorkerReportsProgress = true;
             backgroundRealTimeTimeTraceMeasurementSamples.DoWork += backgroundRealTime_TimeTraceMeasureDoWork;
+            backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerCompleted += backgroundRealTime_TimeTraceMeasureRunWorkerCompleted;
 
             #endregion
 
@@ -423,16 +420,27 @@ namespace BreakJunctions
             _SaveTimeTraceMeasuremrentFileNameChannel_01 = string.Empty;
 
             _SaveTimeTraceMeasureDialogChannel_01 = new SaveFileDialog();
-            _SaveTimeTraceMeasureDialogChannel_01.FileName = "TimeTraceMeasurementChannel_01_";
+            _SaveTimeTraceMeasureDialogChannel_01.FileName = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "TimeTraceMeasurementChannel_01_");
             _SaveTimeTraceMeasureDialogChannel_01.DefaultExt = ".dat";
             _SaveTimeTraceMeasureDialogChannel_01.Filter = "Measure data (.dat)|*.dat";
 
             _SaveTimeTraceMeasuremrentFileNameChannel_02 = string.Empty;
 
             _SaveTimeTraceMeasureDialogChannel_02 = new SaveFileDialog();
-            _SaveTimeTraceMeasureDialogChannel_02.FileName = "TimeTraceMeasurementChannel_02_";
+            _SaveTimeTraceMeasureDialogChannel_02.FileName = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "TimeTraceMeasurementChannel_02_");
             _SaveTimeTraceMeasureDialogChannel_02.DefaultExt = ".dat";
             _SaveTimeTraceMeasureDialogChannel_02.Filter = "Measure data (.dat)|*.dat";
+
+            #endregion
+
+            #region Save Real Time Time trace data to fie dialog configuration
+
+            _SaveRealTimeTraceMeasuremrentDataFileName = string.Empty;
+
+            _SaveRealTimeTraceMeasureDataDialog = new SaveFileDialog();
+            _SaveRealTimeTraceMeasureDataDialog.FileName = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "RealTime_TimeTrace_Measurement_");
+            _SaveRealTimeTraceMeasureDataDialog.DefaultExt = ".dat";
+            _SaveRealTimeTraceMeasureDataDialog.Filter = "Measure data (.dat)|*.dat";
 
             #endregion
         }
@@ -580,22 +588,16 @@ namespace BreakJunctions
 
                 #region Saving I-V data into files
 
-                var _IV_FileNumberChannel_01 = String.Format("_{0}{1}{2}", (_IV_FilesCounterChannel_01 / 100) % 10, (_IV_FilesCounterChannel_01 / 10) % 10, _IV_FilesCounterChannel_01 % 10);
                 var newFileNameChannel_01 = string.Empty;
-
-                var _IV_FileNumberChannel_02 = String.Format("_{0}{1}{2}", (_IV_FilesCounterChannel_02 / 100) % 10, (_IV_FilesCounterChannel_02 / 10) % 10, _IV_FilesCounterChannel_02 % 10);
                 var newFileNameChannel_02 = string.Empty;
 
                 if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_02))
                 {
                     _IV_MeasurementLogChannel_01 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_01)).DirectoryName + "\\IV_MeasurementLogChannel_01.dat");
                     _IV_MeasurementLogChannel_02 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_02)).DirectoryName + "\\IV_MeasurementLogChannel_02.dat");
-                    
-                    newFileNameChannel_01 = _SaveIV_MeasuremrentFileNameChannel_01.Insert(_SaveIV_MeasuremrentFileNameChannel_01.LastIndexOf('.'), _IV_FileNumberChannel_01);
-                    newFileNameChannel_02 = _SaveIV_MeasuremrentFileNameChannel_02.Insert(_SaveIV_MeasuremrentFileNameChannel_02.LastIndexOf('.'), _IV_FileNumberChannel_02);
-                    
-                    ++_IV_FilesCounterChannel_01;
-                    ++_IV_FilesCounterChannel_02;
+
+                    newFileNameChannel_01 = GetFileNameWithIncrement(_SaveIV_MeasuremrentFileNameChannel_01);
+                    newFileNameChannel_02 = GetFileNameWithIncrement(_SaveIV_MeasuremrentFileNameChannel_02);
                 }
 
                 if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_02))
@@ -706,7 +708,6 @@ namespace BreakJunctions
 
             if (dialogResult == true)
             {
-                _IV_FilesCounterChannel_01 = 0;
                 _SaveIV_MeasuremrentFileNameChannel_01 = _SaveIV_MeasureDialogChannel_01.FileName;
                 this.controlIV_MeasurementSettings.textBoxIV_FileNameChannel_01.Text = _SaveIV_MeasureDialogChannel_01.SafeFileName;
             }
@@ -747,7 +748,6 @@ namespace BreakJunctions
 
             if (dialogResult == true)
             {
-                _IV_FilesCounterChannel_02 = 0;
                 _SaveIV_MeasuremrentFileNameChannel_02 = _SaveIV_MeasureDialogChannel_02.FileName;
                 this.controlIV_MeasurementSettings.textBoxIV_FileNameChannel_02.Text = _SaveIV_MeasureDialogChannel_02.SafeFileName;
             }
@@ -920,10 +920,7 @@ namespace BreakJunctions
 
                 #region Saving Time Trace data into files
 
-                var _TimeTraceChannel_01_FileNumber = String.Format("_{0}{1}{2}", (_TimeTraceFilesCounterChannel_01 / 100) % 10, (_TimeTraceFilesCounterChannel_01 / 10) % 10, _TimeTraceFilesCounterChannel_01 % 10);
                 var newFileNameChannel_01 = string.Empty;
-
-                var _TimeTraceChannel_02_FileNumber = String.Format("_{0}{1}{2}", (_TimeTraceFilesCounterChannel_02 / 100) % 10, (_TimeTraceFilesCounterChannel_02 / 10) % 10, _TimeTraceFilesCounterChannel_02 % 10);
                 var newFileNameChannel_02 = string.Empty;
 
                 if (!string.IsNullOrEmpty(_SaveTimeTraceMeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveTimeTraceMeasuremrentFileNameChannel_02))
@@ -931,11 +928,8 @@ namespace BreakJunctions
                     _TimeTraceMeasurementLogChannel_01 = new TimeTraceMeasurementLog((new FileInfo(_SaveTimeTraceMeasuremrentFileNameChannel_01)).DirectoryName + "\\TimeTraceMeasurementLogChannel_01.dat");
                     _TimeTraceMeasurementLogChannel_02 = new TimeTraceMeasurementLog((new FileInfo(_SaveTimeTraceMeasuremrentFileNameChannel_02)).DirectoryName + "\\TimeTraceMeasurementLogChannel_02.dat");
 
-                    newFileNameChannel_01 = _SaveTimeTraceMeasuremrentFileNameChannel_01.Insert(_SaveTimeTraceMeasuremrentFileNameChannel_01.LastIndexOf('.'), _TimeTraceChannel_01_FileNumber);
-                    newFileNameChannel_02 = _SaveTimeTraceMeasuremrentFileNameChannel_02.Insert(_SaveTimeTraceMeasuremrentFileNameChannel_02.LastIndexOf('.'), _TimeTraceChannel_02_FileNumber);
-
-                    ++_TimeTraceFilesCounterChannel_01;
-                    ++_TimeTraceFilesCounterChannel_02;
+                    newFileNameChannel_01 = GetFileNameWithIncrement(_SaveTimeTraceMeasuremrentFileNameChannel_01);
+                    newFileNameChannel_02 = GetFileNameWithIncrement(_SaveTimeTraceMeasuremrentFileNameChannel_02);
                 }
 
                 var sourceModeChannel_01 = string.Empty;
@@ -1148,7 +1142,6 @@ namespace BreakJunctions
 
             if (dialogResult == true)
             {
-                _TimeTraceFilesCounterChannel_01 = 0;
                 _SaveTimeTraceMeasuremrentFileNameChannel_01 = _SaveTimeTraceMeasureDialogChannel_01.FileName;
                 this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName = _SaveTimeTraceMeasureDialogChannel_01.SafeFileName;
             }
@@ -1161,7 +1154,6 @@ namespace BreakJunctions
 
             if (dialogResult == true)
             {
-                _TimeTraceFilesCounterChannel_02 = 0;
                 _SaveTimeTraceMeasuremrentFileNameChannel_02 = _SaveTimeTraceMeasureDialogChannel_02.FileName;
                 this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName = _SaveTimeTraceMeasureDialogChannel_02.SafeFileName;
             }
@@ -1252,6 +1244,13 @@ namespace BreakJunctions
             }
         }
 
+        private void on_cmdRealTime_TimeTrace_SaveFileClick(object sender, RoutedEventArgs e)
+        {
+            _SaveRealTimeTraceMeasureDataDialog.ShowDialog();
+            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.SaveFileName = _SaveRealTimeTraceMeasureDataDialog.SafeFileName;
+            _SaveRealTimeTraceMeasuremrentDataFileName = _SaveRealTimeTraceMeasureDataDialog.FileName;
+        }
+
         private void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
             this.Dispatcher.BeginInvoke(new Action(delegate() 
@@ -1323,14 +1322,19 @@ namespace BreakJunctions
 
         private void backgroundRealTime_TimeTraceMeasureDoWork(object sender, DoWorkEventArgs e)
         {
+            string RealTime_TimeTrace_CurrentDataFile = GetFileNameWithIncrement(_SaveRealTimeTraceMeasuremrentDataFileName); ;
+
+            _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement(RealTime_TimeTrace_CurrentDataFile, 0.02, "");
+            RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
+            RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Single);
+        }
+
+        private void backgroundRealTime_TimeTraceMeasureRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
             if (_RealTime_TimeTraceSingleMeasurementSamples != null)
                 _RealTime_TimeTraceSingleMeasurementSamples.Dispose();
             if (RealTimeTimeTraceCurve_Samples != null)
                 RealTimeTimeTraceCurve_Samples.Dispose();
-
-            _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement("E:\\MegaMeasurement.txt", 0.02, "");
-            RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
-            RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Single);
         }
 
         #endregion
@@ -1338,6 +1342,24 @@ namespace BreakJunctions
         #endregion
 
         #region Checking User Input
+
+        private static int FileCounter;
+        private string GetFileNameWithIncrement(string FileName)
+        {
+            string result;
+            FileCounter = 0;
+
+            while (true)
+            {
+                result = FileName.Insert(FileName.LastIndexOf('.'), String.Format("_{0}{1}{2}", (FileCounter / 100) % 10, (FileCounter / 10) % 10, FileCounter % 10));
+
+                if (!File.Exists(result))
+                    break;
+                ++FileCounter;
+            }
+
+            return result;
+        }
 
         private void IntegerPastingHandler(object sender, DataObjectPastingEventArgs e)
         {

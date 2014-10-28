@@ -91,7 +91,7 @@ namespace Devices
             try
             {
                 _GPIB_Device.Write(RequestString);
-                Thread.Sleep(_TimeDelay);
+                //Thread.Sleep(_TimeDelay);
                 return true;
             }
             catch { return false; }
