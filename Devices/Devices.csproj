@@ -77,8 +77,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Agilent.TMFramework.InstrumentIO\2.1.8910.0__7a01cdb2a9131f73\Agilent.TMFramework.InstrumentIO.dll</HintPath>
     </Reference>
-    <Reference Include="NationalInstruments.Common, Version=13.0.40.190, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL" />
-    <Reference Include="NationalInstruments.NI4882, Version=13.0.40.159, Culture=neutral, PublicKeyToken=dc6ad606294fc298, processorArchitecture=MSIL" />
+    <Reference Include="NationalInstruments.Common, Version=13.0.35.190, Culture=neutral, PublicKeyToken=18cbae0f9955702a, processorArchitecture=MSIL" />
+    <Reference Include="NationalInstruments.NI4882, Version=8.9.35.104, Culture=neutral, PublicKeyToken=18cbae0f9955702a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
