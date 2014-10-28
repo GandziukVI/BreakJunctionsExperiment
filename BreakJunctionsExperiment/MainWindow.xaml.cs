@@ -1220,12 +1220,16 @@ namespace BreakJunctions
             {
                 if (_RealTimeTimeTraceLineGraphSample_01 != null)
                 {
+                    _RealTime_TimeTraceSingleMeasurementSamples.DetachPointReceiveEvent();
+
                     _ExperimentalRealTimeTimetraceDataSourceSample_01.DetachPointReceiveEvent();
                     _RealTimeTimeTraceLineGraphSample_01.RemoveFromPlotter();
                     _RealTimeTimeTraceSample_01.Clear();
                 }
                 if (_RealTimeTimeTraceLineGraphSample_02 != null)
                 {
+                    _RealTime_TimeTraceSingleMeasurementSamples.AttachPointDataReceiveEvent();
+
                     _ExperimentalRealTimeTimetraceDataSourceSample_02.DetachPointReceiveEvent();
                     _RealTimeTimeTraceLineGraphSample_02.RemoveFromPlotter();
                     _RealTimeTimeTraceSample_02.Clear();

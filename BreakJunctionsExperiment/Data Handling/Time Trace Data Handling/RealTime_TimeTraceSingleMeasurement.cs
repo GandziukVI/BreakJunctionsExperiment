@@ -60,6 +60,18 @@ namespace BreakJunctions.DataHandling
 
         #region RealTime_TimeTraceSingleMeasurement functionality
 
+        public void AttachPointDataReceiveEvent()
+        {
+            AllEventsHandler.Instance.RealTime_TimeTrace_ResetTimeShift += OnRealTime_TimeTrace_ResetTimeShift;
+            AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
+        }
+
+        public void DetachPointReceiveEvent()
+        {
+            AllEventsHandler.Instance.RealTime_TimeTrace_ResetTimeShift -= OnRealTime_TimeTrace_ResetTimeShift;
+            AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
+        }
+
         /// <summary>
         /// Converts the List of PointD to the byte array
         /// </summary>
