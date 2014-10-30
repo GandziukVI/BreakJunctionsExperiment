@@ -97,6 +97,7 @@ namespace FaulhaberMinimotors
                 Value = -MaxValue;
             if (Value > MaxValue)
                 Value = MaxValue;
+
             SendCommandRequest(String.Format("LA{0}", Value));
         }
 
@@ -112,6 +113,7 @@ namespace FaulhaberMinimotors
                 Value = -MaxValue;
             if (Value > MaxValue)
                 Value = MaxValue;
+
             SendCommandRequest(String.Format("LR{0}", Value));
         }
 
@@ -134,6 +136,7 @@ namespace FaulhaberMinimotors
                 Value = -MaxValue;
             if (Value > MaxValue)
                 Value = MaxValue;
+
             SendCommandRequest(String.Format("NP{0}", Value));
         }
 
@@ -182,6 +185,11 @@ namespace FaulhaberMinimotors
         public void NotifyVelocityOff()
         {
             SendCommandRequest("NVOFF");
+        }
+
+        public int GetPosition()
+        {
+            return Convert.ToInt32(RequestQuery("POS"));
         }
 
         public void SetOutputVoltage()

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Motion
 {
-    class FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory : IMotionFactory
+    public class FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory : IMotionFactory
     {
         private FaulhaberMinimotor_SA_2036U012V_K1155_MotionController _MotionController;
 

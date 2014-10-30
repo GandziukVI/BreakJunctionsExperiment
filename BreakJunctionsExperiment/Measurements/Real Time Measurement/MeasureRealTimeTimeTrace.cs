@@ -17,6 +17,45 @@ namespace BreakJunctions.Measurements
     {
         #region MeasureRealTimeTimeTrace settings
 
+        #region Motion settings
+
+        private double _StartPosition;
+        /// <summary>
+        /// Gets or sets the start potition of the motor (meters)
+        /// </summary>
+        public double StartPosition
+        {
+            get { return _StartPosition; }
+            set { _StartPosition = value; }
+        }
+
+        private double _CurrentPosition = 0.0;
+        /// <summary>
+        /// Gets the current position of the motor (meters)
+        /// </summary>
+        public double CurrentPosition
+        {
+            get { return _CurrentPosition; }
+        }
+
+        private double _FinalDestination;
+        /// <summary>
+        /// Gets or sets the final position of the motor, to be
+        /// reached in measurement process (meters)
+        /// </summary>
+        public double FinalDestination
+        {
+            get { return _FinalDestination; }
+            set { _FinalDestination = value; }
+        }
+
+        private IMotionFactory _IRealTimeMotionFactory;
+        private MotionController _TimeTraceMotionController;
+
+        #endregion
+
+        #region Acquisition settings
+
         private int _PointsPerBlock = 1000;
         /// <summary>
         /// The value of points per block for Agilent U2542A
@@ -63,8 +102,7 @@ namespace BreakJunctions.Measurements
         private IRealTime_TimeTrace_Factory _ITimeTraceControllerFactory;
         private RealTime_TimeTrace_Controller _TimeTraceMeasurementControler;
 
-        private IMotionFactory _IRealTimeMotionFactory;
-        private MotionController _TimeTraceMotionController;
+        #endregion
 
         #endregion
 
@@ -75,7 +113,8 @@ namespace BreakJunctions.Measurements
             _ITimeTraceControllerFactory = new RT_Agilent_U2542A_TimeTrace_Controller_Factory();
             _TimeTraceMeasurementControler = _ITimeTraceControllerFactory.GetRealTime_TimeTraceController();
 
-            
+            _IRealTimeMotionFactory = new FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory("COM5"); // Modification here to establish correct serial port needed
+            _TimeTraceMotionController = _IRealTimeMotionFactory.GetMotionController();
         }
 
         ~MeasureRealTimeTimeTrace()
@@ -130,6 +169,12 @@ namespace BreakJunctions.Measurements
             
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
             AllEventsHandler.Instance.OnRealTime_TimeTrace_ResetTimeShift(this, new RealTime_TimeTrace_ResetTimeShift_EventArgs());
+
+            #region Motor motion initialization
+
+            _TimeTraceMotionController.InitDevice();
+
+            #endregion
 
             _TimeTraceMeasurementControler.ContiniousAcquisition();
 

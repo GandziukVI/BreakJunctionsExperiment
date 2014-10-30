@@ -61,6 +61,11 @@ namespace Motion
         /// <param name="motionDirection">The direction of motion</param>
         abstract public void SetDirection(MotionDirection motionDirection);
         /// <summary>
+        /// Gets the current position of motor in meters
+        /// </summary>
+        /// <returns></returns>
+        abstract public double GetCurrentPosition();
+        /// <summary>
         /// Correctly disposing the instance
         /// </summary>
         abstract public void Dispose();

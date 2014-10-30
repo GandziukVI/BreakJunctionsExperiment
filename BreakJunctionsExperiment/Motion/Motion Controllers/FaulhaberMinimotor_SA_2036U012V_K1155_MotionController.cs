@@ -119,6 +119,11 @@ namespace Motion
             return Convert.ToInt32(_Motor.ValuePerRevolution * _position / _MetersPerRevolution);
         }
 
+        private double ConvertMotorUnitsIntoPosition(int MotorUnitsPosition)
+        {
+            return Convert.ToDouble(MotorUnitsPosition * _MetersPerRevolution / _Motor.ValuePerRevolution);
+        }
+
         private MotionVelosityUnits _motionVelosityUnits = MotionVelosityUnits.rpm;
         /// <summary>
         /// Gets or sets motion velosity units
@@ -316,6 +321,11 @@ namespace Motion
                 _CurrentDirection = motionDirection;
                 ++_CurrentIteration;
             }
+        }
+
+        public override double GetCurrentPosition()
+        {
+            return ConvertMotorUnitsIntoPosition(_Motor.GetPosition());
         }
 
         #endregion
