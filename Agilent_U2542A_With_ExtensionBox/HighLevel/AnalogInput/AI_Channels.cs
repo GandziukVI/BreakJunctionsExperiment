@@ -125,6 +125,12 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
             }
         }
 
+        public void SetChannelsToDC()
+        {
+            foreach (AI_Channel a in ChannelArray)
+                if (a.Enabled) a.ChannelProperties.isAC = false;
+        }
+
 
         //========================= Binary data acquisition =========================
 

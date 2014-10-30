@@ -420,14 +420,14 @@ namespace BreakJunctions
             _SaveTimeTraceMeasuremrentFileNameChannel_01 = string.Empty;
 
             _SaveTimeTraceMeasureDialogChannel_01 = new SaveFileDialog();
-            _SaveTimeTraceMeasureDialogChannel_01.FileName = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "TimeTraceMeasurementChannel_01_");
+            _SaveTimeTraceMeasureDialogChannel_01.FileName = "TimeTraceMeasurementChannel_01_"; //String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "TimeTraceMeasurementChannel_01_");
             _SaveTimeTraceMeasureDialogChannel_01.DefaultExt = ".dat";
             _SaveTimeTraceMeasureDialogChannel_01.Filter = "Measure data (.dat)|*.dat";
 
             _SaveTimeTraceMeasuremrentFileNameChannel_02 = string.Empty;
 
             _SaveTimeTraceMeasureDialogChannel_02 = new SaveFileDialog();
-            _SaveTimeTraceMeasureDialogChannel_02.FileName = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "TimeTraceMeasurementChannel_02_");
+            _SaveTimeTraceMeasureDialogChannel_02.FileName = "TimeTraceMeasurementChannel_02_"; //String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "TimeTraceMeasurementChannel_02_");
             _SaveTimeTraceMeasureDialogChannel_02.DefaultExt = ".dat";
             _SaveTimeTraceMeasureDialogChannel_02.Filter = "Measure data (.dat)|*.dat";
 
@@ -438,7 +438,7 @@ namespace BreakJunctions
             _SaveRealTimeTraceMeasuremrentDataFileName = string.Empty;
 
             _SaveRealTimeTraceMeasureDataDialog = new SaveFileDialog();
-            _SaveRealTimeTraceMeasureDataDialog.FileName = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "RealTime_TimeTrace_Measurement_");
+            _SaveRealTimeTraceMeasureDataDialog.FileName = "RealTime_TimeTrace_Measurement_";//String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "RealTime_TimeTrace_Measurement_");
             _SaveRealTimeTraceMeasureDataDialog.DefaultExt = ".dat";
             _SaveRealTimeTraceMeasureDataDialog.Filter = "Measure data (.dat)|*.dat";
 

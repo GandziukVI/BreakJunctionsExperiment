@@ -47,7 +47,7 @@ namespace BreakJunctions.Measurements
             Agilent_DigitalOutput_LowLevel.Instance.AllToZero();
             _Channels.Read_AI_Channel_Status();
             int ACQ_Rate = _Channels.ACQ_Rate;
-            _Channels.SetChannelsToAC();
+            _Channels.SetChannelsToDC();
             _Channels.StartAnalogAcqusition();
 
             while(_MeasurementInProcess)
@@ -72,7 +72,7 @@ namespace BreakJunctions.Measurements
 
             _Channels.Read_AI_Channel_Status();
             int ACQ_Rate = _Channels.ACQ_Rate;
-            _Channels.SetChannelsToAC();
+            _Channels.SetChannelsToDC();
             _Channels.StartAnalogAcqusition();
 
             while (_MeasurementInProcess)

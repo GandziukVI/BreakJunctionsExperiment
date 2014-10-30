@@ -63,16 +63,19 @@ namespace BreakJunctions.Measurements
         private IRealTime_TimeTrace_Factory _ITimeTraceControllerFactory;
         private RealTime_TimeTrace_Controller _TimeTraceMeasurementControler;
 
+        private IMotionFactory _IRealTimeMotionFactory;
+        private MotionController _TimeTraceMotionController;
+
         #endregion
 
         #region Constructor / Destructor
 
         public MeasureRealTimeTimeTrace()
         {
-            //_ITimeTraceControllerFactory = new RealTime_Agilent_U2542A_TimeTrace_Controller_Factory();
             _ITimeTraceControllerFactory = new RT_Agilent_U2542A_TimeTrace_Controller_Factory();
-            //_ITimeTraceControllerFactory = new RT_Controller_Factory();
             _TimeTraceMeasurementControler = _ITimeTraceControllerFactory.GetRealTime_TimeTraceController();
+
+            
         }
 
         ~MeasureRealTimeTimeTrace()
