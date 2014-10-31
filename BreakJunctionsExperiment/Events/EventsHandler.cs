@@ -345,7 +345,7 @@ namespace BreakJunctions.Events
             }
         }
 
-        #region Motor Events
+        #region Motion Events
 
         //Motor current position reached
 
@@ -423,6 +423,8 @@ namespace BreakJunctions.Events
 
         #endregion
 
+        #endregion
+
         #region Real time TieTrace Curve Measureemnts Events
 
         private readonly object RealTime_TimeTraceDataArrived_EventLock = new object();
@@ -431,9 +433,9 @@ namespace BreakJunctions.Events
         {
             add
             {
-                lock(RealTime_TimeTraceDataArrived_EventLock)
+                lock (RealTime_TimeTraceDataArrived_EventLock)
                 {
-                    if(_RealTime_TimeTraceDataArrived == null || !_RealTime_TimeTraceDataArrived.GetInvocationList().Contains(value))
+                    if (_RealTime_TimeTraceDataArrived == null || !_RealTime_TimeTraceDataArrived.GetInvocationList().Contains(value))
                     {
                         _RealTime_TimeTraceDataArrived += value;
                     }
@@ -441,7 +443,7 @@ namespace BreakJunctions.Events
             }
             remove
             {
-                lock(RealTime_TimeTraceDataArrived_EventLock)
+                lock (RealTime_TimeTraceDataArrived_EventLock)
                 {
                     _RealTime_TimeTraceDataArrived -= value;
                 }
@@ -450,11 +452,11 @@ namespace BreakJunctions.Events
         public virtual void OnRealTime_TimeTraceDataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
             EventHandler<RealTime_TimeTrace_DataArrived_EventArgs> handler;
-            lock(RealTime_TimeTraceDataArrived_EventLock)
+            lock (RealTime_TimeTraceDataArrived_EventLock)
             {
                 handler = _RealTime_TimeTraceDataArrived;
             }
-            if(handler != null)
+            if (handler != null)
             {
                 handler(sender, e);
             }
@@ -466,9 +468,9 @@ namespace BreakJunctions.Events
         {
             add
             {
-                lock(RealTime_TimeTraceMeasurementStateChanged_EventLock)
+                lock (RealTime_TimeTraceMeasurementStateChanged_EventLock)
                 {
-                    if(_RealTime_TimeTraceMeasurementStateChanged == null || !_RealTime_TimeTraceMeasurementStateChanged.GetInvocationList().Contains(value))
+                    if (_RealTime_TimeTraceMeasurementStateChanged == null || !_RealTime_TimeTraceMeasurementStateChanged.GetInvocationList().Contains(value))
                     {
                         _RealTime_TimeTraceMeasurementStateChanged += value;
                     }
@@ -476,7 +478,7 @@ namespace BreakJunctions.Events
             }
             remove
             {
-                lock(RealTime_TimeTraceMeasurementStateChanged_EventLock)
+                lock (RealTime_TimeTraceMeasurementStateChanged_EventLock)
                 {
                     _RealTime_TimeTraceMeasurementStateChanged -= value;
                 }
@@ -485,11 +487,11 @@ namespace BreakJunctions.Events
         public virtual void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
         {
             EventHandler<RealTime_TimeTraceMeasurementStateChanged_EventArgs> handler;
-            lock(RealTime_TimeTraceMeasurementStateChanged_EventLock)
+            lock (RealTime_TimeTraceMeasurementStateChanged_EventLock)
             {
                 handler = _RealTime_TimeTraceMeasurementStateChanged;
             }
-            if(handler != null)
+            if (handler != null)
             {
                 handler(sender, e);
             }
@@ -501,9 +503,9 @@ namespace BreakJunctions.Events
         {
             add
             {
-                lock(RealTime_TimeTrace_ResetTimeShift_EventLock)
+                lock (RealTime_TimeTrace_ResetTimeShift_EventLock)
                 {
-                    if(_RealTime_TimeTrace_ResetTimeShift == null || !_RealTime_TimeTrace_ResetTimeShift.GetInvocationList().Contains(value))
+                    if (_RealTime_TimeTrace_ResetTimeShift == null || !_RealTime_TimeTrace_ResetTimeShift.GetInvocationList().Contains(value))
                     {
                         _RealTime_TimeTrace_ResetTimeShift += value;
                     }
@@ -511,7 +513,7 @@ namespace BreakJunctions.Events
             }
             remove
             {
-                lock(RealTime_TimeTrace_ResetTimeShift_EventLock)
+                lock (RealTime_TimeTrace_ResetTimeShift_EventLock)
                 {
                     _RealTime_TimeTrace_ResetTimeShift -= value;
                 }
@@ -520,11 +522,11 @@ namespace BreakJunctions.Events
         public virtual void OnRealTime_TimeTrace_ResetTimeShift(object sender, RealTime_TimeTrace_ResetTimeShift_EventArgs e)
         {
             EventHandler<RealTime_TimeTrace_ResetTimeShift_EventArgs> handler;
-            lock(RealTime_TimeTrace_ResetTimeShift_EventLock)
+            lock (RealTime_TimeTrace_ResetTimeShift_EventLock)
             {
                 handler = _RealTime_TimeTrace_ResetTimeShift;
             }
-            if(handler != null)
+            if (handler != null)
             {
                 handler(sender, e);
             }
@@ -544,7 +546,7 @@ namespace BreakJunctions.Events
             }
             remove
             {
-                lock(RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock)
+                lock (RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock)
                 {
                     _RealTime_TimeTrace_AveragedDataArrived_Sample_01 -= value;
                 }
@@ -553,11 +555,11 @@ namespace BreakJunctions.Events
         public virtual void OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01 e)
         {
             EventHandler<RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01> handler;
-            lock(RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock)
+            lock (RealTime_TimeTrace_AveragedDataArrived_Sample_01_EventLock)
             {
                 handler = _RealTime_TimeTrace_AveragedDataArrived_Sample_01;
             }
-            if(handler != null)
+            if (handler != null)
             {
                 handler(sender, e);
             }
@@ -612,7 +614,7 @@ namespace BreakJunctions.Events
             }
             remove
             {
-                lock(Motion_RealTime_EventLock)
+                lock (Motion_RealTime_EventLock)
                 {
                     _Motion_RealTime -= value;
                 }
@@ -621,20 +623,81 @@ namespace BreakJunctions.Events
         public virtual void OnMotion_RealTime(object sender, Motion_RealTime_EventArgs e)
         {
             EventHandler<Motion_RealTime_EventArgs> handler;
-            lock(Motion_RealTime_EventLock)
+            lock (Motion_RealTime_EventLock)
             {
                 handler = _Motion_RealTime;
             }
-            if(handler != null)
+            if (handler != null)
             {
                 handler(sender, e);
             }
         }
 
-        private readonly object OmMotion_RealTime_StartPositionReached_EventLock = new object();
+        private readonly object Motion_RealTime_StartPositionReached_EventLock = new object();
+        private EventHandler<Motion_RealTime_StartPositionReached_EventArgs> _Motion_RealTime_StartPositionReached;
+        public event EventHandler<Motion_RealTime_StartPositionReached_EventArgs> Motion_RealTime_StartPositionReached
+        {
+            add
+            {
+                lock (Motion_RealTime_StartPositionReached_EventLock)
+                {
+                    if (_Motion_RealTime_StartPositionReached == null || !_Motion_RealTime_StartPositionReached.GetInvocationList().Contains(value))
+                        _Motion_RealTime_StartPositionReached += value;
+                }
+            }
+            remove
+            {
+                lock (Motion_RealTime_StartPositionReached_EventLock)
+                {
+                    _Motion_RealTime_StartPositionReached -= value;
+                }
+            }
+        }
+        public virtual void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
+        {
+            EventHandler<Motion_RealTime_StartPositionReached_EventArgs> handler;
+            lock (Motion_RealTime_StartPositionReached_EventLock)
+            {
+                handler = _Motion_RealTime_StartPositionReached;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
 
-
-        #endregion
+        private readonly object Motion_RealTime_FinalDestinationReached_EventLock = new object();
+        private EventHandler<Motion_RealTime_FinalDestinationReached_EventArgs> _Motion_RealTime_FinalDestinationReached;
+        public event EventHandler<Motion_RealTime_FinalDestinationReached_EventArgs> Motion_RealTime_FinalDestinationReached
+        {
+            add
+            {
+                lock (Motion_RealTime_FinalDestinationReached_EventLock)
+                {
+                    if (_Motion_RealTime_FinalDestinationReached == null || !_Motion_RealTime_FinalDestinationReached.GetInvocationList().Contains(value))
+                        _Motion_RealTime_FinalDestinationReached += value;
+                }
+            }
+            remove
+            {
+                lock (Motion_RealTime_FinalDestinationReached_EventLock)
+                {
+                    _Motion_RealTime_FinalDestinationReached -= value;
+                }
+            }
+        }
+        public virtual void OnMotion_RealTime_FinalDestinationReached(object sender, Motion_RealTime_FinalDestinationReached_EventArgs e)
+        {
+            EventHandler<Motion_RealTime_FinalDestinationReached_EventArgs> handler;
+            lock (Motion_RealTime_FinalDestinationReached_EventLock)
+            {
+                handler = _Motion_RealTime_FinalDestinationReached;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
 
         #endregion
 

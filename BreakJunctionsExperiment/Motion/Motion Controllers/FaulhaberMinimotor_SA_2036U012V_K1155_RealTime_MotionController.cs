@@ -155,6 +155,7 @@ namespace BreakJunctions.Motion
             var MotorPositionMeasurementStartInfo = new ThreadStart(MeasureMotorPositionInThread);
             var MotorPositionMeasurementThread = new Thread(MotorPositionMeasurementStartInfo);
 
+            //Moving motor to its start position
             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
             _Motor.NotifyPosition();
             _Motor.InitiateMotion();
@@ -162,6 +163,7 @@ namespace BreakJunctions.Motion
             _IsStartPositionReached = false;
             _IsFinalDestinationReached = false;
 
+            //Sending information about current motor position
             while (!_IsMotionInProcess) ;
             MotorPositionMeasurementThread.Priority = ThreadPriority.AboveNormal;
             MotorPositionMeasurementThread.Start();
@@ -230,19 +232,21 @@ namespace BreakJunctions.Motion
                 {
                     _IsStartPositionReached = true;
 
-                    
+                    AllEventsHandler.Instance.OnMotion_RealTime_StartPositionReached(this, new Motion_RealTime_StartPositionReached_EventArgs());
                 }
                 else if (_IsStartPositionReached == false && _IsFinalDestinationReached == true)
                 {
                     _IsStartPositionReached = true;
                     _IsFinalDestinationReached = false;
 
-                    
+                    AllEventsHandler.Instance.OnMotion_RealTime_StartPositionReached(this, new Motion_RealTime_StartPositionReached_EventArgs());
                 }
                 else if (_IsStartPositionReached == true && _IsFinalDestinationReached == false)
                 {
                     _IsStartPositionReached = false;
                     _IsFinalDestinationReached = true;
+
+                    AllEventsHandler.Instance.OnMotion_RealTime_FinalDestinationReached(this, new Motion_RealTime_FinalDestinationReached_EventArgs());
                 }
             }
         }
@@ -270,5 +274,53 @@ namespace BreakJunctions.Motion
         }
 
         #endregion
+
+        private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
+        {
+            switch (_MotionKind)
+            {
+                case MotionKind.Single:
+                    {
+                        _IsMotionInProcess = true;
+                        _Motor.LoadRelativePosition(ConvertPotitionToMotorUnits(_FinalDestination));
+                        _Motor.InitiateMotion();
+                    } break;
+                case MotionKind.Repetitive:
+                    {
+                        if (_CurrentIteration <= _NumberRepetities)
+                        {
+                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(_FinalDestination));
+                            _Motor.InitiateMotion();
+                        }
+                        else
+                            _IsMotionInProcess = false;
+                    } break;
+                default:
+                    break;
+            }
+        }
+
+        private void OnMotion_RealTime_FinalDestinationreached(object sender, Motion_RealTime_FinalDestinationReached_EventArgs e)
+        {
+            switch (_MotionKind)
+            {
+                case MotionKind.Single:
+                    {
+                        _IsMotionInProcess = false;
+                    } break;
+                case MotionKind.Repetitive:
+                    {
+                        if (_CurrentIteration <= _NumberRepetities)
+                        {
+                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(_StartPosition));
+                            _Motor.InitiateMotion();
+                        }
+                        else
+                            _IsMotionInProcess = false;
+                    } break;
+                default:
+                    break;
+            }
+        }
     }
 }
