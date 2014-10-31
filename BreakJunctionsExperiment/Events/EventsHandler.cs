@@ -596,6 +596,46 @@ namespace BreakJunctions.Events
             }
         }
 
+        #region RealTime motion events
+
+        private readonly object Motion_RealTime_EventLock = new object();
+        private EventHandler<Motion_RealTime_EventArgs> _Motion_RealTime;
+        public event EventHandler<Motion_RealTime_EventArgs> Motion_RealTime
+        {
+            add
+            {
+                lock (Motion_RealTime_EventLock)
+                {
+                    if (_Motion_RealTime == null || !_Motion_RealTime.GetInvocationList().Contains(value))
+                        _Motion_RealTime += value;
+                }
+            }
+            remove
+            {
+                lock(Motion_RealTime_EventLock)
+                {
+                    _Motion_RealTime -= value;
+                }
+            }
+        }
+        public virtual void OnMotion_RealTime(object sender, Motion_RealTime_EventArgs e)
+        {
+            EventHandler<Motion_RealTime_EventArgs> handler;
+            lock(Motion_RealTime_EventLock)
+            {
+                handler = _Motion_RealTime;
+            }
+            if(handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        private readonly object OmMotion_RealTime_StartPositionReached_EventLock = new object();
+
+
+        #endregion
+
         #endregion
 
         #endregion

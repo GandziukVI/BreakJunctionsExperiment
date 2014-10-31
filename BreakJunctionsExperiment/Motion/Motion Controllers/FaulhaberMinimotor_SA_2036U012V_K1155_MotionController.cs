@@ -182,7 +182,7 @@ namespace Motion
             var responce = motorPort.ReadExisting();
 
             if (responce.Contains('p'))
-                AllEventsHandler.Instance.OnMotion(null, new Motion_EventArgs(_CurrentPosition));
+                AllEventsHandler.Instance.OnMotion(this, new Motion_EventArgs(_CurrentPosition));
         }
 
         /// <summary>
