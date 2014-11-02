@@ -33,7 +33,7 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.IO;
-using Motion;
+using BreakJunctions.Motion;
 
 using Aids.Graphics;
 using Microsoft.Research.DynamicDataDisplay.Charts;
@@ -1210,6 +1210,8 @@ namespace BreakJunctions
             #endregion
 
             #endregion
+
+            
         }
 
         private void on_cmdRealTime_TimeTrace_QuickSampleCheckClick(object sender, RoutedEventArgs e)
@@ -1330,7 +1332,12 @@ namespace BreakJunctions
 
             _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement(RealTime_TimeTrace_CurrentDataFile, 0.02, "");
             RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
-            RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Single);
+
+            RealTimeTimeTraceCurve_Samples.StartPosition = 0.0;
+            RealTimeTimeTraceCurve_Samples.FinalDestination = 0.005;
+            RealTimeTimeTraceCurve_Samples.RT_MotionKind = MotionKind.Repetitive;
+
+            RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Repetitive, 10);
         }
 
         private void backgroundRealTime_TimeTraceMeasureRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -1,6 +1,5 @@
 ﻿using BreakJunctions.Events;
 using FaulhaberMinimotors;
-using Motion;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -15,15 +14,6 @@ namespace BreakJunctions.Motion
     {
         #region FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController settings
 
-        private bool _IsMotionInProcess = false;
-        /// <summary>
-        /// Gets the motion state
-        /// </summary>
-        public bool IsMotionInProcess
-        {
-            get { return _IsMotionInProcess; }
-        }
-
         private double _MetersPerRevolution = 0.0005;
         /// <summary>
         /// Gets or sets the value of meters per revolution value
@@ -34,63 +24,6 @@ namespace BreakJunctions.Motion
             set { _MetersPerRevolution = value; }
         }
 
-        private double _CurrentPosition = 0.0;
-        /// <summary>
-        /// Gets or sets current micrometric bolt
-        /// position in meters [m]
-        /// </summary>
-        public double CurrentPosition
-        {
-            get { return _CurrentPosition; }
-            set { _CurrentPosition = value; }
-        }
-
-        private double _StartPosition = 0.0;
-        /// <summary>
-        /// Gets or sets start micrometric bolt
-        /// position in meters [m]
-        /// </summary>
-        public double StartPosition
-        {
-            get { return _StartPosition; }
-            set { _StartPosition = value; }
-        }
-
-        private double _FinalDestination = 0.0;
-        /// <summary>
-        /// Gets or sets final micrometric bolt
-        /// position in meters [m]
-        /// </summary>
-        public double FinalDestination
-        {
-            get { return _FinalDestination; }
-            set { _FinalDestination = value; }
-        }
-
-        private int _CurrentIteration = 0;
-
-        private int _NumberRepetities = 0;
-        /// <summary>
-        /// Gets or sets number of repetities
-        /// for repetitive measurement
-        /// </summary>
-        public int NumberRepetities
-        {
-            get { return _NumberRepetities; }
-            set { _NumberRepetities = value; }
-        }
-
-        private MotionDirection _CurrentDirection;
-
-        private MotionKind _MotionKind = MotionKind.Single;
-        /// <summary>
-        /// Gets or sets motion kind (Single/Repetitive)
-        /// </summary>
-        public MotionKind MotionKind
-        {
-            get { return _MotionKind; }
-            set { _MotionKind = value; }
-        }
         /// <summary>
         /// Converts motor position from meters to
         /// motor-specified value
@@ -137,13 +70,23 @@ namespace BreakJunctions.Motion
             get { return _Motor; }
         }
 
+        private ThreadStart MotorPositionMeasurementStartInfo;
+        private Thread MotorPositionMeasurementThread;
+
         #endregion
 
         #region Constructor
 
-        public FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController()
+        public FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
+            _Motor = new FaulhaberMinimotor_SA_2036U012V_K1155(comPort, baud, parity, dataBits, stopBits, returnToken);
 
+            InitDevice();
+
+            _Motor.COM_Port.DataReceived += _COM_Device_DataReceived;
+
+            AllEventsHandler.Instance.Motion_RealTime_StartPositionReached += OnMotion_RealTime_StartPositionReached;
+            AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached += OnMotion_RealTime_FinalDestinationreached;
         }
 
         #endregion
@@ -161,8 +104,11 @@ namespace BreakJunctions.Motion
 
         public override void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, int numberOfRepetities = 1)
         {
-            var MotorPositionMeasurementStartInfo = new ThreadStart(MeasureMotorPositionInThread);
-            var MotorPositionMeasurementThread = new Thread(MotorPositionMeasurementStartInfo);
+            CurrentIteration = 0;
+            NumberRepetities = numberOfRepetities;
+
+            MotorPositionMeasurementStartInfo = new ThreadStart(MeasureMotorPositionInThread);
+            MotorPositionMeasurementThread = new Thread(MotorPositionMeasurementStartInfo);
 
             //Moving motor to its start position
             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
@@ -173,7 +119,7 @@ namespace BreakJunctions.Motion
             _IsFinalDestinationReached = false;
 
             //Sending information about current motor position
-            while (!_IsMotionInProcess) ;
+            while (!IsMotionInProcess) ;
             MotorPositionMeasurementThread.Priority = ThreadPriority.AboveNormal;
             MotorPositionMeasurementThread.Start();
         }
@@ -215,7 +161,15 @@ namespace BreakJunctions.Motion
 
         public override void Dispose()
         {
-            throw new NotImplementedException();
+            _Motor.COM_Port.DataReceived -= _COM_Device_DataReceived;
+
+            AllEventsHandler.Instance.Motion_RealTime_StartPositionReached -= OnMotion_RealTime_StartPositionReached;
+            AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached -= OnMotion_RealTime_FinalDestinationreached;
+
+            _Motor.DisableDevice();
+            _Motor.Dispose();
+
+            MotorPositionMeasurementThread.Abort();
         }
 
         #endregion
@@ -272,7 +226,7 @@ namespace BreakJunctions.Motion
 
             double CurrentMotorPosition;
 
-            while(_IsMotionInProcess)
+            while(IsMotionInProcess)
             {
                 CurrentMotorPosition = ConvertMotorUnitsIntoPosition(_Motor.GetPosition());
                 CurrentDateTime = DateTime.Now;
@@ -286,23 +240,26 @@ namespace BreakJunctions.Motion
 
         private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
         {
-            switch (_MotionKind)
+            switch (MotionKind)
             {
                 case MotionKind.Single:
                     {
-                        _IsMotionInProcess = true;
-                        _Motor.LoadRelativePosition(ConvertPotitionToMotorUnits(_FinalDestination));
+                        IsMotionInProcess = true;
+                        _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(FinalDestination));
+                        _Motor.NotifyPosition();
                         _Motor.InitiateMotion();
                     } break;
                 case MotionKind.Repetitive:
                     {
-                        if (_CurrentIteration <= _NumberRepetities)
+                        if (CurrentIteration <= NumberRepetities)
                         {
-                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(_FinalDestination));
+                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(FinalDestination));
+                            _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
+                            ++CurrentIteration;
                         }
                         else
-                            _IsMotionInProcess = false;
+                            IsMotionInProcess = false;
                     } break;
                 default:
                     break;
@@ -311,21 +268,23 @@ namespace BreakJunctions.Motion
 
         private void OnMotion_RealTime_FinalDestinationreached(object sender, Motion_RealTime_FinalDestinationReached_EventArgs e)
         {
-            switch (_MotionKind)
+            switch (MotionKind)
             {
                 case MotionKind.Single:
                     {
-                        _IsMotionInProcess = false;
+                        IsMotionInProcess = false;
                     } break;
                 case MotionKind.Repetitive:
                     {
-                        if (_CurrentIteration <= _NumberRepetities)
+                        if (CurrentIteration <= NumberRepetities)
                         {
-                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(_StartPosition));
+                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
+                            _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
+                            ++CurrentIteration;
                         }
                         else
-                            _IsMotionInProcess = false;
+                            IsMotionInProcess = false;
                     } break;
                 default:
                     break;

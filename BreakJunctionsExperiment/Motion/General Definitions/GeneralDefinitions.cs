@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Motion
+namespace BreakJunctions.Motion
 {
     public enum MotionKind { Single, Repetitive }
     public enum MotionDirection { Up, Down }

@@ -5,10 +5,9 @@ using System.Text;
 using System.IO.Ports;
 
 using FaulhaberMinimotors;
-
 using BreakJunctions.Events;
 
-namespace Motion
+namespace BreakJunctions.Motion
 {
     public class FaulhaberMinimotor_SA_2036U012V_K1155_MotionController : MotionController
     {
@@ -32,15 +31,6 @@ namespace Motion
 
         #region Motion settings
 
-        private bool _IsMotionInProcess = false;
-        /// <summary>
-        /// Gets the motion state
-        /// </summary>
-        public bool IsMotionInProcess
-        {
-            get { return _IsMotionInProcess; }
-        }
-
         private double _MetersPerRevolution = 0.0005;
         /// <summary>
         /// Gets or sets the value of meters per revolution value
@@ -51,63 +41,6 @@ namespace Motion
             set { _MetersPerRevolution = value; }
         }
 
-        private double _CurrentPosition = 0.0;
-        /// <summary>
-        /// Gets or sets current micrometric bolt
-        /// position in meters [m]
-        /// </summary>
-        public double CurrentPosition
-        {
-            get { return _CurrentPosition; }
-            set { _CurrentPosition = value; }
-        }
-
-        private double _StartPosition = 0.0;
-        /// <summary>
-        /// Gets or sets start micrometric bolt
-        /// position in meters [m]
-        /// </summary>
-        public double StartPosition
-        {
-            get { return _StartPosition; }
-            set { _StartPosition = value; }
-        }
-
-        private double _FinalDestination = 0.0;
-        /// <summary>
-        /// Gets or sets final micrometric bolt
-        /// position in meters [m]
-        /// </summary>
-        public double FinalDestination
-        {
-            get { return _FinalDestination; }
-            set { _FinalDestination = value; }
-        }
-
-        private int _CurrentIteration = 0;
-
-        private int _NumberRepetities = 0;
-        /// <summary>
-        /// Gets or sets number of repetities
-        /// for repetitive measurement
-        /// </summary>
-        public int NumberRepetities
-        {
-            get { return _NumberRepetities; }
-            set { _NumberRepetities = value; }
-        }
-
-        private MotionDirection _CurrentDirection;
-
-        private MotionKind _MotionKind = MotionKind.Single;
-        /// <summary>
-        /// Gets or sets motion kind (Single/Repetitive)
-        /// </summary>
-        public MotionKind MotionKind
-        {
-            get { return _MotionKind; }
-            set { _MotionKind = value; }
-        }
         /// <summary>
         /// Converts motor position from meters to
         /// motor-specified value
@@ -182,7 +115,7 @@ namespace Motion
             var responce = motorPort.ReadExisting();
 
             if (responce.Contains('p'))
-                AllEventsHandler.Instance.OnMotion(this, new Motion_EventArgs(_CurrentPosition));
+                AllEventsHandler.Instance.OnMotion(this, new Motion_EventArgs(CurrentPosition));
         }
 
         /// <summary>
@@ -195,21 +128,21 @@ namespace Motion
         {
             var positionIncrement = _MetersPerRevolution / NotificationsPerMilimeter / 2;
 
-            switch (_MotionKind)
+            switch (MotionKind)
             {
                 case MotionKind.Single:
                     {
-                        if ((_CurrentPosition <= _FinalDestination) && (_IsMotionInProcess == true) && (_CurrentDirection == MotionDirection.Up))
+                        if ((CurrentPosition <= FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Up))
                         {
-                            _CurrentPosition += _MetersPerRevolution / NotificationsPerMilimeter / 2;
-                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
+                            CurrentPosition += _MetersPerRevolution / NotificationsPerMilimeter / 2;
+                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
                         }
-                        else if ((_CurrentPosition > _FinalDestination) && (_IsMotionInProcess == true) && (_CurrentDirection == MotionDirection.Down))
+                        else if ((CurrentPosition > FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Down))
                         {
-                            _CurrentPosition -= _MetersPerRevolution / NotificationsPerMilimeter / 2;
-                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
+                            CurrentPosition -= _MetersPerRevolution / NotificationsPerMilimeter / 2;
+                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
                         }
@@ -218,24 +151,24 @@ namespace Motion
                 case MotionKind.Repetitive:
                     {
                         //Checking if measurement is completed
-                        if (_CurrentIteration >= _NumberRepetities)
+                        if (CurrentIteration >= NumberRepetities)
                             this.StopMotion();
 
-                        if (_IsMotionInProcess == true)
+                        if (IsMotionInProcess == true)
                         {
 
-                            if (_CurrentPosition >= _FinalDestination - positionIncrement)
+                            if (CurrentPosition >= FinalDestination - positionIncrement)
                             {
                                 this.SetDirection(MotionDirection.Down);
                             }
-                            else if (_CurrentPosition <= _StartPosition + positionIncrement)
+                            else if (CurrentPosition <= StartPosition + positionIncrement)
                             {
                                 this.SetDirection(MotionDirection.Up);
                             }
 
-                            _CurrentPosition += (_CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+                            CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
 
-                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(_CurrentPosition));
+                            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
                         }
@@ -252,21 +185,21 @@ namespace Motion
         public override void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, int numberOfRepetities = 1)
         {
             //Setting motion parameters
-            _StartPosition = StartPosition;
-            _CurrentPosition = StartPosition;
-            _FinalDestination = FinalDestination;
-            _NumberRepetities = numberOfRepetities;
-            _motionVelosityUnits = motionVelosityUnits;
-            _MotionKind = motionKind;
+            this.StartPosition = StartPosition;
+            this.CurrentPosition = StartPosition;
+            this.FinalDestination = FinalDestination;
+            this.NumberRepetities = numberOfRepetities;
+            this.motionVelosityUnits = motionVelosityUnits;
+            this.MotionKind = motionKind;
 
-            if (_StartPosition <= _FinalDestination)
+            if (this.StartPosition <= this.FinalDestination)
                 SetDirection(MotionDirection.Up);
             else SetDirection(MotionDirection.Down);
 
-            _IsMotionInProcess = true;
+            this.IsMotionInProcess = true;
 
             //Going to the start position
-            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(_StartPosition));
+            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(this.StartPosition));
             _Motor.NotifyPosition();
             _Motor.InitiateMotion();
         }
@@ -289,7 +222,7 @@ namespace Motion
 
         public override void StopMotion()
         {
-            _IsMotionInProcess = false;
+            IsMotionInProcess = false;
             //Signal that the motion is completed
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
@@ -316,10 +249,10 @@ namespace Motion
 
         public override void SetDirection(MotionDirection motionDirection)
         {
-            if (_CurrentDirection != motionDirection)
+            if (CurrentDirection != motionDirection)
             {
-                _CurrentDirection = motionDirection;
-                ++_CurrentIteration;
+                CurrentDirection = motionDirection;
+                ++CurrentIteration;
             }
         }
 

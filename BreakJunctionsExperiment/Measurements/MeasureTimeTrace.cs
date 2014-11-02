@@ -11,7 +11,7 @@ using BreakJunctions.Plotting;
 using SMU;
 using SMU.KEITHLEY_2602A;
 
-using Motion;
+using BreakJunctions.Motion;
 
 namespace BreakJunctions.Measurements
 {

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-using Motion;
+using BreakJunctions.Motion;
 
 namespace BreakJunctions
 {

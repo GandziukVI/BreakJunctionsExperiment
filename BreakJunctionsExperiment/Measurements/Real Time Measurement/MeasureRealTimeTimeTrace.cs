@@ -7,8 +7,7 @@ using System.Text;
 using Agilent_U2542A_With_ExtensionBox.Classes;
 using Agilent_U2542A_With_ExtensionBox.Interfaces;
 
-using Motion;
-
+using BreakJunctions.Motion;
 using BreakJunctions.Events;
 
 namespace BreakJunctions.Measurements
@@ -26,7 +25,11 @@ namespace BreakJunctions.Measurements
         public double StartPosition
         {
             get { return _StartPosition; }
-            set { _StartPosition = value; }
+            set 
+            {
+                _TimeTraceMotionController.StartPosition = value;
+                _StartPosition = value; 
+            }
         }
 
         private double _CurrentPosition = 0.0;
@@ -46,7 +49,22 @@ namespace BreakJunctions.Measurements
         public double FinalDestination
         {
             get { return _FinalDestination; }
-            set { _FinalDestination = value; }
+            set 
+            {
+                _TimeTraceMotionController.FinalDestination = value;
+                _FinalDestination = value; 
+            }
+        }
+
+        private MotionKind _RT_MotionKind;
+        public MotionKind RT_MotionKind
+        {
+            get { return _RT_MotionKind; }
+            set
+            {
+                _TimeTraceMotionController.MotionKind = value;
+                _RT_MotionKind = value;
+            }
         }
 
         private IMotionFactory _IRealTimeMotionFactory;
@@ -113,7 +131,7 @@ namespace BreakJunctions.Measurements
             _ITimeTraceControllerFactory = new RT_Agilent_U2542A_TimeTrace_Controller_Factory();
             _TimeTraceMeasurementControler = _ITimeTraceControllerFactory.GetRealTime_TimeTraceController();
 
-            _IRealTimeMotionFactory = new FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory("COM5"); // Modification here to establish correct serial port needed
+            _IRealTimeMotionFactory = new FaulhaberMinimotor_SA_2036_U012V_K1155_RealTime_ControllerFactory("COM5"); // Modification here to establish correct serial port needed
             _TimeTraceMotionController = _IRealTimeMotionFactory.GetMotionController();
         }
 

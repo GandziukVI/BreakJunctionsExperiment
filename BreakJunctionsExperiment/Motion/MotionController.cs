@@ -3,10 +3,88 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Motion
+namespace BreakJunctions.Motion
 {
     public abstract class MotionController : IDisposable
     {
+        private bool _IsMotionInProcess = false;
+        /// <summary>
+        /// Gets or sets the motion state
+        /// </summary>
+        public bool IsMotionInProcess
+        {
+            get { return _IsMotionInProcess; }
+            set { _IsMotionInProcess = value; }
+        }
+
+        private double _CurrentPosition = 0.0;
+        /// <summary>
+        /// Gets or sets current micrometric bolt
+        /// position in meters [m]
+        /// </summary>
+        public double CurrentPosition
+        {
+            get { return _CurrentPosition; }
+            set { _CurrentPosition = value; }
+        }
+
+        private double _StartPosition = 0.0;
+        /// <summary>
+        /// Gets or sets start micrometric bolt
+        /// position in meters [m]
+        /// </summary>
+        public double StartPosition
+        {
+            get { return _StartPosition; }
+            set { _StartPosition = value; }
+        }
+
+        private double _FinalDestination = 0.0;
+        /// <summary>
+        /// Gets or sets final micrometric bolt
+        /// position in meters [m]
+        /// </summary>
+        public double FinalDestination
+        {
+            get { return _FinalDestination; }
+            set { _FinalDestination = value; }
+        }
+
+        private int _CurrentIteration = 0;
+        public int CurrentIteration
+        {
+            get { return _CurrentIteration; }
+            set { _CurrentIteration = value; }
+        }
+
+        private int _NumberRepetities = 0;
+        /// <summary>
+        /// Gets or sets number of repetities
+        /// for repetitive measurement
+        /// </summary>
+        public int NumberRepetities
+        {
+            get { return _NumberRepetities; }
+            set { _NumberRepetities = value; }
+        }
+
+        private MotionDirection _CurrentDirection;
+        public MotionDirection CurrentDirection
+        {
+            get { return _CurrentDirection; }
+            set { _CurrentDirection = value; }
+        }
+
+        private MotionKind _MotionKind = MotionKind.Single;
+        /// <summary>
+        /// Gets or sets motion kind (Single/Repetitive)
+        /// </summary>
+        public MotionKind MotionKind
+        {
+            get { return _MotionKind; }
+            set { _MotionKind = value; }
+        }
+
         private int _NotificationsPerMilimeter = 10000;
         /// <summary>
         /// The number of notifications per milimeter

@@ -4,7 +4,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 
-namespace Motion
+namespace BreakJunctions.Motion
 {
     public class FaulhaberMinimotor_SA_2036U012V_K1155_ControllerFactory : IMotionFactory
     {
