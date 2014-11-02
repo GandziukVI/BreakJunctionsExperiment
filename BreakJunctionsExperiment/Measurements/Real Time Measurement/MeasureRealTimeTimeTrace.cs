@@ -172,7 +172,7 @@ namespace BreakJunctions.Measurements
 
             #region Motor motion initialization
 
-            _TimeTraceMotionController.InitDevice();
+            _TimeTraceMotionController.StartMotion(_StartPosition, _FinalDestination, motionKind, numberOfRepetities);
 
             #endregion
 

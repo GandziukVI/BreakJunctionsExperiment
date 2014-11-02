@@ -139,6 +139,15 @@ namespace BreakJunctions.Motion
 
         #endregion
 
+        #region Constructor
+
+        public FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController()
+        {
+
+        }
+
+        #endregion
+
         #region MotionController implementation
 
         public override bool InitDevice()
