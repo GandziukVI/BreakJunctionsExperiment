@@ -75,21 +75,15 @@ namespace BreakJunctions.Motion
         DateTime CurrentDateTime;
         TimeSpan DateTimeDifference;
 
-        bool Read_COM_Data_Success;
         string In_COM_Port = string.Empty;
+        string COM_Data_Residue = string.Empty;
 
         #endregion
 
         #region Constructor
 
-        FileStream fs;
-        StreamWriter wr;
-
         public FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
-            fs = File.Open("E:\\hello.txt", FileMode.OpenOrCreate, FileAccess.Write);
-            wr = new StreamWriter(fs);
-
             _Motor = new FaulhaberMinimotor_SA_2036U012V_K1155(comPort, baud, parity, dataBits, stopBits, returnToken);
 
             InitDevice();
@@ -100,8 +94,6 @@ namespace BreakJunctions.Motion
             AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached += OnMotion_RealTime_FinalDestinationreached;
 
             AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurement_StateChanged;
-
-            AllEventsHandler.Instance.Motion_RealTime += OnMotion_RealTime_Test;
         }
 
         #endregion
@@ -176,9 +168,6 @@ namespace BreakJunctions.Motion
 
             _Motor.DisableDevice();
             _Motor.Dispose();
-
-            wr.Close();
-            fs.Close();
         }
 
         #endregion
@@ -206,14 +195,23 @@ namespace BreakJunctions.Motion
             CurrentDateTime = DateTime.Now;
             DateTimeDifference = CurrentDateTime.Subtract(StartDateTime);
 
+            // Handling the motion controller answer to give correct current
+            // position value
             if (!responce.EndsWith("\n"))
             {
-                In_COM_Port += responce;
-                Read_COM_Data_Success = false;
+                In_COM_Port += responce.TrimEnd("\r\np".ToCharArray());
             }
             else
             {
-                Read_COM_Data_Success = true;
+                var splitData = responce.Split("\r\np".ToCharArray()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+
+                if(splitData.Length > 0)
+                    In_COM_Port += splitData[0];
+
+                if (splitData.Length > 1)
+                    COM_Data_Residue = splitData[1];
+                else 
+                    COM_Data_Residue = string.Empty;
 
                 if (IsMotionInProcess)
                 {
@@ -231,10 +229,10 @@ namespace BreakJunctions.Motion
                     }
                 }
 
-                In_COM_Port = string.Empty;
-                Read_COM_Data_Success = false;
+                In_COM_Port = COM_Data_Residue;
             }
 
+            // Motion (Single & Repetitive) implementation
             if (responce.Contains('p'))
             {
                 if (_IsStartPositionReached == false && _IsFinalDestinationReached == false)
@@ -322,11 +320,6 @@ namespace BreakJunctions.Motion
             {
                 StopMotion();
             }
-        }
-
-        private void OnMotion_RealTime_Test(object sender, Motion_RealTime_EventArgs e)
-        {
-            wr.Write(String.Format("{0}\t{1}\r\n", e.Time, e.Position));
         }
     }
 }
