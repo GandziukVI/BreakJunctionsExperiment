@@ -189,7 +189,10 @@ namespace FaulhaberMinimotors
 
         public int GetPosition()
         {
-            return Convert.ToInt32(RequestQuery("POS"));
+            var responce = RequestQuery("POS").TrimEnd("\r\n".ToCharArray());
+            int result;
+            int.TryParse(responce, out result);
+            return result;
         }
 
         public void SetOutputVoltage()

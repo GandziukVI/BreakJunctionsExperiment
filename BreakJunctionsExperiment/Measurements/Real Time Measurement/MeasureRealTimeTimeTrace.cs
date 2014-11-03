@@ -9,6 +9,7 @@ using Agilent_U2542A_With_ExtensionBox.Interfaces;
 
 using BreakJunctions.Motion;
 using BreakJunctions.Events;
+using System.Threading;
 
 namespace BreakJunctions.Measurements
 {
@@ -188,15 +189,13 @@ namespace BreakJunctions.Measurements
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
             AllEventsHandler.Instance.OnRealTime_TimeTrace_ResetTimeShift(this, new RealTime_TimeTrace_ResetTimeShift_EventArgs());
 
-            #region Motor motion initialization
+            var StartAcquisitionInfo = new ThreadStart(_TimeTraceMeasurementControler.ContiniousAcquisition);
+            var StartAcquisitionThread = new Thread(StartAcquisitionInfo);
+
+            StartAcquisitionThread.Priority = ThreadPriority.Highest;
+            StartAcquisitionThread.Start();
 
             _TimeTraceMotionController.StartMotion(_StartPosition, _FinalDestination, motionKind, numberOfRepetities);
-
-            #endregion
-
-            _TimeTraceMeasurementControler.ContiniousAcquisition();
-
-            e.Cancel = true;
         }
 
         public void StopMeasurement()

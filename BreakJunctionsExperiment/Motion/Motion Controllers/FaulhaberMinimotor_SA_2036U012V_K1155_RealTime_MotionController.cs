@@ -2,6 +2,7 @@
 using FaulhaberMinimotors;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -70,15 +71,25 @@ namespace BreakJunctions.Motion
             get { return _Motor; }
         }
 
-        private ThreadStart MotorPositionMeasurementStartInfo;
-        private Thread MotorPositionMeasurementThread;
+        DateTime StartDateTime;
+        DateTime CurrentDateTime;
+        TimeSpan DateTimeDifference;
+
+        bool Read_COM_Data_Success;
+        string In_COM_Port = string.Empty;
 
         #endregion
 
         #region Constructor
 
+        FileStream fs;
+        StreamWriter wr;
+
         public FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
+            fs = File.Open("E:\\hello.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            wr = new StreamWriter(fs);
+
             _Motor = new FaulhaberMinimotor_SA_2036U012V_K1155(comPort, baud, parity, dataBits, stopBits, returnToken);
 
             InitDevice();
@@ -87,6 +98,10 @@ namespace BreakJunctions.Motion
 
             AllEventsHandler.Instance.Motion_RealTime_StartPositionReached += OnMotion_RealTime_StartPositionReached;
             AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached += OnMotion_RealTime_FinalDestinationreached;
+
+            AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurement_StateChanged;
+
+            AllEventsHandler.Instance.Motion_RealTime += OnMotion_RealTime_Test;
         }
 
         #endregion
@@ -107,9 +122,6 @@ namespace BreakJunctions.Motion
             CurrentIteration = 0;
             NumberRepetities = numberOfRepetities;
 
-            MotorPositionMeasurementStartInfo = new ThreadStart(MeasureMotorPositionInThread);
-            MotorPositionMeasurementThread = new Thread(MotorPositionMeasurementStartInfo);
-
             //Moving motor to its start position
             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
             _Motor.NotifyPosition();
@@ -117,11 +129,6 @@ namespace BreakJunctions.Motion
 
             _IsStartPositionReached = false;
             _IsFinalDestinationReached = false;
-
-            //Sending information about current motor position
-            while (!IsMotionInProcess) ;
-            MotorPositionMeasurementThread.Priority = ThreadPriority.AboveNormal;
-            MotorPositionMeasurementThread.Start();
         }
 
         public override void StartMotion(TimeSpan FinalTime)
@@ -136,12 +143,13 @@ namespace BreakJunctions.Motion
 
         public override void MoveToZeroPosition()
         {
-            throw new NotImplementedException();
+            _Motor.LoadAbsolutePosition(0);
+            _Motor.InitiateMotion();
         }
 
         public override void StopMotion()
         {
-            throw new NotImplementedException();
+            _Motor.DisableDevice();
         }
 
         public override void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
@@ -169,7 +177,8 @@ namespace BreakJunctions.Motion
             _Motor.DisableDevice();
             _Motor.Dispose();
 
-            MotorPositionMeasurementThread.Abort();
+            wr.Close();
+            fs.Close();
         }
 
         #endregion
@@ -188,6 +197,43 @@ namespace BreakJunctions.Motion
         {
             var motorPort = sender as SerialPort;
             var responce = motorPort.ReadExisting();
+
+            if(!IsMotionInProcess)
+            {
+                StartDateTime = DateTime.Now;
+            }
+
+            CurrentDateTime = DateTime.Now;
+            DateTimeDifference = CurrentDateTime.Subtract(StartDateTime);
+
+            if (!responce.EndsWith("\n"))
+            {
+                In_COM_Port += responce;
+                Read_COM_Data_Success = false;
+            }
+            else
+            {
+                Read_COM_Data_Success = true;
+
+                if (IsMotionInProcess)
+                {
+                    _Motor.SendCommandRequest("POS");
+
+                    int intCurrentMotorPosition;
+                    double CurrentMotorPosition;
+
+                    bool success = int.TryParse(In_COM_Port.TrimEnd("\r\np".ToCharArray()), out intCurrentMotorPosition);
+
+                    if (success)
+                    {
+                        CurrentMotorPosition = ConvertMotorUnitsIntoPosition(intCurrentMotorPosition);
+                        AllEventsHandler.Instance.OnMotion_RealTime(this, new Motion_RealTime_EventArgs(DateTimeDifference.TotalSeconds, CurrentMotorPosition));
+                    }
+                }
+
+                In_COM_Port = string.Empty;
+                Read_COM_Data_Success = false;
+            }
 
             if (responce.Contains('p'))
             {
@@ -216,35 +262,14 @@ namespace BreakJunctions.Motion
 
         #endregion
 
-        #region Motor position measure in thread implementtaion
-
-        private void MeasureMotorPositionInThread()
-        {
-            DateTime StartDateTime = DateTime.Now;
-            DateTime CurrentDateTime;
-            TimeSpan DateTimeDifference;
-
-            double CurrentMotorPosition;
-
-            while(IsMotionInProcess)
-            {
-                CurrentMotorPosition = ConvertMotorUnitsIntoPosition(_Motor.GetPosition());
-                CurrentDateTime = DateTime.Now;
-                DateTimeDifference = CurrentDateTime.Subtract(StartDateTime);
-
-                AllEventsHandler.Instance.OnMotion_RealTime(this, new Motion_RealTime_EventArgs(DateTimeDifference.TotalSeconds, CurrentPosition));
-            }
-        }
-
-        #endregion
-
         private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
         {
+            IsMotionInProcess = true;
+
             switch (MotionKind)
             {
                 case MotionKind.Single:
                     {
-                        IsMotionInProcess = true;
                         _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(FinalDestination));
                         _Motor.NotifyPosition();
                         _Motor.InitiateMotion();
@@ -289,6 +314,19 @@ namespace BreakJunctions.Motion
                 default:
                     break;
             }
+        }
+
+        private void OnRealTime_TimeTraceMeasurement_StateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
+        {
+            if (e.MeasurementInProcess == false)
+            {
+                StopMotion();
+            }
+        }
+
+        private void OnMotion_RealTime_Test(object sender, Motion_RealTime_EventArgs e)
+        {
+            wr.Write(String.Format("{0}\t{1}\r\n", e.Time, e.Position));
         }
     }
 }
