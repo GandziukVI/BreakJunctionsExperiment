@@ -121,6 +121,8 @@ namespace BreakJunctions.Measurements
         private IRealTime_TimeTrace_Factory _ITimeTraceControllerFactory;
         private RealTime_TimeTrace_Controller _TimeTraceMeasurementControler;
 
+        private Thread StartAcquisitionThread;
+
         #endregion
 
         #endregion
@@ -182,25 +184,34 @@ namespace BreakJunctions.Measurements
             }
         }
 
-        public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind motionKind, int numberOfRepetities = 1)
+        public void StartMeasurement(MotionKind __MotionKind, int __NumberOfRepetities = 1)
         {
             _initDAC();
             
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
             AllEventsHandler.Instance.OnRealTime_TimeTrace_ResetTimeShift(this, new RealTime_TimeTrace_ResetTimeShift_EventArgs());
 
-            var StartAcquisitionInfo = new ThreadStart(_TimeTraceMeasurementControler.ContiniousAcquisition);
-            var StartAcquisitionThread = new Thread(StartAcquisitionInfo);
-
-            StartAcquisitionThread.Priority = ThreadPriority.Highest;
-            StartAcquisitionThread.Start();
-
-            _TimeTraceMotionController.StartMotion(_StartPosition, _FinalDestination, motionKind, numberOfRepetities);
+            _TimeTraceMotionController.StartMotion(_StartPosition, _FinalDestination, __MotionKind, __NumberOfRepetities);
         }
 
         public void StopMeasurement()
         {
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
+        }
+
+        private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
+        {
+            _TimeTraceMeasurementControler.MeasurementInProcess = true;
+
+            StartAcquisitionThread = new Thread(_TimeTraceMeasurementControler.ContiniousAcquisition);
+
+            StartAcquisitionThread.Priority = ThreadPriority.Highest;
+            StartAcquisitionThread.Start();
+        }
+
+        private void OnMotion_RealTime_FinalDestinationReached(object sender, Motion_RealTime_FinalDestinationReached_EventArgs e)
+        {
+            _TimeTraceMeasurementControler.MeasurementInProcess = false;
         }
 
         #endregion

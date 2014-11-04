@@ -167,6 +167,12 @@ namespace BreakJunctions.Motion
             _Motor.DisableDevice();
         }
 
+        public override void ContinueMotion()
+        {
+            _Motor.EnableDevice();
+            _Motor.InitiateMotion();
+        }
+
         public override void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
         {
             throw new NotImplementedException();
@@ -222,7 +228,7 @@ namespace BreakJunctions.Motion
                     }
                     else
                     {
-                        var splitData = responce.Split("\r\np".ToCharArray()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                        var splitData = responce.Split("\r\np".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                         if (splitData.Length > 0)
                             In_COM_Port += splitData[0];
@@ -370,15 +376,14 @@ namespace BreakJunctions.Motion
 
             if(e.MeasurementInProcess == true)
             {
-                _Motor.EnableDevice();
+                ContinueMotion();
                 _COM_Data_TransformingAndSendingThread = new Thread(_TransformAndEmit_COM_Data);
-                _COM_Data_TransformingAndSendingThread.Priority = ThreadPriority.AboveNormal;
+                _COM_Data_TransformingAndSendingThread.Priority = ThreadPriority.Normal;
                 _COM_Data_TransformingAndSendingThread.Start();
                 while (!_COM_Data_TransformingAndSendingThread.IsAlive) ;
             }
             else
             {
-                _Motor.DisableDevice();
                 StopMotion();
                 var success = _COM_Data_TransformingAndSendingThread.Join(1000);
                 if (!success)

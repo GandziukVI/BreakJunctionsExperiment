@@ -227,6 +227,12 @@ namespace BreakJunctions.Motion
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
+        public override void ContinueMotion()
+        {
+            _Motor.EnableDevice();
+            _Motor.InitiateMotion();
+        }
+
         public override void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
         {
             switch (VelosityUnits)

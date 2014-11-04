@@ -128,6 +128,10 @@ namespace BreakJunctions.Motion
         /// </summary>
         abstract public void StopMotion();
         /// <summary>
+        /// Continues the motion
+        /// </summary>
+        abstract public void ContinueMotion();
+        /// <summary>
         /// Sets the velosity of motion
         /// </summary>
         /// <param name="VelosityValue">The value of velosity in appropriate units</param>

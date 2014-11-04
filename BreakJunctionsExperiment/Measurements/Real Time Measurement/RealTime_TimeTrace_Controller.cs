@@ -10,6 +10,7 @@ namespace BreakJunctions.Measurements
 {
     public abstract class RealTime_TimeTrace_Controller : IDisposable
     {
+        public bool MeasurementInProcess { get; set; }
         /// <summary>
         /// Realizes the continious time trace acquisition
         /// </summary>

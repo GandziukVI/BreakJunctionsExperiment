@@ -1344,6 +1344,9 @@ namespace BreakJunctions
             if (RealTimeTimeTraceCurve_Samples != null)
                 RealTimeTimeTraceCurve_Samples.Dispose();
 
+            if (_RealTime_TimeTraceSingleMeasurementSamples != null)
+                _RealTime_TimeTraceSingleMeasurementSamples.Dispose();
+
             string RealTime_TimeTrace_CurrentDataFile = GetFileNameWithIncrement(_SaveRealTimeTraceMeasuremrentDataFileName); ;
 
             _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement(RealTime_TimeTrace_CurrentDataFile, 0.02, "");
@@ -1351,9 +1354,8 @@ namespace BreakJunctions
 
             RealTimeTimeTraceCurve_Samples.StartPosition = 0.0;
             RealTimeTimeTraceCurve_Samples.FinalDestination = 0.0005;
-            RealTimeTimeTraceCurve_Samples.RT_MotionKind = MotionKind.Repetitive;
 
-            RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Repetitive, 2);
+            RealTimeTimeTraceCurve_Samples.StartMeasurement(MotionKind.Repetitive, 2);
         }
 
         private void backgroundRealTime_TimeTraceMeasureRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
