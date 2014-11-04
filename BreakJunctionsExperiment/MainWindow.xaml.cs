@@ -321,6 +321,8 @@ namespace BreakJunctions
             AllEventsHandler.Instance.RealTime_TimeTrace_AveragedDataArrived_Sample_01 += OnRealTime_TimeTrace_AveragedDataArrived_Sample_01;
             AllEventsHandler.Instance.RealTime_TimeTrace_AveragedDataArrived_Sample_02 += OnRealTime_TimeTrace_AveragedDataArrived_Sample_02;
 
+            AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurementStateChanged;
+
             #endregion
 
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
@@ -1210,8 +1212,6 @@ namespace BreakJunctions
             #endregion
 
             #endregion
-
-            
         }
 
         private void on_cmdRealTime_TimeTrace_QuickSampleCheckClick(object sender, RoutedEventArgs e)
@@ -1293,6 +1293,16 @@ namespace BreakJunctions
             backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
         }
 
+        private void _SetGIU_AfterRT_Measurement()
+        {
+            controlRealTimeTimeTraceMeasurementSettings.Dispatcher.BeginInvoke(new Action(() => 
+            {
+                controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = false;
+                controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartMeasurementButtonEnabled = true;
+                controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStopMeasurementButtonEnabled = false;
+            }));
+        }
+
         /// <summary>
         /// Stops the real time measurement
         /// </summary>
@@ -1300,12 +1310,15 @@ namespace BreakJunctions
         /// <param name="e"></param>
         private void on_cmdRealTime_TimeTraceStopMeasurementClick(object sender, RoutedEventArgs e)
         {
-            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = false;
-            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartMeasurementButtonEnabled = true;
-            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStopMeasurementButtonEnabled = false;
-
+            _SetGIU_AfterRT_Measurement();
             backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
+        }
+
+        private void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
+        {
+            if(e.MeasurementInProcess == false)
+                _SetGIU_AfterRT_Measurement();
         }
 
         private void OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01 e)
@@ -1328,16 +1341,19 @@ namespace BreakJunctions
 
         private void backgroundRealTime_TimeTraceMeasureDoWork(object sender, DoWorkEventArgs e)
         {
+            if (RealTimeTimeTraceCurve_Samples != null)
+                RealTimeTimeTraceCurve_Samples.Dispose();
+
             string RealTime_TimeTrace_CurrentDataFile = GetFileNameWithIncrement(_SaveRealTimeTraceMeasuremrentDataFileName); ;
 
             _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement(RealTime_TimeTrace_CurrentDataFile, 0.02, "");
             RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
 
             RealTimeTimeTraceCurve_Samples.StartPosition = 0.0;
-            RealTimeTimeTraceCurve_Samples.FinalDestination = 0.0015;
+            RealTimeTimeTraceCurve_Samples.FinalDestination = 0.0005;
             RealTimeTimeTraceCurve_Samples.RT_MotionKind = MotionKind.Repetitive;
 
-            RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Repetitive, 10);
+            RealTimeTimeTraceCurve_Samples.StartMeasurement(sender, e, MotionKind.Repetitive, 2);
         }
 
         private void backgroundRealTime_TimeTraceMeasureRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

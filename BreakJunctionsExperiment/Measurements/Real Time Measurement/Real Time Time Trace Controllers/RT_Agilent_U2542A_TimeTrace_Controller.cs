@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Agilent_U2542A_With_ExtensionBox.Classes;
@@ -40,24 +42,49 @@ namespace BreakJunctions.Measurements
             AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurementStateChanged;
         }
 
+        private int ACQ_Rate;
+
+        ConcurrentQueue<string> _StringDataQueue;
+        Thread _DataTransformingAndSendingThread;
+
         #endregion
+
+        private void _TransformAndEmitData()
+        {
+            while(_MeasurementInProcess)
+            {
+                string _Data;
+
+                var _DequeueSuccess = _StringDataQueue.TryDequeue(out _Data);
+
+                if(_DequeueSuccess == true)
+                {
+                    var resultInt = _DataConverter.ParseDataStringToInt(_Data);
+                    var ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
+                    AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(this, new RealTime_TimeTrace_DataArrived_EventArgs(ref ChannelData));
+                }
+            }
+        }
 
         public override void ContiniousAcquisition()
         {
+            _StringDataQueue = new ConcurrentQueue<string>();
+
             Agilent_DigitalOutput_LowLevel.Instance.AllToZero();
             _Channels.Read_AI_Channel_Status();
-            int ACQ_Rate = _Channels.ACQ_Rate;
+            ACQ_Rate = _Channels.ACQ_Rate;
             _Channels.SetChannelsToDC();
             _Channels.StartAnalogAcqusition();
+
+            _DataTransformingAndSendingThread = new Thread(_TransformAndEmitData);
+            _DataTransformingAndSendingThread.Priority = ThreadPriority.Highest;
+            _DataTransformingAndSendingThread.Start();
 
             while(_MeasurementInProcess)
             {
                 while (!_Channels.CheckAcquisitionStatus()) ;
                 string result = _Channels.AcquireStringWithData();
-                Int16[] resultInt = _DataConverter.ParseDataStringToInt(result);
-                List<PointD>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
-
-                AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(this, new RealTime_TimeTrace_DataArrived_EventArgs(ref ChannelData));
+                _StringDataQueue.Enqueue(result);
             }
 
             _Channels.StopAnalogAcqusition();

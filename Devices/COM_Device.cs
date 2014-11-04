@@ -128,11 +128,17 @@ namespace Devices
         public virtual void Dispose()
         {
             if (_COM_Port != null)
+            {
                 if (_COM_Port.IsOpen == true)
                 {
                     _COM_Port.Close();
                     _COM_Port.Dispose();
                 }
+
+                _COM_Port.Dispose();
+                _COM_Port = null;
+            }
+            GC.SuppressFinalize(this);
         }
 
         #endregion
