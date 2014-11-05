@@ -1353,9 +1353,9 @@ namespace BreakJunctions
             RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
 
             RealTimeTimeTraceCurve_Samples.StartPosition = 0.0;
-            RealTimeTimeTraceCurve_Samples.FinalDestination = 0.0005;
+            RealTimeTimeTraceCurve_Samples.FinalDestination = 0.005;
 
-            RealTimeTimeTraceCurve_Samples.StartMeasurement(MotionKind.Repetitive, 2);
+            RealTimeTimeTraceCurve_Samples.StartMeasurement(MotionKind.Repetitive, 10);
         }
 
         private void backgroundRealTime_TimeTraceMeasureRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -7,15 +7,10 @@ namespace BreakJunctions.Motion
 {
     public abstract class MotionController : IDisposable
     {
-        private bool _IsMotionInProcess = false;
         /// <summary>
         /// Gets or sets the motion state
         /// </summary>
-        public bool IsMotionInProcess
-        {
-            get { return _IsMotionInProcess; }
-            set { _IsMotionInProcess = value; }
-        }
+        public bool IsMotionInProcess { get; set; }
 
         private double _CurrentPosition = 0.0;
         /// <summary>
@@ -62,7 +57,7 @@ namespace BreakJunctions.Motion
         /// Gets or sets number of repetities
         /// for repetitive measurement
         /// </summary>
-        public int NumberRepetities
+        public int NumberOfRepetities
         {
             get { return _NumberRepetities; }
             set { _NumberRepetities = value; }
@@ -79,7 +74,7 @@ namespace BreakJunctions.Motion
         /// <summary>
         /// Gets or sets motion kind (Single/Repetitive)
         /// </summary>
-        public MotionKind MotionKind
+        public MotionKind CurrentMotionKind
         {
             get { return _MotionKind; }
             set { _MotionKind = value; }

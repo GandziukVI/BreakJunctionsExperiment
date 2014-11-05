@@ -128,7 +128,7 @@ namespace BreakJunctions.Motion
         {
             var positionIncrement = _MetersPerRevolution / NotificationsPerMilimeter / 2;
 
-            switch (MotionKind)
+            switch (CurrentMotionKind)
             {
                 case MotionKind.Single:
                     {
@@ -151,7 +151,7 @@ namespace BreakJunctions.Motion
                 case MotionKind.Repetitive:
                     {
                         //Checking if measurement is completed
-                        if (CurrentIteration >= NumberRepetities)
+                        if (CurrentIteration >= NumberOfRepetities)
                             this.StopMotion();
 
                         if (IsMotionInProcess == true)
@@ -188,9 +188,9 @@ namespace BreakJunctions.Motion
             this.StartPosition = StartPosition;
             this.CurrentPosition = StartPosition;
             this.FinalDestination = FinalDestination;
-            this.NumberRepetities = numberOfRepetities;
+            this.NumberOfRepetities = numberOfRepetities;
             this.motionVelosityUnits = motionVelosityUnits;
-            this.MotionKind = motionKind;
+            this.CurrentMotionKind = motionKind;
 
             if (this.StartPosition <= this.FinalDestination)
                 SetDirection(MotionDirection.Up);

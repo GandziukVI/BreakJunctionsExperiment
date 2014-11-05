@@ -57,17 +57,6 @@ namespace BreakJunctions.Measurements
             }
         }
 
-        private MotionKind _RT_MotionKind;
-        public MotionKind RT_MotionKind
-        {
-            get { return _RT_MotionKind; }
-            set
-            {
-                _TimeTraceMotionController.MotionKind = value;
-                _RT_MotionKind = value;
-            }
-        }
-
         private IMotionFactory _IRealTimeMotionFactory;
         private MotionController _TimeTraceMotionController;
 
@@ -134,8 +123,11 @@ namespace BreakJunctions.Measurements
             _ITimeTraceControllerFactory = new RT_Agilent_U2542A_TimeTrace_Controller_Factory();
             _TimeTraceMeasurementControler = _ITimeTraceControllerFactory.GetRealTime_TimeTraceController();
 
-            _IRealTimeMotionFactory = new FaulhaberMinimotor_SA_2036_U012V_K1155_RealTime_ControllerFactory("COM5"); // Modification here to establish correct serial port needed
+            _IRealTimeMotionFactory = new FaulhaberMinimotor_SA_2036_U012V_K1155_RealTime_ControllerFactory("COM1"); // Modification here to establish correct serial port needed
             _TimeTraceMotionController = _IRealTimeMotionFactory.GetMotionController();
+
+            AllEventsHandler.Instance.Motion_RealTime_StartPositionReached += OnMotion_RealTime_StartPositionReached;
+            AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached += OnMotion_RealTime_FinalDestinationReached;
         }
 
         ~MeasureRealTimeTimeTrace()
@@ -214,12 +206,21 @@ namespace BreakJunctions.Measurements
             _TimeTraceMeasurementControler.MeasurementInProcess = false;
         }
 
+        private void OnRealTime_TimeTraceMeasurement_StateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
+        {
+            if(e.MeasurementInProcess == false)
+                _TimeTraceMeasurementControler.MeasurementInProcess = false;
+        }
+
         #endregion
 
         #region Correctly disposing the instance
 
         public void Dispose()
         {
+            AllEventsHandler.Instance.Motion_RealTime_StartPositionReached -= OnMotion_RealTime_StartPositionReached;
+            AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached -= OnMotion_RealTime_FinalDestinationReached;
+
             if(_TimeTraceMeasurementControler != null)
                 _TimeTraceMeasurementControler.Dispose();
 

@@ -132,10 +132,11 @@ namespace BreakJunctions.Motion
             return isInitSuccess;
         }
 
-        public override void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, int numberOfRepetities = 1)
+        public override void StartMotion(double StartPosition, double FinalDestination, MotionKind __MotionKind, int __NumberOfRepetities = 1)
         {
             CurrentIteration = 0;
-            NumberRepetities = numberOfRepetities;
+            CurrentMotionKind = __MotionKind;
+            NumberOfRepetities = __NumberOfRepetities;
 
             //Moving motor to its start position
             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
@@ -305,22 +306,42 @@ namespace BreakJunctions.Motion
 
         #region Motion start and end positions reached implementation
 
+        private void StartProcessCOM_DataInThread()
+        {
+            _IsMeasurementInProcess = true;
+
+            _COM_Data_TransformingAndSendingThread = new Thread(_TransformAndEmit_COM_Data);
+            _COM_Data_TransformingAndSendingThread.Priority = ThreadPriority.Normal;
+            _COM_Data_TransformingAndSendingThread.Start();
+        }
+
+        private void StopProcessCOM_DataInThread()
+        {
+            _IsMeasurementInProcess = false;
+
+            //var ThreadInterruptSuccess = _COM_Data_TransformingAndSendingThread.Join(1000);
+            //if (!ThreadInterruptSuccess)
+            //    _COM_Data_TransformingAndSendingThread.Abort();
+        }
+
         private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
         {
             IsMotionInProcess = true;
 
-            switch (MotionKind)
+            switch (CurrentMotionKind)
             {
                 case MotionKind.Single:
                     {
+                        StartProcessCOM_DataInThread();
                         _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(FinalDestination));
                         _Motor.NotifyPosition();
                         _Motor.InitiateMotion();
                     } break;
                 case MotionKind.Repetitive:
                     {
-                        if (CurrentIteration <= NumberRepetities)
+                        if (CurrentIteration <= NumberOfRepetities)
                         {
+                            StartProcessCOM_DataInThread();
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(FinalDestination));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
@@ -328,6 +349,7 @@ namespace BreakJunctions.Motion
                         }
                         else
                         {
+                            StopProcessCOM_DataInThread();
                             IsMotionInProcess = false;
                             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
                         }
@@ -339,17 +361,19 @@ namespace BreakJunctions.Motion
 
         private void OnMotion_RealTime_FinalDestinationreached(object sender, Motion_RealTime_FinalDestinationReached_EventArgs e)
         {
-            switch (MotionKind)
+            switch (CurrentMotionKind)
             {
                 case MotionKind.Single:
                     {
+                        StopProcessCOM_DataInThread();
                         IsMotionInProcess = false;
                         AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
                     } break;
                 case MotionKind.Repetitive:
                     {
-                        if (CurrentIteration <= NumberRepetities)
+                        if (CurrentIteration <= NumberOfRepetities)
                         {
+                            StopProcessCOM_DataInThread();
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
@@ -357,6 +381,7 @@ namespace BreakJunctions.Motion
                         }
                         else
                         {
+                            StopProcessCOM_DataInThread();
                             IsMotionInProcess = false;
                             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
                         }
@@ -377,17 +402,10 @@ namespace BreakJunctions.Motion
             if(e.MeasurementInProcess == true)
             {
                 ContinueMotion();
-                _COM_Data_TransformingAndSendingThread = new Thread(_TransformAndEmit_COM_Data);
-                _COM_Data_TransformingAndSendingThread.Priority = ThreadPriority.Normal;
-                _COM_Data_TransformingAndSendingThread.Start();
-                while (!_COM_Data_TransformingAndSendingThread.IsAlive) ;
             }
             else
             {
                 StopMotion();
-                var success = _COM_Data_TransformingAndSendingThread.Join(1000);
-                if (!success)
-                    _COM_Data_TransformingAndSendingThread.Abort();
             }
         }
 

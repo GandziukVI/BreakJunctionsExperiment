@@ -33,7 +33,7 @@ namespace BreakJunctions.Measurements
             _DataConverter = new DataStringConverter();
             _VoltageMeasurement = new VoltageMeasurement();
 
-            //AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurementStateChanged;
+            AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurementStateChanged;
         }
 
         private int ACQ_Rate;
@@ -152,12 +152,12 @@ namespace BreakJunctions.Measurements
 
         public override void Dispose()
         {
-            //AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged -= OnRealTime_TimeTraceMeasurementStateChanged;
+            AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged -= OnRealTime_TimeTraceMeasurementStateChanged;
         }
 
-        //public void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
-        //{
-        //    this._MeasurementInProcess = e.MeasurementInProcess;
-        //}
+        public void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
+        {
+            this.MeasurementInProcess = e.MeasurementInProcess;
+        }
     }
 }
