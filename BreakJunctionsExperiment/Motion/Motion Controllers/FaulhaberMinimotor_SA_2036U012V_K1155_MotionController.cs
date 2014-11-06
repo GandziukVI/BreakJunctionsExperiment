@@ -275,10 +275,11 @@ namespace BreakJunctions.Motion
         {
             AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived -= OnTimeTraceBothChannelsPointsReceived;
 
-            _Motor.COM_Port.DataReceived -= _COM_Device_DataReceived;
-
-            _Motor.DisableDevice();
-            _Motor.Dispose();
+            if (_Motor != null)
+            {
+                _Motor.DisableDevice();
+                _Motor.Dispose();
+            }
         }
 
         #endregion

@@ -99,7 +99,7 @@ namespace BreakJunctions.Plotting
                     break;
             }
 
-            _ExperimentalDataSource.RaiseDataChanged();
+            //_ExperimentalDataSource.RaiseDataChanged();
             
             _Dispatcher.BeginInvoke(new Action(delegate()
             {

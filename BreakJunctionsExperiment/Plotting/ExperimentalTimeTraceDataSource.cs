@@ -64,7 +64,7 @@ namespace BreakJunctions.Plotting
             if (e.Y <= _ResistanceValueOverflow)
             {
                 _ExperimentalData.Add(new PointD(e.X, e.Y));
-                _ExperimentalDataSource.RaiseDataChanged();
+                //_ExperimentalDataSource.RaiseDataChanged();
 
                 _Dispatcher.BeginInvoke(new Action(delegate()
                 {

@@ -65,7 +65,7 @@ namespace BreakJunctions.Plotting
         public void OnIV_PointReceived(object sender, IV_PointReceivedChannel_02_EventArgs e)
         {
             _ExperimentalData.Add(new PointD(e.X, e.Y));
-            _ExperimentalDataSource.RaiseDataChanged();
+            //_ExperimentalDataSource.RaiseDataChanged();
 
             _Dispatcher.BeginInvoke(new Action(delegate()
             {
