@@ -191,7 +191,7 @@ namespace BreakJunctions.Measurements
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
-        private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
+        public void StartContiniousAcquisitionInThread()
         {
             _TimeTraceMeasurementControler.MeasurementInProcess = true;
 
@@ -201,9 +201,19 @@ namespace BreakJunctions.Measurements
             StartAcquisitionThread.Start();
         }
 
-        private void OnMotion_RealTime_FinalDestinationReached(object sender, Motion_RealTime_FinalDestinationReached_EventArgs e)
+        private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
+        {
+            StartContiniousAcquisitionInThread();
+        }
+
+        public void StopContiniousAcquisitionInThread()
         {
             _TimeTraceMeasurementControler.MeasurementInProcess = false;
+        }
+
+        private void OnMotion_RealTime_FinalDestinationReached(object sender, Motion_RealTime_FinalDestinationReached_EventArgs e)
+        {
+            StopContiniousAcquisitionInThread();
         }
 
         private void OnRealTime_TimeTraceMeasurement_StateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)

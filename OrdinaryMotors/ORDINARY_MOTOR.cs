@@ -5,10 +5,10 @@ using System.Text;
 
 //using System.Windows.Threading;
 
-using Devices;
-using SMU;
+//using Devices;
+//using SMU;
 
-using SMU.KEITHLEY_2602A;
+//using SMU.KEITHLEY_2602A;
 
 namespace OrdinaryMotors
 {

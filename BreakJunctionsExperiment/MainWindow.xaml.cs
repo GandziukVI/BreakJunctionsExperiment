@@ -1240,13 +1240,13 @@ namespace BreakJunctions
                 AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
 
                 AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
-                backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
+                RealTimeTimeTraceCurve_Samples.StartContiniousAcquisitionInThread();
             }
             else 
             {
                 AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
                 AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
-                backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
+                RealTimeTimeTraceCurve_Samples.StopContiniousAcquisitionInThread();
             }
         }
 
