@@ -112,7 +112,8 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
         {
             set
             {
-                if (!value) this.SetDC_Mode();
+                if (!value) 
+                    this.SetDC_Mode();
                 else
                     this.SetAC_Mode();
             }

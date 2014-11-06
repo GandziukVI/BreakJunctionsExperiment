@@ -65,9 +65,20 @@ namespace BreakJunctions.Measurements
             _StringDataQueue = new ConcurrentQueue<string>();
 
             Agilent_DigitalOutput_LowLevel.Instance.AllToZero();
+
             _Channels.Read_AI_Channel_Status();
+            
             ACQ_Rate = _Channels.ACQ_Rate;
+
             _Channels.SetChannelsToDC();
+
+            foreach (var channel in _Channels.ChannelArray)
+            {
+                channel.Enabled = true;
+                channel.DC_Range = 0;
+                channel.isBiPolarDC = true;
+            }
+
             _Channels.StartAnalogAcqusition();
 
             _DataTransformingAndSendingThread = new Thread(_TransformAndEmitData);
