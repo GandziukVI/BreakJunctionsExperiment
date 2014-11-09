@@ -69,14 +69,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Agilent.TMFramework, Version=2.1.8910.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Agilent.TMFramework\2.1.8910.0__7a01cdb2a9131f73\Agilent.TMFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Agilent.TMFramework.InstrumentIO, Version=2.1.8910.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Agilent.TMFramework.InstrumentIO\2.1.8910.0__7a01cdb2a9131f73\Agilent.TMFramework.InstrumentIO.dll</HintPath>
-    </Reference>
     <Reference Include="NationalInstruments.Common, Version=13.0.35.190, Culture=neutral, PublicKeyToken=18cbae0f9955702a, processorArchitecture=MSIL" />
     <Reference Include="NationalInstruments.NI4882, Version=8.9.35.104, Culture=neutral, PublicKeyToken=18cbae0f9955702a, processorArchitecture=MSIL" />
     <Reference Include="System" />
