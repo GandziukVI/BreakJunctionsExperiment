@@ -29,12 +29,14 @@
             <Setter Property="Margin" Value="5 2.5" />
             <Setter Property="MinWidth" Value="200" />
             <Setter Property="FontSize" Value="28" />
+            <Setter Property="TextAlignment" Value="Right" />
         </Style>
         <Style TargetType ="TextBox" x:Key="NormalSizeTextBox">
             <Setter Property="Margin" Value="5 2.5" />
             <Setter Property="MinWidth" Value="200" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="MinWidth" Value="150" />
+            <Setter Property="TextAlignment" Value="Right" />
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="5" />
@@ -111,10 +113,10 @@
                                 <Label Grid.Row="2" Grid.Column="0" Content="2-nd sample voltage" />
                                 <Label Grid.Row="3" Grid.Column="0" Content="2-nd sample current" />
 
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="Channel_01" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="Channel_02" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="Channel_03" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
-                                <TextBox Grid.Row="3" Grid.Column="1" x:Name="Channel_04" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="Channel_01" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_001_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="Channel_02" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_002_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="Channel_03" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_003_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False"></TextBox>
+                                <TextBox Grid.Row="3" Grid.Column="1" x:Name="Channel_04" Style="{StaticResource NormalSizeTextBox}" Text="{Binding Channel_004_Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False"></TextBox>
 
                                 <ToggleButton Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdQuickSampleCheck" Content="{Binding Path=cmdStartStopQuickSampleCheckTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding Path=IsStartStopQuickSampleCheckChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=IsStartStopQuickSampleCheckEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2.5 5 2.2 2.5" MinHeight="25" />
                             </Grid>
@@ -194,8 +196,8 @@
                         <Label Grid.Row="0" Grid.Column="0" Content="1-st sample resistance" />
                         <Label Grid.Row="1" Grid.Column="0" Content="2-nd sample resistance" />
 
-                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="Resistance_1st_sample" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Path=Resistance_1st_Sample, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False" />
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="Resistance_2nd_sample" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Path=Resistance_2nd_Sample, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False" />
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="Resistance_1st_sample" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Path=Resistance_1st_Sample, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.0000}}" IsEnabled="False" />
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="Resistance_2nd_sample" Style="{StaticResource LargeSizeTextBox}" Text="{Binding Path=Resistance_2nd_Sample, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.0000}}" IsEnabled="False" />
                     </Grid>
 
                     <ToggleButton Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="cmdToggleStartStopMotor" Content="{Binding Path=cmdStartStopTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding Path=IsMotorStopped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=IsStartStopEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="45" />

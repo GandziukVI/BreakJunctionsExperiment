@@ -75,8 +75,8 @@ namespace BreakJunctions.Measurements
             foreach (var channel in _Channels.ChannelArray)
             {
                 channel.Enabled = true;
-                channel.DC_Range = 0;
                 channel.isBiPolarDC = true;
+                channel.DC_Range = 2.5;
             }
 
             _Channels.StartAnalogAcqusition();
