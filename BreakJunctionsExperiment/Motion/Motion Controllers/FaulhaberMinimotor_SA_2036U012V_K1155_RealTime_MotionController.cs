@@ -281,11 +281,11 @@ namespace BreakJunctions.Motion
             var responce = motorPort.ReadExisting();
 
             //Using StopWatch to get current time
-            if (!IsMotionInProcess)
-                if (!_TimeCalculator.IsRunning)
-                    _TimeCalculator.Start();
-                else
-                    _TimeCalculator.Restart();
+            //if (!IsMotionInProcess)
+            //    if (!_TimeCalculator.IsRunning)
+            //        _TimeCalculator.Start();
+            //    else
+            //        _TimeCalculator.Restart();
 
             _StringDataQueue.Enqueue(responce);
 
@@ -345,6 +345,8 @@ namespace BreakJunctions.Motion
                         _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(FinalDestination));
                         _Motor.NotifyPosition();
                         _Motor.InitiateMotion();
+
+                        _TimeCalculator.Start();
                     } break;
                 case MotionKind.Repetitive:
                     {
@@ -355,11 +357,14 @@ namespace BreakJunctions.Motion
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
                             ++CurrentIteration;
+
+                            _TimeCalculator.Start();
                         }
                         else
                         {
                             StopProcessCOM_DataInThread();
                             IsMotionInProcess = false;
+                            _TimeCalculator.Stop();
                             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
                         }
                     } break;
@@ -376,6 +381,7 @@ namespace BreakJunctions.Motion
                     {
                         StopProcessCOM_DataInThread();
                         IsMotionInProcess = false;
+                        _TimeCalculator.Stop();
                         AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
                     } break;
                 case MotionKind.Repetitive:
@@ -383,6 +389,7 @@ namespace BreakJunctions.Motion
                         if (CurrentIteration <= NumberOfRepetities)
                         {
                             StopProcessCOM_DataInThread();
+                            _TimeCalculator.Stop();
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
@@ -392,6 +399,7 @@ namespace BreakJunctions.Motion
                         {
                             StopProcessCOM_DataInThread();
                             IsMotionInProcess = false;
+                            _TimeCalculator.Stop();
                             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
                         }
                     } break;
