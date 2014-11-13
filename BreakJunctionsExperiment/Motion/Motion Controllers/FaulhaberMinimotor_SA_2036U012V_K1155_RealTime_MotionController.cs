@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace BreakJunctions.Motion
 {
@@ -79,9 +80,8 @@ namespace BreakJunctions.Motion
         private StopBits _StopBits;
         private string _ReturnToken;
 
-        DateTime StartDateTime;
-        DateTime CurrentDateTime;
-        TimeSpan DateTimeDifference;
+        Stopwatch _TimeCalculator;
+        double _CurrentTime;
 
         string In_COM_Port = string.Empty;
         string COM_Data_Residue = string.Empty;
@@ -101,6 +101,8 @@ namespace BreakJunctions.Motion
 
         public FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
+            _TimeCalculator = new Stopwatch();
+
             _StringDataQueue = new ConcurrentQueue<string>();
             _COM_Data_TransformingAndSendingThread = new Thread(_TransformAndEmit_COM_Data);
 
@@ -117,6 +119,9 @@ namespace BreakJunctions.Motion
             AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached += OnMotion_RealTime_FinalDestinationreached;
 
             AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurement_StateChanged;
+
+            //For test
+            AllEventsHandler.Instance.Motion_RealTime += _Test;
         }
 
         #endregion
@@ -194,8 +199,14 @@ namespace BreakJunctions.Motion
             AllEventsHandler.Instance.Motion_RealTime_StartPositionReached -= OnMotion_RealTime_StartPositionReached;
             AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached -= OnMotion_RealTime_FinalDestinationreached;
 
-            _Motor.DisableDevice();
-            _Motor.Dispose();
+            if (_Motor != null)
+            {
+                _Motor.DisableDevice();
+                _Motor.Dispose();
+            }
+
+            if (_TimeCalculator.IsRunning == true)
+                _TimeCalculator.Stop();
         }
 
         #endregion
@@ -220,9 +231,6 @@ namespace BreakJunctions.Motion
 
                 if (_DequeueSuccess == true)
                 {
-                    CurrentDateTime = DateTime.Now;
-                    DateTimeDifference = CurrentDateTime.Subtract(StartDateTime);
-
                     if (!responce.EndsWith("\n"))
                     {
                         In_COM_Port += responce.TrimEnd("\r\np".ToCharArray());
@@ -251,7 +259,8 @@ namespace BreakJunctions.Motion
                             if (success)
                             {
                                 CurrentMotorPosition = ConvertMotorUnitsIntoPosition(intCurrentMotorPosition);
-                                AllEventsHandler.Instance.OnMotion_RealTime(this, new Motion_RealTime_EventArgs(DateTimeDifference.TotalSeconds, CurrentMotorPosition));
+                                _CurrentTime = Convert.ToDouble(_TimeCalculator.ElapsedMilliseconds) / 1000.0;
+                                AllEventsHandler.Instance.OnMotion_RealTime(this, new Motion_RealTime_EventArgs(_CurrentTime, CurrentMotorPosition));
                             }
                         }
 
@@ -271,10 +280,14 @@ namespace BreakJunctions.Motion
             var motorPort = sender as SerialPort;
             var responce = motorPort.ReadExisting();
 
-            _StringDataQueue.Enqueue(responce);
+            //Using StopWatch to get current time
+            if (!IsMotionInProcess)
+                if (!_TimeCalculator.IsRunning)
+                    _TimeCalculator.Start();
+                else
+                    _TimeCalculator.Restart();
 
-            if(!IsMotionInProcess)
-                StartDateTime = DateTime.Now;
+            _StringDataQueue.Enqueue(responce);
 
             // Motion (Single & Repetitive) implementation
             if (responce.Contains('p'))
@@ -318,10 +331,6 @@ namespace BreakJunctions.Motion
         private void StopProcessCOM_DataInThread()
         {
             _IsMeasurementInProcess = false;
-
-            //var ThreadInterruptSuccess = _COM_Data_TransformingAndSendingThread.Join(1000);
-            //if (!ThreadInterruptSuccess)
-            //    _COM_Data_TransformingAndSendingThread.Abort();
         }
 
         private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
@@ -410,5 +419,12 @@ namespace BreakJunctions.Motion
         }
 
         #endregion
+
+        static StreamWriter sw = new StreamWriter(File.OpenWrite("F:\\Data.txt"));
+
+        private void _Test(object sender, Motion_RealTime_EventArgs e)
+        {
+            sw.WriteLine(String.Format("{0}\t{1}", e.Time, e.Position));
+        }
     }
 }
