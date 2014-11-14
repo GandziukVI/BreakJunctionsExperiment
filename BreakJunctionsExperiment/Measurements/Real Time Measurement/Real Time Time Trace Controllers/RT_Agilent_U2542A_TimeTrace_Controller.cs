@@ -45,7 +45,7 @@ namespace BreakJunctions.Measurements
 
         private void _TransformAndEmitData()
         {
-            while(MeasurementInProcess)
+            while(MeasurementInProcess || !_StringDataQueue.IsEmpty)
             {
                 string _Data;
 

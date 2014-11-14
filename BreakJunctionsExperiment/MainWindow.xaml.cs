@@ -1355,10 +1355,40 @@ namespace BreakJunctions
             _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement(RealTime_TimeTrace_CurrentDataFile, 0.02, "");
             RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
 
-            RealTimeTimeTraceCurve_Samples.StartPosition = 0.0;
-            RealTimeTimeTraceCurve_Samples.FinalDestination = 0.005;
+            #region Motion parameters initialization
 
-            RealTimeTimeTraceCurve_Samples.StartMeasurement(MotionKind.Repetitive, 10);
+            var MotionSettings = controlRealTimeTimeTraceMeasurementSettings.MotionSettings.MeasurementSettings;
+
+            var _StartPosition = 0.0;
+            var _FinalDestination = 0.0;
+            var _MotionKind = MotionKind.Single;
+            var _NumberCycles = 1;
+
+            switch(MotionSettings.TimeTraceMeasurementSelectedTabIndex)
+            {
+                case 0:
+                    {
+                        _StartPosition = MotionSettings.TimeTraceMeasurementDistanceMotionStartPosition;
+                        _FinalDestination = MotionSettings.TimeTraceMeasurementDistanceMotionFinalDestination;
+                        _MotionKind = MotionKind.Single;
+                    } break;
+                case 1:
+                    {
+                        _StartPosition = MotionSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
+                        _FinalDestination = MotionSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
+                        _NumberCycles = MotionSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
+                        _MotionKind = MotionKind.Repetitive;
+                    } break;
+                default:
+                    break;
+            }
+
+            RealTimeTimeTraceCurve_Samples.StartPosition = _StartPosition;
+            RealTimeTimeTraceCurve_Samples.FinalDestination = _FinalDestination;
+
+            RealTimeTimeTraceCurve_Samples.StartMeasurement(_MotionKind, _NumberCycles);
+
+            #endregion
         }
 
         private void backgroundRealTime_TimeTraceMeasureRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

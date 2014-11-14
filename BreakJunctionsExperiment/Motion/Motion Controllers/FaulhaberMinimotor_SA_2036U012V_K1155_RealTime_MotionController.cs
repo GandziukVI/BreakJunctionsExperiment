@@ -119,9 +119,6 @@ namespace BreakJunctions.Motion
             AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached += OnMotion_RealTime_FinalDestinationreached;
 
             AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurement_StateChanged;
-
-            //For test
-            AllEventsHandler.Instance.Motion_RealTime += _Test;
         }
 
         #endregion
@@ -427,12 +424,5 @@ namespace BreakJunctions.Motion
         }
 
         #endregion
-
-        static StreamWriter sw = new StreamWriter(File.OpenWrite("F:\\Data.txt"));
-
-        private void _Test(object sender, Motion_RealTime_EventArgs e)
-        {
-            sw.WriteLine(String.Format("{0}\t{1}", e.Time, e.Position));
-        }
     }
 }
