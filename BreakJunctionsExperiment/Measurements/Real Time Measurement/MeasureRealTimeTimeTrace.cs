@@ -57,6 +57,8 @@ namespace BreakJunctions.Measurements
             }
         }
 
+        private bool _IsMeasurementInProcess;
+
         private IMotionFactory _IRealTimeMotionFactory;
         private MotionController _TimeTraceMotionController;
 
@@ -125,6 +127,8 @@ namespace BreakJunctions.Measurements
 
             _IRealTimeMotionFactory = new FaulhaberMinimotor_SA_2036_U012V_K1155_RealTime_ControllerFactory("COM1"); // Modification here to establish correct serial port needed
             _TimeTraceMotionController = _IRealTimeMotionFactory.GetMotionController();
+
+            AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurement_StateChanged;
 
             AllEventsHandler.Instance.Motion_RealTime_StartPositionReached += OnMotion_RealTime_StartPositionReached;
             AllEventsHandler.Instance.Motion_RealTime_FinalDestinationReached += OnMotion_RealTime_FinalDestinationReached;
@@ -201,14 +205,15 @@ namespace BreakJunctions.Measurements
             StartAcquisitionThread.Start();
         }
 
-        private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
-        {
-            StartContiniousAcquisitionInThread();
-        }
-
         public void StopContiniousAcquisitionInThread()
         {
             _TimeTraceMeasurementControler.MeasurementInProcess = false;
+        }
+
+        private void OnMotion_RealTime_StartPositionReached(object sender, Motion_RealTime_StartPositionReached_EventArgs e)
+        {
+            if(_IsMeasurementInProcess == true)
+                StartContiniousAcquisitionInThread();
         }
 
         private void OnMotion_RealTime_FinalDestinationReached(object sender, Motion_RealTime_FinalDestinationReached_EventArgs e)
@@ -218,7 +223,9 @@ namespace BreakJunctions.Measurements
 
         private void OnRealTime_TimeTraceMeasurement_StateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
         {
-            if(e.MeasurementInProcess == false)
+            _IsMeasurementInProcess = e.MeasurementInProcess;
+            
+            if(_IsMeasurementInProcess == false)
                 _TimeTraceMeasurementControler.MeasurementInProcess = false;
         }
 

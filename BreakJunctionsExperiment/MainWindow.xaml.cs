@@ -1315,18 +1315,25 @@ namespace BreakJunctions
         {
             _SetGIU_AfterRT_Measurement();
             backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
-            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         private void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
         {
-            if(e.MeasurementInProcess == false)
-                _SetGIU_AfterRT_Measurement();
+            if (e.MeasurementInProcess == false)
+            {
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var peer = new ButtonAutomationPeer(this.controlRealTimeTimeTraceMeasurementSettings.cmdStopMeasurement);
+                        var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+
+                        invokeProv.Invoke();
+                    }));
+            }
         }
 
         private void OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01 e)
         {
-            this.Dispatcher.BeginInvoke(new Action(delegate() 
+            this.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_1st_Sample = e.Averaged_RealTime_TimeTrace_Data;
             }));
@@ -1334,7 +1341,7 @@ namespace BreakJunctions
 
         private void OnRealTime_TimeTrace_AveragedDataArrived_Sample_02(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02 e)
         {
-            this.Dispatcher.BeginInvoke(new Action(delegate()
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
                 this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_2nd_Sample = e.Averaged_RealTime_TimeTrace_Data;
             }));
@@ -1376,7 +1383,7 @@ namespace BreakJunctions
                     {
                         _StartPosition = MotionSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
                         _FinalDestination = MotionSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
-                        _NumberCycles = MotionSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
+                        _NumberCycles = 2 * MotionSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
                         _MotionKind = MotionKind.Repetitive;
                     } break;
                 default:

@@ -136,7 +136,7 @@ namespace BreakJunctions.Motion
 
         public override void StartMotion(double StartPosition, double FinalDestination, MotionKind __MotionKind, int __NumberOfRepetities = 1)
         {
-            CurrentIteration = 0;
+            CurrentIteration = 1;
             CurrentMotionKind = __MotionKind;
             NumberOfRepetities = __NumberOfRepetities;
 
@@ -276,13 +276,6 @@ namespace BreakJunctions.Motion
         {
             var motorPort = sender as SerialPort;
             var responce = motorPort.ReadExisting();
-
-            //Using StopWatch to get current time
-            //if (!IsMotionInProcess)
-            //    if (!_TimeCalculator.IsRunning)
-            //        _TimeCalculator.Start();
-            //    else
-            //        _TimeCalculator.Restart();
 
             _StringDataQueue.Enqueue(responce);
 
