@@ -326,6 +326,7 @@ namespace BreakJunctions
             #endregion
 
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
+            AllEventsHandler.Instance.Motion_RealTime += OnMotion_RealTime;
 
             #endregion
 
@@ -1296,7 +1297,7 @@ namespace BreakJunctions
             backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
         }
 
-        private void _SetGIU_AfterRT_Measurement()
+        private void _SetGUI_AfterRT_Measurement()
         {
             controlRealTimeTimeTraceMeasurementSettings.Dispatcher.BeginInvoke(new Action(() => 
             {
@@ -1313,22 +1314,15 @@ namespace BreakJunctions
         /// <param name="e"></param>
         private void on_cmdRealTime_TimeTraceStopMeasurementClick(object sender, RoutedEventArgs e)
         {
-            _SetGIU_AfterRT_Measurement();
+            _SetGUI_AfterRT_Measurement();
             backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
+            AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         private void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
         {
-            if (e.MeasurementInProcess == false)
-            {
-                this.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        var peer = new ButtonAutomationPeer(this.controlRealTimeTimeTraceMeasurementSettings.cmdStopMeasurement);
-                        var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-
-                        invokeProv.Invoke();
-                    }));
-            }
+            if(e.MeasurementInProcess == false)
+                _SetGUI_AfterRT_Measurement();
         }
 
         private void OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01 e)
@@ -1345,6 +1339,11 @@ namespace BreakJunctions
             {
                 this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_2nd_Sample = e.Averaged_RealTime_TimeTrace_Data;
             }));
+        }
+
+        private void OnMotion_RealTime(object sender, Motion_RealTime_EventArgs e)
+        {
+            this.controlRealTimeTimeTraceMeasurementSettings.MotionSettings.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
         }
 
         #region Background work

@@ -34,6 +34,17 @@ namespace BreakJunctions
             }
         }
 
+        private double _TimeTraceMotionSpeed = 4.9;
+        public double TimeTraceMotionSpeed
+        {
+            get { return _TimeTraceMotionSpeed; }
+            set
+            {
+                _TimeTraceMotionSpeed = value;
+                OnPropertyChanged("TimeTraceMotionSpeed");
+            }
+        }
+
         private int _TimeTraceMeasurementSelectedTabIndex = 0;
         public int TimeTraceMeasurementSelectedTabIndex
         {

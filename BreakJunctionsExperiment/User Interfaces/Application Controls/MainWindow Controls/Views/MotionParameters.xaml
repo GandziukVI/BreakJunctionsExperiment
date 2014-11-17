@@ -6,6 +6,22 @@
              mc:Ignorable="d" 
              xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit">
     
+	<UserControl.Resources>
+		<Style TargetType="TextBox">
+			<Setter Property="TextAlignment" Value="Right" />
+			<Setter Property="Margin" Value="0 2.5" />
+		</Style>
+		<Style TargetType="Label">
+			<Setter Property="Margin" Value="0 2.5" />
+		</Style>
+		<Style TargetType="wpfTool:DoubleUpDown">
+			<Setter Property="Margin" Value="0 2.5" />
+			<Setter Property="CultureInfo" Value="en-US" />
+			<Setter Property="FormatString" Value="F3" />
+			<Setter Property="Increment" Value="0.01" />
+		</Style>
+	</UserControl.Resources>
+
     <Expander>
         <Expander.Header>
             <TextBlock><Run Text="Motion Parameters"/></TextBlock>
@@ -21,9 +37,19 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Margin="0 0 10 0" Content="Notifications per rev"/>
-                <TextBox Grid.Column="1" x:Name="textBoxTimeTraceNotificationsPerRevolution" Margin="0 2.5 " Text="{Binding TimeTraceNotificationsPerRevolution, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                <Label Grid.Row="0" Grid.Column="0" Margin="0 2.5 10 2.5" Content="Notifications per rev"/>
+                <TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceNotificationsPerRevolution" Text="{Binding TimeTraceNotificationsPerRevolution, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+				<Label Grid.Row="1" Grid.Column="0" Content="Motion speed" >
+					<Label.ToolTip>
+						<TextBlock>Motion speed for motion controller.</TextBlock>
+					</Label.ToolTip>
+				</Label>
+				<wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" x:Name="doubleUpDownTimeTraceMotionSpeed" Value="{Binding TimeTraceMotionSpeed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
             </Grid>
             <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="tabControlTimeTraceMeasurementParameters" SelectedIndex="{Binding TimeTraceMeasurementSelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 10 0 0">
                 <!-- Tab item single time trace distance measuremebts -->
@@ -48,32 +74,32 @@
                         </GroupBox>
                         <Button Grid.Row="0" Grid.Column="1" x:Name="cmdTimeTraceDistanceMoveToInitialPosition" Margin="5" Content="Move to initial"/>
 
-                        <Label Grid.Row="1" Grid.Column="0" Margin="0 2.5" Content="Motion start pos.">
+                        <Label Grid.Row="1" Grid.Column="0" Content="Motion start pos.">
                             <Label.ToolTip>
                                 <ToolTip>
                                     <TextBlock><Run Text="The position, from which the measurement takes place"/></TextBlock>
                                 </ToolTip>
                             </Label.ToolTip>
                         </Label>
-                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMiscometricBoltStartPosition" Text="{Binding TimeTraceMeasurementDistanceMotionStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="textBoxTimeTraceDistanceMiscometricBoltStartPosition" Text="{Binding TimeTraceMeasurementDistanceMotionStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
 
-                        <Label Grid.Row="2" Grid.Column="0" Margin="0 2.5" Content="Motion current pos.">
+                        <Label Grid.Row="2" Grid.Column="0" Content="Motion current pos.">
                             <Label.ToolTip>
                                 <ToolTip>
                                     <TextBlock><Run Text="Motion current destination."/></TextBlock>
                                 </ToolTip>
                             </Label.ToolTip>
                         </Label>
-                        <TextBox Grid.Row="2" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceDistanceMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:E8}}" IsEnabled="False" />
+                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="textBoxTimeTraceDistanceMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False" />
 
-                        <Label Grid.Row="3" Grid.Column="0" Margin="0 2.5" Content="Motion final dest.">
+                        <Label Grid.Row="3" Grid.Column="0" Content="Motion final dest.">
                             <Label.ToolTip>
                                 <ToolTip>
                                     <TextBlock><Run Text="Motion final destination."/></TextBlock>
                                 </ToolTip>
                             </Label.ToolTip>
                         </Label>
-                        <TextBox Grid.Row="3" Grid.Column="1" Margin="0 2.5" x:Name="textBoxTimeTraceMicrometricBoltFinalPosition" Text="{Binding TimeTraceMeasurementDistanceMotionFinalDestination, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="textBoxTimeTraceMicrometricBoltFinalPosition" Text="{Binding TimeTraceMeasurementDistanceMotionFinalDestination, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
                     </Grid>
                 </TabItem>
                 <!-- End tab item single time trace distance measuremebts -->
@@ -84,6 +110,7 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -91,11 +118,13 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="Start position"/>
-                        <TextBox x:Name="textBoxTimeTraceRepetitiveStartPosition" Text="{Binding TimeTraceMeasurementDistanceRepetitiveStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Row="0" Grid.Column="1" Margin="0 2.5" />
-                        <Label Grid.Row="1" Grid.Column="0" Content="End position"/>
-                        <TextBox x:Name="textBoxTimeTraceRepetitiveEndPosition" Text="{Binding TimeTraceMeasurementDistanceRepetitiveEndPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Row="1" Grid.Column="1" Margin="0 2.5" />
-                        <Label Grid.Row="2" Grid.Column="0" Content="Number cycles"/>
-                        <TextBox x:Name="textBoxTimeTraceRepetitiveNumberCycles" Text="{Binding TimeTraceMeasurementDistanceRepetitiveNumberCycles, UpdateSourceTrigger=LostFocus}" Grid.Row="2" Grid.Column="1" Margin="0 2.5" />
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceRepetitiveStartPosition" Text="{Binding TimeTraceMeasurementDistanceRepetitiveStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5" />
+                        <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="textBoxTimeTraceDistanceRepetitiveMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False" />
+                        <Label Grid.Row="2" Grid.Column="0" Content="End position"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="textBoxTimeTraceRepetitiveEndPosition" Text="{Binding TimeTraceMeasurementDistanceRepetitiveEndPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5" />
+                        <Label Grid.Row="3" Grid.Column="0" Content="Number cycles"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="textBoxTimeTraceRepetitiveNumberCycles" Text="{Binding TimeTraceMeasurementDistanceRepetitiveNumberCycles, UpdateSourceTrigger=LostFocus}" Margin="0 2.5" />
                     </Grid>
                 </TabItem>
                 <!-- End tab item repetitive time trace distance measuremebts -->
@@ -106,9 +135,15 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
 
-                        <Label Grid.Column="0" Content="Measure time"/>
-                        <wpfTool:TimeSpanUpDown Grid.Column="1" Margin="0 2.5" Value="{Binding TimeTraceMeasurementTime_TimeFinal, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <Label Grid.Row="0" Grid.Column="0" Content="Measure time"/>
+                        <wpfTool:TimeSpanUpDown Grid.Row="0" Grid.Column="1" Margin="0 2.5" Value="{Binding TimeTraceMeasurementTime_TimeFinal, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="textBoxTimeTraceTimeMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False" />
                     </Grid>
                 </TabItem>
                 <!-- End tab item time trace "time" measuremebts -->
@@ -119,9 +154,15 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
 
-                        <Label Grid.Column="0" Content="Value of R"/>
-                        <TextBox x:Name="textBoxTimeTraceMeasurementValueOfR" Text="{Binding TimeTraceMeasurementFixedR_R_Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Grid.Column="1" Margin="0 2.5" />
+                        <Label Grid.Row="0" Grid.Column="0" Content="Value of R"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceMeasurementValueOfR" Text="{Binding TimeTraceMeasurementFixedR_R_Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5" />
+                        <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="textBoxTimeTraceFixedRMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False" />
                     </Grid>
                 </TabItem>
             </TabControl>
