@@ -239,18 +239,31 @@ namespace BreakJunctions.Motion
             {
                 case MotionVelosityUnits.rpm:
                     {
-                        _Motor.SendCommandRequest(String.Format("V{0}", Convert.ToInt32(Math.Round(VelosityValue))));
+                        _Motor.SpeedRPM = Convert.ToInt32(VelosityValue * _Motor.GearFactor);
                     } break;
-                case MotionVelosityUnits.MetersPerMinute:
+                case MotionVelosityUnits.MilimetersPerMinute:
                     {
-                        var RevolutionPerMinute = 0.0005; //Meters per one revolution
-                        var _NewVelosity = Convert.ToInt32(VelosityValue / RevolutionPerMinute);
-
-                        _Motor.SendCommandRequest(String.Format("V{0}", _NewVelosity));
+                        _Motor.SpeedRPM = Convert.ToInt32(2 * VelosityValue * _Motor.GearFactor);
                     } break;
                 default:
                     break;
             }
+            //switch (VelosityUnits)
+            //{
+            //    case MotionVelosityUnits.rpm:
+            //        {
+            //            _Motor.SendCommandRequest(String.Format("V{0}", Convert.ToInt32(Math.Round(VelosityValue))));
+            //        } break;
+            //    case MotionVelosityUnits.MilimetersPerMinute:
+            //        {
+            //            var RevolutionPerMinute = 0.0005; //Meters per one revolution
+            //            var _NewVelosity = Convert.ToInt32(VelosityValue / RevolutionPerMinute);
+
+            //            _Motor.SendCommandRequest(String.Format("V{0}", _NewVelosity));
+            //        } break;
+            //    default:
+            //        break;
+            //}
         }
 
         public override void SetDirection(MotionDirection motionDirection)

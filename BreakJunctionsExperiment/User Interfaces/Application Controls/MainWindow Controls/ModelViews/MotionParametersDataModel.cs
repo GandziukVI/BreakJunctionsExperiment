@@ -23,7 +23,7 @@ namespace BreakJunctions
         #region General settings
 
         //Motion parameters
-        private int _TimeTraceNotificationsPerRevolution = 1000;
+        private int _TimeTraceNotificationsPerRevolution = 2000;
         public int TimeTraceNotificationsPerRevolution
         {
             get { return _TimeTraceNotificationsPerRevolution; }
@@ -34,14 +34,25 @@ namespace BreakJunctions
             }
         }
 
-        private double _TimeTraceMotionSpeed = 4.9;
-        public double TimeTraceMotionSpeed
+        private double _TimeTraceMotionSpeedUp = 2.5;
+        public double TimeTraceMotionSpeedUp
         {
-            get { return _TimeTraceMotionSpeed; }
+            get { return _TimeTraceMotionSpeedUp; }
             set
             {
-                _TimeTraceMotionSpeed = value;
-                OnPropertyChanged("TimeTraceMotionSpeed");
+                _TimeTraceMotionSpeedUp = value;
+                OnPropertyChanged("TimeTraceMotionSpeedUp");
+            }
+        }
+
+        private double _TimeTraceMotionSpeedDown = 3.0;
+        public double TimeTraceMotionSpeedDown
+        {
+            get { return _TimeTraceMotionSpeedDown; }
+            set
+            {
+                _TimeTraceMotionSpeedDown = value;
+                OnPropertyChanged("TimeTraceMotionSpeedDown");
             }
         }
 
@@ -100,7 +111,7 @@ namespace BreakJunctions
                 OnPropertyChanged("TimeTraceMeasurementDistanceMotionCurrentPosition");
             }
         }
-        private double _TimeTraceMeasurementDistanceMotionFinalDestination = 0.0;
+        private double _TimeTraceMeasurementDistanceMotionFinalDestination = 0.005;
         public double TimeTraceMeasurementDistanceMotionFinalDestination
         {
             get { return _TimeTraceMeasurementDistanceMotionFinalDestination; }
@@ -125,14 +136,14 @@ namespace BreakJunctions
                 OnPropertyChanged("TimeTraceMeasurementDistanceRepetitiveStartPosition");
             }
         }
-        private double _TimeTraceMeasurementDistanceRepetitiveEndPosition = 0.0;
-        public double TimeTraceMeasurementDistanceRepetitiveEndPosition
+        private double _TimeTraceMeasurementDistanceRepetitiveFinalDestination = 0.005;
+        public double TimeTraceMeasurementDistanceRepetitiveFinalDestination
         {
-            get { return _TimeTraceMeasurementDistanceRepetitiveEndPosition; }
+            get { return _TimeTraceMeasurementDistanceRepetitiveFinalDestination; }
             set
             {
-                _TimeTraceMeasurementDistanceRepetitiveEndPosition = value;
-                OnPropertyChanged("TimeTraceMeasurementDistanceRepetitiveEndPosition");
+                _TimeTraceMeasurementDistanceRepetitiveFinalDestination = value;
+                OnPropertyChanged("TimeTraceMeasurementDistanceRepetitiveFinalDestination");
             }
         }
         private int _TimeTraceMeasurementDistanceRepetitiveNumberCycles = 10;

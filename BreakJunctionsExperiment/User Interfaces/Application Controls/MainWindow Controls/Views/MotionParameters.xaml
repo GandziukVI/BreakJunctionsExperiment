@@ -7,6 +7,9 @@
              xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit">
     
 	<UserControl.Resources>
+		<Style TargetType="GroupBox">
+			<Setter Property="Margin" Value="0 2.5" />
+		</Style>
 		<Style TargetType="TextBox">
 			<Setter Property="TextAlignment" Value="Right" />
 			<Setter Property="Margin" Value="1 2.5" />
@@ -20,7 +23,7 @@
 		<Style TargetType="wpfTool:DoubleUpDown">
 			<Setter Property="Margin" Value="1 2.5" />
 			<Setter Property="CultureInfo" Value="en-US" />
-			<Setter Property="FormatString" Value="F3" />
+			<Setter Property="FormatString" Value="F4" />
 			<Setter Property="Increment" Value="0.01" />
 		</Style>
 	</UserControl.Resources>
@@ -47,12 +50,37 @@
 
                 <Label Grid.Row="0" Grid.Column="0" Margin="0 2.5 10 2.5" Content="Notifications per rev"/>
 				<wpfTool:IntegerUpDown Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceNotificationsPerRevolution" Value="{Binding TimeTraceNotificationsPerRevolution, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-				<Label Grid.Row="1" Grid.Column="0" Content="Motion speed" >
-					<Label.ToolTip>
-						<TextBlock>Motion speed for motion controller.</TextBlock>
-					</Label.ToolTip>
-				</Label>
-				<wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" x:Name="doubleUpDownTimeTraceMotionSpeed" Value="{Binding TimeTraceMotionSpeed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+				<GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+					<GroupBox.Header>
+						<TextBlock>Motion speed, [mm/min]</TextBlock>
+					</GroupBox.Header>
+					<GroupBox.Content>
+						<Grid Margin="0 2.5">
+							<Grid.RowDefinitions>
+								<RowDefinition />
+								<RowDefinition />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+
+							<Label Grid.Row="0" Grid.Column="0" Content="Going UP" >
+								<Label.ToolTip>
+									<TextBlock>Motion speed for motion controller, when going up.</TextBlock>
+								</Label.ToolTip>
+							</Label>
+							<wpfTool:DoubleUpDown Grid.Row="0" Grid.Column="1" Value="{Binding TimeTraceMotionSpeedUp, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+							<Label Grid.Row="1" Grid.Column="0" Content="Going DOWN" >
+								<Label.ToolTip>
+									<TextBlock>Motion speed for motion controller, when going down.</TextBlock>
+								</Label.ToolTip>
+							</Label>
+							<wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMotionSpeedDown, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+						</Grid>
+					</GroupBox.Content>
+				</GroupBox>
             </Grid>
             <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="tabControlTimeTraceMeasurementParameters" SelectedIndex="{Binding TimeTraceMeasurementSelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 10 0 0">
                 <!-- Tab item single time trace distance measuremebts -->
@@ -125,7 +153,7 @@
                         <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
                         <TextBox Grid.Row="1" Grid.Column="1" x:Name="textBoxTimeTraceDistanceRepetitiveMicrometricBoltCurrentPosition" Text="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000000}}" IsEnabled="False" />
                         <Label Grid.Row="2" Grid.Column="0" Content="End position"/>
-						<wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceRepetitiveEndPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+						<wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceRepetitiveFinalDestination, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                         <Label Grid.Row="3" Grid.Column="0" Content="Number cycles"/>
 						<wpfTool:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceRepetitiveNumberCycles, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     </Grid>

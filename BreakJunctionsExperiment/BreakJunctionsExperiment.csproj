@@ -57,6 +57,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ProgramIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DynamicDataDisplay, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5b7d744a7263923f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -155,7 +158,6 @@
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Measurements\Real Time Measurement\IRealTime_TimeTrace_Factory.cs" />
-    <Compile Include="Measurements\Real Time Measurement\MeasurementThread.cs" />
     <Compile Include="Measurements\Real Time Measurement\MeasureRealTimeTimeTrace.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real time Time Trace Controllers Facttories\RT_Agilent_U2542A_TimeTrace_Controller_Factory.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real Time Time Trace Controllers\RT_Agilent_U2542A_TimeTrace_Controller.cs" />
@@ -318,6 +320,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="User Interfaces\Application Controls\MainWindow Controls\Views\OpenFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProgramIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

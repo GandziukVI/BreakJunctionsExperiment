@@ -881,7 +881,7 @@ namespace BreakJunctions
                     case "Distance (Repetitive)":
                         {
                             var motionRepetitiveStartPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
-                            var motionRepetitiveEndPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
+                            var motionRepetitiveEndPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceRepetitiveFinalDestination;
 
                             if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
@@ -1329,7 +1329,7 @@ namespace BreakJunctions
         {
             this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_1st_Sample = e.Averaged_RealTime_TimeTrace_Data;
+                    this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_1st_Sample = e.Averaged_RealTime_TimeTrace_Data * controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.AmplificationCoefficient;
             }));
         }
 
@@ -1337,7 +1337,7 @@ namespace BreakJunctions
         {
             this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_2nd_Sample = e.Averaged_RealTime_TimeTrace_Data;
+                this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_2nd_Sample = e.Averaged_RealTime_TimeTrace_Data * controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.AmplificationCoefficient;
             }));
         }
 
@@ -1381,7 +1381,7 @@ namespace BreakJunctions
                 case 1:
                     {
                         _StartPosition = MotionSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
-                        _FinalDestination = MotionSettings.TimeTraceMeasurementDistanceRepetitiveEndPosition;
+                        _FinalDestination = MotionSettings.TimeTraceMeasurementDistanceRepetitiveFinalDestination;
                         _NumberCycles = 2 * MotionSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
                         _MotionKind = MotionKind.Repetitive;
                     } break;
@@ -1391,6 +1391,9 @@ namespace BreakJunctions
 
             RealTimeTimeTraceCurve_Samples.StartPosition = _StartPosition;
             RealTimeTimeTraceCurve_Samples.FinalDestination = _FinalDestination;
+
+            RealTimeTimeTraceCurve_Samples.VelosityMovingUp = MotionSettings.TimeTraceMotionSpeedUp;
+            RealTimeTimeTraceCurve_Samples.VelosityMovingDown = MotionSettings.TimeTraceMotionSpeedDown;
 
             RealTimeTimeTraceCurve_Samples.StartMeasurement(_MotionKind, _NumberCycles);
 

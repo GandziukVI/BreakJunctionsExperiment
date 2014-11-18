@@ -45,6 +45,23 @@ namespace FaulhaberMinimotors
             get { return _IncPerRevolution * _GearFactor; }
         }
 
+        private int _SpeedRPM = 15000;
+        public int SpeedRPM
+        {
+            get { return _SpeedRPM; }
+            set
+            {
+                if (value <= 150)
+                    _SpeedRPM = 150;
+                else if (value >= 15000)
+                    _SpeedRPM = 15000;
+                else
+                    _SpeedRPM = value;
+
+                SendCommandRequest(String.Format("SP{0}", _SpeedRPM));
+            }
+        }
+
         #endregion
 
         #region Constructor / Destructor

@@ -43,27 +43,6 @@ namespace BreakJunctions.Motion
             return Convert.ToDouble(MotorUnitsPosition * _MetersPerRevolution / _Motor.ValuePerRevolution);
         }
 
-        private MotionVelosityUnits _motionVelosityUnits = MotionVelosityUnits.rpm;
-        /// <summary>
-        /// Gets or sets motion velosity units
-        /// </summary>
-        public MotionVelosityUnits motionVelosityUnits
-        {
-            get { return _motionVelosityUnits; }
-            set { _motionVelosityUnits = value; }
-        }
-
-        private double _VelosityValue = 0.0;
-        /// <summary>
-        /// Gets or sets velosity value. Can only be used in velosity mode!
-        /// For correct work motionVelosityUnits must be set
-        /// </summary>
-        public double VelosityValue
-        {
-            get { return _VelosityValue; }
-            set { _VelosityValue = value; }
-        }
-
         private FaulhaberMinimotor_SA_2036U012V_K1155 _Motor;
         /// <summary>
         /// Gets FaulhaberMinimotor_SA_2036U012V_K1155 motor
@@ -141,6 +120,7 @@ namespace BreakJunctions.Motion
             NumberOfRepetities = __NumberOfRepetities;
 
             //Moving motor to its start position
+            SetVelosity(VelosityMovingDown, MotionVelosityUnits.MilimetersPerMinute);
             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
             _Motor.NotifyPosition();
             _Motor.InitiateMotion();
@@ -178,7 +158,19 @@ namespace BreakJunctions.Motion
 
         public override void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
         {
-            throw new NotImplementedException();
+            switch (VelosityUnits)
+            {
+                case MotionVelosityUnits.rpm:
+                    {
+                        _Motor.SpeedRPM = Convert.ToInt32(VelosityValue * _Motor.GearFactor);
+                    } break;
+                case MotionVelosityUnits.MilimetersPerMinute:
+                    {
+                        _Motor.SpeedRPM = Convert.ToInt32(2 * VelosityValue * _Motor.GearFactor);
+                    } break;
+                default:
+                    break;
+            }
         }
 
         public override void SetDirection(MotionDirection motionDirection)
@@ -332,6 +324,7 @@ namespace BreakJunctions.Motion
                 case MotionKind.Single:
                     {
                         StartProcessCOM_DataInThread();
+                        SetVelosity(VelosityMovingUp, MotionVelosityUnits.MilimetersPerMinute);
                         _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(FinalDestination));
                         _Motor.NotifyPosition();
                         _Motor.InitiateMotion();
@@ -343,6 +336,7 @@ namespace BreakJunctions.Motion
                         if (CurrentIteration <= NumberOfRepetities)
                         {
                             StartProcessCOM_DataInThread();
+                            SetVelosity(VelosityMovingUp, MotionVelosityUnits.MilimetersPerMinute);
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(FinalDestination));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
@@ -380,6 +374,7 @@ namespace BreakJunctions.Motion
                         {
                             StopProcessCOM_DataInThread();
                             _TimeCalculator.Stop();
+                            SetVelosity(VelosityMovingDown, MotionVelosityUnits.MilimetersPerMinute);
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(StartPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();

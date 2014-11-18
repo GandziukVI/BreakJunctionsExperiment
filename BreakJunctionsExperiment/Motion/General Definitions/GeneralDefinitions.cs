@@ -7,5 +7,5 @@ namespace BreakJunctions.Motion
 {
     public enum MotionKind { Single, Repetitive }
     public enum MotionDirection { Up, Down }
-    public enum MotionVelosityUnits { rpm, MetersPerMinute }
+    public enum MotionVelosityUnits { rpm, MilimetersPerMinute }
 }

@@ -80,6 +80,25 @@ namespace BreakJunctions.Motion
             set { _MotionKind = value; }
         }
 
+        private double _VelosityMovingUp = 2.5;
+        public double VelosityMovingUp
+        {
+            get { return _VelosityMovingUp; }
+            set { _VelosityMovingUp = value; }
+        }
+
+        private double _VelosityMovingDown = 3.0;
+        public double VelosityMovingDown
+        {
+            get { return _VelosityMovingDown; }
+            set { _VelosityMovingDown = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets motion velosity units
+        /// </summary>
+        public MotionVelosityUnits VelosityUnits { get; set; }
+
         private int _NotificationsPerMilimeter = 10000;
         /// <summary>
         /// The number of notifications per milimeter

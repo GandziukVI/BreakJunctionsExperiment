@@ -80,7 +80,7 @@ namespace BreakJunctions.Plotting
             for (int i = 0; i < DataLendgth; i++)
             {
                 if (e.Data[number][i].Y != 0.0)
-                    _ExperimentalData.Add(new PointD(e.Data[number][i].X, e.Data[number + 1][i].Y / e.Data[number][i].Y));
+                    _ExperimentalData.Add(new PointD(e.Data[number][i].X, e.Data[number][i].Y / e.Data[number + 1][i].Y));
             }
 
             switch (_SampleNumber)

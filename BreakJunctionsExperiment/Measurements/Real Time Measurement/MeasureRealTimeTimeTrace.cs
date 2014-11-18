@@ -57,6 +57,30 @@ namespace BreakJunctions.Measurements
             }
         }
 
+        private double _VelosityMovingUp = 2.5;
+        public double VelosityMovingUp
+        {
+            get { return _VelosityMovingUp; }
+            set 
+            {
+                _VelosityMovingUp = value;
+                _TimeTraceMotionController.VelosityMovingUp = value;
+            }
+        }
+
+        private double _VelosityMovingDown = 3.0;
+        public double VelosityMovingDown
+        {
+            get { return _VelosityMovingDown; }
+            set 
+            {
+                _VelosityMovingDown = value;
+                _TimeTraceMotionController.VelosityMovingDown = value;
+            }
+        }
+
+        public MotionVelosityUnits MotionVelosityUnits_Value { get; set; }
+
         private bool _IsMeasurementInProcess;
 
         private IMotionFactory _IRealTimeMotionFactory;
