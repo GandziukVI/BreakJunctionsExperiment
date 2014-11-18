@@ -23,7 +23,7 @@ namespace SMU.KEITHLEY_2602A
         public GPIB_KEITHLEY_2602A_CHANNEL(byte _PrimaryAddress, byte _SecondaryAddress, byte _BoardNumber, KEITHLEY_2602A_Channels _Channel)
             : base(_PrimaryAddress, _SecondaryAddress, _BoardNumber)
         {
-            style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent;
+            style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent | NumberStyles.AllowLeadingSign;
             culture = CultureInfo.CreateSpecificCulture("en-US");
 
             _SelectedChannel = _Channel;

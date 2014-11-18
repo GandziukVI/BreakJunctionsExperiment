@@ -1,11 +1,29 @@
 ﻿<Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
 	x:Class="BreakJunctions.Keithley2602A_Channel_Settings"
 	x:Name="Window"
 	Title="Keithley2602A_Channel_Settings"
 	Width="360" Height="420"
 	ResizeMode="NoResize">
+	
+	<Window.Resources>
+		<Style TargetType="wpfTool:IntegerUpDown">
+			<Setter Property="Margin" Value="1 2.5" />
+			<Setter Property="HorizontalAlignment" Value="Stretch" />
+		</Style>
+		<Style TargetType="wpfTool:DoubleUpDown">
+			<Setter Property="CultureInfo" Value="en-US" />
+			<Setter Property="FormatString" Value="F3" />
+			<Setter Property="HorizontalAlignment" Value="Stretch" />
+			<Setter Property="Increment" Value="0.01" />
+			<Setter Property="Margin" Value="1 2.5" />
+		</Style>
+		<Style TargetType="ComboBox">
+			<Setter Property="Margin" Value="0 2.0" />
+		</Style>
+	</Window.Resources>
 
 	<Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 		<Grid.RowDefinitions>
@@ -33,7 +51,7 @@
 			</Grid.ColumnDefinitions>
 			
 			<Label Grid.Row="0" Grid.Column="0">Board Number</Label>
-			<TextBox x:Name="textBoxBoardNumber" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=BoardNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />
+			<wpfTool:IntegerUpDown Grid.Row="0" Grid.Column="1" Value="{Binding Path=BoardNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 			<Label Grid.Row="1" Grid.Column="0" Content="Primary Address">
 				<Label.ToolTip>
 					<ToolTip>
@@ -41,9 +59,9 @@
 					</ToolTip>
 				</Label.ToolTip>
 			</Label>
-			<TextBox x:Name="textBoxPrimaryAddress" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=PrimaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />
+			<wpfTool:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Path=PrimaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 			<Label Grid.Row="2" Grid.Column="0">Secondary Address</Label>
-			<TextBox x:Name="textBoxSecondaryAddress" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Margin="2.5" TextAlignment="Right" Text="{Binding Path=SecondaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged" />
+			<wpfTool:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding Path=SecondaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 			<Label Grid.Row="3" Grid.Column="0" Content="Accuracy Coeficient">
 				<Label.ToolTip>
 					<ToolTip>
@@ -51,7 +69,7 @@
 					</ToolTip>
 				</Label.ToolTip>
 			</Label>
-			<TextBox Grid.Row="3" Grid.Column="1" x:Name="textBoxAccuracyCoefficient" HorizontalAlignment="Stretch" Margin=" 2.5" TextAlignment="Right" Text="{Binding Path=AccuracyCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+			<wpfTool:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding Path=AccuracyCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 		</Grid>
 		<GroupBox Grid.Row="1" Grid.Column="0" Header="Source Mode" HorizontalAlignment="Stretch" Margin="5 5 5 2.5">
 			<StackPanel>
@@ -59,18 +77,12 @@
 				<RadioButton x:Name="radioSourceMeasureModeCurrent" IsChecked="{Binding IV_CurrentModeIsChecked, Mode=TwoWay}">Current</RadioButton>
 			</StackPanel>
 		</GroupBox>
-		<GroupBox Grid.Row="2" Grid.Column="0" Header="Measure Mode" HorizontalAlignment="Stretch" Margin="5 5 5 2.5">
+		<!-- <GroupBox Grid.Row="2" Grid.Column="0" Header="Measure Mode" HorizontalAlignment="Stretch" Margin="5 5 5 2.5">
 			<StackPanel>
 				<CheckBox x:Name="checkBoxMeasureModeCurrentVoltage">Voltage</CheckBox>
 				<CheckBox x:Name="checkBoxMeasureModeCurrent" IsChecked="True">Current</CheckBox>
 				<CheckBox x:Name="checkBoxMeasureModeResistance">Resistance</CheckBox>
 				<CheckBox x:Name="checkBoxMeasureModePower">Power</CheckBox>
-			</StackPanel>
-		</GroupBox>
-		<!-- <GroupBox Grid.Row="3" Grid.Column="0" Header="Limit" HorizontalAlignment="Stretch" Margin="5 5 5 2.5">
-			<StackPanel>
-				<RadioButton x:Name="radioLimitVoltage">Voltage</RadioButton>
-				<RadioButton x:Name="radioLimitCurrent" IsChecked="True">Current</RadioButton>
 			</StackPanel>
 		</GroupBox> -->
 		<StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
@@ -80,7 +92,7 @@
 				<ComboBoxItem>Channel B</ComboBoxItem>
 			</ComboBox>
 		</StackPanel>
-		<Grid Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" Margin="5">
+		<Grid Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="5">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"></RowDefinition>
 				<RowDefinition Height="Auto"></RowDefinition>
@@ -93,7 +105,7 @@
 			</Grid.ColumnDefinitions>
 			
 			<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">Current Limit</Label>
-            <TextBox x:Name="textBoxCurrentLimit" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" MinWidth="50" Text="{Binding Path=LimitValueCurrent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+			<wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="0" Value="{Binding Path=LimitValueCurrent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             <ComboBox x:Name="comboBoxCurrentLimitMultiplier" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Path=LimitValueCurrentMultiplier, UpdateSourceTrigger=propertyChanged, Mode=TwoWay}">
 				<ComboBoxItem>Pico</ComboBoxItem>
 				<ComboBoxItem>Nano</ComboBoxItem>
@@ -104,7 +116,7 @@
 				<ComboBoxItem IsSelected="True">None</ComboBoxItem>
 			</ComboBox>
 			<Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Voltage Limit</Label>
-			<TextBox x:Name="textBoxVoltageLimit" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" MinWidth="50" Text="{Binding Path=LimitValueVoltage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+			<wpfTool:DoubleUpDown Grid.Row="3" Grid.Column="0" Value="{Binding Path=LimitValueVoltage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 			<ComboBox x:Name="comboBoxVoltageLimitMultiplier" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Path=LimitValueVoltageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 				<ComboBoxItem>Pico</ComboBoxItem>
 				<ComboBoxItem>Nano</ComboBoxItem>
@@ -115,6 +127,6 @@
 				<ComboBoxItem IsSelected="True">None</ComboBoxItem>
 			</ComboBox>
 		</Grid>
-		<Button x:Name="cmdSaveSettings" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5 2.5 5 5 " Click="on_cmdSaveSettingsClick">Save Settings</Button>
+		<Button x:Name="cmdSaveSettings" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5 2.5 5 5 " IsDefault="True" Click="on_cmdSaveSettingsClick">Save Settings</Button>
 	</Grid>
 </Window>

@@ -185,7 +185,7 @@ namespace BreakJunctions
             }
         }
 
-        private double _AccuracyCoefficient = 10.0;
+        private double _AccuracyCoefficient = 1.0;
         public double AccuracyCoefficient
         {
             get { return _AccuracyCoefficient; }

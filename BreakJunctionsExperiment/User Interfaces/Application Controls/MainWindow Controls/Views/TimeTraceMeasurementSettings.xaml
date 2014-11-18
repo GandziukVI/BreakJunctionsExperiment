@@ -6,7 +6,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BreakJunctions"
              xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit" >
-    
+
+	<UserControl.Resources>
+		<Style TargetType="wpfTool:IntegerUpDown">
+			<Setter Property="Margin" Value="1 2.5" />
+		</Style>
+		<Style TargetType="wpfTool:DoubleUpDown">
+			<Setter Property="CultureInfo" Value="en-US" />
+			<Setter Property="FormatString" Value="F3" />
+			<Setter Property="Increment" Value="0.01" />
+			<Setter Property="Margin" Value="1 2.5" />
+			<Setter Property="MinWidth" Value="70" />
+		</Style>
+		<Style TargetType="ComboBox">
+			<Setter Property="Margin" Value="0 2" />
+		</Style>
+	</UserControl.Resources>
+
     <Expander x:Name="ExpanderTimeTraceMeasurements" ExpandDirection="Left">
         <Expander.Header>
             <TextBlock Width="Auto" Height="Auto" Text="Time Trace Measurement Settings" RenderTransformOrigin="0.5,0.5" Margin="5">
@@ -68,7 +84,7 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox Grid.Column="0" x:Name="textBoxTimeTraceChannel_01_ValueThroughTheStructure" Text="{Binding TimeTraceMeasurementChannel_01_ValueThrougtTheStructure, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+								<wpfTool:DoubleUpDown Grid.Column="0" x:Name="textBoxTimeTraceChannel_01_ValueThroughTheStructure" Value="{Binding TimeTraceMeasurementChannel_01_ValueThrougtTheStructure, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                                 <ComboBox Grid.Column="1" x:Name="comboBoxTimeTraceChannel_01_StartValueMultiplier" Text="{Binding TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="65">
                                     <ComboBoxItem Content="Pico"/>
                                     <ComboBoxItem Content="Nano"/>
@@ -145,7 +161,7 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox Grid.Column="0" x:Name="textBoxTimeTraceChannel_02_ValueThroughTheStructure" Text="{Binding TimeTraceMeasurementChannel_02_ValueThrougtTheStructure, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap"  MinWidth="70" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged" />
+								<wpfTool:DoubleUpDown Grid.Column="0" x:Name="textBoxTimeTraceChannel_02_ValueThroughTheStructure" Value="{Binding TimeTraceMeasurementChannel_02_ValueThrougtTheStructure, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                                 <ComboBox Grid.Column="1" x:Name="comboBoxTimeTraceChannel_02_StartValueMultiplier" Text="{Binding TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="65">
                                     <ComboBoxItem Content="Pico"/>
                                     <ComboBoxItem Content="Nano"/>
@@ -217,10 +233,10 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="Number of Averages"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceNumberOfAverages" Text="{Binding TimeTraceMeasurementNumberOfAverages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0 2.5" DataObject.Pasting="IntegerPastingHandler" TextChanged="OnIntegerTextChanged"/>
+						<wpfTool:IntegerUpDown Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceNumberOfAverages" Value="{Binding TimeTraceMeasurementNumberOfAverages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                         <Label Grid.Row="1" Grid.Column="0" Content="Time Delay"/>
                         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                            <TextBox x:Name="textBoxTimrTraceTimeDelay" Text="{Binding TimeTraceMeasurementTimeDelay, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="70" Margin="0 2.5" DataObject.Pasting="FloatingPointPastingHandler" TextChanged="OnFloatingPointTextChanged"/>
+							<wpfTool:DoubleUpDown x:Name="textBoxTimrTraceTimeDelay" Value="{Binding TimeTraceMeasurementTimeDelay, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                             <ComboBox x:Name="comboBoxTimeTraceTimeDelayMultiplier" Margin="0 2.5">
                                 <ComboBoxItem Content="Pico"/>
                                 <ComboBoxItem Content="Nano"/>

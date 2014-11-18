@@ -18,6 +18,6 @@
 		<ComboBox x:Name="comboBoxSelectSourceDevice" Grid.Row="1" Margin="5 2.5">
 			<ComboBoxItem IsSelected="True" Margin="5 2.5">KEITHLEY 2602A</ComboBoxItem>
 		</ComboBox>
-		<Button x:Name="cmdConfigureDevice" Grid.Row="2" Margin="5 2.5" Click="on_cmdConfigureDeviceClick">Configure Device</Button>
+		<Button x:Name="cmdConfigureDevice" Grid.Row="2" Margin="5 2.5" Click="on_cmdConfigureDeviceClick" Background="{x:Null}" IsDefault="True">Configure Device</Button>
 	</Grid>
 </Window>
