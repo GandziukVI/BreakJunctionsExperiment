@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-using SMU;
+using Devices.SMU;
 using SMU.KEITHLEY_2602A;
 using System.Text.RegularExpressions;
 using System.Globalization;
@@ -57,31 +57,31 @@ namespace BreakJunctions
 
         private I_SMU SetDevice()
         {
-            if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
+            if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
-                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
-                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, KEITHLEY_2602A_Channels.ChannelA);
+                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, Channels.ChannelA);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
             }
-            else if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelA) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Current))
+            else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
-                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, KEITHLEY_2602A_Channels.ChannelA);
-                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, KEITHLEY_2602A_Channels.ChannelA);
+                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, Channels.ChannelA);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
             }
-            else if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelB) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Voltage))
+            else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
-                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
-                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, KEITHLEY_2602A_Channels.ChannelB);
+                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, Channels.ChannelB);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
             }
-            else if ((_DeviceSettings.SelectedChannel == KEITHLEY_2602A_Channels.ChannelB) && (_DeviceSettings.LimitMode == KEITHLEY_2601A_LimitMode.Current))
+            else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
-                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, KEITHLEY_2602A_Channels.ChannelB);
-                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, KEITHLEY_2602A_Channels.ChannelB);
+                var smu = new GPIB_KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, Channels.ChannelB);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
             }

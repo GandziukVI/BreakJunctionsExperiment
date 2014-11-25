@@ -76,9 +76,9 @@ namespace BreakJunctions.Plotting
 
     public class ExperimentalIV_DataSourceChannel : ExperimentalIV_DataSource
     {
-        private Channels _Channel;
+        private ChannelsToInvestigate _Channel;
 
-        public ExperimentalIV_DataSourceChannel(List<PointD> data, Channels Channel)
+        public ExperimentalIV_DataSourceChannel(List<PointD> data, ChannelsToInvestigate Channel)
             : base(data)
         {
             _Channel = Channel;
@@ -88,11 +88,11 @@ namespace BreakJunctions.Plotting
         {
             switch (_Channel)
             {
-                case Channels.Channel_01:
+                case ChannelsToInvestigate.Channel_01:
                     {
                         AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceived;
                     } break;
-                case Channels.Channel_02:
+                case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.IV_PointReceivedChannel_02 += OnIV_PointReceived;
                     } break;
@@ -105,11 +105,11 @@ namespace BreakJunctions.Plotting
         {
             switch (_Channel)
             {
-                case Channels.Channel_01:
+                case ChannelsToInvestigate.Channel_01:
                     {
                         AllEventsHandler.Instance.IV_PointReceivedChannel_01 -= OnIV_PointReceived;
                     } break;
-                case Channels.Channel_02:
+                case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.IV_PointReceivedChannel_02 -= OnIV_PointReceived;
                     } break;

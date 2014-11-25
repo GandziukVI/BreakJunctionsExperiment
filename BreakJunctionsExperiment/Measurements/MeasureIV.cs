@@ -7,7 +7,7 @@ using System.Text;
 using BreakJunctions.Events;
 using BreakJunctions.Plotting;
 
-using SMU;
+using Devices.SMU;
 
 namespace BreakJunctions.Measurements
 {
@@ -60,9 +60,9 @@ namespace BreakJunctions.Measurements
             set { _Device = value; }
         }
 
-        Channels _Channel;
+        ChannelsToInvestigate _Channel;
 
-        public MeasureIV(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, Channels Channel) 
+        public MeasureIV(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, ChannelsToInvestigate Channel) 
         {
             _StartValue = startVal;
             _EndValue = endVal;
@@ -103,11 +103,11 @@ namespace BreakJunctions.Measurements
                                 {
                                     switch (_Channel)
                                     {
-                                        case Channels.Channel_01:
+                                        case ChannelsToInvestigate.Channel_01:
                                             { 
                                                 AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
                                             } break;
-                                        case Channels.Channel_02:
+                                        case ChannelsToInvestigate.Channel_02:
                                             {
                                                 AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
                                             } break;
@@ -145,11 +145,11 @@ namespace BreakJunctions.Measurements
                                 {
                                     switch (_Channel)
                                     {
-                                        case Channels.Channel_01:
+                                        case ChannelsToInvestigate.Channel_01:
                                             {
                                                 AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
                                             } break;
-                                        case Channels.Channel_02:
+                                        case ChannelsToInvestigate.Channel_02:
                                             {
                                                 AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
                                             } break;

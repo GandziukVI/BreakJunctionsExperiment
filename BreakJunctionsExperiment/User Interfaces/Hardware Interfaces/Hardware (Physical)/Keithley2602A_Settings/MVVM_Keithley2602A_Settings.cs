@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+using Devices.SMU;
 using SMU.KEITHLEY_2602A;
 
 namespace BreakJunctions
@@ -86,15 +87,15 @@ namespace BreakJunctions
             }
         }
 
-        private KEITHLEY_2601A_LimitMode _LimitMode;
-        public KEITHLEY_2601A_LimitMode LimitMode 
+        private LimitMode _LimitMode;
+        public LimitMode LimitMode 
         {
             get 
             {
                 if (_IsCurrentModeChecked == true)
-                    _LimitMode = KEITHLEY_2601A_LimitMode.Voltage;
+                    _LimitMode = LimitMode.Voltage;
                 else if (_IsVoltageModeChecked == true)
-                    _LimitMode = KEITHLEY_2601A_LimitMode.Current;
+                    _LimitMode = LimitMode.Current;
 
                 return _LimitMode; 
             }
@@ -166,15 +167,15 @@ namespace BreakJunctions
             }
         }
 
-        private KEITHLEY_2602A_Channels _SelectedChannel = KEITHLEY_2602A_Channels.ChannelA;
-        public KEITHLEY_2602A_Channels SelectedChannel 
+        private Channels _SelectedChannel = Channels.ChannelA;
+        public Channels SelectedChannel 
         {
             get 
             {
                 if (_SelectedChannelString == "Channel A")
-                    _SelectedChannel = KEITHLEY_2602A_Channels.ChannelA;
+                    _SelectedChannel = Channels.ChannelA;
                 else
-                    _SelectedChannel = KEITHLEY_2602A_Channels.ChannelB;
+                    _SelectedChannel = Channels.ChannelB;
 
                 return _SelectedChannel; 
             }

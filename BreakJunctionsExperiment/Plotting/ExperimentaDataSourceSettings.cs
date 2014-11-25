@@ -20,8 +20,8 @@ namespace BreakJunctions.Plotting
 {
     #region Representing plotting channels
 
-    public enum Channels { Channel_01, Channel_02 }
-    public enum Samples { Sample_01, Sample_02 }
+    public enum ChannelsToInvestigate { Channel_01, Channel_02 }
+    public enum SamplesToInvestigate { Sample_01, Sample_02 }
 
     #endregion
 }

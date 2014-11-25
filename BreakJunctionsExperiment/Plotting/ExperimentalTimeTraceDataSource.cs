@@ -100,9 +100,9 @@ namespace BreakJunctions.Plotting
 
     public class ExperimentalTimetraceDataSourceChannel : ExperimentalTimeTraceDataSource
     {
-        private Channels _Channel;
+        private ChannelsToInvestigate _Channel;
 
-        public ExperimentalTimetraceDataSourceChannel(List<PointD> data, Channels Channel)
+        public ExperimentalTimetraceDataSourceChannel(List<PointD> data, ChannelsToInvestigate Channel)
             : base(data)
         {
             _Channel = Channel;
@@ -112,11 +112,11 @@ namespace BreakJunctions.Plotting
         {
             switch (_Channel)
             {
-                case Channels.Channel_01:
+                case ChannelsToInvestigate.Channel_01:
                     {
                         AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReceived;
                     } break;
-                case Channels.Channel_02:
+                case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += OnTimeTracePointReceived;
                     } break;
@@ -129,11 +129,11 @@ namespace BreakJunctions.Plotting
         {
             switch (_Channel)
             {
-                case Channels.Channel_01:
+                case ChannelsToInvestigate.Channel_01:
                     {
                         AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 -= OnTimeTracePointReceived;
                     } break;
-                case Channels.Channel_02:
+                case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 -= OnTimeTracePointReceived;
                     } break;

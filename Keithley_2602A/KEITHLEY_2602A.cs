@@ -5,20 +5,12 @@ using System.Text;
 using System.Threading;
 
 using Devices;
+using Devices.SMU;
 
 /*     Realizes KEITHLY 2602A functionality     */
 
 namespace SMU.KEITHLEY_2602A
 {
-    //KEITHLEY modes and parameters
-
-    public enum KEITHLEY_2602A_Channels { ChannelA, ChannelB }
-    public enum KEITHLEY_2602A_Channel_Status { Channel_ON, Channel_OFF }
-    public enum KEITHLEY_2602A_Sense { SENSE_LOCAL, SENSE_REMOTE }
-    public enum KEITHLEY_2601A_SourceMode { Voltage, Current}
-    public enum KEITHLEY_2601A_MeasureMode { Voltage, Current, Resistance, Power }
-    public enum KEITHLEY_2601A_LimitMode { Voltage, Current }
-
     public class GPIB_KEITHLEY_2602A : GPIB_Device
     {
 
@@ -51,7 +43,7 @@ namespace SMU.KEITHLEY_2602A
 
         private double _FastestSpeed = 0.001;
         private double _LowestSpeed = 25.0;
-        public void SetSpeed(double Speed, KEITHLEY_2602A_Channels SelectedChannel)
+        public void SetSpeed(double Speed, Channels SelectedChannel)
         {
             var Command = "smu{0}.measure.nplc = {1} ";
             var _Speed = Speed.ToString().Replace(',', '.');
@@ -61,11 +53,11 @@ namespace SMU.KEITHLEY_2602A
 
             switch (SelectedChannel)
             {
-                case KEITHLEY_2602A_Channels.ChannelA:
+                case Channels.ChannelA:
                     {
                         SendCommandRequest(String.Format(Command, "a", _Speed));
                     } break;
-                case KEITHLEY_2602A_Channels.ChannelB:
+                case Channels.ChannelB:
                     {
                         SendCommandRequest(String.Format(Command, "b", _Speed));
                     } break;
@@ -79,7 +71,7 @@ namespace SMU.KEITHLEY_2602A
         /// </summary>
         /// <param name="Channel">Channel to be swithed</param>
         /// <param name="Status">Status of the channel ON / OFF</param>
-        public void SwitchChannelState(KEITHLEY_2602A_Channels Channel, KEITHLEY_2602A_Channel_Status Status)
+        public void SwitchChannelState(Channels Channel, Channel_Status Status)
         {
             var Command = 
                 "beeper.beep(0.15, 2400) " + 
@@ -87,12 +79,12 @@ namespace SMU.KEITHLEY_2602A
 
             switch (Status)
             {
-                case KEITHLEY_2602A_Channel_Status.Channel_ON:
+                case Channel_Status.Channel_ON:
                     {
                         Command = Command.Replace("OUTPUT_STATUS", "OUTPUT_ON");
                     }
                     break;
-                case KEITHLEY_2602A_Channel_Status.Channel_OFF:
+                case Channel_Status.Channel_OFF:
                     {
                         Command = Command.Replace("OUTPUT_STATUS", "OUTPUT_OFF");
                     }
@@ -103,7 +95,7 @@ namespace SMU.KEITHLEY_2602A
 
             switch (Channel)
             {
-                case KEITHLEY_2602A_Channels.ChannelA:
+                case Channels.ChannelA:
                     {
                         CommandBuilder = new StringBuilder();
                         CommandBuilder.AppendFormat(Command, "a").ToString();
@@ -112,7 +104,7 @@ namespace SMU.KEITHLEY_2602A
 
                         SendCommandRequest(ExequtionRequest);
                     } break;
-                case KEITHLEY_2602A_Channels.ChannelB:
+                case Channels.ChannelB:
                     {
                         CommandBuilder = new StringBuilder();
                         CommandBuilder.AppendFormat(Command, "b").ToString();
@@ -133,7 +125,7 @@ namespace SMU.KEITHLEY_2602A
         /// </summary>
         /// <param name="Channel">Channel</param>
         /// <param name="SourceMode">Source mode (voltage / current)</param>
-        public void SetChannelSourceMode(KEITHLEY_2602A_Channels Channel, KEITHLEY_2601A_SourceMode SourceMode)
+        public void SetChannelSourceMode(Channels Channel, SourceMode SourceMode)
         {
             var Command = "smu{0}.source.autorange{2} = smu{0}.AUTORANGE_ON ";
 
@@ -144,16 +136,16 @@ namespace SMU.KEITHLEY_2602A
 
             switch (SourceMode)
             {
-                case KEITHLEY_2601A_SourceMode.Voltage:
+                case SourceMode.Voltage:
                     {
                         switch (Channel)
                         {
-                            case KEITHLEY_2602A_Channels.ChannelA:
+                            case Channels.ChannelA:
                                 {
                                     Command = CommandBuilder.AppendFormat(Command, "a", "OUTPUT_DCVOLTS", "v").ToString();
                                     SendCommandRequest(Command);
                                 } break;
-                            case KEITHLEY_2602A_Channels.ChannelB:
+                            case Channels.ChannelB:
                                 {
                                     Command = CommandBuilder.AppendFormat(Command, "b", "OUTPUT_DCVOLTS", "v").ToString();
                                     SendCommandRequest(Command);
@@ -162,16 +154,16 @@ namespace SMU.KEITHLEY_2602A
                                 break;
                         }
                     } break;
-                case KEITHLEY_2601A_SourceMode.Current:
+                case SourceMode.Current:
                     {
                         switch (Channel)
                         {
-                            case KEITHLEY_2602A_Channels.ChannelA:
+                            case Channels.ChannelA:
                                 {
                                     Command = CommandBuilder.AppendFormat(Command, "a", "OUTPUT_DCAMPS", "i").ToString();
                                     SendCommandRequest(Command);
                                 } break;
-                            case KEITHLEY_2602A_Channels.ChannelB:
+                            case Channels.ChannelB:
                                 {
                                     Command = CommandBuilder.AppendFormat(Command, "b", "OUTPUT_DCAMPS", "i").ToString();
                                     SendCommandRequest(Command);
@@ -204,7 +196,7 @@ namespace SMU.KEITHLEY_2602A
         /// <param name="NumberOfAverages">Number of averages per one measure</param>
         /// <param name="TimeDelay">Time delay between two measurenments</param>
         /// <returns></returns>
-        public string MeasureIV_ValueInChannel(KEITHLEY_2602A_Channels Channel, KEITHLEY_2601A_MeasureMode MeasureMode, int NumberOfAverages, double TimeDelay)
+        public string MeasureIV_ValueInChannel(Channels Channel, MeasureMode MeasureMode, int NumberOfAverages, double TimeDelay)
         {
             var _TimeDelay = TimeDelay.ToString().Replace(',', '.');
                 
@@ -230,16 +222,16 @@ namespace SMU.KEITHLEY_2602A
 
             switch (MeasureMode)
             {
-                case KEITHLEY_2601A_MeasureMode.Voltage:
+                case MeasureMode.Voltage:
                     {
                         switch (Channel)
                         {
-                            case KEITHLEY_2602A_Channels.ChannelA:
+                            case Channels.ChannelA:
                                 {
                                     IV_Script = CommandBuilder.AppendFormat(IV_Script, "a", "v", NumberOfAverages, _TimeDelay, "SMUA_SMUB", "MEASURE_DCVOLTS").ToString();
                                     ExecuteQuery(IV_Script, ref MeasuredValue);
                                 } break;
-                            case KEITHLEY_2602A_Channels.ChannelB:
+                            case Channels.ChannelB:
                                 {
                                     IV_Script = CommandBuilder.AppendFormat(IV_Script, "b", "v", NumberOfAverages, _TimeDelay, "SMUA_SMUB", "MEASURE_DCVOLTS").ToString();
                                     ExecuteQuery(IV_Script, ref MeasuredValue);
@@ -248,16 +240,16 @@ namespace SMU.KEITHLEY_2602A
                                 break;
                         }
                     } break;
-                case KEITHLEY_2601A_MeasureMode.Current:
+                case MeasureMode.Current:
                     {
                         switch (Channel)
                         {
-                            case KEITHLEY_2602A_Channels.ChannelA:
+                            case Channels.ChannelA:
                                 {
                                     IV_Script = CommandBuilder.AppendFormat(IV_Script, "a", "i", NumberOfAverages, _TimeDelay, "SMUA_SMUB", "MEASURE_DCAMPS").ToString();
                                     ExecuteQuery(IV_Script, ref MeasuredValue);
                                 } break;
-                            case KEITHLEY_2602A_Channels.ChannelB:
+                            case Channels.ChannelB:
                                 {
                                     IV_Script = CommandBuilder.AppendFormat(IV_Script, "b", "i", NumberOfAverages, _TimeDelay, "SMUA_SMUB", "MEASURE_DCAMPS").ToString();
                                     ExecuteQuery(IV_Script, ref MeasuredValue);
@@ -266,11 +258,11 @@ namespace SMU.KEITHLEY_2602A
                                 break;
                         }
                     } break;
-                case KEITHLEY_2601A_MeasureMode.Resistance:
+                case MeasureMode.Resistance:
                     {
                         throw new NotImplementedException();
                     }
-                case KEITHLEY_2601A_MeasureMode.Power:
+                case MeasureMode.Power:
                     {
                         throw new NotImplementedException();
                     }
@@ -290,7 +282,7 @@ namespace SMU.KEITHLEY_2602A
         /// <param name="NumberOfAverages">Number of averages per one measure</param>
         /// <param name="TimeDelay">Time delay between two measurenments</param>
         /// <returns></returns>
-        public string MeasureResistanceOrPowerValueInChannel(KEITHLEY_2602A_Channels Channel, KEITHLEY_2601A_SourceMode SourceMode, KEITHLEY_2601A_MeasureMode MeasureMode, double valueThroughTheStructure, int NumberOfAverages, double TimeDelay)
+        public string MeasureResistanceOrPowerValueInChannel(Channels Channel, SourceMode SourceMode, MeasureMode MeasureMode, double valueThroughTheStructure, int NumberOfAverages, double TimeDelay)
         {
             var _TimeDelay = TimeDelay.ToString().Replace(',', '.');
             var _valueThroughTheStructure = valueThroughTheStructure.ToString().Replace(',', '.');
@@ -339,28 +331,28 @@ namespace SMU.KEITHLEY_2602A
 
             switch (MeasureMode)
             {
-                case KEITHLEY_2601A_MeasureMode.Voltage:
+                case MeasureMode.Voltage:
                     {
                         throw new NotImplementedException();
                     }
-                case KEITHLEY_2601A_MeasureMode.Current:
+                case MeasureMode.Current:
                     {
                         throw new NotImplementedException();
                     }
-                case KEITHLEY_2601A_MeasureMode.Resistance:
+                case MeasureMode.Resistance:
                     {
                         switch (Channel)
                         {
-                            case KEITHLEY_2602A_Channels.ChannelA:
+                            case Channels.ChannelA:
                                 {
                                     switch (SourceMode)
                                     {
-                                        case KEITHLEY_2601A_SourceMode.Voltage:
+                                        case SourceMode.Voltage:
                                             {
                                                 R_Script = CommandBuilder.AppendFormat(R_Script, "a", "OUTPUT_DCVOLTS", "v", _valueThroughTheStructure, "i", _limiti, "SMUA_SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
                                                 ExecuteQuery(R_Script, ref MeasuredValue);
                                             } break;
-                                        case KEITHLEY_2601A_SourceMode.Current:
+                                        case SourceMode.Current:
                                             {
                                                 R_Script = CommandBuilder.AppendFormat(R_Script, "a", "OUTPUT_DCAMPS", "i", _valueThroughTheStructure, "v", _limitv, "SMUA_SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
                                                 ExecuteQuery(R_Script, ref MeasuredValue);
@@ -369,16 +361,16 @@ namespace SMU.KEITHLEY_2602A
                                             break;
                                     }
                                 } break;
-                            case KEITHLEY_2602A_Channels.ChannelB:
+                            case Channels.ChannelB:
                                 {
                                     switch (SourceMode)
                                     {
-                                        case KEITHLEY_2601A_SourceMode.Voltage:
+                                        case SourceMode.Voltage:
                                             {
                                                 R_Script = CommandBuilder.AppendFormat(R_Script, "b", "OUTPUT_DCVOLTS", "v", _valueThroughTheStructure, "i", _limiti, "SMUA_SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
                                                 ExecuteQuery(R_Script, ref MeasuredValue);
                                             } break;
-                                        case KEITHLEY_2601A_SourceMode.Current:
+                                        case SourceMode.Current:
                                             {
                                                 R_Script = CommandBuilder.AppendFormat(R_Script, "b", "OUTPUT_DCAMPS", "i", _valueThroughTheStructure, "v", _limitv, "SMUA_SMUB", "MEASURE_OHMS", NumberOfAverages, _TimeDelay).ToString();
                                                 ExecuteQuery(R_Script, ref MeasuredValue);
@@ -391,20 +383,20 @@ namespace SMU.KEITHLEY_2602A
                                 break;
                         }
                     } break;
-                case KEITHLEY_2601A_MeasureMode.Power:
+                case MeasureMode.Power:
                     {
                         switch (Channel)
                         {
-                            case KEITHLEY_2602A_Channels.ChannelA:
+                            case Channels.ChannelA:
                                 {
                                     switch (SourceMode)
                                     {
-                                        case KEITHLEY_2601A_SourceMode.Voltage:
+                                        case SourceMode.Voltage:
                                             {
                                                 P_Script = CommandBuilder.AppendFormat(P_Script, "a", "i", "SMUA_SMUB", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
                                                 ExecuteQuery(P_Script, ref MeasuredValue);
                                             } break;
-                                        case KEITHLEY_2601A_SourceMode.Current:
+                                        case SourceMode.Current:
                                             {
                                                 P_Script = CommandBuilder.AppendFormat(P_Script, "a", "v", "SMUA_SMUB", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
                                                 ExecuteQuery(P_Script, ref MeasuredValue);
@@ -413,16 +405,16 @@ namespace SMU.KEITHLEY_2602A
                                             break;
                                     }
                                 } break;
-                            case KEITHLEY_2602A_Channels.ChannelB:
+                            case Channels.ChannelB:
                                 {
                                     switch (SourceMode)
                                     {
-                                        case KEITHLEY_2601A_SourceMode.Voltage:
+                                        case SourceMode.Voltage:
                                             {
                                                 P_Script = CommandBuilder.AppendFormat(P_Script, "b", "i", "SMUA_SMUB", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
                                                 ExecuteQuery(P_Script, ref MeasuredValue);
                                             } break;
-                                        case KEITHLEY_2601A_SourceMode.Current:
+                                        case SourceMode.Current:
                                             {
                                                 P_Script = CommandBuilder.AppendFormat(P_Script, "b", "v", "SMUA_SMUB", "MEASURE_WATTS", NumberOfAverages, _TimeDelay).ToString();
                                                 ExecuteQuery(P_Script, ref MeasuredValue);
@@ -448,7 +440,7 @@ namespace SMU.KEITHLEY_2602A
         /// <param name="Value">Value to be set into device</param>
         /// <param name="SourceMode">Defines voltage or current value should be written to the device</param>
         /// <param name="Channel">Defines channel, on which the value is setted</param>
-        public void SetValueToChannel(double Value, KEITHLEY_2601A_SourceMode SourceMode, KEITHLEY_2602A_Channels Channel)
+        public void SetValueToChannel(double Value, SourceMode SourceMode, Channels Channel)
         {
             SetChannelSourceMode(Channel, SourceMode);
 
@@ -460,18 +452,18 @@ namespace SMU.KEITHLEY_2602A
 
             switch (Channel)
             {
-                case KEITHLEY_2602A_Channels.ChannelA:
+                case Channels.ChannelA:
                     {
                         CommandBuilder = new StringBuilder();
 
                         switch (SourceMode)
                         {
-                            case KEITHLEY_2601A_SourceMode.Voltage:
+                            case SourceMode.Voltage:
                                 {
                                     script = CommandBuilder.AppendFormat(script, "a", "v", _Value).ToString();
                                     SendCommandRequest(script);
                                 } break;
-                            case KEITHLEY_2601A_SourceMode.Current:
+                            case SourceMode.Current:
                                 {
                                     script = CommandBuilder.AppendFormat(script, "a", "i", _Value).ToString();
                                     SendCommandRequest(script);
@@ -480,18 +472,18 @@ namespace SMU.KEITHLEY_2602A
                                 break;
                         }
                     } break;
-                case KEITHLEY_2602A_Channels.ChannelB:
+                case Channels.ChannelB:
                     {
                         CommandBuilder = new StringBuilder();
 
                         switch (SourceMode)
                         {
-                            case KEITHLEY_2601A_SourceMode.Voltage:
+                            case SourceMode.Voltage:
                                 {
                                     script = CommandBuilder.AppendFormat(script, "b", "v", _Value).ToString();
                                     SendCommandRequest(script);
                                 } break;
-                            case KEITHLEY_2601A_SourceMode.Current:
+                            case SourceMode.Current:
                                 {
                                     script = CommandBuilder.AppendFormat(script, "b", "i", _Value).ToString();
                                     SendCommandRequest(script);
@@ -510,7 +502,7 @@ namespace SMU.KEITHLEY_2602A
         /// </summary>
         /// <param name="Channel">Channel</param>
         /// <param name="Sense">Sense</param>
-        public void SetSence(KEITHLEY_2602A_Channels Channel, KEITHLEY_2602A_Sense Sense)
+        public void SetSence(Channels Channel, Sense Sense)
         {
             var SetSenseScript =
                 "smu{0}.sense = smu{0}.{1}";
@@ -519,16 +511,16 @@ namespace SMU.KEITHLEY_2602A
 
             switch (Channel)
             {
-                case KEITHLEY_2602A_Channels.ChannelA:
+                case Channels.ChannelA:
                     {
                         switch (Sense)
                         {
-                            case KEITHLEY_2602A_Sense.SENSE_LOCAL:
+                            case Sense.SENSE_LOCAL:
                                 {
                                     SetSenseScript = CommandBuilder.AppendFormat(SetSenseScript, "a", "SENSE_LOCAL").ToString();
                                     SendCommandRequest(SetSenseScript);
                                 } break;
-                            case KEITHLEY_2602A_Sense.SENSE_REMOTE:
+                            case Sense.SENSE_REMOTE:
                                 {
                                     SetSenseScript = CommandBuilder.AppendFormat(SetSenseScript, "a", "SENSE_REMOTE").ToString();
                                     SendCommandRequest(SetSenseScript);
@@ -537,16 +529,16 @@ namespace SMU.KEITHLEY_2602A
                                 break;
                         }
                     } break;
-                case KEITHLEY_2602A_Channels.ChannelB:
+                case Channels.ChannelB:
                     {
                         switch (Sense)
                         {
-                            case KEITHLEY_2602A_Sense.SENSE_LOCAL:
+                            case Sense.SENSE_LOCAL:
                                 {
                                     SetSenseScript = CommandBuilder.AppendFormat(SetSenseScript, "b", "SENSE_LOCAL").ToString();
                                     SendCommandRequest(SetSenseScript);
                                 } break;
-                            case KEITHLEY_2602A_Sense.SENSE_REMOTE:
+                            case Sense.SENSE_REMOTE:
                                 {
                                     SetSenseScript = CommandBuilder.AppendFormat(SetSenseScript, "b", "SENSE_REMOTE").ToString();
                                     SendCommandRequest(SetSenseScript);
@@ -566,7 +558,7 @@ namespace SMU.KEITHLEY_2602A
         /// <param name="LimitValue">Limit value</param>
         /// <param name="Mode">Source mode</param>
         /// <param name="Channel">Channel</param>
-        public void SetSourceLimit(double LimitValue, KEITHLEY_2601A_LimitMode Mode, KEITHLEY_2602A_Channels Channel)
+        public void SetSourceLimit(double LimitValue, LimitMode Mode, Channels Channel)
         {
             var SetLimitScript =
                 "smu{0}.source.limit{1} = {2} ";
@@ -577,16 +569,16 @@ namespace SMU.KEITHLEY_2602A
 
             switch (Channel)
             {
-                case KEITHLEY_2602A_Channels.ChannelA:
+                case Channels.ChannelA:
                     {
                         switch (Mode)
                         {
-                            case KEITHLEY_2601A_LimitMode.Voltage:
+                            case LimitMode.Voltage:
                                 {
                                     SetLimitScript = CommandBuilder.AppendFormat(SetLimitScript, "a", "v", _LimitValue).ToString();
                                     SendCommandRequest(SetLimitScript);
                                 } break;
-                            case KEITHLEY_2601A_LimitMode.Current:
+                            case LimitMode.Current:
                                 {
                                     SetLimitScript = CommandBuilder.AppendFormat(SetLimitScript, "a", "i", _LimitValue).ToString();
                                     SendCommandRequest(SetLimitScript);
@@ -595,16 +587,16 @@ namespace SMU.KEITHLEY_2602A
                                 break;
                         }
                     } break;
-                case KEITHLEY_2602A_Channels.ChannelB:
+                case Channels.ChannelB:
                     {
                         switch (Mode)
                         {
-                            case KEITHLEY_2601A_LimitMode.Voltage:
+                            case LimitMode.Voltage:
                                 {
                                     SetLimitScript = CommandBuilder.AppendFormat(SetLimitScript, "b", "v", _LimitValue).ToString();
                                     SendCommandRequest(SetLimitScript);
                                 } break;
-                            case KEITHLEY_2601A_LimitMode.Current:
+                            case LimitMode.Current:
                                 {
                                     SetLimitScript = CommandBuilder.AppendFormat(SetLimitScript, "b", "i", _LimitValue).ToString();
                                     SendCommandRequest(SetLimitScript);

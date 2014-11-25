@@ -31,7 +31,7 @@ namespace BreakJunctions.DataHandling
         private StringBuilder _DataBuilder;
         private string _DataString;
 
-        private Channels _Channel;
+        private ChannelsToInvestigate _Channel;
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace BreakJunctions.DataHandling
         /// with specified file name
         /// </summary>
         /// <param name="fileName">File name</param>
-        public IV_SingleMeasurement(string fileName, Channels Channel)
+        public IV_SingleMeasurement(string fileName, ChannelsToInvestigate Channel)
         { 
             this._FileName = fileName;
 
@@ -63,11 +63,11 @@ namespace BreakJunctions.DataHandling
 
             switch (_Channel)
             {
-                case Channels.Channel_01:
+                case ChannelsToInvestigate.Channel_01:
                     { 
                         AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceivedChannel_01;
                     } break;
-                case Channels.Channel_02:
+                case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.IV_PointReceivedChannel_02 += OnIV_PointReceivedChannel_02;
                     } break;
@@ -95,11 +95,11 @@ namespace BreakJunctions.DataHandling
         {
             switch (_Channel)
             {
-                case Channels.Channel_01:
+                case ChannelsToInvestigate.Channel_01:
                     {
                         AllEventsHandler.Instance.IV_PointReceivedChannel_01 -= OnIV_PointReceivedChannel_01;
                     } break;
-                case Channels.Channel_02:
+                case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.IV_PointReceivedChannel_02 -= OnIV_PointReceivedChannel_02;
                     } break;

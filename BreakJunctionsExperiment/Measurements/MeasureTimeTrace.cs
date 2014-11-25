@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Windows.Threading;
 using BreakJunctions.Plotting;
 
-using SMU;
+using Devices.SMU;
 using SMU.KEITHLEY_2602A;
 
 using BreakJunctions.Motion;
@@ -17,6 +17,8 @@ namespace BreakJunctions.Measurements
 {
     class MeasureTimeTrace : IDisposable
     {
+        #region MeasureTimeTrace settings
+
         private MotionController _Motor;
         /// <summary>
         /// Gets or sets motion controller to be responsible for
@@ -101,21 +103,21 @@ namespace BreakJunctions.Measurements
             set { _TimeDelay = value; }
         }
         
-        private KEITHLEY_2601A_SourceMode _SourceMode;
+        private SourceMode _SourceMode;
         /// <summary>
         /// The source mode of SMU
         /// </summary>
-        public KEITHLEY_2601A_SourceMode SourceMode
+        public SourceMode SourceMode
         {
             get { return _SourceMode; }
             set { _SourceMode = value; }
         }
 
-        private KEITHLEY_2601A_MeasureMode _MeasureMode;
+        private MeasureMode _MeasureMode;
         /// <summary>
         /// The measure mode of SMU
         /// </summary>
-        public KEITHLEY_2601A_MeasureMode MeasureMode
+        public MeasureMode MeasureMode
         {
             get { return _MeasureMode; }
             set { _MeasureMode = value; }
@@ -141,41 +143,43 @@ namespace BreakJunctions.Measurements
 
         private BackgroundWorker _worker;
 
-        private Channels _Channel;
+        private ChannelsToInvestigate _Channel;
         private MeasureTimeTraceChannelController _ChannelController;
 
         private bool _CancelMeasures = false;
 
-        public MeasureTimeTrace(MotionController motor, double startPosition, double destination, I_SMU measureDevice, KEITHLEY_2601A_SourceMode sourceMode, KEITHLEY_2601A_MeasureMode measureMode, double valueThroughTheStructure, Channels Channel, MeasureTimeTraceChannelController ChannelController, ref BackgroundWorker measurementWorker)
-        {
-            _Motor = motor;
-            _StartPosition = startPosition;
-            _FinalDestination = destination;
-            _MeasureDevice = measureDevice;
-            _SourceMode = sourceMode;
-            _MeasureMode = measureMode;
-            _ValueThroughTheStructure = valueThroughTheStructure;
-            _Channel = Channel;
-            _ChannelController = ChannelController;
+        #endregion
 
-            _worker = measurementWorker;
+        public MeasureTimeTrace(MotionController __Motor, double __StartPosition, double __FinalDestination, I_SMU __MeasureDevice, SourceMode __SourceMode, MeasureMode __MeasureMode, double __ValueThroughTheStructure, ChannelsToInvestigate __Channel, MeasureTimeTraceChannelController __ChannelController, ref BackgroundWorker __MeasurementWorker)
+        {
+            _Motor = __Motor;
+            _StartPosition = __StartPosition;
+            _FinalDestination = __FinalDestination;
+            _MeasureDevice = __MeasureDevice;
+            _SourceMode = __SourceMode;
+            _MeasureMode = __MeasureMode;
+            _ValueThroughTheStructure = __ValueThroughTheStructure;
+            _Channel = __Channel;
+            _ChannelController = __ChannelController;
+
+            _worker = __MeasurementWorker;
 
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += OnTimeTraceMeasurementsStateChanged;
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
        }
 
-        public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind motionKind, int numberRepetities = 1)
+        public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind __MotionKind, int __NumberRepetities = 1)
         {
-            _CurrentMotionKind = motionKind;
-            _NumberRepetities = numberRepetities;
+            _CurrentMotionKind = __MotionKind;
+            _NumberRepetities = __NumberRepetities;
 
             switch (_SourceMode)
             {
-                case KEITHLEY_2601A_SourceMode.Voltage:
+                case SourceMode.Voltage:
                     {
                         _MeasureDevice.SetSourceVoltage(_ValueThroughTheStructure);
                     } break;
-                case KEITHLEY_2601A_SourceMode.Current:
+                case SourceMode.Current:
                     {
                         _MeasureDevice.SetSourceCurrent(_ValueThroughTheStructure);
                     } break;
@@ -187,7 +191,7 @@ namespace BreakJunctions.Measurements
 
             _MeasureDevice.SwitchON();
 
-            switch (motionKind)
+            switch (__MotionKind)
             {
                 case MotionKind.Single:
                     {
@@ -195,7 +199,7 @@ namespace BreakJunctions.Measurements
                     } break;
                 case MotionKind.Repetitive:
                     {
-                        _Motor.StartMotion(_StartPosition, _FinalDestination, MotionKind.Repetitive, numberRepetities);
+                        _Motor.StartMotion(_StartPosition, _FinalDestination, MotionKind.Repetitive, __NumberRepetities);
                     } break;
                 default:
                     break;
@@ -230,20 +234,20 @@ namespace BreakJunctions.Measurements
         {
             switch (_MeasureMode)
             {
-                case KEITHLEY_2601A_MeasureMode.Voltage:
+                case MeasureMode.Voltage:
                     {
                         var measuredVoltage = _MeasureDevice.MeasureVoltage(_NumberOfAverages, _TimeDelay);
                         if (!(double.IsNaN(e.Position) || double.IsNaN(measuredVoltage)))
                         {
                             switch (_Channel)
                             {
-                                case Channels.Channel_01:
+                                case ChannelsToInvestigate.Channel_01:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredVoltage));
                                         _CurrentPosition = e.Position;
                                         _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                     } break;
-                                case Channels.Channel_02:
+                                case ChannelsToInvestigate.Channel_02:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredVoltage));
                                         _CurrentPosition = e.Position;
@@ -254,20 +258,20 @@ namespace BreakJunctions.Measurements
                             }
                         }
                     } break;
-                case KEITHLEY_2601A_MeasureMode.Current:
+                case MeasureMode.Current:
                     {
                         var measuredCurrent = _MeasureDevice.MeasureCurrent(_NumberOfAverages, _TimeDelay);
                         if (!(double.IsNaN(e.Position) || double.IsNaN(measuredCurrent)))
                         {
                             switch (_Channel)
                             {
-                                case Channels.Channel_01:
+                                case ChannelsToInvestigate.Channel_01:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(null, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredCurrent));
                                         _CurrentPosition = e.Position;
                                         _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
                                     } break;
-                                case Channels.Channel_02:
+                                case ChannelsToInvestigate.Channel_02:
                                     {
                                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(null, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredCurrent));
                                         _CurrentPosition = e.Position;
@@ -278,18 +282,18 @@ namespace BreakJunctions.Measurements
                             }
                         }
                     } break;
-                case KEITHLEY_2601A_MeasureMode.Resistance:
+                case MeasureMode.Resistance:
                     {
                         switch (_SourceMode)
                         {
-                            case KEITHLEY_2601A_SourceMode.Voltage:
+                            case SourceMode.Voltage:
                                 {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Voltage);
+                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
                                     {
                                         switch (_Channel)
                                         {
-                                            case Channels.Channel_01:
+                                            case ChannelsToInvestigate.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
                                                     _CurrentPosition = e.Position;
@@ -299,7 +303,7 @@ namespace BreakJunctions.Measurements
                                                     }
                                                     catch { }
                                                 } break;
-                                            case Channels.Channel_02:
+                                            case ChannelsToInvestigate.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
                                                     _CurrentPosition = e.Position;
@@ -314,14 +318,14 @@ namespace BreakJunctions.Measurements
                                         }
                                     }
                                 } break;
-                            case KEITHLEY_2601A_SourceMode.Current:
+                            case SourceMode.Current:
                                 {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Current);
+                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
                                     {
                                         switch (_Channel)
                                         {
-                                            case Channels.Channel_01:
+                                            case ChannelsToInvestigate.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
                                                     _CurrentPosition = e.Position;
@@ -331,7 +335,7 @@ namespace BreakJunctions.Measurements
                                                     }
                                                     catch { }
                                                 } break;
-                                            case Channels.Channel_02:
+                                            case ChannelsToInvestigate.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
                                                     _CurrentPosition = e.Position;
@@ -350,18 +354,18 @@ namespace BreakJunctions.Measurements
                                 break;
                         }
                     } break;
-                case KEITHLEY_2601A_MeasureMode.Power:
+                case MeasureMode.Power:
                     {
                         switch (_SourceMode)
                         {
-                            case KEITHLEY_2601A_SourceMode.Voltage:
+                            case SourceMode.Voltage:
                                 {
-                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Voltage);
+                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
                                     {
                                         switch (_Channel)
                                         {
-                                            case Channels.Channel_01:
+                                            case ChannelsToInvestigate.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
                                                     _CurrentPosition = e.Position;
@@ -371,7 +375,7 @@ namespace BreakJunctions.Measurements
                                                     }
                                                     catch { }
                                                 } break;
-                                            case Channels.Channel_02:
+                                            case ChannelsToInvestigate.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
                                                     _CurrentPosition = e.Position;
@@ -386,14 +390,14 @@ namespace BreakJunctions.Measurements
                                         }
                                     }
                                 } break;
-                            case KEITHLEY_2601A_SourceMode.Current:
+                            case SourceMode.Current:
                                 {
-                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SMU.SourceMode.Current);
+                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
                                     {
                                         switch (_Channel)
                                         {
-                                            case Channels.Channel_01:
+                                            case ChannelsToInvestigate.Channel_01:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredPower));
                                                     _CurrentPosition = e.Position;
@@ -403,7 +407,7 @@ namespace BreakJunctions.Measurements
                                                     }
                                                     catch { }
                                                 } break;
-                                            case Channels.Channel_02:
+                                            case ChannelsToInvestigate.Channel_02:
                                                 {
                                                     AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredPower));
                                                     _CurrentPosition = e.Position;

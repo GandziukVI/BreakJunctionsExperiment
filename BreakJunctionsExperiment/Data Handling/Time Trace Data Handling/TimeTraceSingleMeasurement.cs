@@ -7,7 +7,7 @@ using System.Text;
 using BreakJunctions.Events;
 using BreakJunctions.Plotting;
 
-using SMU;
+using Devices.SMU;
 
 namespace BreakJunctions.DataHandling
 {
@@ -32,7 +32,7 @@ namespace BreakJunctions.DataHandling
         private string _Header;
         private string _Subheader;
 
-        private Channels _Channel;
+        private ChannelsToInvestigate _Channel;
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         /// <param name="fileName">File name</param>
         /// <param name="sourceMode">Source mode</param>
-        public TimeTraceSingleMeasurement(string fileName, SourceMode sourceMode, Channels Channel)
+        public TimeTraceSingleMeasurement(string fileName, SourceMode sourceMode, ChannelsToInvestigate Channel)
         { 
             this._FileName = fileName;
             this._Channel = Channel;
@@ -80,11 +80,11 @@ namespace BreakJunctions.DataHandling
             
             switch (_Channel)
             {
-                case Channels.Channel_01:
+                case ChannelsToInvestigate.Channel_01:
                     {
                         AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += OnTimeTracePointReceivedChannel_01;
                     } break;
-                case Channels.Channel_02:
+                case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += OnTimeTracePointReceivedChannel_02;
                     } break;
@@ -112,11 +112,11 @@ namespace BreakJunctions.DataHandling
         {
             switch (_Channel)
             {
-                case Channels.Channel_01:
+                case ChannelsToInvestigate.Channel_01:
                     {
                         AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 -= OnTimeTracePointReceivedChannel_01;
                     } break;
-                case Channels.Channel_02:
+                case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 -= OnTimeTracePointReceivedChannel_02;
                     } break;

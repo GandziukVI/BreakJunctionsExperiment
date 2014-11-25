@@ -19,7 +19,7 @@ using BreakJunctions.Plotting;
 using BreakJunctions.Measurements;
 using BreakJunctions.DataHandling;
 
-using SMU;
+using Devices.SMU;
 using SMU.KEITHLEY_2602A;
 
 using Microsoft.Research.DynamicDataDisplay;
@@ -511,7 +511,7 @@ namespace BreakJunctions
                 }
                 //Creating new plot and attaching it to the chart
                 _CurrentIV_CurveChannel_01 = new List<PointD>();
-                _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_01, Channels.Channel_01);
+                _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_01, ChannelsToInvestigate.Channel_01);
                 _experimentalIV_DataSourceChannel_01.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_01 = new LineGraph(_experimentalIV_DataSourceChannel_01);
                 _IV_LineGraphChannel_01.AddToPlotter(chartIV_CurvesChannel_01);
@@ -529,7 +529,7 @@ namespace BreakJunctions
                 }
                 //Creating new plot and attaching it to the chart
                 _CurrentIV_CurveChannel_02 = new List<PointD>();
-                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_02, Channels.Channel_02);
+                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_02, ChannelsToInvestigate.Channel_02);
                 _experimentalIV_DataSourceChannel_02.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_02 = new LineGraph(_experimentalIV_DataSourceChannel_02);
                 _IV_LineGraphChannel_02.AddToPlotter(chartIV_CurvesChannel_02);
@@ -573,7 +573,7 @@ namespace BreakJunctions
                 var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_01;
                 var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_01;
 
-                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, Channels.Channel_01);
+                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01);
 
                 #endregion
 
@@ -583,7 +583,7 @@ namespace BreakJunctions
                 var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_02;
                 var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_02;
 
-                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, Channels.Channel_02);
+                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02);
 
                 #endregion
 
@@ -635,8 +635,8 @@ namespace BreakJunctions
                 }
 
 
-                _IV_SingleMeasurementChannel_01 = new IV_SingleMeasurement(newFileNameChannel_01, Channels.Channel_01);
-                _IV_SingleMeasurementChannel_02 = new IV_SingleMeasurement(newFileNameChannel_02, Channels.Channel_02);
+                _IV_SingleMeasurementChannel_01 = new IV_SingleMeasurement(newFileNameChannel_01, ChannelsToInvestigate.Channel_01);
+                _IV_SingleMeasurementChannel_02 = new IV_SingleMeasurement(newFileNameChannel_02, ChannelsToInvestigate.Channel_02);
 
                 #endregion
 
@@ -780,7 +780,7 @@ namespace BreakJunctions
                 }
 
                 _CurrentTimeTraceChannel_01 = new List<PointD>();
-                _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_01, Channels.Channel_01);
+                _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_01, ChannelsToInvestigate.Channel_01);
                 _experimentalTimeTraceDataSourceChannel_01.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_01 = new LineGraph(_experimentalTimeTraceDataSourceChannel_01);
                 _TimeTraceLineGraphChannel_01.AddToPlotter(chartTimeTraceChannel_01);
@@ -797,7 +797,7 @@ namespace BreakJunctions
                 }
 
                 _CurrentTimeTraceChannel_02 = new List<PointD>();
-                _experimentalTimeTraceDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_02, Channels.Channel_02);
+                _experimentalTimeTraceDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_02, ChannelsToInvestigate.Channel_02);
                 _experimentalTimeTraceDataSourceChannel_02.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_02 = new LineGraph(_experimentalTimeTraceDataSourceChannel_02);
                 _TimeTraceLineGraphChannel_02.AddToPlotter(chartTimeTraceChannel_02);
@@ -854,26 +854,26 @@ namespace BreakJunctions
 
                             if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, SourceMode.Voltage, MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceChannel_01_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, SourceMode.Current, MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
 
                             if (isTimeTraceChannel_02_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, SourceMode.Voltage, MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceChannel_02_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, SourceMode.Current, MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
@@ -885,26 +885,26 @@ namespace BreakJunctions
 
                             if (isTimeTraceChannel_01_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, SourceMode.Voltage, MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceChannel_01_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, Channels.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, SourceMode.Current, MeasureMode.Resistance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
 
                             if (isTimeTraceChannel_02_VoltageModeChecked == true)
                             {
-                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Voltage, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, SourceMode.Voltage, MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
                             else if (isTimeTraceChannel_02_CurrentModeChecked == true)
                             {
-                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, KEITHLEY_2601A_SourceMode.Current, KEITHLEY_2601A_MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, Channels.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, SourceMode.Current, MeasureMode.Resistance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
                             }
@@ -988,8 +988,8 @@ namespace BreakJunctions
                 if (_TimeTraceSingleMeasurementChannel_02 != null)
                     _TimeTraceSingleMeasurementChannel_02.Dispose();
 
-                _TimeTraceSingleMeasurementChannel_01 = new TimeTraceSingleMeasurement(newFileNameChannel_01, _sourceModeChannel_01, Channels.Channel_01);
-                _TimeTraceSingleMeasurementChannel_02 = new TimeTraceSingleMeasurement(newFileNameChannel_02, _sourceModeChannel_02, Channels.Channel_02);
+                _TimeTraceSingleMeasurementChannel_01 = new TimeTraceSingleMeasurement(newFileNameChannel_01, _sourceModeChannel_01, ChannelsToInvestigate.Channel_01);
+                _TimeTraceSingleMeasurementChannel_02 = new TimeTraceSingleMeasurement(newFileNameChannel_02, _sourceModeChannel_02, ChannelsToInvestigate.Channel_02);
 
                 #endregion
 
@@ -1188,7 +1188,7 @@ namespace BreakJunctions
             }
 
             _RealTimeTimeTraceSample_01 = new List<PointD>();
-            _ExperimentalRealTimeTimetraceDataSourceSample_01 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_01, Samples.Sample_01);
+            _ExperimentalRealTimeTimetraceDataSourceSample_01 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_01, SamplesToInvestigate.Sample_01);
             _ExperimentalRealTimeTimetraceDataSourceSample_01.AttachPointReceiveEvent();
             _RealTimeTimeTraceLineGraphSample_01 = new LineGraph(_ExperimentalRealTimeTimetraceDataSourceSample_01);
             _RealTimeTimeTraceLineGraphSample_01.AddToPlotter(chartRealTimeTimeTraceSample_01);
@@ -1205,7 +1205,7 @@ namespace BreakJunctions
             }
 
             _RealTimeTimeTraceSample_02 = new List<PointD>();
-            _ExperimentalRealTimeTimetraceDataSourceSample_02 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_02, Samples.Sample_02);
+            _ExperimentalRealTimeTimetraceDataSourceSample_02 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_02, SamplesToInvestigate.Sample_02);
             _ExperimentalRealTimeTimetraceDataSourceSample_02.AttachPointReceiveEvent();
             _RealTimeTimeTraceLineGraphSample_02 = new LineGraph(_ExperimentalRealTimeTimetraceDataSourceSample_02);
             _RealTimeTimeTraceLineGraphSample_02.AddToPlotter(chartRealTimeTimeTraceSample_02);

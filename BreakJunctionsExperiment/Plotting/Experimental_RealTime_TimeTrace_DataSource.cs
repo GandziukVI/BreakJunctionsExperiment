@@ -26,9 +26,9 @@ namespace BreakJunctions.Plotting
         private Dispatcher _Dispatcher;
         private EnumerableDataSource<PointD> _ExperimentalDataSource;
 
-        private Samples _SampleNumber;
+        private SamplesToInvestigate _SampleNumber;
 
-        public Experimental_RealTime_TimeTrace_DataSource_Sample(List<PointD> Data, Samples SampleNumber)
+        public Experimental_RealTime_TimeTrace_DataSource_Sample(List<PointD> Data, SamplesToInvestigate SampleNumber)
         {
             _ExperimentalData = Data;
             _ExperimentalDataSource = new EnumerableDataSource<PointD>(_ExperimentalData);
@@ -73,11 +73,11 @@ namespace BreakJunctions.Plotting
 
                     switch (_SampleNumber)
                     {
-                        case Samples.Sample_01:
+                        case SamplesToInvestigate.Sample_01:
                             {
                                 number = 0;
                             } break;
-                        case Samples.Sample_02:
+                        case SamplesToInvestigate.Sample_02:
                             {
                                 number = 2;
                             } break;
@@ -93,12 +93,12 @@ namespace BreakJunctions.Plotting
 
                     switch (_SampleNumber)
                     {
-                        case Samples.Sample_01:
+                        case SamplesToInvestigate.Sample_01:
                             {
                                 if (_ExperimentalData != null && _ExperimentalData.Count > 0)
                                     AllEventsHandler.Instance.OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(this, new RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01(_ExperimentalData.Average(o => o.Y)));
                             } break;
-                        case Samples.Sample_02:
+                        case SamplesToInvestigate.Sample_02:
                             {
                                 if (_ExperimentalData != null && _ExperimentalData.Count > 0)
                                     AllEventsHandler.Instance.OnRealTime_TimeTrace_AveragedDataArrived_Sample_02(this, new RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02(_ExperimentalData.Average(o => o.Y)));
