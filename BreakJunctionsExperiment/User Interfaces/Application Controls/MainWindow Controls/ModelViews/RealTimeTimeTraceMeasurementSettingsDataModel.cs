@@ -291,7 +291,7 @@ namespace BreakJunctions
 
         #region Amplification coefficient
 
-        private double _AmplificationCoefficient = 1000000.0;
+        private double _AmplificationCoefficient = 1000.0;
         public double AmplificationCoefficient
         {
             get { return _AmplificationCoefficient; }

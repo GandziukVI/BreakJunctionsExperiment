@@ -10,6 +10,7 @@ using BreakJunctions.Events;
 
 using Aids.Graphics;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
+using System.Threading;
 
 namespace BreakJunctions.Plotting
 {
@@ -56,59 +57,65 @@ namespace BreakJunctions.Plotting
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
         }
 
-        public void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
+        public async void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
-            _ExperimentalData.Clear();
-            var DataLendgth = (new int[4] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
+            await SetDataAsync(e.Data, CancellationToken.None);
+        }
 
-            var number = 0;
-
-            switch (_SampleNumber)
-            {
-                case Samples.Sample_01:
-                    {
-                        number = 0;
-                    } break;
-                case Samples.Sample_02:
-                    {
-                        number = 2;
-                    } break;
-                default:
-                    break;
-            }
-
-            for (int i = 0; i < DataLendgth; i++)
-            {
-                if (e.Data[number][i].Y != 0.0)
-                    _ExperimentalData.Add(new PointD(e.Data[number][i].X, e.Data[number][i].Y / e.Data[number + 1][i].Y));
-            }
-
-            switch (_SampleNumber)
-            {
-                case Samples.Sample_01:
-                    {
-                        if (_ExperimentalData != null && _ExperimentalData.Count > 0)
-                            AllEventsHandler.Instance.OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(this, new RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01(_ExperimentalData.Average(o => o.Y)));
-                    } break;
-                case Samples.Sample_02:
-                    {
-                        if (_ExperimentalData != null && _ExperimentalData.Count > 0)
-                            AllEventsHandler.Instance.OnRealTime_TimeTrace_AveragedDataArrived_Sample_02(this, new RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02(_ExperimentalData.Average(o => o.Y)));
-                    } break;
-                default:
-                    break;
-            }
-
-            //_ExperimentalDataSource.RaiseDataChanged();
-            
-            _Dispatcher.BeginInvoke(new Action(delegate()
-            {
-                try
+        internal Task SetDataAsync(List<PointD>[] Data, CancellationToken __CancellationToken)
+        {
+            return Task.Run(() =>
                 {
-                    DataChanged(sender, new EventArgs());
-                }
-                catch { }
-            }));
+                    _ExperimentalData.Clear();
+                    var DataLendgth = (new int[4] { Data[0].Count, Data[1].Count, Data[2].Count, Data[3].Count }).Min();
+
+                    var number = 0;
+
+                    switch (_SampleNumber)
+                    {
+                        case Samples.Sample_01:
+                            {
+                                number = 0;
+                            } break;
+                        case Samples.Sample_02:
+                            {
+                                number = 2;
+                            } break;
+                        default:
+                            break;
+                    }
+
+                    for (int i = 0; i < DataLendgth; i++)
+                    {
+                        if (Data[number][i].Y != 0.0)
+                            _ExperimentalData.Add(new PointD(Data[number][i].X, Data[number][i].Y / Data[number + 1][i].Y));
+                    }
+
+                    switch (_SampleNumber)
+                    {
+                        case Samples.Sample_01:
+                            {
+                                if (_ExperimentalData != null && _ExperimentalData.Count > 0)
+                                    AllEventsHandler.Instance.OnRealTime_TimeTrace_AveragedDataArrived_Sample_01(this, new RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01(_ExperimentalData.Average(o => o.Y)));
+                            } break;
+                        case Samples.Sample_02:
+                            {
+                                if (_ExperimentalData != null && _ExperimentalData.Count > 0)
+                                    AllEventsHandler.Instance.OnRealTime_TimeTrace_AveragedDataArrived_Sample_02(this, new RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02(_ExperimentalData.Average(o => o.Y)));
+                            } break;
+                        default:
+                            break;
+                    }
+
+                    _Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        try
+                        {
+                            DataChanged(this, new EventArgs());
+                        }
+                        catch { }
+                    }));
+                }, __CancellationToken);
         }
     }
 }

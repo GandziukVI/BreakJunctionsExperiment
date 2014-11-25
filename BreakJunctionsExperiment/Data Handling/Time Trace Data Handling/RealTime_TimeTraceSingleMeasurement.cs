@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,28 +28,26 @@ namespace BreakJunctions.DataHandling
             set { _FileName = value; }
         }
 
-        private static int _FileCounter = 0;
-
         private ASCIIEncoding _asciiEncoding;
 
         private int _PointsNumber = 0;
         private double _TimeShift = 0.0;
 
         private FileStream _WriteDataStream;
+        private FileStream _WriteMotionDataStream;
 
         #endregion
 
         #region Constructor / Destructor
 
-        public RealTime_TimeTraceSingleMeasurement(string filename, double appliedVoltage, string sampleNumber)
+        public RealTime_TimeTraceSingleMeasurement(string __FileName, double __AppliedVoltage, string __SampleNumber)
         {
-            _FileName = filename;
+            _FileName = __FileName;
             _asciiEncoding = new ASCIIEncoding();
-
-            _WriteDataStream = File.Open(_FileName, FileMode.OpenOrCreate);
 
             AllEventsHandler.Instance.RealTime_TimeTrace_ResetTimeShift += OnRealTime_TimeTrace_ResetTimeShift;
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
+            AllEventsHandler.Instance.Motion_RealTime += OnMotion_RealTime_DataArrived;
         }
 
         ~RealTime_TimeTraceSingleMeasurement()
@@ -103,7 +102,7 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
+        private async void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
             try
             {
@@ -111,10 +110,43 @@ namespace BreakJunctions.DataHandling
                 {
                     this._PointsNumber = (new int[] { e.Data[0].Count, e.Data[1].Count, e.Data[2].Count, e.Data[3].Count }).Min();
 
-                    byte[] result = _GetDataBytes(e.Data);
+                    byte[] DataToWrite = _GetDataBytes(e.Data);
                     this._TimeShift += e.Data[0].Last().X;
-                    this._WriteDataStream.Write(result, 0, result.Length);
+
+                    await WriteAcquisitionDataBytesAsync(_FileName, DataToWrite);
                 }
+            }
+            catch { }
+        }
+
+        private async Task WriteAcquisitionDataBytesAsync(string __FilePath, byte[] __ToWrite)
+        {
+            using (_WriteDataStream = new FileStream(__FilePath,
+                FileMode.Append, FileAccess.Write, FileShare.None,
+                bufferSize: 4096, useAsync: true))
+            {
+                await _WriteDataStream.WriteAsync(__ToWrite, 0, __ToWrite.Length);
+            };
+        }
+
+        private async Task WriteMotionDataBytesAsync(string __FilePath, byte[] __ToWrite)
+        {
+            using (_WriteMotionDataStream = new FileStream(__FilePath,
+                FileMode.Append, FileAccess.Write, FileShare.None,
+                bufferSize: 4096, useAsync: true))
+            {
+                await _WriteMotionDataStream.WriteAsync(__ToWrite, 0, __ToWrite.Length);
+            };
+        }
+
+        private async void OnMotion_RealTime_DataArrived(object sender, Motion_RealTime_EventArgs e)
+        {
+            try
+            {
+                var ToWrite = Encoding.ASCII.GetBytes(String.Format("{0}\t{1}\r\n", e.Time, e.Position));
+                var MotionDataFileName = _FileName.Insert(_FileName.LastIndexOf('.'), "_MotionData");
+
+                await WriteMotionDataBytesAsync(MotionDataFileName, ToWrite);
             }
             catch { }
         }
@@ -125,8 +157,9 @@ namespace BreakJunctions.DataHandling
 
         public void Dispose()
         {
-            _WriteDataStream.Close();
+            AllEventsHandler.Instance.RealTime_TimeTrace_ResetTimeShift -= OnRealTime_TimeTrace_ResetTimeShift;
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
+            AllEventsHandler.Instance.Motion_RealTime -= OnMotion_RealTime_DataArrived;
         }
 
         #endregion
