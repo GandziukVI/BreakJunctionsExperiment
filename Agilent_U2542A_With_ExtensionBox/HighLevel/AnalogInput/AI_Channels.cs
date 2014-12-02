@@ -97,6 +97,7 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
         {
 
             string devicePolarity = _AI.tryToQueryString("ROUT:CHAN:POL? (@101:104)");
+            
             string[] ChannelPolarities = devicePolarity.Split(',');
             string deviceRanges = _AI.tryToQueryString("ROUT:CHAN:RANG? (@101:104)");
             string[] ChannelRanges = deviceRanges.Split(',');

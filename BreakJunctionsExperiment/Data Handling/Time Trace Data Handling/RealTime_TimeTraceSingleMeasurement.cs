@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Aids.Graphics;
 using BreakJunctions.Events;
+using System.Globalization;
 
 namespace BreakJunctions.DataHandling
 {
@@ -28,8 +29,6 @@ namespace BreakJunctions.DataHandling
             set { _FileName = value; }
         }
 
-        private ASCIIEncoding _asciiEncoding;
-
         private int _PointsNumber = 0;
         private double _TimeShift = 0.0;
 
@@ -43,7 +42,6 @@ namespace BreakJunctions.DataHandling
         public RealTime_TimeTraceSingleMeasurement(string __FileName, double __AppliedVoltage, string __SampleNumber)
         {
             _FileName = __FileName;
-            _asciiEncoding = new ASCIIEncoding();
 
             AllEventsHandler.Instance.RealTime_TimeTrace_ResetTimeShift += OnRealTime_TimeTrace_ResetTimeShift;
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
@@ -81,9 +79,9 @@ namespace BreakJunctions.DataHandling
             string result = string.Empty;
 
             for (int i = 0; i < this._PointsNumber; i++)
-                result += String.Format("{0}\t{1}\t{2}\t{3}\t{4}\r\n", Data[0][i].X + _TimeShift, Data[0][i].Y, Data[1][i].Y, Data[2][i].Y, Data[3][i].Y);
+                result += String.Format("{0}\t{1}\t{2}\t{3}\t{4}\r\n", Data[0][i].X + _TimeShift, Data[0][i].Y, Data[1][i].Y, Data[2][i].Y, Data[3][i].Y).ToString(CultureInfo.InvariantCulture);
 
-            return _asciiEncoding.GetBytes(result);
+            return Encoding.ASCII.GetBytes(result);
         }
 
         /// <summary>
@@ -143,7 +141,7 @@ namespace BreakJunctions.DataHandling
         {
             try
             {
-                var ToWrite = Encoding.ASCII.GetBytes(String.Format("{0}\t{1}\r\n", e.Time, e.Position));
+                var ToWrite = Encoding.ASCII.GetBytes(String.Format("{0}\t{1}\r\n", e.Time, e.Position).ToString(new CultureInfo("en-US")));
                 var MotionDataFileName = _FileName.Insert(_FileName.LastIndexOf('.'), "_MotionData");
 
                 await WriteMotionDataBytesAsync(MotionDataFileName, ToWrite);
