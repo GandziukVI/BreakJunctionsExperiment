@@ -19,8 +19,6 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
         private bool _Alive;
         private bool _Busy;
 
-        
-
         private static Agilent_USB_DAQ _Instance;
         public static Agilent_USB_DAQ Instance
         {

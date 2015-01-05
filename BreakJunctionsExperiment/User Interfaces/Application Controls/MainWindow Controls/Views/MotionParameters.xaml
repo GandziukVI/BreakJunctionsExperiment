@@ -48,7 +48,7 @@
 					<RowDefinition />
 				</Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Grid.Column="0" Margin="0 2.5 10 2.5" Content="Notifications per rev"/>
+                <Label Grid.Row="0" Grid.Column="0" Margin="0 2.5 10 2.5" Content="Points per milimeter"/>
 				<wpfTool:IntegerUpDown Grid.Row="0" Grid.Column="1" x:Name="textBoxTimeTraceNotificationsPerRevolution" Value="{Binding TimeTraceNotificationsPerRevolution, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
 				<GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
