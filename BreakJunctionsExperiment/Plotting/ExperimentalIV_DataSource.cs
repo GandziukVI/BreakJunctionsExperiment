@@ -48,26 +48,26 @@ namespace BreakJunctions.Plotting
 
         public virtual void DetachPointReceiveEvent() { }
 
-        public void OnIV_PointReceived(object sender, IV_PointReceivedChannel_01_EventArgs e)
+        public async void OnIV_PointReceived(object sender, IV_PointReceivedChannel_01_EventArgs e)
         {
-            if (_ExperimentalData.Count > 10000)
+            if (_ExperimentalData.Count > 5000)
                 _ExperimentalData.RemoveAt(0);
 
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             //_ExperimentalDataSource.RaiseDataChanged();
 
-            _Dispatcher.BeginInvoke(new Action(delegate()
+            await _Dispatcher.BeginInvoke(new Action(delegate()
             {
                 DataChanged(sender, new EventArgs());
             }));
         }
 
-        public void OnIV_PointReceived(object sender, IV_PointReceivedChannel_02_EventArgs e)
+        public async void OnIV_PointReceived(object sender, IV_PointReceivedChannel_02_EventArgs e)
         {
             _ExperimentalData.Add(new PointD(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
 
-            _Dispatcher.BeginInvoke(new Action(delegate()
+            await _Dispatcher.BeginInvoke(new Action(delegate()
             {
                 DataChanged(sender, new EventArgs());
             }));

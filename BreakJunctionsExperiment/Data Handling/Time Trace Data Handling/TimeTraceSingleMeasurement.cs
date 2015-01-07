@@ -8,6 +8,8 @@ using BreakJunctions.Events;
 using BreakJunctions.Plotting;
 
 using Devices.SMU;
+using System.Threading.Tasks;
+using System.Globalization;
 
 namespace BreakJunctions.DataHandling
 {
@@ -24,13 +26,10 @@ namespace BreakJunctions.DataHandling
         public string FileName { get { return _FileName; } }
 
         private FileStream _OutputSingleMeasureStream;
-        private StreamWriter _OutputSingleMeasureStreamWriter;
 
-        private StringBuilder _DataBuilder;
+        private NumberFormatInfo _NumberFormatInfo;
+
         private string _DataString;
-
-        private string _Header;
-        private string _Subheader;
 
         private ChannelsToInvestigate _Channel;
 
@@ -46,37 +45,21 @@ namespace BreakJunctions.DataHandling
         /// <param name="sourceMode">Source mode</param>
         public TimeTraceSingleMeasurement(string fileName, SourceMode sourceMode, ChannelsToInvestigate Channel)
         { 
-            this._FileName = fileName;
-            this._Channel = Channel;
+            _FileName = fileName;
+            _Channel = Channel;
 
-            _OutputSingleMeasureStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-            _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
-
-            switch (sourceMode)
+            using (_OutputSingleMeasureStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
-                case SourceMode.Voltage:
-                    {
-                        _Header = "Distance\tR";
-                        _Subheader = "m\tOhm";
-                    } break;
-                case SourceMode.Current:
-                    {
-                        _Header = "Distance\tR";
-                        _Subheader = "m\tOhm";
-                    } break;
-                default:
-                    break;
+                var _Header = Encoding.ASCII.GetBytes("Distance\tR\r\n");
+                var _Subheader = Encoding.ASCII.GetBytes("m\tOhm");
+
+                _OutputSingleMeasureStream.Write(_Header, 0, _Header.Length);
+                _OutputSingleMeasureStream.Write(_Subheader,0, _Subheader.Length);
             }
 
-            _OutputSingleMeasureStreamWriter.WriteLine(_Header);
-            _OutputSingleMeasureStreamWriter.WriteLine(_Subheader);
+            _NumberFormatInfo = NumberFormatInfo.InvariantInfo;
 
-            _OutputSingleMeasureStreamWriter.Close();
-            _OutputSingleMeasureStream.Close();
-
-            _DataBuilder = new StringBuilder();
-
-            _DataString = "{0}\t{1}";
+            _DataString = "{0}\t{1}\r\n";
             
             switch (_Channel)
             {
@@ -126,39 +109,38 @@ namespace BreakJunctions.DataHandling
 
             _FileName = string.Empty;
             _DataString = string.Empty;
-            _DataBuilder = null;
         }
 
         #endregion
 
         #region Functionality implementation
 
-        private void OnTimeTracePointReceivedChannel_01(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
+        private async Task WriteData(byte[] __ToWrite)
         {
-            _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
-            _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
-
-            _DataBuilder = new StringBuilder();
-            _DataBuilder.AppendFormat(_DataString, e.X, e.Y);
-
-            _OutputSingleMeasureStreamWriter.WriteLine(_DataBuilder.ToString());
-
-            _OutputSingleMeasureStreamWriter.Close();
-            _OutputSingleMeasureStream.Close();
+            using (_OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
+            {
+                await _OutputSingleMeasureStream.WriteAsync(__ToWrite, 0, __ToWrite.Length);
+            };
         }
 
-        private void OnTimeTracePointReceivedChannel_02(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
+        private async void OnTimeTracePointReceivedChannel_01(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
-            _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
-            _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
+            try
+            {
+                var toWrite = Encoding.ASCII.GetBytes(String.Format(_DataString, e.X.ToString(_NumberFormatInfo), e.Y.ToString(_NumberFormatInfo)));
+                await WriteData(toWrite);
+            }
+            catch { }
+        }
 
-            _DataBuilder = new StringBuilder();
-            _DataBuilder.AppendFormat(_DataString, e.X, e.Y);
-
-            _OutputSingleMeasureStreamWriter.WriteLine(_DataBuilder.ToString());
-
-            _OutputSingleMeasureStreamWriter.Close();
-            _OutputSingleMeasureStream.Close();
+        private async void OnTimeTracePointReceivedChannel_02(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
+        {
+            try
+            {
+                var toWrite = Encoding.ASCII.GetBytes(String.Format(_DataString, e.X.ToString(_NumberFormatInfo), e.Y.ToString(_NumberFormatInfo)));
+                await WriteData(toWrite);
+            }
+            catch { }
         }
 
         #endregion

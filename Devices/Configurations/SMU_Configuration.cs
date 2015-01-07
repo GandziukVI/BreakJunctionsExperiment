@@ -10,6 +10,6 @@ namespace Devices.SMU
     public enum Channel_Status { Channel_ON, Channel_OFF }
     public enum Sense { SENSE_LOCAL, SENSE_REMOTE }
     public enum SourceMode { Voltage, Current }
-    public enum MeasureMode { Voltage, Current, Resistance, Power }
+    public enum MeasureMode { Voltage, Current, Resistance, Conductance, Power }
     public enum LimitMode { Voltage, Current }
 }

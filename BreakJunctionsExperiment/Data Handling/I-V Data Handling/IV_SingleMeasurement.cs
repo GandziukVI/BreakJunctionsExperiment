@@ -6,6 +6,8 @@ using System.IO;
 
 using BreakJunctions.Events;
 using BreakJunctions.Plotting;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace BreakJunctions.DataHandling
 {
@@ -25,10 +27,8 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         public string FileName { get { return _FileName; } }
 
-        private FileStream _OutputSingleMeasureStream;
-        private StreamWriter _OutputSingleMeasureStreamWriter;
+        private FileStream _OutputSingleMeasureStreamWriter;
 
-        private StringBuilder _DataBuilder;
         private string _DataString;
 
         private ChannelsToInvestigate _Channel;
@@ -43,28 +43,26 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         /// <param name="fileName">File name</param>
         public IV_SingleMeasurement(string fileName, ChannelsToInvestigate Channel)
-        { 
+        {
             this._FileName = fileName;
 
-            _OutputSingleMeasureStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-            _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
+            using (_OutputSingleMeasureStreamWriter = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            {
+                var FirstRow = Encoding.ASCII.GetBytes("U\tI\r\n");
+                var SecondRow = Encoding.ASCII.GetBytes("V\tA\r\n");
 
-            _OutputSingleMeasureStreamWriter.WriteLine("U\tI");
-            _OutputSingleMeasureStreamWriter.WriteLine("V\tA");
+                _OutputSingleMeasureStreamWriter.Write(FirstRow, 0, FirstRow.Length);
+                _OutputSingleMeasureStreamWriter.Write(SecondRow, 0, SecondRow.Length);
+            }
 
-            _OutputSingleMeasureStreamWriter.Close();
-            _OutputSingleMeasureStream.Close();
-
-            _DataBuilder = new StringBuilder();
-
-            _DataString = "{0}\t{1}";
+            _DataString = "{0}\t{1}\r\n";
 
             _Channel = Channel;
 
             switch (_Channel)
             {
                 case ChannelsToInvestigate.Channel_01:
-                    { 
+                    {
                         AllEventsHandler.Instance.IV_PointReceivedChannel_01 += OnIV_PointReceivedChannel_01;
                     } break;
                 case ChannelsToInvestigate.Channel_02:
@@ -109,44 +107,43 @@ namespace BreakJunctions.DataHandling
 
             _FileName = string.Empty;
             _DataString = string.Empty;
-            _DataBuilder = null;
         }
 
         #endregion
 
         #region Functionality implementation
 
+        private async Task WriteChannelData(byte[] __ToWrite)
+        {
+            using (_OutputSingleMeasureStreamWriter = new FileStream(_FileName, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
+            {
+                await _OutputSingleMeasureStreamWriter.WriteAsync(__ToWrite, 0, __ToWrite.Length);
+            };
+        }
+
         /// <summary>
         /// Writes the data point, which arrives from event to file
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnIV_PointReceivedChannel_01(object sender, IV_PointReceivedChannel_01_EventArgs e)
+        private async void OnIV_PointReceivedChannel_01(object sender, IV_PointReceivedChannel_01_EventArgs e)
         {
-            _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
-            _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
-
-            _DataBuilder = new StringBuilder();
-            _DataBuilder.AppendFormat(_DataString, e.X, e.Y);
-
-            _OutputSingleMeasureStreamWriter.WriteLine(_DataBuilder.ToString());
-
-            _OutputSingleMeasureStreamWriter.Close();
-            _OutputSingleMeasureStream.Close();
+            try
+            {
+                var toWrite = Encoding.ASCII.GetBytes(String.Format(_DataString, e.X.ToString(NumberFormatInfo.InvariantInfo), e.Y.ToString(NumberFormatInfo.InvariantInfo)));
+                await WriteChannelData(toWrite);
+            }
+            catch { }
         }
-        
-        private void OnIV_PointReceivedChannel_02(object sender, IV_PointReceivedChannel_02_EventArgs e)
+
+        private async void OnIV_PointReceivedChannel_02(object sender, IV_PointReceivedChannel_02_EventArgs e)
         {
-            _OutputSingleMeasureStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
-            _OutputSingleMeasureStreamWriter = new StreamWriter(_OutputSingleMeasureStream);
-
-            _DataBuilder = new StringBuilder();
-            _DataBuilder.AppendFormat(_DataString, e.X, e.Y);
-
-            _OutputSingleMeasureStreamWriter.WriteLine(_DataBuilder.ToString());
-
-            _OutputSingleMeasureStreamWriter.Close();
-            _OutputSingleMeasureStream.Close();
+            try
+            {
+                var toWrite = Encoding.ASCII.GetBytes(String.Format(_DataString, e.X.ToString(NumberFormatInfo.InvariantInfo), e.Y.ToString(NumberFormatInfo.InvariantInfo)));
+                await WriteChannelData(toWrite);
+            }
+            catch { }
         }
 
         #endregion

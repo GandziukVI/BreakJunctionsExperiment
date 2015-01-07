@@ -19,6 +19,8 @@ namespace BreakJunctions.Measurements
     {
         #region MeasureTimeTrace settings
 
+        private double _QuantumConductance = 0.00007748091734625;
+
         private MotionController _Motor;
         /// <summary>
         /// Gets or sets motion controller to be responsible for
@@ -70,7 +72,7 @@ namespace BreakJunctions.Measurements
             get { return _MeasureDevice; }
             set { _MeasureDevice = value; }
         }
-        
+
         private double _ValueThroughTheStructure;
         /// <summary>
         /// Gets or sets the value of voltage or current througt the structrue
@@ -102,7 +104,7 @@ namespace BreakJunctions.Measurements
             get { return _TimeDelay; }
             set { _TimeDelay = value; }
         }
-        
+
         private SourceMode _SourceMode;
         /// <summary>
         /// The source mode of SMU
@@ -150,6 +152,8 @@ namespace BreakJunctions.Measurements
 
         #endregion
 
+        #region Constructor / Destructor
+
         public MeasureTimeTrace(MotionController __Motor, double __StartPosition, double __FinalDestination, I_SMU __MeasureDevice, SourceMode __SourceMode, MeasureMode __MeasureMode, double __ValueThroughTheStructure, ChannelsToInvestigate __Channel, MeasureTimeTraceChannelController __ChannelController, ref BackgroundWorker __MeasurementWorker)
         {
             _Motor = __Motor;
@@ -166,7 +170,14 @@ namespace BreakJunctions.Measurements
 
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += OnTimeTraceMeasurementsStateChanged;
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
-       }
+        }
+
+        ~MeasureTimeTrace()
+        {
+            this.Dispose();
+        }
+
+        #endregion
 
         public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind __MotionKind, int __NumberRepetities = 1)
         {
@@ -354,6 +365,84 @@ namespace BreakJunctions.Measurements
                                 break;
                         }
                     } break;
+                case MeasureMode.Conductance:
+                    {
+                        switch (_SourceMode)
+                        {
+                            case SourceMode.Voltage:
+                                {
+                                    var measuredConductance = 0.0;
+                                    try
+                                    {
+                                        measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage)) / _QuantumConductance;
+                                    }
+                                    catch { }
+
+                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
+                                    {
+                                        switch (_Channel)
+                                        {
+                                            case ChannelsToInvestigate.Channel_01:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredConductance));
+                                                    _CurrentPosition = e.Position;
+                                                    try
+                                                    {
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
+                                                    }
+                                                    catch { }
+                                                } break;
+                                            case ChannelsToInvestigate.Channel_02:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredConductance));
+                                                    _CurrentPosition = e.Position;
+                                                    try
+                                                    {
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
+                                                    }
+                                                    catch { }
+                                                } break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                } break;
+                            case SourceMode.Current:
+                                {
+                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
+                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
+                                    {
+                                        switch (_Channel)
+                                        {
+                                            case ChannelsToInvestigate.Channel_01:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
+                                                    _CurrentPosition = e.Position;
+                                                    try
+                                                    {
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
+                                                    }
+                                                    catch { }
+                                                } break;
+                                            case ChannelsToInvestigate.Channel_02:
+                                                {
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
+                                                    _CurrentPosition = e.Position;
+                                                    try
+                                                    {
+                                                        _worker.ReportProgress(Convert.ToInt32((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition) * 100.0));
+                                                    }
+                                                    catch { }
+                                                } break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                } break;
+                            default:
+                                break;
+                        }
+                    }break;
                 case MeasureMode.Power:
                     {
                         switch (_SourceMode)
@@ -436,6 +525,8 @@ namespace BreakJunctions.Measurements
             _CancelMeasures = !e.TimeTrace_MeasurementState;
         }
 
+        #region Disposing the instance
+
         public void Dispose()
         {
             AllEventsHandler.Instance.Motion -= OnMotionPositionMeasured;
@@ -446,5 +537,7 @@ namespace BreakJunctions.Measurements
             this._MeasureDevice = null;
             this._ValueThroughTheStructure = 0.0;
         }
+
+        #endregion
     }
 }

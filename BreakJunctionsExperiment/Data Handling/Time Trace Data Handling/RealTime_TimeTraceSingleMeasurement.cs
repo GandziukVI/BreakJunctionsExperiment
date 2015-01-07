@@ -32,6 +32,8 @@ namespace BreakJunctions.DataHandling
         private int _PointsNumber = 0;
         private double _TimeShift = 0.0;
 
+        private NumberFormatInfo _NumberFormatInfo;
+
         private FileStream _WriteDataStream;
         private FileStream _WriteMotionDataStream;
 
@@ -42,6 +44,8 @@ namespace BreakJunctions.DataHandling
         public RealTime_TimeTraceSingleMeasurement(string __FileName, double __AppliedVoltage, string __SampleNumber)
         {
             _FileName = __FileName;
+
+            _NumberFormatInfo = NumberFormatInfo.InvariantInfo;
 
             AllEventsHandler.Instance.RealTime_TimeTrace_ResetTimeShift += OnRealTime_TimeTrace_ResetTimeShift;
             AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
@@ -79,7 +83,7 @@ namespace BreakJunctions.DataHandling
             string result = string.Empty;
 
             for (int i = 0; i < this._PointsNumber; i++)
-                result += String.Format("{0}\t{1}\t{2}\t{3}\t{4}\r\n", Data[0][i].X + _TimeShift, Data[0][i].Y, Data[1][i].Y, Data[2][i].Y, Data[3][i].Y).ToString(CultureInfo.InvariantCulture);
+                result += String.Format("{0}\t{1}\t{2}\t{3}\t{4}\r\n", (Data[0][i].X + _TimeShift).ToString(_NumberFormatInfo), Data[0][i].Y.ToString(_NumberFormatInfo), Data[1][i].Y.ToString(_NumberFormatInfo), Data[2][i].Y.ToString(_NumberFormatInfo), Data[3][i].Y.ToString(_NumberFormatInfo));
 
             return Encoding.ASCII.GetBytes(result);
         }
@@ -117,6 +121,18 @@ namespace BreakJunctions.DataHandling
             catch { }
         }
 
+        private async void OnMotion_RealTime_DataArrived(object sender, Motion_RealTime_EventArgs e)
+        {
+            try
+            {
+                var ToWrite = Encoding.ASCII.GetBytes(String.Format("{0}\t{1}\r\n", e.Time.ToString(_NumberFormatInfo), e.Position.ToString(_NumberFormatInfo)));
+                var MotionDataFileName = _FileName.Insert(_FileName.LastIndexOf('.'), "_MotionData");
+
+                await WriteMotionDataBytesAsync(MotionDataFileName, ToWrite);
+            }
+            catch { }
+        }
+
         private async Task WriteAcquisitionDataBytesAsync(string __FilePath, byte[] __ToWrite)
         {
             using (_WriteDataStream = new FileStream(__FilePath,
@@ -137,20 +153,8 @@ namespace BreakJunctions.DataHandling
             };
         }
 
-        private async void OnMotion_RealTime_DataArrived(object sender, Motion_RealTime_EventArgs e)
-        {
-            try
-            {
-                var ToWrite = Encoding.ASCII.GetBytes(String.Format("{0}\t{1}\r\n", e.Time, e.Position).ToString(new CultureInfo("en-US")));
-                var MotionDataFileName = _FileName.Insert(_FileName.LastIndexOf('.'), "_MotionData");
-
-                await WriteMotionDataBytesAsync(MotionDataFileName, ToWrite);
-            }
-            catch { }
-        }
-
         #endregion
-        
+
         #region Correctly disposing the instance
 
         public void Dispose()

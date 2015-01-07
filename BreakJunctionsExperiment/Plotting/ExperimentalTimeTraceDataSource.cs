@@ -56,7 +56,7 @@ namespace BreakJunctions.Plotting
 
         public virtual void DetachPointReceiveEvent() { }
 
-        public void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
+        public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
             if (_ExperimentalData.Count > 10000)
                 _ExperimentalData.RemoveAt(0);
@@ -66,7 +66,7 @@ namespace BreakJunctions.Plotting
                 _ExperimentalData.Add(new PointD(e.X, e.Y));
                 //_ExperimentalDataSource.RaiseDataChanged();
 
-                _Dispatcher.BeginInvoke(new Action(delegate()
+                await _Dispatcher.BeginInvoke(new Action(delegate()
                 {
                     try
                     {
@@ -76,7 +76,7 @@ namespace BreakJunctions.Plotting
                 }));
             }
         }
-        public void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
+        public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
         {
             if (_ExperimentalData.Count > 10000)
                 _ExperimentalData.RemoveAt(0);
@@ -86,7 +86,7 @@ namespace BreakJunctions.Plotting
                 _ExperimentalData.Add(new PointD(e.X, e.Y));
                 _ExperimentalDataSource.RaiseDataChanged();
 
-                _Dispatcher.BeginInvoke(new Action(delegate()
+                await _Dispatcher.BeginInvoke(new Action(delegate()
                 {
                     try
                     {
