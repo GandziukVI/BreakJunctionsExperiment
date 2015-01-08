@@ -50,7 +50,7 @@
 		</Style>
     </UserControl.Resources>
     
-    <Expander ExpandDirection="Left">
+    <Expander ExpandDirection="Left" IsExpanded="True">
         <Expander.Header>
             <TextBlock Text="Real Time Measurements">
                 <TextBlock.LayoutTransform>

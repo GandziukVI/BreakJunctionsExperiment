@@ -228,8 +228,89 @@
                 
                 <!--End Real Time Tame Trace Measurements Layout-->
             </TabItem>
-            
-			<TabItem Header="Noise Measurements"/>
-		</TabControl>
+
+            <TabItem Header="Noise Measurements">
+                <Grid>
+                    <!--Begin Noise Measurements Layout-->
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Menu -->
+
+                        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                            <MenuItem Header="_File">
+                                <MenuItem x:Name="menuOpenNoise" Header="_Open..." />
+                                <MenuItem x:Name="menuSaveNoise" Header="_Save..." />
+                                <Separator />
+                                <MenuItem x:Name="menuExitNoise" Header="_Exit" />
+                            </MenuItem>
+                            <MenuItem Header="_Measurement">
+                                <MenuItem x:Name="menuSetMotorNoise" Header="Set _Motor" />
+                            </MenuItem>
+                        </Menu>
+
+                        <!--End Menu-->
+
+                        <!--Begin Sample 01 Resistance-->
+
+                        <d3:ChartPlotter x:Name="chartNoiseSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisibility="Hidden">
+                            <d3:Header Content="Noise Sample_01"/>
+                            <d3:HorizontalAxis>
+                                <d3:HorizontalAxisTitle Content="Frequency"/>
+                            </d3:HorizontalAxis>
+                            <d3:VerticalAxis>
+                                <d3:VerticalAxisTitle Content="Spectrum"/>
+                            </d3:VerticalAxis>
+                            <!--<d3:Viewport2D AutoFitToView="True"/>-->
+                        </d3:ChartPlotter>
+
+                        <!--End Sample 01 Resistance-->
+
+                        <GridSplitter Grid.Row="2" Grid.Column="0" MinHeight="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+
+                        <!--Begin Sample 01 Resistance-->
+
+                        <d3:ChartPlotter x:Name="chartNoiseSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisibility="Hidden">
+                            <d3:Header Content="Noise Sample_02"/>
+                            <d3:HorizontalAxis>
+                                <d3:HorizontalAxisTitle Content="Frequency"/>
+                            </d3:HorizontalAxis>
+                            <d3:VerticalAxis>
+                                <d3:VerticalAxisTitle Content="Spectrum"/>
+                            </d3:VerticalAxis>
+                            <!--<d3:Viewport2D AutoFitToView="True"/>-->
+                        </d3:ChartPlotter>
+
+                        <!--End Sample 01 Resistance-->
+
+                        <local:RealTimeTimeTraceMeasurementSettings Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" x:Name="controlNoiseTraceMeasurementSettings" />
+
+                        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Content="Ready" />
+                            <ProgressBar Grid.Column="1" x:Name="progressBarNoiseMeasurementProgress"/>
+                            <TextBlock x:Name="textBlockNoiseProgressStatus" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=progressBarRealTimeTimeTraceMeasurementProgress, StringFormat=\{0:0\}%}"/>
+                        </Grid>
+                    </Grid>
+
+                    <!--End Real Time Tame Trace Measurements Layout-->
+                </Grid>
+            </TabItem>
+        </TabControl>
 	</Grid>  <!-- LayoutRoot -->
 </Window>
