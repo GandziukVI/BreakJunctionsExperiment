@@ -409,14 +409,14 @@ namespace BreakJunctions.Measurements
                                 } break;
                             case SourceMode.Current:
                                 {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
+                                    var measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current)) / _QuantumConductance;
+                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
                                     {
                                         switch (_Channel)
                                         {
                                             case ChannelsToInvestigate.Channel_01:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredResistance));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(e.Position, measuredConductance));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
@@ -426,7 +426,7 @@ namespace BreakJunctions.Measurements
                                                 } break;
                                             case ChannelsToInvestigate.Channel_02:
                                                 {
-                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredResistance));
+                                                    AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(e.Position, measuredConductance));
                                                     _CurrentPosition = e.Position;
                                                     try
                                                     {
