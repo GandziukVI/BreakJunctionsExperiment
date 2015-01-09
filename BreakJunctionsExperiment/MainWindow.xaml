@@ -294,7 +294,7 @@
 
                         <!--End Sample 01 Resistance-->
 
-                        <local:RealTimeTimeTraceMeasurementSettings Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" x:Name="controlNoiseTraceMeasurementSettings" />
+                        <local:NoiseMeasurementSettings Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" x:Name="controlNoiseTraceMeasurementSettings" />
 
                         <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>

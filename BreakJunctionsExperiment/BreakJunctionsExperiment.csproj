@@ -163,6 +163,11 @@
     <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
     <Compile Include="Motion\Motion Controllers Factories\FaulhaberMinimotor_SA_2036_U012V_K1155_RealTime_ControllerFactory.cs" />
     <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController.cs" />
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\InotifyPropertyChanged.cs" />
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\NoiseMeasurementDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\NoiseMeasurementSettings.xaml.cs">
+      <DependentUpon>NoiseMeasurementSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plotting\ExperimentalIV_DataSource.cs" />
     <Compile Include="Plotting\ExperimentalTimeTraceDataSource.cs" />
     <Compile Include="Plotting\Experimental_RealTime_TimeTrace_DataSource.cs" />
@@ -240,6 +245,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\NoiseMeasurementSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\MotionParameters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
