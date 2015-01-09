@@ -179,6 +179,8 @@ namespace BreakJunctions.Measurements
 
         #endregion
 
+        #region MeasureTimeTrace functionality
+
         public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind __MotionKind, int __NumberRepetities = 1)
         {
             _CurrentMotionKind = __MotionKind;
@@ -524,6 +526,8 @@ namespace BreakJunctions.Measurements
         {
             _CancelMeasures = !e.TimeTrace_MeasurementState;
         }
+
+        #endregion
 
         #region Disposing the instance
 

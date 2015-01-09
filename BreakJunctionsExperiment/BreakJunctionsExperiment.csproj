@@ -86,6 +86,9 @@
     <Reference Include="DynamicDataDisplay.Markers.Design">
       <HintPath>DynamicDataDisplay\DynamicDataDisplay.Markers.Design.dll</HintPath>
     </Reference>
+    <Reference Include="FourierTransformProvider">
+      <HintPath>.\FourierTransformProvider.dll</HintPath>
+    </Reference>
     <Reference Include="Ivi.Driver.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -118,6 +121,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>.\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph">
+      <HintPath>.\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +160,7 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
+    <Compile Include="Measurements\MeasureNoise.cs" />
     <Compile Include="Measurements\Real Time Measurement\IRealTime_TimeTrace_Factory.cs" />
     <Compile Include="Measurements\Real Time Measurement\MeasureRealTimeTimeTrace.cs" />
     <Compile Include="Measurements\Real Time Measurement\Real time Time Trace Controllers Facttories\RT_Agilent_U2542A_TimeTrace_Controller_Factory.cs" />

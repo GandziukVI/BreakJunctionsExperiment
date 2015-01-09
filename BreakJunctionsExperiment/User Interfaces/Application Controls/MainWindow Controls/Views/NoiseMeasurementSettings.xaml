@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="BreakJunctions.NoiseMeasurementSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit">
+    
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="MinHeight" Value="30" />
+            <Setter Property="Margin" Value="5 5 5 0" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5 2.5" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5 2.5" />
+        </Style>
+        <Style TargetType="wpfTool:IntegerUpDown">
+            <Setter Property="Margin" Value="5 2.5" />
+            <Setter Property="MinWidth" Value="75" />
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Expander ExpandDirection="Left" IsExpanded="True">
+            <Expander.Header>
+                <TextBlock Text="Noise spectra acquisition settings">
+                    <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="-90" />
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                            <SkewTransform AngleX="0" AngleY="0" />
+                            <TranslateTransform X="0" Y="0" />
+                        </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="0" />
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                            <SkewTransform AngleX="0" AngleY="0" />
+                            <TranslateTransform X="0" Y="0" />
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+            </Expander.Header>
+            <Expander.Content>
+                <StackPanel Orientation="Vertical">
+                    <Grid Margin="0 15 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Number of spectra" />
+                        <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="0" Value="{Binding Path=MunberOfSpectra, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Display update every" />
+                        <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="2"  Value="{Binding Path=DisplayUpdateNumber, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                    </Grid>
+
+                    <TextBlock Text="Comments:" Margin="5 20 2.5 5" />
+                    <TextBox TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250" VerticalScrollBarVisibility="Auto" Text="{Binding Path=Comment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                    <Button x:Name="NoiseMeasurementStart" Content="Start measurement" Margin="5 50 5 0" />
+                    <Button x:Name="NoiseMeasuremntStop" Content="Stop measureemnt" />
+                </StackPanel>
+            </Expander.Content>
+        </Expander>
+    </Grid>
+</UserControl>
