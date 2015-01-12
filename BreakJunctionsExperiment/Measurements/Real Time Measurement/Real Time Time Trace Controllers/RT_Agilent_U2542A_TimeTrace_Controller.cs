@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 using Agilent_U2542A_With_ExtensionBox.Classes;
 using Agilent_U2542A_With_ExtensionBox.Interfaces;
 
-using Aids.Graphics;
 using BreakJunctions.Events;
 
 namespace BreakJunctions.Measurements
@@ -118,7 +118,7 @@ namespace BreakJunctions.Measurements
             _Channels.StopAnalogAcqusition();
         }
 
-        public override List<PointD> MakeSingleShot(int NumberOfChannel)
+        public override List<Point> MakeSingleShot(int NumberOfChannel)
         {
             _Channels.DisableAllChannelsForContiniousDataAcquisition();
             _Channels.ChannelArray[NumberOfChannel - 1].Enabled = true;
@@ -130,7 +130,7 @@ namespace BreakJunctions.Measurements
             if (!MeasurementInProcess) return null;
             string result = AI_Channels.Instance.AcquireStringWithData();
             Int16[] resultInt = _DataConverter.ParseDataStringToInt(result);
-            List<PointD>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
+            List<Point>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
 
             return ChannelData[NumberOfChannel - 1];
         }
@@ -139,7 +139,7 @@ namespace BreakJunctions.Measurements
         {
             AI_Channels.Instance.SingleShotPointsPerBlock = 10000;
             AI_Channels.Instance.ChannelArray[NumberOfChannel - 1].AC_Range = 10;
-            List<PointD> data = MakeSingleShot(NumberOfChannel);
+            List<Point> data = MakeSingleShot(NumberOfChannel);
 
             double[] AcquidredYData = data.Select(p => p.Y).ToArray();
             double Max = AcquidredYData.Max();

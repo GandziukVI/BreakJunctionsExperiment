@@ -55,7 +55,12 @@ namespace DigitalAnalyzerNamespace
             else
                 for (int i = 0; i < m_PSDToWrite.Count; i++)
                 {
-                    m_PSDToWrite.ToArray()[i].Y += SpectraData[i].Y;
+                    var temp = new Point(0.0, 0.0);
+
+                    temp.X = m_PSDToWrite[i].X;
+                    temp.Y = m_PSDToWrite[i].Y + SpectraData[i].Y;
+
+                    m_PSDToWrite[i] = temp;
                 }
             spectraCount++;
             //using (StreamWriter sw = new StreamWriter("F:\\psd.txt"))
@@ -89,7 +94,12 @@ namespace DigitalAnalyzerNamespace
         {
             for (int i = 0; i < m_PSDToWrite.Count; i++)
             {
-                m_PSDToWrite.ToArray()[i].Y /= spectraCount;
+                var temp = new Point(0.0, 0.0);
+
+                temp.X = m_PSDToWrite[i].X;
+                temp.Y = m_PSDToWrite[i].Y / spectraCount;
+
+                m_PSDToWrite[i] = temp;
             }
             using (StreamWriter sw = new StreamWriter("F:\\psd.txt"))
             {

@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
-using Aids.Graphics;
 using BreakJunctions.Events;
 using System.Globalization;
 
@@ -78,7 +78,7 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         /// <param name="Data">List of data points</param>
         /// <returns>Appropriate byte array</returns>
-        private byte[] _GetDataBytes(List<PointD>[] Data)
+        private byte[] _GetDataBytes(List<Point>[] Data)
         {
             string result = string.Empty;
 

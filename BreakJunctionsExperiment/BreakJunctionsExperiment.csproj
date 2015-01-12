@@ -86,9 +86,6 @@
     <Reference Include="DynamicDataDisplay.Markers.Design">
       <HintPath>DynamicDataDisplay\DynamicDataDisplay.Markers.Design.dll</HintPath>
     </Reference>
-    <Reference Include="FourierTransformProvider">
-      <HintPath>.\FourierTransformProvider.dll</HintPath>
-    </Reference>
     <Reference Include="Ivi.Driver.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -121,9 +118,6 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>.\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="ZedGraph">
-      <HintPath>.\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -302,10 +296,6 @@
       <Project>{addccb27-7df4-40f2-afc7-344b300363b1}</Project>
       <Name>Agilent_U2542A_With_ExtensionBox</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Aids\Aids.csproj">
-      <Project>{153732F0-30F4-4425-843D-ED3F337E5791}</Project>
-      <Name>Aids</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Devices\Devices.csproj">
       <Project>{ae52526e-d660-426e-a2ec-1a475b02aa9e}</Project>
       <Name>Devices</Name>
@@ -313,6 +303,10 @@
     <ProjectReference Include="..\FaulhaberMinimotors\FaulhaberMinimotors.csproj">
       <Project>{dd0fd2e2-f6c7-4694-a4fa-9897786fff56}</Project>
       <Name>FaulhaberMinimotors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ForierTransformProvider\ForierTransformProvider.csproj">
+      <Project>{fc527d1e-aa07-411b-8ba6-881d213c2879}</Project>
+      <Name>ForierTransformProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\HP_35670A\HP_35670A.csproj">
       <Project>{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}</Project>

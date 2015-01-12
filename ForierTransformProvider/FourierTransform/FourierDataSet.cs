@@ -4,13 +4,13 @@ using System;
 
 namespace FourierTransformProvider
 {
-    
+
 
     public class FourierDataSet
     {
         private Complex[] m_DataSet;
         //private FourierTransformRange m_FTRange;
-        public FourierDataSet (int RangeLength)//, FourierTransformRange Range)
+        public FourierDataSet(int RangeLength)//, FourierTransformRange Range)
         {
             m_DataSet = new Complex[RangeLength];
             //m_FTRange = Range;
@@ -20,7 +20,7 @@ namespace FourierTransformProvider
             m_DataSet = Data;
             //m_FTRange = Range;
         }
-        public FourierDataSet(double[]Data)//, FourierTransformRange Range)
+        public FourierDataSet(double[] Data)//, FourierTransformRange Range)
         {
             m_DataSet = new Complex[Data.Length];
             for (int i = 0; i < Data.Length; i++)
@@ -44,7 +44,7 @@ namespace FourierTransformProvider
 
             //m_FTRange = Range;
         }
-        public FourierDataSet(double [] Data, IndexRange RangeToCopy)//, FourierTransformRange Range)
+        public FourierDataSet(double[] Data, IndexRange RangeToCopy)//, FourierTransformRange Range)
         {
             m_DataSet = new Complex[RangeToCopy.RangeCount];
             int counter = 0;

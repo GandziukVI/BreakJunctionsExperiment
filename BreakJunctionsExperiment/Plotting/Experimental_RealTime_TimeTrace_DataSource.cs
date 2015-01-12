@@ -8,7 +8,7 @@ using System.Windows.Threading;
 
 using BreakJunctions.Events;
 
-using Aids.Graphics;
+
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using System.Threading;
 
@@ -16,22 +16,22 @@ namespace BreakJunctions.Plotting
 {
     class Experimental_RealTime_TimeTrace_DataSource_Sample : IPointDataSource
     {
-        private List<PointD> _ExperimentalData;
-        public List<PointD> ExperimentalData
+        private List<Point> _ExperimentalData;
+        public List<Point> ExperimentalData
         {
             get { return _ExperimentalData; }
             set { _ExperimentalData = value; }
         }
 
         private Dispatcher _Dispatcher;
-        private EnumerableDataSource<PointD> _ExperimentalDataSource;
+        private EnumerableDataSource<Point> _ExperimentalDataSource;
 
         private SamplesToInvestigate _SampleNumber;
 
-        public Experimental_RealTime_TimeTrace_DataSource_Sample(List<PointD> Data, SamplesToInvestigate SampleNumber)
+        public Experimental_RealTime_TimeTrace_DataSource_Sample(List<Point> Data, SamplesToInvestigate SampleNumber)
         {
             _ExperimentalData = Data;
-            _ExperimentalDataSource = new EnumerableDataSource<PointD>(_ExperimentalData);
+            _ExperimentalDataSource = new EnumerableDataSource<Point>(_ExperimentalData);
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
 
@@ -44,7 +44,7 @@ namespace BreakJunctions.Plotting
 
         public IPointEnumerator GetEnumerator(DependencyObject context)
         {
-            return new EnumerablePointEnumerator<PointD>(_ExperimentalDataSource);
+            return new EnumerablePointEnumerator<Point>(_ExperimentalDataSource);
         }
 
         public virtual void AttachPointReceiveEvent() 
@@ -62,7 +62,7 @@ namespace BreakJunctions.Plotting
             await SetDataAsync(e.Data, CancellationToken.None);
         }
 
-        internal Task SetDataAsync(List<PointD>[] Data, CancellationToken __CancellationToken)
+        internal Task SetDataAsync(List<Point>[] Data, CancellationToken __CancellationToken)
         {
             return Task.Run(() =>
                 {
@@ -88,7 +88,7 @@ namespace BreakJunctions.Plotting
                     for (int i = 0; i < DataLendgth; i++)
                     {
                         if (Data[number][i].Y != 0.0)
-                            _ExperimentalData.Add(new PointD(Data[number][i].X, Data[number][i].Y / Data[number + 1][i].Y));
+                            _ExperimentalData.Add(new Point(Data[number][i].X, Data[number][i].Y / Data[number + 1][i].Y));
                     }
 
                     switch (_SampleNumber)

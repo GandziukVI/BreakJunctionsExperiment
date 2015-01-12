@@ -20,9 +20,9 @@ namespace FourierTransformProvider
                     return false;
             return true;
         }
-        public static FourierDataSet AvarageDataSets(this FourierDataSet[] DataSetArray)
+
+        public static FourierDataSet AvarageDataSets(this FourierDataSet[] DataSetArray, Func<Complex, double> __Fun)
         {
-            //throw new NotImplementedException();
             int CommonLength = 0;
             if (!DataSetArray.AllDataSetsEqualLength(out CommonLength))
                 return null;

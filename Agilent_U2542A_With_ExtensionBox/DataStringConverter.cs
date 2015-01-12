@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Forms;
-
-using Aids.Graphics;
 
 namespace Agilent_U2542A_With_ExtensionBox.Classes
 {
@@ -33,12 +32,12 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
             }
             return result;
         }
-        public List<PointD>[] ParseIntArrayIntoChannelData(Int16[] IntArray, int ACQ_Rate)
+        public List<Point>[] ParseIntArrayIntoChannelData(Int16[] IntArray, int ACQ_Rate)
         {
-            List<PointD>[] result = new List<PointD>[4];
+            List<Point>[] result = new List<Point>[4];
 
             for (int i = 0; i < 4; i++)
-                result[i] = new List<PointD>();
+                result[i] = new List<Point>();
 
             List<AI_Channel> not_workingChannels = new List<AI_Channel>();
             List<AI_Channel> workingChannels = new List<AI_Channel>();
@@ -63,14 +62,14 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
                             value = IntArray[j] * 2 * workingChannel.AC_Range / 65536;
                         else
                             value = (IntArray[j] / 65536 + 0.5) * workingChannel.AC_Range;
-                        result[workingChannel.number - 101].Add(new PointD(time, value));
+                        result[workingChannel.number - 101].Add(new Point(time, value));
                         j++;
                     }
                 }
 
                 foreach (AI_Channel not_workingChannel in not_workingChannels)
                 {
-                    result[not_workingChannel.number - 101].Add(new PointD(time, 0));
+                    result[not_workingChannel.number - 101].Add(new Point(time, 0));
                 }
             }
             return result;

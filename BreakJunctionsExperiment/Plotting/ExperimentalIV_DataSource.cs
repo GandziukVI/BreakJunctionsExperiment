@@ -1,11 +1,11 @@
-﻿using Aids.Graphics;
-using BreakJunctions.Events;
+﻿using BreakJunctions.Events;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace BreakJunctions.Plotting
@@ -17,20 +17,20 @@ namespace BreakJunctions.Plotting
     /// </summary>
     public class ExperimentalIV_DataSource : IPointDataSource
     {
-        private List<PointD> _ExperimentalData;
-        public List<PointD> ExperimentalData
+        private List<Point> _ExperimentalData;
+        public List<Point> ExperimentalData
         {
             get { return _ExperimentalData; }
             set { _ExperimentalData = value; }
         }
 
         private Dispatcher _Dispatcher;
-        private EnumerableDataSource<PointD> _ExperimentalDataSource;
+        private EnumerableDataSource<Point> _ExperimentalDataSource;
 
-        public ExperimentalIV_DataSource(List<PointD> _Data)
+        public ExperimentalIV_DataSource(List<Point> _Data)
         {
             _ExperimentalData = _Data;
-            _ExperimentalDataSource = new EnumerableDataSource<PointD>(_ExperimentalData);
+            _ExperimentalDataSource = new EnumerableDataSource<Point>(_ExperimentalData);
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
 
@@ -41,7 +41,7 @@ namespace BreakJunctions.Plotting
 
         public IPointEnumerator GetEnumerator(System.Windows.DependencyObject context)
         {
-            return new EnumerablePointEnumerator<PointD>(_ExperimentalDataSource);
+            return new EnumerablePointEnumerator<Point>(_ExperimentalDataSource);
         }
 
         public virtual void AttachPointReceiveEvent() { }
@@ -53,7 +53,7 @@ namespace BreakJunctions.Plotting
             if (_ExperimentalData.Count > 5000)
                 _ExperimentalData.RemoveAt(0);
 
-            _ExperimentalData.Add(new PointD(e.X, e.Y));
+            _ExperimentalData.Add(new Point(e.X, e.Y));
             //_ExperimentalDataSource.RaiseDataChanged();
 
             await _Dispatcher.BeginInvoke(new Action(delegate()
@@ -64,7 +64,7 @@ namespace BreakJunctions.Plotting
 
         public async void OnIV_PointReceived(object sender, IV_PointReceivedChannel_02_EventArgs e)
         {
-            _ExperimentalData.Add(new PointD(e.X, e.Y));
+            _ExperimentalData.Add(new Point(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
 
             await _Dispatcher.BeginInvoke(new Action(delegate()
@@ -78,7 +78,7 @@ namespace BreakJunctions.Plotting
     {
         private ChannelsToInvestigate _Channel;
 
-        public ExperimentalIV_DataSourceChannel(List<PointD> data, ChannelsToInvestigate Channel)
+        public ExperimentalIV_DataSourceChannel(List<Point> data, ChannelsToInvestigate Channel)
             : base(data)
         {
             _Channel = Channel;

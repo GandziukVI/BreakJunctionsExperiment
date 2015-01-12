@@ -14,8 +14,6 @@ using Microsoft.Research.DynamicDataDisplay.DataSources;
 using BreakJunctions.Events;
 using System.Windows;
 
-using Aids.Graphics;
-
 namespace BreakJunctions.Plotting
 {
     #region Representing plotting channels

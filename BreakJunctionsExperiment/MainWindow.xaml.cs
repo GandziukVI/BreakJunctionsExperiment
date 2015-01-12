@@ -35,7 +35,6 @@ using System.Globalization;
 using System.IO;
 using BreakJunctions.Motion;
 
-using Aids.Graphics;
 using Microsoft.Research.DynamicDataDisplay.Charts;
 using Microsoft.Research.DynamicDataDisplay.Charts.Axes.Numeric;
 using System.Windows.Automation.Peers;
@@ -85,8 +84,8 @@ namespace BreakJunctions
 
         #region 1-st channel
 
-        private List<PointD> _CurrentIV_CurveChannel_01;
-        public List<PointD> CurrentIV_CurveChannel_01
+        private List<Point> _CurrentIV_CurveChannel_01;
+        public List<Point> CurrentIV_CurveChannel_01
         {
             get { return _CurrentIV_CurveChannel_01; }
             set { _CurrentIV_CurveChannel_01 = value; }
@@ -108,8 +107,8 @@ namespace BreakJunctions
 
         #region 2-nd channel
 
-        private List<PointD> _CurrentIV_CurveChannel_02;
-        public List<PointD> CurrentIV_CurveChannel_02
+        private List<Point> _CurrentIV_CurveChannel_02;
+        public List<Point> CurrentIV_CurveChannel_02
         {
             get { return _CurrentIV_CurveChannel_02; }
             set { _CurrentIV_CurveChannel_02 = value; }
@@ -137,8 +136,8 @@ namespace BreakJunctions
 
         #region 1-st channel
 
-        private List<PointD> _CurrentTimeTraceChannel_01;
-        public List<PointD> CurrentTimeTraceChannel_01
+        private List<Point> _CurrentTimeTraceChannel_01;
+        public List<Point> CurrentTimeTraceChannel_01
         {
             get { return _CurrentTimeTraceChannel_01; }
             set { _CurrentIV_CurveChannel_01 = value; }
@@ -160,8 +159,8 @@ namespace BreakJunctions
 
         #region 2-nd channel
 
-        private List<PointD> _CurrentTimeTraceChannel_02;
-        public List<PointD> CurrentTimeTraceChannel_02
+        private List<Point> _CurrentTimeTraceChannel_02;
+        public List<Point> CurrentTimeTraceChannel_02
         {
             get { return _CurrentTimeTraceChannel_02; }
             set { _CurrentIV_CurveChannel_02 = value; }
@@ -191,8 +190,8 @@ namespace BreakJunctions
 
         #region Sample 01
 
-        private List<PointD> _RealTimeTimeTraceSample_01;
-        public List<PointD> RealTimeTimeTraceSample_01
+        private List<Point> _RealTimeTimeTraceSample_01;
+        public List<Point> RealTimeTimeTraceSample_01
         {
             get { return _RealTimeTimeTraceSample_01; }
             set { _RealTimeTimeTraceSample_01 = value; }
@@ -205,8 +204,8 @@ namespace BreakJunctions
 
         #region Sample 02
 
-        private List<PointD> _RealTimeTimeTraceSample_02;
-        public List<PointD> RealTimeTimeTraceSample_02
+        private List<Point> _RealTimeTimeTraceSample_02;
+        public List<Point> RealTimeTimeTraceSample_02
         {
             get { return _RealTimeTimeTraceSample_02; }
             set { _RealTimeTimeTraceSample_02 = value; }
@@ -510,7 +509,7 @@ namespace BreakJunctions
                     _IV_LineGraphChannel_01.RemoveFromPlotter();
                 }
                 //Creating new plot and attaching it to the chart
-                _CurrentIV_CurveChannel_01 = new List<PointD>();
+                _CurrentIV_CurveChannel_01 = new List<Point>();
                 _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_01, ChannelsToInvestigate.Channel_01);
                 _experimentalIV_DataSourceChannel_01.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_01 = new LineGraph(_experimentalIV_DataSourceChannel_01);
@@ -528,7 +527,7 @@ namespace BreakJunctions
                     _IV_LineGraphChannel_02.RemoveFromPlotter();
                 }
                 //Creating new plot and attaching it to the chart
-                _CurrentIV_CurveChannel_02 = new List<PointD>();
+                _CurrentIV_CurveChannel_02 = new List<Point>();
                 _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_02, ChannelsToInvestigate.Channel_02);
                 _experimentalIV_DataSourceChannel_02.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_02 = new LineGraph(_experimentalIV_DataSourceChannel_02);
@@ -779,7 +778,7 @@ namespace BreakJunctions
                     _CurrentTimeTraceChannel_01.Clear();
                 }
 
-                _CurrentTimeTraceChannel_01 = new List<PointD>();
+                _CurrentTimeTraceChannel_01 = new List<Point>();
                 _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_01, ChannelsToInvestigate.Channel_01);
                 _experimentalTimeTraceDataSourceChannel_01.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_01 = new LineGraph(_experimentalTimeTraceDataSourceChannel_01);
@@ -796,7 +795,7 @@ namespace BreakJunctions
                     _CurrentTimeTraceChannel_02.Clear();
                 }
 
-                _CurrentTimeTraceChannel_02 = new List<PointD>();
+                _CurrentTimeTraceChannel_02 = new List<Point>();
                 _experimentalTimeTraceDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_02, ChannelsToInvestigate.Channel_02);
                 _experimentalTimeTraceDataSourceChannel_02.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_02 = new LineGraph(_experimentalTimeTraceDataSourceChannel_02);
@@ -1187,7 +1186,7 @@ namespace BreakJunctions
                 _RealTimeTimeTraceSample_01.Clear();
             }
 
-            _RealTimeTimeTraceSample_01 = new List<PointD>();
+            _RealTimeTimeTraceSample_01 = new List<Point>();
             _ExperimentalRealTimeTimetraceDataSourceSample_01 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_01, SamplesToInvestigate.Sample_01);
             _ExperimentalRealTimeTimetraceDataSourceSample_01.AttachPointReceiveEvent();
             _RealTimeTimeTraceLineGraphSample_01 = new LineGraph(_ExperimentalRealTimeTimetraceDataSourceSample_01);
@@ -1204,7 +1203,7 @@ namespace BreakJunctions
                 _RealTimeTimeTraceSample_02.Clear();
             }
 
-            _RealTimeTimeTraceSample_02 = new List<PointD>();
+            _RealTimeTimeTraceSample_02 = new List<Point>();
             _ExperimentalRealTimeTimetraceDataSourceSample_02 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_02, SamplesToInvestigate.Sample_02);
             _ExperimentalRealTimeTimetraceDataSourceSample_02.AttachPointReceiveEvent();
             _RealTimeTimeTraceLineGraphSample_02 = new LineGraph(_ExperimentalRealTimeTimetraceDataSourceSample_02);

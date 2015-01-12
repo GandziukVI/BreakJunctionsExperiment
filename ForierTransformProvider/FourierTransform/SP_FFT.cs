@@ -160,7 +160,6 @@ namespace FANS.classes
 
             for (int i = 1; i <= this.Order; i++)
             {
-
                 int increment = (int)Math.Pow(2, i);
                 int halfIncrement = increment / 2;
                 int _WMultiplier = _W.Length / increment;

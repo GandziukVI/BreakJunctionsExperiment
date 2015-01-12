@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
-using Aids.Graphics;
 using BreakJunctions.Plotting;
 
 namespace BreakJunctions.Measurements
@@ -25,7 +25,7 @@ namespace BreakJunctions.Measurements
         /// </summary>
         /// <param name="NumberOfChannel">The number of channel to be measured</param>
         /// <returns></returns>
-        public abstract List<PointD> MakeSingleShot(int NumberOfChannel);
+        public abstract List<Point> MakeSingleShot(int NumberOfChannel);
         /// <summary>
         /// Alternating current autorange in
         /// appropriate channel
