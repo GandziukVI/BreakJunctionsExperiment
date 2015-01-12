@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -90,8 +90,8 @@ namespace BreakJunctions.Events
         }
         public virtual void OnIV_PointReceivedChannel_01(object sender, IV_PointReceivedChannel_01_EventArgs e)
         {
-            EventHandler<IV_PointReceivedChannel_01_EventArgs> handler; 
-            lock(IV_PointReceivedChannel_01_EventLock)
+            EventHandler<IV_PointReceivedChannel_01_EventArgs> handler;
+            lock (IV_PointReceivedChannel_01_EventLock)
             {
                 handler = _IV_PointReceivedChannel_01;
             }
@@ -197,7 +197,7 @@ namespace BreakJunctions.Events
         {
             add
             {
-                lock(TimeTracePointReceivedChannel_01_EventLock)
+                lock (TimeTracePointReceivedChannel_01_EventLock)
                 {
                     if (_TimeTracePointReceivedChannel_01 == null || !_TimeTracePointReceivedChannel_01.GetInvocationList().Contains(value))
                     {
@@ -298,7 +298,7 @@ namespace BreakJunctions.Events
             {
                 handler = _TimeTraceBothChannelsPointsReceived;
             }
-            if(handler != null)
+            if (handler != null)
             {
                 handler(sender, e);
             }
@@ -365,7 +365,7 @@ namespace BreakJunctions.Events
             }
             remove
             {
-                lock(MotorCurrentPositionReachedEventLock)
+                lock (MotorCurrentPositionReachedEventLock)
                 {
                     _MotorCurrentPositionReached -= value;
                 }
@@ -374,11 +374,11 @@ namespace BreakJunctions.Events
         public virtual void OnMotorCurrentPositionReached(object sender, MotorCurrentPositionReached_EventArgs e)
         {
             EventHandler<MotorCurrentPositionReached_EventArgs> handler;
-            lock(MotorCurrentPositionReachedEventLock)
+            lock (MotorCurrentPositionReachedEventLock)
             {
                 handler = _MotorCurrentPositionReached;
             }
-            if(handler != null)
+            if (handler != null)
             {
                 handler(sender, e);
             }
@@ -392,9 +392,9 @@ namespace BreakJunctions.Events
         {
             add
             {
-                lock(MotorFinalDestinationReachedEventLock)
+                lock (MotorFinalDestinationReachedEventLock)
                 {
-                    if(_MotorFinalDestinationReached == null || !_MotorFinalDestinationReached.GetInvocationList().Contains(value))
+                    if (_MotorFinalDestinationReached == null || !_MotorFinalDestinationReached.GetInvocationList().Contains(value))
                     {
                         _MotorFinalDestinationReached += value;
                     }
@@ -402,7 +402,7 @@ namespace BreakJunctions.Events
             }
             remove
             {
-                lock(MotorFinalDestinationReachedEventLock)
+                lock (MotorFinalDestinationReachedEventLock)
                 {
                     _MotorFinalDestinationReached -= value;
                 }
@@ -411,11 +411,11 @@ namespace BreakJunctions.Events
         public virtual void OnMotorFinalDestinationReached(object sender, MotorFinalDestinationReached_EventArgs e)
         {
             EventHandler<MotorFinalDestinationReached_EventArgs> handler;
-            lock(MotorFinalDestinationReachedEventLock)
+            lock (MotorFinalDestinationReachedEventLock)
             {
                 handler = _MotorFinalDestinationReached;
             }
-            if(handler != null)
+            if (handler != null)
             {
                 handler(sender, e);
             }
@@ -425,7 +425,7 @@ namespace BreakJunctions.Events
 
         #endregion
 
-        #region Real time TieTrace Curve Measureemnts Events
+        #region Real Time TimeTrace Curve Measureemnts Events
 
         private readonly object RealTime_TimeTraceDataArrived_EventLock = new object();
         private EventHandler<RealTime_TimeTrace_DataArrived_EventArgs> _RealTime_TimeTraceDataArrived;
@@ -700,6 +700,150 @@ namespace BreakJunctions.Events
         }
 
         #endregion
+
+        #endregion
+
+        #region Niose Measurements Events
+
+        private readonly object NoiseSpectra_DataArrived_EventLock_Channel_01 = new object();
+        private EventHandler<NoiseSpectra_DataArrived_Channel_01_EventArgs> _NoiseSpectra_DataArrived_Channel_01;
+        public event EventHandler<NoiseSpectra_DataArrived_Channel_01_EventArgs> NoiseSpectra_DataArrived_Channel_01
+        {
+            add
+            {
+                lock (NoiseSpectra_DataArrived_EventLock_Channel_01)
+                {
+                    if (_NoiseSpectra_DataArrived_Channel_01 == null || !_NoiseSpectra_DataArrived_Channel_01.GetInvocationList().Contains(value))
+                    {
+                        _NoiseSpectra_DataArrived_Channel_01 += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock (NoiseSpectra_DataArrived_EventLock_Channel_01)
+                {
+                    _NoiseSpectra_DataArrived_Channel_01 -= value;
+                }
+            }
+        }
+        public virtual void On_NoiseSpectra_DataArrived_Channel_01(object sender, NoiseSpectra_DataArrived_Channel_01_EventArgs e)
+        {
+            EventHandler<NoiseSpectra_DataArrived_Channel_01_EventArgs> handler;
+            lock (NoiseSpectra_DataArrived_EventLock_Channel_01)
+            {
+                handler = _NoiseSpectra_DataArrived_Channel_01;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        private readonly object NoiseSpectra_DataArrived_EventLock_Channel_02 = new object();
+        private EventHandler<NoiseSpectra_DataArrived_Channel_02_EventArgs> _NoiseSpectra_DataArrived_Channel_02;
+        public event EventHandler<NoiseSpectra_DataArrived_Channel_02_EventArgs> NoiseSpectra_DataArrived_Channel_02
+        {
+            add
+            {
+                lock (NoiseSpectra_DataArrived_EventLock_Channel_02)
+                {
+                    if (_NoiseSpectra_DataArrived_Channel_02 == null || !_NoiseSpectra_DataArrived_Channel_02.GetInvocationList().Contains(value))
+                    {
+                        _NoiseSpectra_DataArrived_Channel_02 += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock (NoiseSpectra_DataArrived_EventLock_Channel_02)
+                {
+                    _NoiseSpectra_DataArrived_Channel_02 -= value;
+                }
+            }
+        }
+        public virtual void On_NoiseSpectra_DataArrived_Channel_02(object sender, NoiseSpectra_DataArrived_Channel_02_EventArgs e)
+        {
+            EventHandler<NoiseSpectra_DataArrived_Channel_02_EventArgs> handler;
+            lock (NoiseSpectra_DataArrived_EventLock_Channel_02)
+            {
+                handler = _NoiseSpectra_DataArrived_Channel_02;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        private readonly object LastNoiseSpectra_Channel_01_DataArrived_EventLock = new object();
+        private EventHandler<LastNoiseSpectra_Channel_01_DataArrived_EventArgs> _LastNoiseSpectra_Channel_01_DataArrived;
+        public event EventHandler<LastNoiseSpectra_Channel_01_DataArrived_EventArgs> LastNoiseSpectra_Channel_01_DataArrived
+        {
+            add
+            {
+                lock (LastNoiseSpectra_Channel_01_DataArrived_EventLock)
+                {
+                    if (_LastNoiseSpectra_Channel_01_DataArrived == null || !_LastNoiseSpectra_Channel_01_DataArrived.GetInvocationList().Contains(value))
+                    {
+                        _LastNoiseSpectra_Channel_01_DataArrived += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock (LastNoiseSpectra_Channel_01_DataArrived_EventLock)
+                {
+                    _LastNoiseSpectra_Channel_01_DataArrived -= value;
+                }
+            }
+        }
+        public virtual void On_LastNoiseSpectra_Channel_01_DataArrived(object sender, LastNoiseSpectra_Channel_01_DataArrived_EventArgs e)
+        {
+            EventHandler<LastNoiseSpectra_Channel_01_DataArrived_EventArgs> handler;
+            lock (LastNoiseSpectra_Channel_01_DataArrived_EventLock)
+            {
+                handler = _LastNoiseSpectra_Channel_01_DataArrived;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        private readonly object LastNoiseSpectra_Channel_02_DataArrived_EventLock = new object();
+        private EventHandler<LastNoiseSpectra_Channel_02_DataArrived_EventArgs> _LastNoiseSpectra_Channel_02_DataArrived;
+        public event EventHandler<LastNoiseSpectra_Channel_02_DataArrived_EventArgs> LastNoiseSpectra_Channel_02_DataArrived
+        {
+            add
+            {
+                lock (LastNoiseSpectra_Channel_02_DataArrived_EventLock)
+                {
+                    if (_LastNoiseSpectra_Channel_02_DataArrived == null || !_LastNoiseSpectra_Channel_02_DataArrived.GetInvocationList().Contains(value))
+                    {
+                        _LastNoiseSpectra_Channel_02_DataArrived += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock (LastNoiseSpectra_Channel_02_DataArrived_EventLock)
+                {
+                    _LastNoiseSpectra_Channel_02_DataArrived -= value;
+                }
+            }
+        }
+        public virtual void On_LastNoiseSpectra_Channel_02_DataArrived(object sender, LastNoiseSpectra_Channel_02_DataArrived_EventArgs e)
+        {
+            EventHandler<LastNoiseSpectra_Channel_02_DataArrived_EventArgs> handler;
+            lock (LastNoiseSpectra_Channel_02_DataArrived_EventLock)
+            {
+                handler = _LastNoiseSpectra_Channel_02_DataArrived;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
 
         #endregion
     }

@@ -137,11 +137,14 @@
     <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceSingleMeasurement.cs" />
     <Compile Include="Events\Custom Events\IV_MeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_02_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\LastNoiseSpectra_Channel_02_DataArrived_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_RealTime_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_RealTime_FinalDestinationReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_RealTime_StartPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\NoiseSpectra_DataArrived_Channel_01_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\NoiseSpectra_DataArrived_Channel_02_EventArgs.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTraceMeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_01.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\LastNoiseSpectra_Channel_01_DataArrived_EventArgs.cs" />
     <Compile Include="Measurements\MeasureNoise.cs" />
     <Compile Include="Measurements\Real Time Measurement\IRealTime_TimeTrace_Factory.cs" />
     <Compile Include="Measurements\Real Time Measurement\MeasureRealTimeTimeTrace.cs" />
@@ -164,6 +168,7 @@
     <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
     <Compile Include="Motion\Motion Controllers Factories\FaulhaberMinimotor_SA_2036_U012V_K1155_RealTime_ControllerFactory.cs" />
     <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController.cs" />
+    <Compile Include="Plotting\ExperimentalNoiseSpectra_DataSource.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\InotifyPropertyChanged.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\NoiseMeasurementDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\NoiseMeasurementSettings.xaml.cs">

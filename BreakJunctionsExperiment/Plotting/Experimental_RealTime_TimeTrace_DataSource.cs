@@ -8,7 +8,6 @@ using System.Windows.Threading;
 
 using BreakJunctions.Events;
 
-
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using System.Threading;
 
@@ -16,6 +15,17 @@ namespace BreakJunctions.Plotting
 {
     class Experimental_RealTime_TimeTrace_DataSource_Sample : IPointDataSource
     {
+        #region IPointDataSource implementation
+
+        public event EventHandler DataChanged;
+
+        public IPointEnumerator GetEnumerator(DependencyObject context)
+        {
+            return new EnumerablePointEnumerator<Point>(_ExperimentalDataSource);
+        }
+
+        #endregion
+
         private List<Point> _ExperimentalData;
         public List<Point> ExperimentalData
         {
@@ -38,13 +48,6 @@ namespace BreakJunctions.Plotting
             _SampleNumber = SampleNumber;
 
             _Dispatcher = Dispatcher.CurrentDispatcher;
-        }
-
-        public event EventHandler DataChanged;
-
-        public IPointEnumerator GetEnumerator(DependencyObject context)
-        {
-            return new EnumerablePointEnumerator<Point>(_ExperimentalDataSource);
         }
 
         public virtual void AttachPointReceiveEvent() 

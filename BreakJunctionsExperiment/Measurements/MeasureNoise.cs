@@ -1,4 +1,5 @@
 ﻿using Agilent_U2542A_With_ExtensionBox.Classes;
+using BreakJunctions.Events;
 using FourierTransformProvider;
 using System;
 using System.Collections.Generic;
@@ -27,13 +28,21 @@ namespace BreakJunctions.Measurements
         private RealTime_TimeTrace_Controller _TimeTracesAcquisition;
         private AI_Channels _Channels;
         private DataStringConverter _DataConverter;
-        private AdvancedFourierTransform _FFT;
-        private Thread _FFT_Processing;
-        private List<Point> FinalFFT;
-        private int AveragedSpectraCounter;
-        private Queue<List<Point>> QueueToGetProcessed;
-        //public int Averaging;
-        //public int SpectraPerShow;
+
+        private AdvancedFourierTransform _FFT_Channel_01;
+        private AdvancedFourierTransform _FFT_Channel_02;
+
+        private Thread _FFT_Processing_Channel_01;
+        private Thread _FFT_Processing_Channel_02;
+
+        private List<Point> FinalFFT_Channel_01;
+        private List<Point> FinalFFT_Channel_02;
+        
+        private int AveragedSpectraCounter_Channel_01;
+        private int AveragedSpectraCounter_Channel_02;
+
+        private Queue<List<Point>> QueueToGetProcessed_Channel_01;
+        private Queue<List<Point>> QueueToGetProcessed_Channel_02;
 
         #endregion
 
@@ -51,13 +60,20 @@ namespace BreakJunctions.Measurements
             _TimeTracesAcquisitionfactory = new RT_Agilent_U2542A_TimeTrace_Controller_Factory();
             _TimeTracesAcquisition = _TimeTracesAcquisitionfactory.GetRealTime_TimeTraceController();
 
-            _FFT = new AdvancedFourierTransform(DigitalAnalyzerNamespace.DigitalAnalyzerSpectralRange.Discret499712Freq1_1600Step1Freq1647_249856Step61);
+            _FFT_Channel_01 = new AdvancedFourierTransform(DigitalAnalyzerNamespace.DigitalAnalyzerSpectralRange.Discret499712Freq1_1600Step1Freq1647_249856Step61);
+            _FFT_Channel_02 = new AdvancedFourierTransform(DigitalAnalyzerNamespace.DigitalAnalyzerSpectralRange.Discret499712Freq1_1600Step1Freq1647_249856Step61);
+
             _Channels = AI_Channels.Instance;
             _DataConverter = new DataStringConverter();
-            QueueToGetProcessed = new Queue<List<Point>>();
-            FinalFFT = new List<Point>();
-            this._FFT_Processing = new Thread(new ThreadStart(MakeFFTOfQueue));
-            this._FFT_Processing.Priority = ThreadPriority.Highest;
+
+            QueueToGetProcessed_Channel_01 = new Queue<List<Point>>();
+            QueueToGetProcessed_Channel_02 = new Queue<List<Point>>();
+
+            FinalFFT_Channel_01 = new List<Point>();
+            FinalFFT_Channel_02 = new List<Point>();
+
+            this._FFT_Processing_Channel_01 = new Thread(new ThreadStart(MakeFFTOfQueue_Channel_01));
+            this._FFT_Processing_Channel_01.Priority = ThreadPriority.Highest;
         }
 
         ~MeasureNoise()
@@ -81,13 +97,15 @@ namespace BreakJunctions.Measurements
             _Channels.ACQ_Rate = 499712;
             _Channels.SingleShotPointsPerBlock = 499712;
             var DataPack = new List<Point>();
-            QueueToGetProcessed.Clear();
-            AveragedSpectraCounter = 0;
+            QueueToGetProcessed_Channel_01.Clear();
+            AveragedSpectraCounter_Channel_01 = 0;
             FillFrequenciesInFinalFFT(_Channels.SingleShotPointsPerBlock);
             for (int i = 0; (i < _NumberOfSpectra) && (MeasurementInProgress); i++)
             {
-                QueueToGetProcessed.Enqueue(_TimeTracesAcquisition.MakeSingleShot(1));
-                if (!_FFT_Processing.IsAlive) this.StartFFTThread();
+                QueueToGetProcessed_Channel_01.Enqueue(_TimeTracesAcquisition.MakeSingleShot(2));
+                QueueToGetProcessed_Channel_02.Enqueue(_TimeTracesAcquisition.MakeSingleShot(4));
+
+                if (!_FFT_Processing_Channel_01.IsAlive) this.StartFFTThread();
             }
 
             if (MeasurementInProgress)
@@ -98,55 +116,98 @@ namespace BreakJunctions.Measurements
 
         private void StartFFTThread()
         {
-            this._FFT_Processing = new Thread(new ThreadStart(MakeFFTOfQueue));
-            this._FFT_Processing.Priority = ThreadPriority.Highest;
-            this._FFT_Processing.Start();
+            this._FFT_Processing_Channel_01 = new Thread(new ThreadStart(MakeFFTOfQueue_Channel_01));
+            this._FFT_Processing_Channel_02 = new Thread(new ThreadStart(MakeFFTOfQueue_Channel_02));
+
+            this._FFT_Processing_Channel_01.Priority = ThreadPriority.Highest;
+            this._FFT_Processing_Channel_02.Priority = ThreadPriority.Highest;
+
+            this._FFT_Processing_Channel_01.Start();
+            this._FFT_Processing_Channel_02.Start();
         }
         private void FillFrequenciesInFinalFFT(int NumberOFPoints)
         {
-            FinalFFT.Clear();
-            FinalFFT = _FFT.GetFrequencyList();
-            //double ACQ_rate = _Channels.ACQ_Rate;
-            //double NumberOfPoints_d = NumberOFPoints;
-            //for (int i = 0; i < NumberOFPoints / 2; i++)
-            //{
-            //    FinalFFT.Add((i*(ACQ_rate/NumberOfPoints_d)),0);
-            //}
+            FinalFFT_Channel_01.Clear();
+            FinalFFT_Channel_02.Clear();
 
+            FinalFFT_Channel_01 = _FFT_Channel_01.GetFrequencyList();
+            FinalFFT_Channel_02 = _FFT_Channel_02.GetFrequencyList();
         }
-        private void MakeFFTOfQueue()
+
+        private void MakeFFTOfQueue_Channel_01()
         {
-            while ((QueueToGetProcessed.Count != 0) && MeasurementInProgress && (AveragedSpectraCounter <= _NumberOfSpectra))
+            while ((QueueToGetProcessed_Channel_01.Count != 0) && MeasurementInProgress && (AveragedSpectraCounter_Channel_01 <= _NumberOfSpectra))
             {
-                List<Point> result = _FFT.AdvancedFFT(QueueToGetProcessed.Dequeue());//.makeFFT(QueueToGetProcessed.Dequeue());
-                AddPointPairListToFinal(result);
-                AveragedSpectraCounter++;
+                var result = _FFT_Channel_01.AdvancedFFT(QueueToGetProcessed_Channel_01.Dequeue());
+                AddPointListToFinal_Channel_01(result);
+
+                AveragedSpectraCounter_Channel_01++;
                 //AllCustomEvents.Instance.OnNoiseMeasurementStatusChanged(this, new StatusEventArgs("Spectra Acquired " + AveragedSpectraCounter + "/" + Averaging, 1, Averaging, AveragedSpectraCounter));
                 //if (AveragedSpectraCounter % SpectraPerShow == 0)
                 //    AllCustomEvents.Instance.OnNoiseSpectraArrived(this, new NoiseEventArgs(DividePointPairList(FinalFFT, AveragedSpectraCounter)));
+                if (AveragedSpectraCounter_Channel_01 % _DisplayUpdateNumber == 0)
+                    AllEventsHandler.Instance.On_NoiseSpectra_DataArrived_Channel_01(this, new NoiseSpectra_DataArrived_Channel_01_EventArgs(DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01)));
             }
-            if (AveragedSpectraCounter >= _NumberOfSpectra)
+            if (AveragedSpectraCounter_Channel_01 >= _NumberOfSpectra)
             {
-                List<Point> RawData = DividePointPairList(FinalFFT, AveragedSpectraCounter);
-                List<Point> FinalData = DividePointPairList(RawData, ImportantConstants.K_Ampl_first_Channel * ImportantConstants.K_Ampl_first_Channel);
+                List<Point> RawData = DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01);
+                List<Point> FinalData = DividePointList(RawData, ImportantConstants.K_Ampl_first_Channel * ImportantConstants.K_Ampl_first_Channel);
                 //AllCustomEvents.Instance.OnLastNoiseSpectraArrived(this, new FinalNoiseEventArgs(RawData, FinalData, "last spectra"));
+                AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_01_DataArrived(this, new LastNoiseSpectra_Channel_01_DataArrived_EventArgs(FinalFFT_Channel_01));
+            }
+        }
+
+        private void MakeFFTOfQueue_Channel_02()
+        {
+            while ((QueueToGetProcessed_Channel_02.Count != 0) && MeasurementInProgress && (AveragedSpectraCounter_Channel_01 <= _NumberOfSpectra))
+            {
+                var result = _FFT_Channel_02.AdvancedFFT(QueueToGetProcessed_Channel_02.Dequeue());
+                AddPointListToFinal_Channel_02(result);
+
+                AveragedSpectraCounter_Channel_02++;
+                //AllCustomEvents.Instance.OnNoiseMeasurementStatusChanged(this, new StatusEventArgs("Spectra Acquired " + AveragedSpectraCounter + "/" + Averaging, 1, Averaging, AveragedSpectraCounter));
+                //if (AveragedSpectraCounter % SpectraPerShow == 0)
+                //    AllCustomEvents.Instance.OnNoiseSpectraArrived(this, new NoiseEventArgs(DividePointPairList(FinalFFT, AveragedSpectraCounter)));
+                if (AveragedSpectraCounter_Channel_02 % _DisplayUpdateNumber == 0)
+                    AllEventsHandler.Instance.On_NoiseSpectra_DataArrived_Channel_02(this, new NoiseSpectra_DataArrived_Channel_02_EventArgs(DividePointList(FinalFFT_Channel_02, AveragedSpectraCounter_Channel_02)));
+            }
+            if (AveragedSpectraCounter_Channel_02 >= _NumberOfSpectra)
+            {
+                List<Point> RawData = DividePointList(FinalFFT_Channel_02, AveragedSpectraCounter_Channel_02);
+                List<Point> FinalData = DividePointList(RawData, ImportantConstants.K_Ampl_first_Channel * ImportantConstants.K_Ampl_first_Channel);
+                //AllCustomEvents.Instance.OnLastNoiseSpectraArrived(this, new FinalNoiseEventArgs(RawData, FinalData, "last spectra"));
+                AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_02_DataArrived(this, new LastNoiseSpectra_Channel_02_DataArrived_EventArgs(FinalFFT_Channel_02));
             }
 
         }
-        private void AddPointPairListToFinal(List<Point> data)
+
+        private void AddPointListToFinal_Channel_01(List<Point> data)
         {
-            for (int i = 0; i < FinalFFT.Count; i++)
+            for (int i = 0; i < FinalFFT_Channel_01.Count; i++)
             {
                 var temp = new Point();
 
-                temp.X = FinalFFT[i].X;
-                temp.Y = FinalFFT[i].Y + data[i].Y;
+                temp.X = FinalFFT_Channel_01[i].X;
+                temp.Y = FinalFFT_Channel_01[i].Y + data[i].Y;
 
-                FinalFFT[i]= temp;
+                FinalFFT_Channel_01[i]= temp;
             }
-
         }
-        private List<Point> DividePointPairList(List<Point> data, double divider)
+
+        private void AddPointListToFinal_Channel_02(List<Point> data)
+        {
+            for (int i = 0; i < FinalFFT_Channel_02.Count; i++)
+            {
+                var temp = new Point();
+
+                temp.X = FinalFFT_Channel_02[i].X;
+                temp.Y = FinalFFT_Channel_02[i].Y + data[i].Y;
+
+                FinalFFT_Channel_02[i] = temp;
+            }
+        }
+
+        private List<Point> DividePointList(List<Point> data, double divider)
         {
             List<Point> result = new List<Point>();
             foreach (Point a in data)
