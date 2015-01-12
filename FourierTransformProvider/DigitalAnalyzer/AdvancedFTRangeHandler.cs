@@ -1,9 +1,9 @@
 ﻿using FourierTransformProvider;
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 using ComplexExtention;
 using System.Collections.Generic;
-using System.Windows;
 
 namespace DigitalAnalyzerNamespace
 {
@@ -30,8 +30,6 @@ namespace DigitalAnalyzerNamespace
 
             m_FreqRange = new FrequencyRange(RangeFreqStart, RangeFreqBandWidth, FreqStep);
             m_IndexRange = new IndexRange(RangeFreqStartIndex, RangeFreqBandWidthCount);
-            //m_SubArraysForFTLength = RangeCount;
-            //m_PowerSpectralDensity = new PointPairList();
             m_DataSets = new FourierDataSet[DigitInfo.SamplesPerBlock / m_RangeWindowCount];
             m_FT = new FourierTransform();
 
@@ -51,15 +49,6 @@ namespace DigitalAnalyzerNamespace
             {
                 m_DataSets[i] = m_FT.UniversalFastFourierTransform(m_DataSets[i], false);
             });
-            //var PSD = m_DataSets.PowerSpectralDensity();
-            //var jEnum = m_IndexRange.GetEnumerator();
-            // foreach (var freq in m_FreqRange)
-            // {
-            //     if (jEnum.MoveNext())
-            //m_PowerSpectralDensity.Add(freq, PSD[jEnum.Current]);
-            //     else break;
-            //}
-
         }
 
 
@@ -79,16 +68,6 @@ namespace DigitalAnalyzerNamespace
                 return list;
             }
         }
-
-        //public PointPairList 
-        //public void ClearPSD()
-        //{
-        //    m_PowerSpectralDensity.Clear();
-        //}
-        //public PointPairList SpectraData { get { return m_PowerSpectralDensity; } }
-
-
-
 
         public int SamplesNumber
         {

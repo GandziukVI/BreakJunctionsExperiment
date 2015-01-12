@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32BCAE17-4D73-4B4F-9FF8-5F6C4BFF944E}</ProjectGuid>
+    <ProjectGuid>{8158BB3A-1AFF-41C7-9BC1-4DE188B6E2C2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FourierTransformProvider</RootNamespace>
@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,11 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComplexExtention.cs" />
+    <Compile Include="DigitalAnalyzer\AdvancedFTInitialization.cs" />
+    <Compile Include="DigitalAnalyzer\AdvancedFTRangeHandler.cs" />
+    <Compile Include="DigitalAnalyzer\DigitalAnalyzer.cs" />
+    <Compile Include="DigitalAnalyzer\DigitizingInfo.cs" />
+    <Compile Include="DigitalAnalyzer\FourierTransformRangeArrayExtentions.cs" />
     <Compile Include="FourierTransform\AdvancedFourierTransform.cs" />
     <Compile Include="FourierTransform\FourierDataSet.cs" />
     <Compile Include="FourierTransform\FourierDataSetArrayExtentions.cs" />
     <Compile Include="FourierTransform\FourierTransform.cs" />
-    <Compile Include="FourierTransform\SP_FFT.cs" />
     <Compile Include="FourierTransform\TransformTools.cs" />
     <Compile Include="FrequencyRange.cs" />
     <Compile Include="IndexRange.cs" />

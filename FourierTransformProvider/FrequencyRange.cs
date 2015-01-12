@@ -11,5 +11,8 @@ namespace FourierTransformProvider
             : base(StartFrequency, RangeBandWidth, FrequencyStep)
         {
         }
+
+        
+        
     }
 }

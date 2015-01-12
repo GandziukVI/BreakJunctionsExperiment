@@ -1,18 +1,18 @@
 ﻿using FourierTransformProvider;
 using System;
+using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Windows;
-
 
 namespace DigitalAnalyzerNamespace
 {
 
 
     public delegate void NewSpectraProcessed(object sender, List<Point> SpectraData);
+
     public class DigitalAnalyzer
     {
         public event NewSpectraProcessed SpectraProcessedEvent;
@@ -28,7 +28,7 @@ namespace DigitalAnalyzerNamespace
             m_RangeCreator = new AdvancedFTInitialization(Range);
             m_Ranges = m_RangeCreator.FourierTransformRanges;
             m_digitizingInfo = m_RangeCreator.DigitizingInfo;
-            //m_Ranges = DigitalAnalyzerRangesCreator.CreateRanges(Range);
+            
             DataArrivedEvent += DigitalAnalyzer_DataArrivedEvent;
             m_DataQueue = new ConcurrentQueue<FourierDataSet>();
 
@@ -55,7 +55,7 @@ namespace DigitalAnalyzerNamespace
             else
                 for (int i = 0; i < m_PSDToWrite.Count; i++)
                 {
-                    var temp = new Point(0.0, 0.0);
+                    var temp = new Point();
 
                     temp.X = m_PSDToWrite[i].X;
                     temp.Y = m_PSDToWrite[i].Y + SpectraData[i].Y;
@@ -63,14 +63,6 @@ namespace DigitalAnalyzerNamespace
                     m_PSDToWrite[i] = temp;
                 }
             spectraCount++;
-            //using (StreamWriter sw = new StreamWriter("F:\\psd.txt"))
-            //{
-            //    foreach (var point in SpectraData)
-            //    {
-            //        sw.WriteLine(String.Format("{0}\t{1}",point.X,point.Y));
-            //    }
-            //    sw.Close();
-            //}
         }
         private void OnDataArrived()
         {
@@ -87,14 +79,13 @@ namespace DigitalAnalyzerNamespace
         {
             if (m_DataQueueHandler.IsBusy != true)
                 m_DataQueueHandler.RunWorkerAsync();
-            //throw new NotImplementedException();
         }
 
         void DataQueueHandler_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             for (int i = 0; i < m_PSDToWrite.Count; i++)
             {
-                var temp = new Point(0.0, 0.0);
+                var temp = new Point();
 
                 temp.X = m_PSDToWrite[i].X;
                 temp.Y = m_PSDToWrite[i].Y / spectraCount;
@@ -109,12 +100,10 @@ namespace DigitalAnalyzerNamespace
                 }
                 sw.Close();
             }
-            //throw new NotImplementedException();
         }
 
         void DataQueueHandler_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            //throw new NotImplementedException();
         }
 
         void DataQueueHandler_DoWork(object sender, DoWorkEventArgs e)
@@ -149,7 +138,6 @@ namespace DigitalAnalyzerNamespace
 
         void DataQueueHandler_Disposed(object sender, EventArgs e)
         {
-            //throw new NotImplementedException();
         }
 
         public void ProcessSampledDataAsync(double[] NewData)
@@ -165,7 +153,6 @@ namespace DigitalAnalyzerNamespace
 
         public List<Point> ProcessSampledDataSyncronously(List<Point> NewData)
         {
-            //throw new NotImplementedException();
             Parallel.For(0, m_Ranges.Length, i =>
             {
                 m_Ranges[i].DataChanged(this, NewData.AsFourierDataSet());
@@ -174,12 +161,6 @@ namespace DigitalAnalyzerNamespace
             OnSpectraProcessed(this, m_Ranges.GetWholePSDfromRanges());
             return m_Ranges.GetWholePSDfromRanges();
         }
-
-
-
-
-
-
     }
 
 

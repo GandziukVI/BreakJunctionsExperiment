@@ -304,9 +304,9 @@
       <Project>{dd0fd2e2-f6c7-4694-a4fa-9897786fff56}</Project>
       <Name>FaulhaberMinimotors</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ForierTransformProvider\ForierTransformProvider.csproj">
-      <Project>{fc527d1e-aa07-411b-8ba6-881d213c2879}</Project>
-      <Name>ForierTransformProvider</Name>
+    <ProjectReference Include="..\FourierTransformProvider\FourierTransformProvider.csproj">
+      <Project>{8158bb3a-1aff-41c7-9bc1-4de188b6e2c2}</Project>
+      <Name>FourierTransformProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\HP_35670A\HP_35670A.csproj">
       <Project>{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}</Project>

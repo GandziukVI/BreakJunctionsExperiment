@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Collections.Generic;
 using System.Windows;
 using ComplexExtention;
 
@@ -20,7 +20,7 @@ namespace FourierTransformProvider
                     return false;
             return true;
         }
-        public static FourierDataSet AvarageDataSets(this FourierDataSet[] DataSetArray, Func<Complex, double> func)
+        public static FourierDataSet AvarageDataSets(this FourierDataSet[] DataSetArray, Func<Complex, double> __Function)
         {
             //throw new NotImplementedException();
             int CommonLength = 0;
@@ -31,7 +31,7 @@ namespace FourierTransformProvider
             {
                 for (int j = 0; j < DataSetArray.Length; j++)
                 {
-                    res[i] += func(DataSetArray[j][i]);
+                    res[i] += DataSetArray[j][i];
                 }
                 res[i] /= DataSetArray.Length;
             });
@@ -72,17 +72,17 @@ namespace FourierTransformProvider
             if (!DataSetArray.AllDataSetsEqualLength(out CommonLength))
                 throw new NotSupportedException();//return null;
             var res = new double[CommonLength];
-            double coef = 1.0 * DataSetArray.Length * CommonLength * CommonLength;
+            double coef = 1.0*DataSetArray.Length * CommonLength * CommonLength;
             Parallel.For(0, CommonLength, i =>
             {
                 for (int j = 0; j < DataSetArray.Length; j++)
-                {
+                { 
                     res[i] += DataSetArray[j][i].AbsSquared();//abs;
                 }
                 res[i] /= coef; // A=(1/N)SQRT(re^2+im^2)
             });
             return res;
         }
-
+        
     }
 }

@@ -8,12 +8,13 @@ using System.Windows;
 
 namespace FourierTransformProvider
 {
-    public class AdvancedFourierTransform:FourierTransform
+    public class AdvancedFourierTransform : FourierTransform
     {
         private AdvancedFTRangeHandler[] m_RangeHandlers;
         private DigitizingInfo m_digitizingInfo;
 
-        public AdvancedFourierTransform(DigitalAnalyzerSpectralRange range):base()
+        public AdvancedFourierTransform(DigitalAnalyzerSpectralRange range)
+            : base()
         {
             var creator = new AdvancedFTInitialization(range);
             m_RangeHandlers = creator.FourierTransformRanges;
