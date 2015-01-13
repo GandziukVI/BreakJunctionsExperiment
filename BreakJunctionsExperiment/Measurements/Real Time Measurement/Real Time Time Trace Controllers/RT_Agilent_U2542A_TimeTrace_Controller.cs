@@ -125,6 +125,7 @@ namespace BreakJunctions.Measurements
             _Channels.ChannelArray[NumberOfChannel - 1].ChannelProperties.isAC = true;
             _Channels.Read_AI_Channel_Status();
             int ACQ_Rate = _Channels.ACQ_Rate;
+
             _Channels.AcquireSingleShot();
             while ((!_Channels.CheckSingleShotAcquisitionStatus()) && MeasurementInProcess) ;
             if (!MeasurementInProcess) return null;

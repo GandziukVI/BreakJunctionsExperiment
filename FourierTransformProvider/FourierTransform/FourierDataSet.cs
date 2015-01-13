@@ -57,7 +57,8 @@ namespace FourierTransformProvider
         //}
         public Complex this[int index]
         {
-            get { return m_DataSet[index]; }
+            get 
+            { return m_DataSet[index]; }
             set { m_DataSet[index] = value; }
         }
 

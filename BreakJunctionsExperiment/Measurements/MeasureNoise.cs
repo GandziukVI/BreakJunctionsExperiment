@@ -228,6 +228,7 @@ namespace BreakJunctions.Measurements
 
         private void On_NoiseMeasurement_StateChanged(object sender, NoiseMeasurement_StateChanged_EventArgs e)
         {
+            _TimeTracesAcquisition.MeasurementInProcess = e.MeasurementIsInProgress;
             this.MeasurementInProgress = e.MeasurementIsInProgress;
         }
 
