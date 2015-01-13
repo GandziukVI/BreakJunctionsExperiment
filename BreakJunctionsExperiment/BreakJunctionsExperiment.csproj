@@ -143,6 +143,7 @@
     <Compile Include="Events\Custom Events\Motion_RealTime_StartPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorCurrentPositionReached_EventArgs.cs" />
     <Compile Include="Events\Custom Events\MotorFinalDestinationReached_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\NoiseMeasurement_StateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\NoiseSpectra_DataArrived_Channel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\NoiseSpectra_DataArrived_Channel_02_EventArgs.cs" />
     <Compile Include="Events\Custom Events\RealTime_TimeTraceMeasurementStateChanged_EventArgs.cs" />

@@ -206,6 +206,7 @@ Global
 		{8158BB3A-1AFF-41C7-9BC1-4DE188B6E2C2}.Release|Win32.ActiveCfg = Release|Any CPU
 		{8158BB3A-1AFF-41C7-9BC1-4DE188B6E2C2}.Release|x64.ActiveCfg = Release|Any CPU
 		{8158BB3A-1AFF-41C7-9BC1-4DE188B6E2C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{8158BB3A-1AFF-41C7-9BC1-4DE188B6E2C2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

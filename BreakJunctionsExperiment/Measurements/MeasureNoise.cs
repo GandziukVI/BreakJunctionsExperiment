@@ -74,6 +74,8 @@ namespace BreakJunctions.Measurements
 
             this._FFT_Processing_Channel_01 = new Thread(new ThreadStart(MakeFFTOfQueue_Channel_01));
             this._FFT_Processing_Channel_01.Priority = ThreadPriority.Highest;
+
+            AllEventsHandler.Instance.NoiseMeasurement_StateChanged += On_NoiseMeasurement_StateChanged;
         }
 
         ~MeasureNoise()
@@ -96,16 +98,23 @@ namespace BreakJunctions.Measurements
             _Channels.SetChannelsToAC();
             _Channels.ACQ_Rate = 499712;
             _Channels.SingleShotPointsPerBlock = 499712;
-            var DataPack = new List<Point>();
+            //var DataPack = new List<Point>();
+            
             QueueToGetProcessed_Channel_01.Clear();
+            QueueToGetProcessed_Channel_02.Clear();
+
             AveragedSpectraCounter_Channel_01 = 0;
+            AveragedSpectraCounter_Channel_02 = 0;
+
             FillFrequenciesInFinalFFT(_Channels.SingleShotPointsPerBlock);
+
             for (int i = 0; (i < _NumberOfSpectra) && (MeasurementInProgress); i++)
             {
                 QueueToGetProcessed_Channel_01.Enqueue(_TimeTracesAcquisition.MakeSingleShot(2));
                 QueueToGetProcessed_Channel_02.Enqueue(_TimeTracesAcquisition.MakeSingleShot(4));
 
-                if (!_FFT_Processing_Channel_01.IsAlive) this.StartFFTThread();
+                if (!(_FFT_Processing_Channel_01.IsAlive && _FFT_Processing_Channel_02.IsAlive))
+                    this.StartFFTThread();
             }
 
             if (MeasurementInProgress)
@@ -217,13 +226,24 @@ namespace BreakJunctions.Measurements
             return result;
         }
 
+        private void On_NoiseMeasurement_StateChanged(object sender, NoiseMeasurement_StateChanged_EventArgs e)
+        {
+            this.MeasurementInProgress = e.MeasurementIsInProgress;
+        }
+
         #endregion
 
         #region Disposing the instance
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            FinalFFT_Channel_01.Clear();
+            FinalFFT_Channel_02.Clear();
+
+            QueueToGetProcessed_Channel_01.Clear();
+            QueueToGetProcessed_Channel_02.Clear();
+
+            AllEventsHandler.Instance.NoiseMeasurement_StateChanged -= On_NoiseMeasurement_StateChanged;
         }
 
         #endregion

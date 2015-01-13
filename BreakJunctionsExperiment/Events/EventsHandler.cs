@@ -705,6 +705,41 @@ namespace BreakJunctions.Events
 
         #region Niose Measurements Events
 
+        private readonly object NoiseMeasurement_StateChanged_EventLock = new object();
+        private EventHandler<NoiseMeasurement_StateChanged_EventArgs> _NoiseMeasurement_StateChanged;
+        public event EventHandler<NoiseMeasurement_StateChanged_EventArgs> NoiseMeasurement_StateChanged
+        {
+            add
+            {
+                lock(NoiseMeasurement_StateChanged_EventLock)
+                {
+                    if(_NoiseMeasurement_StateChanged == null || !_NoiseMeasurement_StateChanged.GetInvocationList().Contains(value))
+                    {
+                        _NoiseMeasurement_StateChanged += value;
+                    }
+                }
+            }
+            remove
+            {
+                lock(NoiseMeasurement_StateChanged_EventLock)
+                {
+                    _NoiseMeasurement_StateChanged -= value;
+                }
+            }
+        }
+        public virtual void On_NoiseMeasurement_StateChanged(object sender, NoiseMeasurement_StateChanged_EventArgs e)
+        {
+            EventHandler<NoiseMeasurement_StateChanged_EventArgs> handler;
+            lock(NoiseMeasurement_StateChanged_EventLock)
+            {
+                handler = _NoiseMeasurement_StateChanged;
+            }
+            if(handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
         private readonly object NoiseSpectra_DataArrived_EventLock_Channel_01 = new object();
         private EventHandler<NoiseSpectra_DataArrived_Channel_01_EventArgs> _NoiseSpectra_DataArrived_Channel_01;
         public event EventHandler<NoiseSpectra_DataArrived_Channel_01_EventArgs> NoiseSpectra_DataArrived_Channel_01

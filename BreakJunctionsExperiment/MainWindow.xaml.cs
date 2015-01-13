@@ -221,11 +221,36 @@ namespace BreakJunctions
 
         private RealTimeTimeTraceMeasurementSettingsDataModel _RealTimeTimeTraceExperimentSettings;
 
-        private BackgroundWorker backgroundRealTimeTimeTraceMeasurementSamples;
-        private MeasureRealTimeTimeTrace RealTimeTimeTraceCurve_Samples;
+        private BackgroundWorker _Background_RealTime_TimeTrace_Measurement;
+        private MeasureRealTimeTimeTrace _RealTime_TimeTrace_Curve;
 
         private SaveFileDialog _SaveRealTimeTraceMeasureDataDialog;
         private string _SaveRealTimeTraceMeasuremrentDataFileName;
+
+        #endregion
+
+        #region Noise data handling and presenting
+
+        #region Sample 01
+
+        private List<Point> _Noise_Sample_01;
+
+        private ExperimentalNoiseSpectra_DataSource _Experimental_Noise_DataSource_Sample_01;
+        private LineGraph _Noise_LineGraph_Sample_01;
+
+        #endregion
+
+        #region Sample 02
+
+        private List<Point> _Noise_Sample_02;
+
+        private ExperimentalNoiseSpectra_DataSource _Experimental_Noise_DataSource_Sample_02;
+        private LineGraph _Noise_LineGraph_Sample_02;
+
+        #endregion
+
+        private BackgroundWorker _Background_NoiseMeasurement;
+        private MeasureNoise _Noise_Spectra;
 
         #endregion
 
@@ -262,9 +287,15 @@ namespace BreakJunctions
             chartRealTimeTimeTraceSample_01.Children.Remove(chartRealTimeTimeTraceSample_01.Legend);
             chartRealTimeTimeTraceSample_02.Children.Remove(chartRealTimeTimeTraceSample_02.Legend);
 
+            chartNoiseSample_01.LegendVisibility = System.Windows.Visibility.Hidden;
+            chartNoiseSample_02.LegendVisibility = System.Windows.Visibility.Hidden;
+
+            chartNoiseSample_01.Children.Remove(chartNoiseSample_01.Legend);
+            chartNoiseSample_02.Children.Remove(chartNoiseSample_02.Legend);
+
             #endregion
 
-            #region Implementing logarithmic Y scale for TimeTrace Approach
+            #region Implementing logarithmic scale
 
             chartTimeTraceChannel_01.DataTransform = new Log10YTransform();
             VerticalAxis LogarifmicTimeTraceAxis_Channel_01 = new VerticalAxis
@@ -285,6 +316,44 @@ namespace BreakJunctions
 
             chartTimeTraceChannel_02.MainVerticalAxis = LogarifmicTimeTraceAxis_Channel_02;
             chartTimeTraceChannel_02.AxisGrid.DrawVerticalMinorTicks = true;
+
+            chartNoiseSample_01.DataTransform = new Log10Transform();
+            VerticalAxis LogarifmicVerticalNoiseAxisChannel_01 = new VerticalAxis
+            {
+                TicksProvider = new LogarithmNumericTicksProvider(10),
+                LabelProvider = new UnroundingLabelProvider()
+            };
+
+            HorizontalAxis LogarifmicHorizontalNoiseAxisChannel_01 = new HorizontalAxis
+            {
+                TicksProvider = new LogarithmNumericTicksProvider(10),
+                LabelProvider = new UnroundingLabelProvider()
+            };
+
+            chartNoiseSample_01.MainVerticalAxis = LogarifmicVerticalNoiseAxisChannel_01;
+            chartNoiseSample_01.AxisGrid.DrawVerticalMinorTicks = true;
+
+            chartNoiseSample_01.MainHorizontalAxis = LogarifmicHorizontalNoiseAxisChannel_01;
+            chartNoiseSample_01.AxisGrid.DrawHorizontalMinorTicks = true;
+
+            chartNoiseSample_02.DataTransform = new Log10Transform();
+            VerticalAxis LogarifmicVerticalNoiseAxisChannel_02 = new VerticalAxis
+            {
+                TicksProvider = new LogarithmNumericTicksProvider(10),
+                LabelProvider = new UnroundingLabelProvider()
+            };
+
+            HorizontalAxis LogarifmicHorizontalNoiseAxisChannel_02 = new HorizontalAxis
+            {
+                TicksProvider = new LogarithmNumericTicksProvider(10),
+                LabelProvider = new UnroundingLabelProvider()
+            };
+
+            chartNoiseSample_02.MainVerticalAxis = LogarifmicVerticalNoiseAxisChannel_02;
+            chartNoiseSample_02.AxisGrid.DrawVerticalMinorTicks = true;
+
+            chartNoiseSample_02.MainHorizontalAxis = LogarifmicHorizontalNoiseAxisChannel_02;
+            chartNoiseSample_02.AxisGrid.DrawHorizontalMinorTicks = true;
 
             #endregion
 
@@ -383,11 +452,11 @@ namespace BreakJunctions
 
             #region Background Real Time Time Trace Measurement
 
-            backgroundRealTimeTimeTraceMeasurementSamples = new BackgroundWorker();
-            backgroundRealTimeTimeTraceMeasurementSamples.WorkerSupportsCancellation = true;
-            backgroundRealTimeTimeTraceMeasurementSamples.WorkerReportsProgress = true;
-            backgroundRealTimeTimeTraceMeasurementSamples.DoWork += backgroundRealTime_TimeTraceMeasureDoWork;
-            backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerCompleted += backgroundRealTime_TimeTraceMeasureRunWorkerCompleted;
+            _Background_RealTime_TimeTrace_Measurement = new BackgroundWorker();
+            _Background_RealTime_TimeTrace_Measurement.WorkerSupportsCancellation = true;
+            _Background_RealTime_TimeTrace_Measurement.WorkerReportsProgress = true;
+            _Background_RealTime_TimeTrace_Measurement.DoWork += backgroundRealTime_TimeTraceMeasureDoWork;
+            _Background_RealTime_TimeTrace_Measurement.RunWorkerCompleted += backgroundRealTime_TimeTraceMeasureRunWorkerCompleted;
 
             #endregion
 
@@ -1239,17 +1308,17 @@ namespace BreakJunctions
 
                 AllEventsHandler.Instance.RealTime_TimeTraceDataArrived += OnRealTime_TimeTrace_DataArrived;
 
-                if (RealTimeTimeTraceCurve_Samples != null)
-                    RealTimeTimeTraceCurve_Samples.Dispose();
+                if (_RealTime_TimeTrace_Curve != null)
+                    _RealTime_TimeTrace_Curve.Dispose();
 
-                RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
+                _RealTime_TimeTrace_Curve = new MeasureRealTimeTimeTrace();
 
-                RealTimeTimeTraceCurve_Samples.StartContiniousAcquisitionInThread();
+                _RealTime_TimeTrace_Curve.StartContiniousAcquisitionInThread();
             }
             else 
             {
                 AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
-                RealTimeTimeTraceCurve_Samples.StopContiniousAcquisitionInThread();
+                _RealTime_TimeTrace_Curve.StopContiniousAcquisitionInThread();
             }
         }
 
@@ -1293,7 +1362,7 @@ namespace BreakJunctions
 
             InitRealTime_TimeTraceMeasurement();
             
-            backgroundRealTimeTimeTraceMeasurementSamples.RunWorkerAsync();
+            _Background_RealTime_TimeTrace_Measurement.RunWorkerAsync();
         }
 
         private void _SetGUI_AfterRT_Measurement()
@@ -1314,7 +1383,7 @@ namespace BreakJunctions
         private void on_cmdRealTime_TimeTraceStopMeasurementClick(object sender, RoutedEventArgs e)
         {
             _SetGUI_AfterRT_Measurement();
-            backgroundRealTimeTimeTraceMeasurementSamples.CancelAsync();
+            _Background_RealTime_TimeTrace_Measurement.CancelAsync();
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
@@ -1349,8 +1418,8 @@ namespace BreakJunctions
 
         private void backgroundRealTime_TimeTraceMeasureDoWork(object sender, DoWorkEventArgs e)
         {
-            if (RealTimeTimeTraceCurve_Samples != null)
-                RealTimeTimeTraceCurve_Samples.Dispose();
+            if (_RealTime_TimeTrace_Curve != null)
+                _RealTime_TimeTrace_Curve.Dispose();
 
             if (_RealTime_TimeTraceSingleMeasurementSamples != null)
                 _RealTime_TimeTraceSingleMeasurementSamples.Dispose();
@@ -1358,7 +1427,7 @@ namespace BreakJunctions
             string RealTime_TimeTrace_CurrentDataFile = GetFileNameWithIncrement(_SaveRealTimeTraceMeasuremrentDataFileName); ;
 
             _RealTime_TimeTraceSingleMeasurementSamples = new RealTime_TimeTraceSingleMeasurement(RealTime_TimeTrace_CurrentDataFile, 0.02, "");
-            RealTimeTimeTraceCurve_Samples = new MeasureRealTimeTimeTrace();
+            _RealTime_TimeTrace_Curve = new MeasureRealTimeTimeTrace();
 
             #region Motion parameters initialization
 
@@ -1388,13 +1457,13 @@ namespace BreakJunctions
                     break;
             }
 
-            RealTimeTimeTraceCurve_Samples.StartPosition = _StartPosition;
-            RealTimeTimeTraceCurve_Samples.FinalDestination = _FinalDestination;
+            _RealTime_TimeTrace_Curve.StartPosition = _StartPosition;
+            _RealTime_TimeTrace_Curve.FinalDestination = _FinalDestination;
 
-            RealTimeTimeTraceCurve_Samples.VelosityMovingUp = MotionSettings.TimeTraceMotionSpeedUp;
-            RealTimeTimeTraceCurve_Samples.VelosityMovingDown = MotionSettings.TimeTraceMotionSpeedDown;
+            _RealTime_TimeTrace_Curve.VelosityMovingUp = MotionSettings.TimeTraceMotionSpeedUp;
+            _RealTime_TimeTrace_Curve.VelosityMovingDown = MotionSettings.TimeTraceMotionSpeedDown;
 
-            RealTimeTimeTraceCurve_Samples.StartMeasurement(_MotionKind, _NumberCycles);
+            _RealTime_TimeTrace_Curve.StartMeasurement(_MotionKind, _NumberCycles);
 
             #endregion
         }
@@ -1404,6 +1473,51 @@ namespace BreakJunctions
         }
 
         #endregion
+
+        #endregion
+
+        #region Noise Measurement Interface Interactions
+
+        private void InitNoiseMeasurement()
+        {
+            #region Chart rendering settings
+
+            #region Sample 01
+
+            if(_Noise_LineGraph_Sample_01 != null)
+            {
+                _Experimental_Noise_DataSource_Sample_01.DetachPointReceiveEvent();
+                _Noise_LineGraph_Sample_01.RemoveFromPlotter();
+                _Noise_Sample_01.Clear();
+            }
+
+            _Noise_Sample_01 = new List<Point>();
+            _Experimental_Noise_DataSource_Sample_01 = new ExperimentalNoiseSpectra_DataSource(_Noise_Sample_01, SamplesToInvestigate.Sample_01);
+            _Experimental_Noise_DataSource_Sample_01.AttachPointReceiveEvent();
+            _Noise_LineGraph_Sample_01 = new LineGraph(_Experimental_Noise_DataSource_Sample_01);
+            _Noise_LineGraph_Sample_01.AddToPlotter(chartNoiseSample_01);
+
+            #endregion
+
+            #region Sample 02
+
+            if (_Noise_LineGraph_Sample_02 != null)
+            {
+                _Experimental_Noise_DataSource_Sample_02.DetachPointReceiveEvent();
+                _Noise_LineGraph_Sample_02.RemoveFromPlotter();
+                _Noise_Sample_02.Clear();
+            }
+
+            _Noise_Sample_02 = new List<Point>();
+            _Experimental_Noise_DataSource_Sample_02 = new ExperimentalNoiseSpectra_DataSource(_Noise_Sample_02, SamplesToInvestigate.Sample_02);
+            _Experimental_Noise_DataSource_Sample_02.AttachPointReceiveEvent();
+            _Noise_LineGraph_Sample_02 = new LineGraph(_Experimental_Noise_DataSource_Sample_02);
+            _Noise_LineGraph_Sample_02.AddToPlotter(chartNoiseSample_02);
+
+            #endregion
+
+            #endregion
+        }
 
         #endregion
 
