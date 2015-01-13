@@ -393,6 +393,12 @@ namespace BreakJunctions
 
             #endregion
 
+            #region Noise Model-view interactions
+
+            controlNoiseTraceMeasurementSettings.cmd_NoiseMeasurementStart.Click += On_NoiseMeasurement_Start_Click;
+
+            #endregion
+
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
             AllEventsHandler.Instance.Motion_RealTime += OnMotion_RealTime;
 
@@ -457,6 +463,15 @@ namespace BreakJunctions
             _Background_RealTime_TimeTrace_Measurement.WorkerReportsProgress = true;
             _Background_RealTime_TimeTrace_Measurement.DoWork += backgroundRealTime_TimeTraceMeasureDoWork;
             _Background_RealTime_TimeTrace_Measurement.RunWorkerCompleted += backgroundRealTime_TimeTraceMeasureRunWorkerCompleted;
+
+            #endregion
+
+            #region Background Noise Measurement
+
+            _Background_NoiseMeasurement = new BackgroundWorker();
+            _Background_NoiseMeasurement.WorkerSupportsCancellation = true;
+            _Background_NoiseMeasurement.WorkerReportsProgress = true;
+            _Background_NoiseMeasurement.DoWork += backgroundNoiseMeasure_DoWork;
 
             #endregion
 
@@ -1517,6 +1532,24 @@ namespace BreakJunctions
             #endregion
 
             #endregion
+        }
+
+        private void backgroundNoiseMeasure_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (_Noise_Spectra != null)
+                _Noise_Spectra.Dispose();
+
+            _Noise_Spectra = new MeasureNoise(100, 5, ref _Background_NoiseMeasurement);
+
+            AllEventsHandler.Instance.On_NoiseMeasurement_StateChanged(this, new NoiseMeasurement_StateChanged_EventArgs(true));
+
+            _Noise_Spectra.MakeNoiseMeasurement();
+        }
+
+        private void On_NoiseMeasurement_Start_Click(object sender, RoutedEventArgs e)
+        {
+            InitNoiseMeasurement();
+            _Background_NoiseMeasurement.RunWorkerAsync();
         }
 
         #endregion

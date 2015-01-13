@@ -21,7 +21,7 @@ namespace BreakJunctions.Plotting
 
         public IPointEnumerator GetEnumerator(System.Windows.DependencyObject context)
         {
-            throw new NotImplementedException();
+            return new EnumerablePointEnumerator<Point>(_ExperimentalDataSource);
         }
 
         #endregion

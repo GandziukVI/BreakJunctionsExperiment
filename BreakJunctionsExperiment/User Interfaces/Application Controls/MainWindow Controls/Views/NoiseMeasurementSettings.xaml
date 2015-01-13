@@ -66,8 +66,8 @@
                     <TextBlock Text="Comments:" Margin="5 20 2.5 5" />
                     <TextBox TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250" VerticalScrollBarVisibility="Auto" Text="{Binding Path=Comment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                    <Button x:Name="NoiseMeasurementStart" Content="Start measurement" Margin="5 50 5 0" />
-                    <Button x:Name="NoiseMeasuremntStop" Content="Stop measureemnt" />
+                    <Button x:Name="cmd_NoiseMeasurementStart" Content="Start measurement" Margin="5 50 5 0" />
+                    <Button x:Name="cmd_NoiseMeasuremntStop" Content="Stop measureemnt" />
                 </StackPanel>
             </Expander.Content>
         </Expander>
