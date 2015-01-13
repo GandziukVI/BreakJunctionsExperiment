@@ -9,12 +9,17 @@ namespace BreakJunctions.Events
 {
     class LastNoiseSpectra_Channel_01_DataArrived_EventArgs : EventArgs
     {
-        public List<Point> SpectraData { get; set; }
+        private List<Point> _SpectraData;
+        public List<Point> SpectraData 
+        {
+            get { return _SpectraData; }
+            set { _SpectraData = value; }
+        }
 
         public LastNoiseSpectra_Channel_01_DataArrived_EventArgs(List<Point> __SpectraData)
             : base()
         {
-            SpectraData = __SpectraData;
+            _SpectraData = __SpectraData;
         }
     }
 }
