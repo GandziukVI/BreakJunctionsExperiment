@@ -91,7 +91,7 @@ namespace BreakJunctions.Measurements
         {
             Agilent_DigitalOutput_LowLevel.Instance.AllToZero();
 
-            _VoltageMeasurement.PerformVoltagePresiseMeasurement();
+            //_VoltageMeasurement.PerformVoltagePresiseMeasurement();
 
             _Channels.Read_AI_Channel_Status();
             var ACQ_Rate = _Channels.ACQ_Rate;
@@ -117,8 +117,8 @@ namespace BreakJunctions.Measurements
                     this.StartFFTThread();
             }
 
-            if (MeasurementInProgress)
-                _VoltageMeasurement.PerformVoltagePresiseMeasurement();
+            //if (MeasurementInProgress)
+            //    _VoltageMeasurement.PerformVoltagePresiseMeasurement();
 
             _Channels.ACQ_Rate = ACQ_Rate;
         }
