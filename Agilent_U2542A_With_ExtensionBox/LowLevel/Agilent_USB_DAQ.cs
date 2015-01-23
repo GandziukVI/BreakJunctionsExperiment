@@ -141,7 +141,7 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
             try
             {
                 //string result = mbSession.ReadString().TrimEnd('\n');
-                string result = _src.ReadString();
+                string result = _src.ReadString().TrimEnd('\n');
                 this._SetNotBusy();
                 return result;
             }

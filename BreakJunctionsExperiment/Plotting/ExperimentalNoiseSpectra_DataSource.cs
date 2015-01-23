@@ -44,9 +44,9 @@ namespace BreakJunctions.Plotting
 
         #region Constructor / Destructor
 
-        public ExperimentalNoiseSpectra_DataSource(List<Point> Data, SamplesToInvestigate SampleNumber)
+        public ExperimentalNoiseSpectra_DataSource(SamplesToInvestigate SampleNumber)
         {
-            _ExperimentalData = Data;
+            _ExperimentalData = new List<Point>();
             _ExperimentalDataSource = new EnumerableDataSource<Point>(_ExperimentalData);
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
@@ -124,7 +124,7 @@ namespace BreakJunctions.Plotting
             {
                 _ExperimentalData.Clear();
 
-                _ExperimentalData = Data;
+                _ExperimentalData.AddRange(Data);
 
                 _Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -132,7 +132,10 @@ namespace BreakJunctions.Plotting
                     {
                         DataChanged(this, new EventArgs());
                     }
-                    catch { }
+                    catch  (Exception e)
+                    {
+                        MessageBox.Show(e.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }));
             }, __CancellationToken);
         }

@@ -233,16 +233,12 @@ namespace BreakJunctions
 
         #region Sample 01
 
-        private List<Point> _Noise_Sample_01;
-
         private ExperimentalNoiseSpectra_DataSource _Experimental_Noise_DataSource_Sample_01;
         private LineGraph _Noise_LineGraph_Sample_01;
 
         #endregion
 
         #region Sample 02
-
-        private List<Point> _Noise_Sample_02;
 
         private ExperimentalNoiseSpectra_DataSource _Experimental_Noise_DataSource_Sample_02;
         private LineGraph _Noise_LineGraph_Sample_02;
@@ -1503,11 +1499,9 @@ namespace BreakJunctions
             {
                 _Experimental_Noise_DataSource_Sample_01.DetachPointReceiveEvent();
                 _Noise_LineGraph_Sample_01.RemoveFromPlotter();
-                _Noise_Sample_01.Clear();
             }
 
-            _Noise_Sample_01 = new List<Point>();
-            _Experimental_Noise_DataSource_Sample_01 = new ExperimentalNoiseSpectra_DataSource(_Noise_Sample_01, SamplesToInvestigate.Sample_01);
+            _Experimental_Noise_DataSource_Sample_01 = new ExperimentalNoiseSpectra_DataSource(SamplesToInvestigate.Sample_01);
             _Experimental_Noise_DataSource_Sample_01.AttachPointReceiveEvent();
             _Noise_LineGraph_Sample_01 = new LineGraph(_Experimental_Noise_DataSource_Sample_01);
             _Noise_LineGraph_Sample_01.AddToPlotter(chartNoiseSample_01);
@@ -1520,11 +1514,9 @@ namespace BreakJunctions
             {
                 _Experimental_Noise_DataSource_Sample_02.DetachPointReceiveEvent();
                 _Noise_LineGraph_Sample_02.RemoveFromPlotter();
-                _Noise_Sample_02.Clear();
             }
 
-            _Noise_Sample_02 = new List<Point>();
-            _Experimental_Noise_DataSource_Sample_02 = new ExperimentalNoiseSpectra_DataSource(_Noise_Sample_02, SamplesToInvestigate.Sample_02);
+            _Experimental_Noise_DataSource_Sample_02 = new ExperimentalNoiseSpectra_DataSource(SamplesToInvestigate.Sample_02);
             _Experimental_Noise_DataSource_Sample_02.AttachPointReceiveEvent();
             _Noise_LineGraph_Sample_02 = new LineGraph(_Experimental_Noise_DataSource_Sample_02);
             _Noise_LineGraph_Sample_02.AddToPlotter(chartNoiseSample_02);
