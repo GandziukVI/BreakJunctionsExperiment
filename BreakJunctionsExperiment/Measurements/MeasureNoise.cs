@@ -37,7 +37,7 @@ namespace BreakJunctions.Measurements
 
         private List<Point> FinalFFT_Channel_01;
         private List<Point> FinalFFT_Channel_02;
-        
+
         private int AveragedSpectraCounter_Channel_01;
         private int AveragedSpectraCounter_Channel_02;
 
@@ -46,6 +46,9 @@ namespace BreakJunctions.Measurements
 
         private bool _FirstChannel_NewSpectraArrived = false;
         private bool _SecondChannel_NewSpectraArrived = false;
+
+        private bool _FirstChannel_LastSpectraArrived = false;
+        private bool _SecondChannel_LastSpectraArrived = false;
 
         private double _AmplificationCoefficient_CH_01 = 10000.0;
         public double AmplificationCoefficient_CH_01
@@ -109,6 +112,9 @@ namespace BreakJunctions.Measurements
 
         public void MakeNoiseMeasurement()
         {
+            _FirstChannel_LastSpectraArrived = false;
+            _SecondChannel_LastSpectraArrived = false;
+
             Agilent_DigitalOutput_LowLevel.Instance.AllToZero();
 
             //_VoltageMeasurement.PerformVoltagePresiseMeasurement();
@@ -118,7 +124,7 @@ namespace BreakJunctions.Measurements
             _Channels.SetChannelsToAC();
             _Channels.ACQ_Rate = 499712;
             _Channels.SingleShotPointsPerBlock = 499712;
-            
+
             QueueToGetProcessed_Channel_01.Clear();
             QueueToGetProcessed_Channel_02.Clear();
 
@@ -127,7 +133,7 @@ namespace BreakJunctions.Measurements
 
             FillFrequenciesInFinalFFT(_Channels.SingleShotPointsPerBlock);
 
-            for (int i = 0; (i < _NumberOfSpectra) && (MeasurementInProgress); i++)
+            for (int i = 0; (i < _NumberOfSpectra) && (MeasurementInProgress) && !_MeasurementWorker.CancellationPending; i++)
             {
                 QueueToGetProcessed_Channel_01.Enqueue(_TimeTracesAcquisition.MakeSingleShot(2));
                 QueueToGetProcessed_Channel_02.Enqueue(_TimeTracesAcquisition.MakeSingleShot(4));
@@ -135,6 +141,8 @@ namespace BreakJunctions.Measurements
                 if (!(_FFT_Processing_Channel_01.IsAlive && _FFT_Processing_Channel_02.IsAlive))
                     this.StartFFTThread();
             }
+
+            while(!((_FirstChannel_LastSpectraArrived == true) && (_SecondChannel_LastSpectraArrived == true) || _MeasurementWorker.CancellationPending));
 
             //if (MeasurementInProgress)
             //    _VoltageMeasurement.PerformVoltagePresiseMeasurement();
@@ -171,14 +179,18 @@ namespace BreakJunctions.Measurements
 
                 AveragedSpectraCounter_Channel_01++;
                 _FirstChannel_NewSpectraArrived = true;
-                if(_FirstChannel_NewSpectraArrived && _SecondChannel_NewSpectraArrived)
+                if (_FirstChannel_NewSpectraArrived && _SecondChannel_NewSpectraArrived)
                 {
                     _FirstChannel_NewSpectraArrived = false;
                     _SecondChannel_NewSpectraArrived = false;
 
-                    _MeasurementWorker.ReportProgress((int)((double)AveragedSpectraCounter_Channel_01 / _NumberOfSpectra) * 100);
+                    try
+                    {
+                        _MeasurementWorker.ReportProgress((int)((double)AveragedSpectraCounter_Channel_01 / _NumberOfSpectra * 100.0));
+                    }
+                    catch { }
                 }
-                
+
                 if (AveragedSpectraCounter_Channel_01 % _DisplayUpdateNumber == 0)
                     AllEventsHandler.Instance.On_NoiseSpectra_DataArrived_Channel_01(this, new NoiseSpectra_DataArrived_Channel_01_EventArgs(DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01)));
             }
@@ -186,8 +198,9 @@ namespace BreakJunctions.Measurements
             {
                 List<Point> RawData = DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01);
                 List<Point> FinalData = DividePointList(RawData, _AmplificationCoefficient_CH_01 * _AmplificationCoefficient_CH_01);
-                
-                AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_01_DataArrived(this, new LastNoiseSpectra_Channel_01_DataArrived_EventArgs(FinalFFT_Channel_01));
+
+                AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_01_DataArrived(this, new LastNoiseSpectra_Channel_01_DataArrived_EventArgs(FinalData));
+                _FirstChannel_LastSpectraArrived = true;
             }
         }
 
@@ -205,7 +218,11 @@ namespace BreakJunctions.Measurements
                     _FirstChannel_NewSpectraArrived = false;
                     _SecondChannel_NewSpectraArrived = false;
 
-                    _MeasurementWorker.ReportProgress((int)((double)AveragedSpectraCounter_Channel_01 / _NumberOfSpectra) * 100);
+                    try
+                    {
+                        _MeasurementWorker.ReportProgress((int)((double)AveragedSpectraCounter_Channel_01 / _NumberOfSpectra * 100.0));
+                    }
+                    catch { }
                 }
 
                 if (AveragedSpectraCounter_Channel_02 % _DisplayUpdateNumber == 0)
@@ -215,8 +232,9 @@ namespace BreakJunctions.Measurements
             {
                 List<Point> RawData = DividePointList(FinalFFT_Channel_02, AveragedSpectraCounter_Channel_02);
                 List<Point> FinalData = DividePointList(RawData, _AmplificationCoefficient_CH_02 * _AmplificationCoefficient_CH_02);
-                
-                AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_02_DataArrived(this, new LastNoiseSpectra_Channel_02_DataArrived_EventArgs(FinalFFT_Channel_02));
+
+                AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_02_DataArrived(this, new LastNoiseSpectra_Channel_02_DataArrived_EventArgs(FinalData));
+                _SecondChannel_LastSpectraArrived = true;
             }
 
         }
@@ -230,7 +248,7 @@ namespace BreakJunctions.Measurements
                 temp.X = FinalFFT_Channel_01[i].X;
                 temp.Y = FinalFFT_Channel_01[i].Y + data[i].Y;
 
-                FinalFFT_Channel_01[i]= temp;
+                FinalFFT_Channel_01[i] = temp;
             }
         }
 
