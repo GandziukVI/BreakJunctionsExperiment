@@ -468,6 +468,8 @@ namespace BreakJunctions
             _Background_NoiseMeasurement.WorkerSupportsCancellation = true;
             _Background_NoiseMeasurement.WorkerReportsProgress = true;
             _Background_NoiseMeasurement.DoWork += backgroundNoiseMeasure_DoWork;
+            _Background_NoiseMeasurement.ProgressChanged += _Background_NoiseMeasurement_ProgressChanged;
+            _Background_NoiseMeasurement.RunWorkerCompleted += _Background_NoiseMeasurement_RunWorkerCompleted;
 
             #endregion
 
@@ -1536,6 +1538,16 @@ namespace BreakJunctions
             AllEventsHandler.Instance.On_NoiseMeasurement_StateChanged(this, new NoiseMeasurement_StateChanged_EventArgs(true));
 
             _Noise_Spectra.MakeNoiseMeasurement();
+        }
+
+        void _Background_NoiseMeasurement_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBarNoiseMeasurementProgress.Value = e.ProgressPercentage;
+        }
+
+        void _Background_NoiseMeasurement_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            MessageBox.Show("Noise spectra measurement succeed!", "Success!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void On_NoiseMeasurement_Start_Click(object sender, RoutedEventArgs e)

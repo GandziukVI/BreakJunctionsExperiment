@@ -44,14 +44,34 @@ namespace BreakJunctions.Measurements
         private Queue<List<Point>> QueueToGetProcessed_Channel_01;
         private Queue<List<Point>> QueueToGetProcessed_Channel_02;
 
+        private bool _FirstChannel_NewSpectraArrived = false;
+        private bool _SecondChannel_NewSpectraArrived = false;
+
+        private double _AmplificationCoefficient_CH_01 = 10000.0;
+        public double AmplificationCoefficient_CH_01
+        {
+            get { return _AmplificationCoefficient_CH_01; }
+            set { AmplificationCoefficient_CH_01 = value; }
+        }
+
+        private double _AmplificationCoefficient_CH_02 = 10000.0;
+        public double AmplificationCoefficient_CH_02
+        {
+            get { return _AmplificationCoefficient_CH_02; }
+            set { AmplificationCoefficient_CH_02 = value; }
+        }
+
         #endregion
 
         #region Constructor / Destructor
 
-        public MeasureNoise(int __NumberOfSpectra, int __DisplayUpdateNumber, ref BackgroundWorker __MeasurementWorker)
+        public MeasureNoise(int __NumberOfSpectra, int __DisplayUpdateNumber, ref BackgroundWorker __MeasurementWorker, double __AmplificationCoefficient_CH_01 = 10000.0, double __AmplificationCoefficient_CH_02 = 10000.0)
         {
             _NumberOfSpectra = __NumberOfSpectra;
             _DisplayUpdateNumber = __DisplayUpdateNumber;
+
+            _AmplificationCoefficient_CH_01 = __AmplificationCoefficient_CH_01;
+            _AmplificationCoefficient_CH_02 = __AmplificationCoefficient_CH_02;
 
             _MeasurementWorker = __MeasurementWorker;
 
@@ -98,7 +118,6 @@ namespace BreakJunctions.Measurements
             _Channels.SetChannelsToAC();
             _Channels.ACQ_Rate = 499712;
             _Channels.SingleShotPointsPerBlock = 499712;
-            //var DataPack = new List<Point>();
             
             QueueToGetProcessed_Channel_01.Clear();
             QueueToGetProcessed_Channel_02.Clear();
@@ -151,17 +170,23 @@ namespace BreakJunctions.Measurements
                 AddPointListToFinal_Channel_01(result);
 
                 AveragedSpectraCounter_Channel_01++;
-                //AllCustomEvents.Instance.OnNoiseMeasurementStatusChanged(this, new StatusEventArgs("Spectra Acquired " + AveragedSpectraCounter + "/" + Averaging, 1, Averaging, AveragedSpectraCounter));
-                //if (AveragedSpectraCounter % SpectraPerShow == 0)
-                //    AllCustomEvents.Instance.OnNoiseSpectraArrived(this, new NoiseEventArgs(DividePointPairList(FinalFFT, AveragedSpectraCounter)));
+                _FirstChannel_NewSpectraArrived = true;
+                if(_FirstChannel_NewSpectraArrived && _SecondChannel_NewSpectraArrived)
+                {
+                    _FirstChannel_NewSpectraArrived = false;
+                    _SecondChannel_NewSpectraArrived = false;
+
+                    _MeasurementWorker.ReportProgress((int)((double)_NumberOfSpectra / AveragedSpectraCounter_Channel_01));
+                }
+                
                 if (AveragedSpectraCounter_Channel_01 % _DisplayUpdateNumber == 0)
                     AllEventsHandler.Instance.On_NoiseSpectra_DataArrived_Channel_01(this, new NoiseSpectra_DataArrived_Channel_01_EventArgs(DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01)));
             }
             if (AveragedSpectraCounter_Channel_01 >= _NumberOfSpectra)
             {
                 List<Point> RawData = DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01);
-                List<Point> FinalData = DividePointList(RawData, ImportantConstants.K_Ampl_first_Channel * ImportantConstants.K_Ampl_first_Channel);
-                //AllCustomEvents.Instance.OnLastNoiseSpectraArrived(this, new FinalNoiseEventArgs(RawData, FinalData, "last spectra"));
+                List<Point> FinalData = DividePointList(RawData, _AmplificationCoefficient_CH_01 * _AmplificationCoefficient_CH_01);
+                
                 AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_01_DataArrived(this, new LastNoiseSpectra_Channel_01_DataArrived_EventArgs(FinalFFT_Channel_01));
             }
         }
@@ -174,17 +199,23 @@ namespace BreakJunctions.Measurements
                 AddPointListToFinal_Channel_02(result);
 
                 AveragedSpectraCounter_Channel_02++;
-                //AllCustomEvents.Instance.OnNoiseMeasurementStatusChanged(this, new StatusEventArgs("Spectra Acquired " + AveragedSpectraCounter + "/" + Averaging, 1, Averaging, AveragedSpectraCounter));
-                //if (AveragedSpectraCounter % SpectraPerShow == 0)
-                //    AllCustomEvents.Instance.OnNoiseSpectraArrived(this, new NoiseEventArgs(DividePointPairList(FinalFFT, AveragedSpectraCounter)));
+                _SecondChannel_NewSpectraArrived = true;
+                if (_FirstChannel_NewSpectraArrived && _SecondChannel_NewSpectraArrived)
+                {
+                    _FirstChannel_NewSpectraArrived = false;
+                    _SecondChannel_NewSpectraArrived = false;
+
+                    _MeasurementWorker.ReportProgress((int)((double)_NumberOfSpectra / AveragedSpectraCounter_Channel_01));
+                }
+
                 if (AveragedSpectraCounter_Channel_02 % _DisplayUpdateNumber == 0)
                     AllEventsHandler.Instance.On_NoiseSpectra_DataArrived_Channel_02(this, new NoiseSpectra_DataArrived_Channel_02_EventArgs(DividePointList(FinalFFT_Channel_02, AveragedSpectraCounter_Channel_02)));
             }
             if (AveragedSpectraCounter_Channel_02 >= _NumberOfSpectra)
             {
                 List<Point> RawData = DividePointList(FinalFFT_Channel_02, AveragedSpectraCounter_Channel_02);
-                List<Point> FinalData = DividePointList(RawData, ImportantConstants.K_Ampl_first_Channel * ImportantConstants.K_Ampl_first_Channel);
-                //AllCustomEvents.Instance.OnLastNoiseSpectraArrived(this, new FinalNoiseEventArgs(RawData, FinalData, "last spectra"));
+                List<Point> FinalData = DividePointList(RawData, _AmplificationCoefficient_CH_02 * _AmplificationCoefficient_CH_02);
+                
                 AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_02_DataArrived(this, new LastNoiseSpectra_Channel_02_DataArrived_EventArgs(FinalFFT_Channel_02));
             }
 
