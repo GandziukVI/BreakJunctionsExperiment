@@ -176,7 +176,7 @@ namespace BreakJunctions.Measurements
                     _FirstChannel_NewSpectraArrived = false;
                     _SecondChannel_NewSpectraArrived = false;
 
-                    _MeasurementWorker.ReportProgress((int)((double)_NumberOfSpectra / AveragedSpectraCounter_Channel_01));
+                    _MeasurementWorker.ReportProgress((int)((double)AveragedSpectraCounter_Channel_01 / _NumberOfSpectra) * 100);
                 }
                 
                 if (AveragedSpectraCounter_Channel_01 % _DisplayUpdateNumber == 0)
@@ -205,7 +205,7 @@ namespace BreakJunctions.Measurements
                     _FirstChannel_NewSpectraArrived = false;
                     _SecondChannel_NewSpectraArrived = false;
 
-                    _MeasurementWorker.ReportProgress((int)((double)_NumberOfSpectra / AveragedSpectraCounter_Channel_01));
+                    _MeasurementWorker.ReportProgress((int)((double)AveragedSpectraCounter_Channel_01 / _NumberOfSpectra) * 100);
                 }
 
                 if (AveragedSpectraCounter_Channel_02 % _DisplayUpdateNumber == 0)
