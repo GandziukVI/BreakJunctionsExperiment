@@ -57,6 +57,7 @@
                             <RowDefinition />
                             <RowDefinition Height="20" />
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Number of spectra" />
@@ -64,8 +65,10 @@
                         <TextBlock Grid.Column="0" Grid.Row="1" Text="Display update every" />
                         <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="1"  Value="{Binding Path=DisplayUpdateNumber, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                         
-                        <Label Grid.Column="0" Grid.Row="3" Content="Amplification coefficient" />
-                        <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding Path=AmplificationCoefficient, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <TextBlock Grid.Column="0" Grid.Row="3" Text="Amplification coeff CH_01" />
+                        <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding Path=AmplificationCoefficient_CH1, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <TextBlock Grid.Column="0" Grid.Row="4" Text="Amplification coeff CH_01" />
+                        <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="4" Value="{Binding Path=AmplificationCoefficient_CH2, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     </Grid>
                     
                     <Grid>

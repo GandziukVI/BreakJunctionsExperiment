@@ -56,14 +56,25 @@ namespace BreakJunctions
             }
         }
 
-        private int _AmplificationCoefficient = 10000;
-        public int AmplificationCoefficient
+        private int _AmplificationCoefficient_CH1 = 10000;
+        public int AmplificationCoefficient_CH1
         {
-            get { return _AmplificationCoefficient; }
+            get { return _AmplificationCoefficient_CH1; }
             set 
             {
-                _AmplificationCoefficient = value;
-                OnPropertyChanged("AmplificationCoefficient");
+                _AmplificationCoefficient_CH1 = value;
+                OnPropertyChanged("AmplificationCoefficient_CH1");
+            }
+        }
+
+        private int _AmplificationCoefficient_CH2 = 10000;
+        public int AmplificationCoefficient_CH2
+        {
+            get { return _AmplificationCoefficient_CH2; }
+            set
+            {
+                _AmplificationCoefficient_CH2 = value;
+                OnPropertyChanged("AmplificationCoefficient_CH2");
             }
         }
 

@@ -1537,6 +1537,9 @@ namespace BreakJunctions
             var MeasurementSettings = controlNoiseTraceMeasurementSettings.MeasurementSettings;
 
             _Noise_Spectra = new MeasureNoise(MeasurementSettings.MunberOfSpectra, MeasurementSettings.DisplayUpdateNumber, ref _Background_NoiseMeasurement);
+            
+            _Noise_Spectra.AmplificationCoefficient_CH_01 = MeasurementSettings.AmplificationCoefficient_CH1;
+            _Noise_Spectra.AmplificationCoefficient_CH_02 = MeasurementSettings.AmplificationCoefficient_CH2;
 
             AllEventsHandler.Instance.On_NoiseMeasurement_StateChanged(this, new NoiseMeasurement_StateChanged_EventArgs(true));
 
