@@ -253,6 +253,7 @@ namespace BreakJunctions.Measurements
                 case ChannelsToInvestigate.Channel_01:
                     {
                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(new object(), new TimeTracePointReceivedChannel_01_EventArgs(X, Y));
+                        _CurrentPosition = X;
                         try
                         {
                             if (_Motor.CurrentDirection == MotionDirection.Up)
@@ -265,6 +266,7 @@ namespace BreakJunctions.Measurements
                 case ChannelsToInvestigate.Channel_02:
                     {
                         AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(new object(), new TimeTracePointReceivedChannel_02_EventArgs(X, Y));
+                        _CurrentPosition = X;
                         try
                         {
                             if (_Motor.CurrentDirection == MotionDirection.Up)
@@ -287,19 +289,13 @@ namespace BreakJunctions.Measurements
                     {
                         var measuredVoltage = _MeasureDevice.MeasureVoltage(_NumberOfAverages, _TimeDelay);
                         if (!(double.IsNaN(e.Position) || double.IsNaN(measuredVoltage)))
-                        {
                             _EmitData(e.Position, measuredVoltage);
-                            _CurrentPosition = e.Position;
-                        }
                     } break;
                 case MeasureMode.Current:
                     {
                         var measuredCurrent = _MeasureDevice.MeasureCurrent(_NumberOfAverages, _TimeDelay);
                         if (!(double.IsNaN(e.Position) || double.IsNaN(measuredCurrent)))
-                        {
                             _EmitData(e.Position, measuredCurrent);
-                            _CurrentPosition = e.Position;
-                        }
                     } break;
                 case MeasureMode.Resistance:
                     {
@@ -309,19 +305,13 @@ namespace BreakJunctions.Measurements
                                 {
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
-                                    {
                                         _EmitData(e.Position, measuredResistance);
-                                        _CurrentPosition = e.Position;
-                                    }
                                 } break;
                             case SourceMode.Current:
                                 {
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
-                                    {
                                         _EmitData(e.Position, measuredResistance);
-                                        _CurrentPosition = e.Position;
-                                    }
                                 } break;
                             default:
                                 break;
@@ -341,19 +331,13 @@ namespace BreakJunctions.Measurements
                                     catch { }
 
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
-                                    {
                                         _EmitData(e.Position, measuredConductance);
-                                        _CurrentPosition = e.Position;
-                                    }
                                 } break;
                             case SourceMode.Current:
                                 {
                                     var measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current)) / _QuantumConductance;
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
-                                    {
                                         _EmitData(e.Position, measuredConductance);
-                                        _CurrentPosition = e.Position;
-                                    }
                                 } break;
                             default:
                                 break;
@@ -367,19 +351,13 @@ namespace BreakJunctions.Measurements
                                 {
                                     var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
-                                    {
                                         _EmitData(e.Position, measuredPower);
-                                        _CurrentPosition = e.Position;
-                                    }
                                 } break;
                             case SourceMode.Current:
                                 {
                                     var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
-                                    {
                                         _EmitData(e.Position, measuredPower);
-                                        _CurrentPosition = e.Position;
-                                    }
                                 } break;
                             default:
                                 break;
