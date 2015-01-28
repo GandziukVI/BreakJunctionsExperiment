@@ -54,14 +54,14 @@ namespace BreakJunctions.Measurements
         public double AmplificationCoefficient_CH_01
         {
             get { return _AmplificationCoefficient_CH_01; }
-            set { AmplificationCoefficient_CH_01 = value; }
+            set { _AmplificationCoefficient_CH_01 = value; }
         }
 
         private double _AmplificationCoefficient_CH_02 = 10000.0;
         public double AmplificationCoefficient_CH_02
         {
             get { return _AmplificationCoefficient_CH_02; }
-            set { AmplificationCoefficient_CH_02 = value; }
+            set { _AmplificationCoefficient_CH_02 = value; }
         }
 
         #endregion
