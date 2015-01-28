@@ -256,8 +256,8 @@
                                 </Grid>
                         </Expander.Content>
                     </Expander>
-                    <Button Grid.Row="1" Grid.Column="0" x:Name="cmdIV_StartMeasurement" Content="Start Measurement" Grid.ColumnSpan="2" Background="#FFDDDDDD" />
-                    <Button Grid.Row="2" Grid.Column="0" x:Name="cmdIV_StopMeasurement" Content="Stop Measurement" Grid.ColumnSpan="2" Background="#FFDDDDDD" />
+                    <Button Grid.Row="1" Grid.Column="0" x:Name="cmdIV_StartMeasurement" Content="Start Measurement" Grid.ColumnSpan="2" Background="#FFDDDDDD" IsDefault="True" />
+                    <Button Grid.Row="2" Grid.Column="0" x:Name="cmdIV_StopMeasurement" Content="Stop Measurement" Grid.ColumnSpan="2" Background="#FFDDDDDD" IsCancel="True" />
                 </Grid> <!-- IV measures settings grid -->
 			</StackPanel>  <!-- IVChartPanel -->
 		</Expander.Content>

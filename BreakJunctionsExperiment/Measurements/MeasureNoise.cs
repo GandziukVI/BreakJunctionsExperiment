@@ -178,8 +178,8 @@ namespace BreakJunctions.Measurements
 
                     _MeasurementWorker.ReportProgress((int)((double)AveragedSpectraCounter_Channel_01 / _NumberOfSpectra) * 100);
                 }
-                
-                if (AveragedSpectraCounter_Channel_01 % _DisplayUpdateNumber == 0)
+
+                if ((AveragedSpectraCounter_Channel_01 % _DisplayUpdateNumber == 0) && (AveragedSpectraCounter_Channel_01 < _NumberOfSpectra))
                     AllEventsHandler.Instance.On_NoiseSpectra_DataArrived_Channel_01(this, new NoiseSpectra_DataArrived_Channel_01_EventArgs(DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01)));
             }
             if (AveragedSpectraCounter_Channel_01 >= _NumberOfSpectra)
@@ -208,7 +208,7 @@ namespace BreakJunctions.Measurements
                     _MeasurementWorker.ReportProgress((int)((double)AveragedSpectraCounter_Channel_01 / _NumberOfSpectra) * 100);
                 }
 
-                if (AveragedSpectraCounter_Channel_02 % _DisplayUpdateNumber == 0)
+                if ((AveragedSpectraCounter_Channel_02 % _DisplayUpdateNumber == 0) && (AveragedSpectraCounter_Channel_02 < _NumberOfSpectra))
                     AllEventsHandler.Instance.On_NoiseSpectra_DataArrived_Channel_02(this, new NoiseSpectra_DataArrived_Channel_02_EventArgs(DividePointList(FinalFFT_Channel_02, AveragedSpectraCounter_Channel_02)));
             }
             if (AveragedSpectraCounter_Channel_02 >= _NumberOfSpectra)

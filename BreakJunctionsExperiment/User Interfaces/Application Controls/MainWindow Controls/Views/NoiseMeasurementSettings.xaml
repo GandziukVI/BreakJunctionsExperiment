@@ -55,19 +55,43 @@
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition Height="20" />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Number of spectra" />
                         <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="0" Value="{Binding Path=MunberOfSpectra, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Display update every" />
-                        <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="2"  Value="{Binding Path=DisplayUpdateNumber, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Text="Display update every" />
+                        <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="1"  Value="{Binding Path=DisplayUpdateNumber, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                        
+                        <Label Grid.Column="0" Grid.Row="3" Content="Amplification coefficient" />
+                        <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding Path=AmplificationCoefficient, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    </Grid>
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Save to file" />
+                        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Path=SaveFileName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <Button Grid.Row="1" Grid.Column="1" MinWidth="30" x:Name="cmd_SaveNoiseData" Margin="5 2.5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="OpenFile.png"/>
+                            </Button.Background>
+                        </Button>
                     </Grid>
 
                     <TextBlock Text="Comments:" Margin="5 20 2.5 5" />
                     <TextBox TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250" VerticalScrollBarVisibility="Auto" Text="{Binding Path=Comment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                    <Button x:Name="cmd_NoiseMeasurementStart" Content="Start measurement" Margin="5 50 5 0" />
-                    <Button x:Name="cmd_NoiseMeasuremntStop" Content="Stop measureemnt" />
+                    <Button x:Name="cmd_NoiseMeasurementStart" Content="Start measurement" Margin="5 50 5 0" IsDefault="True" />
+                    <Button x:Name="cmd_NoiseMeasuremntStop" Content="Stop measureemnt" IsCancel="True" />
                 </StackPanel>
             </Expander.Content>
         </Expander>

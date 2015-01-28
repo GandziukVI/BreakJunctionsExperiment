@@ -56,6 +56,28 @@ namespace BreakJunctions
             }
         }
 
+        private int _AmplificationCoefficient = 10000;
+        public int AmplificationCoefficient
+        {
+            get { return _AmplificationCoefficient; }
+            set 
+            {
+                _AmplificationCoefficient = value;
+                OnPropertyChanged("AmplificationCoefficient");
+            }
+        }
+
+        private string _SaveFileName;
+        public string SaveFileName
+        {
+            get { return _SaveFileName; }
+            set
+            {
+                _SaveFileName = value;
+                OnPropertyChanged("SaveFileName");
+            }
+        }
+
         #endregion
     }
 }
