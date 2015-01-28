@@ -153,9 +153,6 @@ namespace BreakJunctions.Measurements
 
         private bool _CancelMeasures = false;
 
-        ConcurrentQueue<Point> _MeasurementDataQueue;
-        Thread _EmitDataThread;
-
         #endregion
 
         #region Constructor / Destructor
@@ -173,8 +170,6 @@ namespace BreakJunctions.Measurements
             _ChannelController = __ChannelController;
 
             _worker = __MeasurementWorker;
-
-            _MeasurementDataQueue = new ConcurrentQueue<Point>();
 
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += OnTimeTraceMeasurementsStateChanged;
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
@@ -211,11 +206,6 @@ namespace BreakJunctions.Measurements
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
 
             _MeasureDevice.SwitchON();
-
-            _EmitDataThread = new Thread(new ThreadStart(_EmitData));
-            _EmitDataThread.Priority = ThreadPriority.AboveNormal;
-            _EmitDataThread.Start();
-            while (!_EmitDataThread.IsAlive) ;
 
             switch (__MotionKind)
             {
@@ -256,38 +246,36 @@ namespace BreakJunctions.Measurements
             _MeasureDevice.SwitchOFF();
         }
 
-        private void _EmitData()
+        private void _EmitData(double X, double Y)
         {
-            while(!_CancelMeasures || !_MeasurementDataQueue.IsEmpty)
+            switch (_Channel)
             {
-                Point _DataPoint;
-
-                var _DequeueSuccess = _MeasurementDataQueue.TryDequeue(out _DataPoint);
-
-                if (_DequeueSuccess == true)
-                {
-                    switch (_Channel)
+                case ChannelsToInvestigate.Channel_01:
                     {
-                        case ChannelsToInvestigate.Channel_01:
-                            {
-                                AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(new object(), new TimeTracePointReceivedChannel_01_EventArgs(_DataPoint.X, _DataPoint.Y));
-                                if (_Motor.CurrentDirection == MotionDirection.Up)
-                                    _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100));
-                                else
-                                    _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100));
-                            } break;
-                        case ChannelsToInvestigate.Channel_02:
-                            {
-                                AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(_DataPoint.X, _DataPoint.Y));
-                                if (_Motor.CurrentDirection == MotionDirection.Up)
-                                    _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100));
-                                else
-                                    _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100));
-                            } break;
-                        default:
-                            break;
-                    }
-                }
+                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(new object(), new TimeTracePointReceivedChannel_01_EventArgs(X, Y));
+                        try
+                        {
+                            if (_Motor.CurrentDirection == MotionDirection.Up)
+                                _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                            else
+                                _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                        }
+                        catch { }
+                    } break;
+                case ChannelsToInvestigate.Channel_02:
+                    {
+                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(new object(), new TimeTracePointReceivedChannel_02_EventArgs(X, Y));
+                        try
+                        {
+                            if (_Motor.CurrentDirection == MotionDirection.Up)
+                                _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                            else
+                                _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                        }
+                        catch { }
+                    } break;
+                default:
+                    break;
             }
         }
 
@@ -300,7 +288,7 @@ namespace BreakJunctions.Measurements
                         var measuredVoltage = _MeasureDevice.MeasureVoltage(_NumberOfAverages, _TimeDelay);
                         if (!(double.IsNaN(e.Position) || double.IsNaN(measuredVoltage)))
                         {
-                            _MeasurementDataQueue.Enqueue(new Point(e.Position, measuredVoltage));
+                            _EmitData(e.Position, measuredVoltage);
                             _CurrentPosition = e.Position;
                         }
                     } break;
@@ -309,7 +297,7 @@ namespace BreakJunctions.Measurements
                         var measuredCurrent = _MeasureDevice.MeasureCurrent(_NumberOfAverages, _TimeDelay);
                         if (!(double.IsNaN(e.Position) || double.IsNaN(measuredCurrent)))
                         {
-                            _MeasurementDataQueue.Enqueue(new Point(e.Position, measuredCurrent));
+                            _EmitData(e.Position, measuredCurrent);
                             _CurrentPosition = e.Position;
                         }
                     } break;
@@ -322,7 +310,7 @@ namespace BreakJunctions.Measurements
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
                                     {
-                                        _MeasurementDataQueue.Enqueue(new Point(e.Position, measuredResistance));
+                                        _EmitData(e.Position, measuredResistance);
                                         _CurrentPosition = e.Position;
                                     }
                                 } break;
@@ -331,7 +319,7 @@ namespace BreakJunctions.Measurements
                                     var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
                                     {
-                                        _MeasurementDataQueue.Enqueue(new Point(e.Position, measuredResistance));
+                                        _EmitData(e.Position, measuredResistance);
                                         _CurrentPosition = e.Position;
                                     }
                                 } break;
@@ -354,7 +342,7 @@ namespace BreakJunctions.Measurements
 
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
                                     {
-                                        _MeasurementDataQueue.Enqueue(new Point(e.Position, measuredConductance));
+                                        _EmitData(e.Position, measuredConductance);
                                         _CurrentPosition = e.Position;
                                     }
                                 } break;
@@ -363,7 +351,7 @@ namespace BreakJunctions.Measurements
                                     var measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current)) / _QuantumConductance;
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
                                     {
-                                        _MeasurementDataQueue.Enqueue(new Point(e.Position, measuredConductance));
+                                        _EmitData(e.Position, measuredConductance);
                                         _CurrentPosition = e.Position;
                                     }
                                 } break;
@@ -380,7 +368,7 @@ namespace BreakJunctions.Measurements
                                     var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
                                     {
-                                        _MeasurementDataQueue.Enqueue(new Point(e.Position, measuredPower));
+                                        _EmitData(e.Position, measuredPower);
                                         _CurrentPosition = e.Position;
                                     }
                                 } break;
@@ -389,7 +377,7 @@ namespace BreakJunctions.Measurements
                                     var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
                                     {
-                                        _MeasurementDataQueue.Enqueue(new Point(e.Position, measuredPower));
+                                        _EmitData(e.Position, measuredPower);
                                         _CurrentPosition = e.Position;
                                     }
                                 } break;
