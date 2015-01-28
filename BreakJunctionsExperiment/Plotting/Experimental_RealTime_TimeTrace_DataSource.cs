@@ -114,7 +114,7 @@ namespace BreakJunctions.Plotting
                     {
                         try
                         {
-                            DataChanged(this, new EventArgs());
+                            DataChanged(new object(), new EventArgs());
                         }
                         catch { }
                     }));

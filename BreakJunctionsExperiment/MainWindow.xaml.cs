@@ -392,6 +392,7 @@ namespace BreakJunctions
             #region Noise Model-view interactions
 
             controlNoiseTraceMeasurementSettings.cmd_NoiseMeasurementStart.Click += On_NoiseMeasurement_Start_Click;
+            controlNoiseTraceMeasurementSettings.cmd_NoiseMeasuremntStop.Click += On_NoiseMeasuremntStop_Click;
 
             #endregion
 
@@ -1533,7 +1534,9 @@ namespace BreakJunctions
             if (_Noise_Spectra != null)
                 _Noise_Spectra.Dispose();
 
-            _Noise_Spectra = new MeasureNoise(100, 5, ref _Background_NoiseMeasurement);
+            var MeasurementSettings = controlNoiseTraceMeasurementSettings.MeasurementSettings;
+
+            _Noise_Spectra = new MeasureNoise(MeasurementSettings.MunberOfSpectra, MeasurementSettings.DisplayUpdateNumber, ref _Background_NoiseMeasurement);
 
             AllEventsHandler.Instance.On_NoiseMeasurement_StateChanged(this, new NoiseMeasurement_StateChanged_EventArgs(true));
 
@@ -1547,13 +1550,19 @@ namespace BreakJunctions
 
         void _Background_NoiseMeasurement_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            MessageBox.Show("Noise spectra measurement succeed!", "Success!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            progressBarNoiseMeasurementProgress.Value = 0;
+            MessageBox.Show("Noise spectra measurement completed!", "Success!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void On_NoiseMeasurement_Start_Click(object sender, RoutedEventArgs e)
         {
             InitNoiseMeasurement();
             _Background_NoiseMeasurement.RunWorkerAsync();
+        }
+
+        private void On_NoiseMeasuremntStop_Click(object sender, RoutedEventArgs e)
+        {
+            _Background_NoiseMeasurement.CancelAsync();
         }
 
         #endregion
