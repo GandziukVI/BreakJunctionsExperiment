@@ -1563,6 +1563,12 @@ namespace BreakJunctions
             _Background_NoiseMeasurement.RunWorkerAsync();
         }
 
+        private void On_NoiseCalibration_Start_Click(object sender, RoutedEventArgs e)
+        {
+            InitNoiseMeasurement();
+            _Background_NoiseMeasurement.RunWorkerAsync();
+        }
+
         private void On_NoiseMeasuremntStop_Click(object sender, RoutedEventArgs e)
         {
             _Background_NoiseMeasurement.CancelAsync();

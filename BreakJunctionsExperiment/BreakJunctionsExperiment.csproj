@@ -131,6 +131,7 @@
     </Compile>
     <Compile Include="Data Handling\I-V Data Handling\IV_MeasurementLog.cs" />
     <Compile Include="Data Handling\I-V Data Handling\IV_SingleMeasurement.cs" />
+    <Compile Include="Data Handling\Noise Data Handling\NoiseCalibrationSingleMeasurement.cs" />
     <Compile Include="Data Handling\Time Trace Data Handling\RealTime_TimeTraceMeasurementLog.cs" />
     <Compile Include="Data Handling\Time Trace Data Handling\RealTime_TimeTraceSingleMeasurement.cs" />
     <Compile Include="Data Handling\Time Trace Data Handling\TimeTraceMeasurementLog.cs" />

@@ -78,6 +78,17 @@ namespace BreakJunctions
             }
         }
 
+        private string _SaveCalibrationFileName;
+        public string SaveCalibrationFileName
+        {
+            get { return _SaveCalibrationFileName; }
+            set
+            {
+                _SaveCalibrationFileName = value;
+                OnPropertyChanged("SaveCalibrationFileName");
+            }
+        }
+
         private string _SaveFileName;
         public string SaveFileName
         {
