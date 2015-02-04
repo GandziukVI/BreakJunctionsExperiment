@@ -257,9 +257,34 @@ namespace BreakJunctions.Measurements
                         try
                         {
                             if (_Motor.CurrentDirection == MotionDirection.Up)
-                                _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                                switch (_CurrentMotionKind)
+                                {
+                                    case MotionKind.Single:
+                                        {
+                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100.0));
+                                        }
+                                        break;
+                                    case MotionKind.Repetitive:
+                                        {
+                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                                        } break;
+                                    default:
+                                        break;
+                                }
                             else
-                                _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                                switch (_CurrentMotionKind)
+                                {
+                                    case MotionKind.Single:
+                                        {
+                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100.0));
+                                        } break;
+                                    case MotionKind.Repetitive:
+                                        {
+                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                                        } break;
+                                    default:
+                                        break;
+                                }
                         }
                         catch { }
                     } break;
@@ -270,9 +295,33 @@ namespace BreakJunctions.Measurements
                         try
                         {
                             if (_Motor.CurrentDirection == MotionDirection.Up)
-                                _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                                switch (_CurrentMotionKind)
+                                {
+                                    case MotionKind.Single:
+                                        {
+                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100.0));
+                                        } break;
+                                    case MotionKind.Repetitive:
+                                        {
+                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                                        } break;
+                                    default:
+                                        break;
+                                }
                             else
-                                _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                                switch (_CurrentMotionKind)
+                                {
+                                    case MotionKind.Single:
+                                        {
+                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100.0));
+                                        } break;
+                                    case MotionKind.Repetitive:
+                                        {
+                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
+                                        } break;
+                                    default:
+                                        break;
+                                }
                         }
                         catch { }
                     } break;

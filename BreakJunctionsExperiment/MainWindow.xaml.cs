@@ -248,6 +248,12 @@ namespace BreakJunctions
         private BackgroundWorker _Background_NoiseMeasurement;
         private MeasureNoise _Noise_Spectra;
 
+        NoiseCalibrationSingleMeasurement _SingleCalibrationMeasurement_CH_01;
+        NoiseCalibrationSingleMeasurement _SingleCalibrationMeasurement_CH_02;
+
+        private string _NoiseCalibrationDataFileName;
+        private string _NoiseDataFileName;
+
         #endregion
 
         public MainWindow()
@@ -391,7 +397,13 @@ namespace BreakJunctions
 
             #region Noise Model-view interactions
 
+            controlNoiseTraceMeasurementSettings.cmd_SaveNoiseCalibrationData.Click += On_NoiseCalibration_OpenFile;
+
+            controlNoiseTraceMeasurementSettings.cmd_PerformCalibration.Click += On_NoiseCalibration_Start_Click;
+
+            controlNoiseTraceMeasurementSettings.cmd_SaveNoiseData.Click += On_Noise_OpenFile_Click;
             controlNoiseTraceMeasurementSettings.cmd_NoiseMeasurementStart.Click += On_NoiseMeasurement_Start_Click;
+
             controlNoiseTraceMeasurementSettings.cmd_NoiseMeasuremntStop.Click += On_NoiseMeasuremntStop_Click;
 
             #endregion
@@ -1557,14 +1569,38 @@ namespace BreakJunctions
             MessageBox.Show("Noise spectra measurement completed!", "Success!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
+        private void On_Noise_OpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog();
+            saveDialog.ShowDialog();
+
+            _NoiseDataFileName = saveDialog.FileName;
+            controlNoiseTraceMeasurementSettings.MeasurementSettings.SaveFileName = saveDialog.SafeFileName;
+        }
+
         private void On_NoiseMeasurement_Start_Click(object sender, RoutedEventArgs e)
         {
+            var _SingleNoiseMeasurement_CH_01 = new NoiseSingleMeasurement(GetFileNameWithIncrement(_NoiseDataFileName.Insert(_NoiseDataFileName.LastIndexOf('.'), "_CH_01_")), ChannelsToInvestigate.Channel_01, ref _SingleCalibrationMeasurement_CH_01);
+            var _SingleNoiseMeasurement_CH_02 = new NoiseSingleMeasurement(GetFileNameWithIncrement(_NoiseDataFileName.Insert(_NoiseDataFileName.LastIndexOf('.'), "_CH_02_")), ChannelsToInvestigate.Channel_02, ref _SingleCalibrationMeasurement_CH_02);
+
             InitNoiseMeasurement();
             _Background_NoiseMeasurement.RunWorkerAsync();
         }
 
+        private void On_NoiseCalibration_OpenFile(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog();
+            saveDialog.ShowDialog();
+
+            _NoiseCalibrationDataFileName = saveDialog.FileName;
+            controlNoiseTraceMeasurementSettings.MeasurementSettings.SaveCalibrationFileName = saveDialog.SafeFileName;
+        }
+
         private void On_NoiseCalibration_Start_Click(object sender, RoutedEventArgs e)
         {
+            _SingleCalibrationMeasurement_CH_01 = new NoiseCalibrationSingleMeasurement(GetFileNameWithIncrement(_NoiseCalibrationDataFileName.Insert(_NoiseCalibrationDataFileName.LastIndexOf('.'), "_CH_01_")), ChannelsToInvestigate.Channel_01);
+            _SingleCalibrationMeasurement_CH_01 = new NoiseCalibrationSingleMeasurement(GetFileNameWithIncrement(_NoiseCalibrationDataFileName.Insert(_NoiseCalibrationDataFileName.LastIndexOf('.'), "_CH_02_")), ChannelsToInvestigate.Channel_02);
+            
             InitNoiseMeasurement();
             _Background_NoiseMeasurement.RunWorkerAsync();
         }

@@ -11,9 +11,9 @@ using System.Windows;
 
 namespace BreakJunctions.DataHandling
 {
-    class NoiseCalibrationSingleMeasurement : IDisposable
+    class NoiseSingleMeasurement : IDisposable
     {
-        #region NoiseCalibrationSingleMeasurement settings
+        #region NoiseSingleMeasurement settings
 
         private string _FileName;
         public string FileName
@@ -22,24 +22,24 @@ namespace BreakJunctions.DataHandling
             set { _FileName = value; }
         }
 
-        private FileStream _NoiseCalibrationData_StreamWriter;
+        private FileStream _NoiseData_StreamWriter;
         private ChannelsToInvestigate _SelectedChannel;
-
-        public List<Point> CalibrationData { get; set; }
+        private List<Point> _CalibrationData;
 
         #endregion
 
         #region Constructor / Destructor
 
-        public NoiseCalibrationSingleMeasurement(string __FileName, ChannelsToInvestigate __SelectedChannel)
+        public NoiseSingleMeasurement(string __FileName, ChannelsToInvestigate __SelectedChannel, ref NoiseCalibrationSingleMeasurement __CalibrationMeasurement)
         {
             _FileName = __FileName;
             _SelectedChannel = __SelectedChannel;
+            _CalibrationData = __CalibrationMeasurement.CalibrationData;
 
-            Attach_DataRecieveEvent();
+            __CalibrationMeasurement.Detach_PointRecieveEvent();
         }
 
-        ~NoiseCalibrationSingleMeasurement()
+        ~NoiseSingleMeasurement()
         {
             Dispose();
         }
@@ -84,17 +84,20 @@ namespace BreakJunctions.DataHandling
 
         private async Task WriteChannelData(List<Point> _Data)
         {
-            CalibrationData = _Data;
-            using (_NoiseCalibrationData_StreamWriter = new FileStream(_FileName, FileMode.Open, FileAccess.Write,
+            var ToWrite = new List<Point>();
+            for (int i = 0; i < _Data.Count; i++)
+                ToWrite.Add(new Point(_Data[i].X, _Data[i].Y - _CalibrationData[i].Y));
+
+            using (_NoiseData_StreamWriter = new FileStream(_FileName, FileMode.Open, FileAccess.Write,
                 FileShare.None, bufferSize: 4096, useAsync: true))
             {
                 var result = string.Empty;
-                foreach (var _DataPoint in _Data)
+                foreach (var _DataPoint in ToWrite)
                     result += String.Format("{0}\t{1}\r\n", _DataPoint.X.ToString(NumberFormatInfo.InvariantInfo), _DataPoint.Y.ToString(NumberFormatInfo.InvariantInfo));
 
                 var resultBytes = Encoding.ASCII.GetBytes(result);
 
-                await _NoiseCalibrationData_StreamWriter.WriteAsync(resultBytes, 0, resultBytes.Length);
+                await _NoiseData_StreamWriter.WriteAsync(resultBytes, 0, resultBytes.Length);
             };
         }
 
@@ -116,8 +119,8 @@ namespace BreakJunctions.DataHandling
         {
             Detach_PointRecieveEvent();
 
-            if (_NoiseCalibrationData_StreamWriter != null)
-                _NoiseCalibrationData_StreamWriter.Dispose();
+            if (_NoiseData_StreamWriter != null)
+                _NoiseData_StreamWriter.Dispose();
         }
 
         #endregion
