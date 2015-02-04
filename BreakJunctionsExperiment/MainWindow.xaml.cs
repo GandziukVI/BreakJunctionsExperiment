@@ -1572,6 +1572,7 @@ namespace BreakJunctions
         private void On_Noise_OpenFile_Click(object sender, RoutedEventArgs e)
         {
             var saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Data files (*.dat)|*.dat";
             saveDialog.ShowDialog();
 
             _NoiseDataFileName = saveDialog.FileName;
@@ -1590,6 +1591,7 @@ namespace BreakJunctions
         private void On_NoiseCalibration_OpenFile(object sender, RoutedEventArgs e)
         {
             var saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Data files (*.dat)|*.dat";
             saveDialog.ShowDialog();
 
             _NoiseCalibrationDataFileName = saveDialog.FileName;
