@@ -39,8 +39,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Events\AllEventsHandler.cs" />
+    <Compile Include="Keithley_4200.cs" />
+    <Compile Include="Pages\ChannelDefinitionPage.cs" />
+    <Compile Include="Pages\DataOutput.cs" />
+    <Compile Include="Pages\MeasurementControlPage.cs" />
+    <Compile Include="Pages\MeasurementSetupPage.cs" />
+    <Compile Include="Pages\SourceSetupPage.cs" />
+    <Compile Include="Pages\UserModeCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Devices\Devices.csproj">
+      <Project>{ae52526e-d660-426e-a2ec-1a475b02aa9e}</Project>
+      <Name>Devices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\CustomEvents\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

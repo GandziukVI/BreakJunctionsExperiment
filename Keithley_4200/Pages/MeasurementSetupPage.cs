@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Keithley_4200
+namespace Keithley_4200.Pages
 {
-    public class Class1
+    class MeasurementSetupPage
     {
     }
 }
