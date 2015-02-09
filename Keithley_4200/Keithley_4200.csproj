@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\AllEventsHandler.cs" />
+    <Compile Include="Events\CustomEvents\SystemModeChanged_EventArgs.cs" />
     <Compile Include="Keithley_4200.cs" />
     <Compile Include="Pages\ChannelDefinitionPage.cs" />
     <Compile Include="Pages\DataOutput.cs" />
@@ -55,9 +56,7 @@
       <Name>Devices</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\CustomEvents\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

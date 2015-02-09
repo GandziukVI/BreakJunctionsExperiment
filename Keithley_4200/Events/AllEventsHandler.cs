@@ -24,7 +24,27 @@ namespace Keithley_4200.Events
 
         #region SystemModeChanged
 
+        private readonly object SystemModeChanged_EventLock = new object();
+        private EventHandler<SystemModeChanged_EventArgs> _SystemModeChanged;
+        public event EventHandler<SystemModeChanged_EventArgs> SystemModeChanged
+        {
+            add
+            {
+                lock (SystemModeChanged_EventLock)
+                    if (_SystemModeChanged == null || !_SystemModeChanged.GetInvocationList().Contains(value))
+                        _SystemModeChanged += value;
+            }
+            remove
+            {
+                lock (SystemModeChanged_EventLock)
+                    _SystemModeChanged -= value;
+            }
+        }
 
+        private void On_SystemModeChanged(object sender, SystemModeChanged_EventArgs e)
+        {
+
+        }
 
         #endregion
     }
