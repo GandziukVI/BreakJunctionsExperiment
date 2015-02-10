@@ -41,9 +41,15 @@ namespace Keithley_4200.Events
             }
         }
 
-        private void On_SystemModeChanged(object sender, SystemModeChanged_EventArgs e)
+        public void On_SystemModeChanged(object sender, SystemModeChanged_EventArgs e)
         {
+            EventHandler<SystemModeChanged_EventArgs> handler;
 
+            lock (SystemModeChanged_EventLock)
+                handler = _SystemModeChanged;
+
+            if (handler != null)
+                handler(sender, e);
         }
 
         #endregion
