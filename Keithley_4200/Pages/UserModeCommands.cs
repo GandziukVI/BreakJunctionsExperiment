@@ -58,7 +58,7 @@ namespace Keithley_4200.Pages
         public void SMU_SetDirectVoltage(SMUs __SMU_ChannelNumber, VoltageSourceRanges __Range, double __OutputValue, double __CompilanceValue)
         {
             var command = String.Format("DV{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)__Range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
-            
+
             _TheDevice.SendCommandRequest(command);
         }
 
@@ -90,7 +90,12 @@ namespace Keithley_4200.Pages
             _TheDevice.SendCommandRequest(command);
         }
 
+        public void VS_SetVoltage(SMUs __SMU_ChannelNumber, double __Value)
+        {
+            var command = String.Format("DS{0}, {1}", (int)__SMU_ChannelNumber, __Value.ToString("0.####", DataFormatting.NumberFormat));
 
+            _TheDevice.SendCommandRequest(command);
+        }
 
         #region SystemModeChanged
 
