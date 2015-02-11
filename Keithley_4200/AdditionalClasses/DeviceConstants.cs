@@ -15,12 +15,6 @@ namespace Keithley_4200
         UserMode
     }
 
-    public enum SourceMode
-    {
-        Voltage,
-        Current
-    }
-
     public enum VoltageSourceRanges
     {
         Autorange = 0,
@@ -57,6 +51,135 @@ namespace Keithley_4200
         SMU6 = 6,
         SMU7 = 7,
         SMU8 = 8
+    }
+
+    public enum VoltageSources
+    {
+        VS1 = 1,
+        VS2 = 2,
+        VS3 = 3,
+        VS4 = 4,
+        VS5 = 5,
+        VS6 = 6,
+        VS7 = 7,
+        VS8 = 8
+    }
+
+    public enum TtiggerVoltages
+    {
+        SMU1 = 1,
+        SMU2 = 2,
+        SMU3 = 3,
+        SMU4 = 4,
+        VM1 = 5,
+        VM2 = 6,
+        SMU5 = 7,
+        SMU6 = 8,
+        SMU7 = 9,
+        SMU8 = 10,
+        VM3 = 11,
+        VM4 = 12,
+        VM5 = 13,
+        VM6 = 14,
+        VM7 = 15,
+        VM8 = 16
+    }
+
+    public enum TriggerCurrent
+    {
+        SMU1 = 1,
+        SMU2 = 2,
+        SMU3 = 3,
+        SMU4 = 4,
+        SMU5 = 5,
+        SMU6 = 6,
+        SMU7 = 7,
+        SMU8 = 8
+    }
+
+    public enum IntegrationTime
+    {
+        Short = 1,
+        Medium = 2,
+        Long = 3
+    }
+
+    public enum DataReady
+    {
+        DisableServiceRequestForDataReady = 0,
+        EnableServiceRequestForDataReady = 1
+    }
+
+    public enum ExitOnCompilance
+    {
+        OFF = 0,
+        ON = 1
+    }
+
+    public enum DeviceMode
+    {
+        _4145_Mode = 0,
+        _4200_Mode = 1
+    }
+
+    public enum SessionMode
+    {
+        ThisSessionOnly = 0,
+        ThisAndSubsequentSessions = 1
+    }
+
+    public enum SourceFunction
+    {
+        VAR1 = 1,
+        VAR2 = 2,
+        Constant = 3,
+        VAR1_Extended = 4
+    }
+
+    public struct ReturnData
+    {
+        /// <summary>
+        /// The status of the data
+        /// </summary>
+        string X;
+        /// <summary>
+        /// The measure channel
+        /// </summary>
+        string Y;
+        /// <summary>
+        /// The measure mode
+        /// </summary>
+        string Z;
+        /// <summary>
+        /// Thr data reading
+        /// </summary>
+        double Data;
+
+        public ReturnData(string __X, string __Y, string __Z, double __Data)
+        {
+            X = __X;
+            Y = __Y;
+            Z = __Z;
+            Data = __Data;
+        }
+
+        public ReturnData(string DeviceResponce)
+        {
+            var index = DeviceResponce.LastIndexOf(' ');
+            var data = DeviceResponce.Remove(index).Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            X = data[0];
+            Y = data[1];
+            Z = data[2];
+
+            var _Data = 0.0;
+            var IsReadingSuccess = double.TryParse(data[3], DataFormatting.NumberStyle, DataFormatting.NumberFormat, out _Data);
+
+            if (IsReadingSuccess)
+                Data = _Data;
+            else
+                Data = double.NaN;
+        }
     }
 
     public static class ImportantConstants

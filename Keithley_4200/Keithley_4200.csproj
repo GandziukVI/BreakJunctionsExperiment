@@ -44,7 +44,9 @@
     <Compile Include="Events\AllEventsHandler.cs" />
     <Compile Include="Events\CustomEvents\SystemModeChanged_EventArgs.cs" />
     <Compile Include="Keithley_4200.cs" />
+    <Compile Include="Keithley_4200_SMU.cs" />
     <Compile Include="Pages\ChannelDefinitionPage.cs" />
+    <Compile Include="Pages\CommonCommands.cs" />
     <Compile Include="Pages\DataOutput.cs" />
     <Compile Include="Pages\MeasurementControlPage.cs" />
     <Compile Include="Pages\MeasurementSetupPage.cs" />

@@ -25,7 +25,6 @@ namespace Keithley_4200.Pages
         public UserModeCommands(ref IExperimentalDevice __TheDevice)
         {
             _TheDevice = __TheDevice;
-            _TheDevice.InitDevice();
 
             AllEventsHandler.Instance.SystemModeChanged += On_SystemModeChanged;
         }
@@ -42,6 +41,9 @@ namespace Keithley_4200.Pages
         /// <param name="__CompilanceValue">Limitation for current</param>
         public void SMU_SetDirectVoltage(SMUs __SMU_ChannelNumber, double __OutputValue, double __CompilanceValue)
         {
+            if (!IsUserModeSelected)
+                AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
+
             var range = ImportantConstants.GetProperVoltageRange(__OutputValue);
             var command = String.Format("DV{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
 
@@ -57,6 +59,9 @@ namespace Keithley_4200.Pages
         /// <param name="__CompilanceValue">Limitation for current</param>
         public void SMU_SetDirectVoltage(SMUs __SMU_ChannelNumber, VoltageSourceRanges __Range, double __OutputValue, double __CompilanceValue)
         {
+            if (!IsUserModeSelected)
+                AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
+
             var command = String.Format("DV{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)__Range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
 
             _TheDevice.SendCommandRequest(command);
@@ -70,6 +75,9 @@ namespace Keithley_4200.Pages
         /// <param name="__CompilanceValue">Limitation for voltage</param>
         public void SMU_SetDirectCurrent(SMUs __SMU_ChannelNumber, double __OutputValue, double __CompilanceValue)
         {
+            if (!IsUserModeSelected)
+                AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
+
             var range = ImportantConstants.GetProperCurrentRange(__OutputValue);
             var command = String.Format("DI{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
 
@@ -85,16 +93,45 @@ namespace Keithley_4200.Pages
         /// <param name="__CompilanceValue">Limitation for voltage</param>
         public void SMU_SetDirectCurrent(SMUs __SMU_ChannelNumber, VoltageSourceRanges __Range, double __OutputValue, double __CompilanceValue)
         {
+            if (!IsUserModeSelected)
+                AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
+
             var command = String.Format("DI{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)__Range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
 
             _TheDevice.SendCommandRequest(command);
         }
 
-        public void VS_SetVoltage(SMUs __SMU_ChannelNumber, double __Value)
+        /// <summary>
+        /// Sets voltage to the channel, configured as voltage source
+        /// </summary>
+        /// <param name="__VS_ChannelNumber">Number of the channed, configured as voltage source</param>
+        /// <param name="__Value"></param>
+        public void VS_SetVoltage(VoltageSources __VS_ChannelNumber, double __Value)
         {
-            var command = String.Format("DS{0}, {1}", (int)__SMU_ChannelNumber, __Value.ToString("0.####", DataFormatting.NumberFormat));
+            if (!IsUserModeSelected)
+                AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
+
+            var command = String.Format("DS{0}, {1}", (int)__VS_ChannelNumber, __Value.ToString("0.####", DataFormatting.NumberFormat));
 
             _TheDevice.SendCommandRequest(command);
+        }
+
+        ReturnData TriggerVoltage(TtiggerVoltages __ChannelToTrigger)
+        {
+            if (!IsUserModeSelected)
+                AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
+
+            var query = String.Format("TV{0}", (int)__ChannelToTrigger);
+            return new ReturnData(_TheDevice.RequestQuery(query));
+        }
+
+        ReturnData TriggerCurrent(TriggerCurrent __ChannelToTrigger)
+        {
+            if (!IsUserModeSelected)
+                AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
+
+            var query = String.Format("TI{0}", (int)__ChannelToTrigger);
+            return new ReturnData(_TheDevice.RequestQuery(query));
         }
 
         #region SystemModeChanged
