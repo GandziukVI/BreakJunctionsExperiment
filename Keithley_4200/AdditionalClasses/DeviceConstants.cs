@@ -136,6 +136,14 @@ namespace Keithley_4200
         VAR1_Extended = 4
     }
 
+    public enum SweepMode
+    {
+        LinearSweep = 1,
+        Log10_Sweep = 2,
+        Log25_Sweep = 3,
+        Log50_Sweep = 4
+    }
+
     public struct ReturnData
     {
         /// <summary>

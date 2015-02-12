@@ -45,7 +45,7 @@ namespace Keithley_4200.Pages
                 AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
 
             var range = ImportantConstants.GetProperVoltageRange(__OutputValue);
-            var command = String.Format("DV{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
+            var command = String.Format("DV{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)range, __OutputValue.ToString(DataFormatting.NumberFormat), __CompilanceValue.ToString(DataFormatting.NumberFormat));
 
             _TheDevice.SendCommandRequest(command);
         }
@@ -62,7 +62,7 @@ namespace Keithley_4200.Pages
             if (!IsUserModeSelected)
                 AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
 
-            var command = String.Format("DV{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)__Range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
+            var command = String.Format("DV{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)__Range, __OutputValue.ToString(DataFormatting.NumberFormat), __CompilanceValue.ToString(DataFormatting.NumberFormat));
 
             _TheDevice.SendCommandRequest(command);
         }
@@ -79,7 +79,7 @@ namespace Keithley_4200.Pages
                 AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
 
             var range = ImportantConstants.GetProperCurrentRange(__OutputValue);
-            var command = String.Format("DI{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
+            var command = String.Format("DI{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)range, __OutputValue.ToString(DataFormatting.NumberFormat), __CompilanceValue.ToString(DataFormatting.NumberFormat));
 
             _TheDevice.SendCommandRequest(command);
         }
@@ -96,7 +96,7 @@ namespace Keithley_4200.Pages
             if (!IsUserModeSelected)
                 AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
 
-            var command = String.Format("DI{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)__Range, __OutputValue.ToString("0.####", DataFormatting.NumberFormat), __CompilanceValue.ToString("0.####", DataFormatting.NumberFormat));
+            var command = String.Format("DI{0}, {1}, {2}, {3}", (int)__SMU_ChannelNumber, (int)__Range, __OutputValue.ToString(DataFormatting.NumberFormat), __CompilanceValue.ToString(DataFormatting.NumberFormat));
 
             _TheDevice.SendCommandRequest(command);
         }
@@ -111,7 +111,7 @@ namespace Keithley_4200.Pages
             if (!IsUserModeSelected)
                 AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
 
-            var command = String.Format("DS{0}, {1}", (int)__VS_ChannelNumber, __Value.ToString("0.####", DataFormatting.NumberFormat));
+            var command = String.Format("DS{0}, {1}", (int)__VS_ChannelNumber, __Value.ToString(DataFormatting.NumberFormat));
 
             _TheDevice.SendCommandRequest(command);
         }
