@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Devices;
+using Devices.SMU;
 using Keithley_4200;
 using Keithley_4200.Pages;
 
@@ -20,9 +21,13 @@ namespace SMU.KeithleyTest
         {
             InitializeComponent();
 
-            IExperimentalDevice d = new GPIB_Device(0, 0, 0);
-            var a = new UserModeCommands(ref d);
-            a.SMU_SetDirectVoltage(SMUs.SMU1, -158.56789, 0.001);
+            IExperimentalDevice d = new GPIB_Device(17, 0, 0);
+            d.InitDevice();
+            var a = new Keithley_4200_SMU(ref d, SMUs.SMU2);
+            a.CurrentLimit = 0.001;
+            var b = a.MeasureResistance(0.01, 2, 0, SourceMode.Voltage);
+            var c = new ChannelDefinitionPage(ref d);
+            c.DisableChannel(SMUs.SMU2);
         }
     }
 }

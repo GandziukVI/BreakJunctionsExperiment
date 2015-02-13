@@ -185,15 +185,12 @@ namespace Keithley_4200
 
         public ReturnData(string DeviceResponce)
         {
-            var index = DeviceResponce.LastIndexOf(' ');
-            var data = DeviceResponce.Remove(index).Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-            X = data[0];
-            Y = data[1];
-            Z = data[2];
+            X = DeviceResponce[0].ToString();
+            Y = DeviceResponce[1].ToString();
+            Z = DeviceResponce[2].ToString();
 
             var _Data = 0.0;
-            var IsReadingSuccess = double.TryParse(data[3], DataFormatting.NumberStyle, DataFormatting.NumberFormat, out _Data);
+            var IsReadingSuccess = double.TryParse(DeviceResponce.Substring(3).TrimEnd("\r\n".ToCharArray()), DataFormatting.NumberStyle, DataFormatting.NumberFormat, out _Data);
 
             if (IsReadingSuccess)
                 Data = _Data;
