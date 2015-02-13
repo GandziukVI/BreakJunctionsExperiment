@@ -23,6 +23,9 @@ namespace Keithley_4200
 
         private IExperimentalDevice _TheDevice;
         private ChannelDefinitionPage _ChannelDefinition;
+        private SourceSetupPage _SourceSetupPage;
+        private MeasurementSetupPage _MeasurementSetupPage;
+        private MeasurementControlPage _MeasurementControlPage;
         private UserModeCommands _UserModeCommands;
 
         private SMUs _SelectedSMU;
