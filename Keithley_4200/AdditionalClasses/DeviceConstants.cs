@@ -175,6 +175,26 @@ namespace Keithley_4200
         LogScaleAbsoluteValue = 3
     }
 
+    public enum ControlMeasurement
+    {
+        /// <summary>
+        /// Store readings in cleared buffer
+        /// </summary>
+        SingleTriggerTest = 1,
+        /// <summary>
+        /// Store readings in cleared buffer
+        /// </summary>
+        RepeatTriggerTest = 2,
+        /// <summary>
+        /// Append readings to buffer
+        /// </summary>
+        AppendTriggerTest = 3,
+        /// <summary>
+        /// Aborts measurement
+        /// </summary>
+        StopAbortTest = 4
+    }
+
     public struct ReturnData
     {
         /// <summary>
