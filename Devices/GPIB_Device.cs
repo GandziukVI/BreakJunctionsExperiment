@@ -46,7 +46,7 @@ namespace Devices
 
         #endregion
 
-        #region Constructor / destructor
+        #region Constructor / Destructor
 
         public GPIB_Device(byte primaryAddress, byte secondaryAddress, byte boardNumber)
         {

@@ -144,6 +144,18 @@ namespace Keithley_4200
         Log50_Sweep = 4
     }
 
+    public enum MasterOrSlaveMode
+    {
+        SlaveMode = 0,
+        MasterMode = 1
+    }
+
+    public enum Ranges
+    {
+        VoltageRange,
+        CurrentRange
+    }
+
     public struct ReturnData
     {
         /// <summary>
@@ -213,6 +225,37 @@ namespace Keithley_4200
                 .First().Value;
 
             return (CurrentSourceRanges)(Array.IndexOf(_VoltageSourceRanges, ProperRangeValue) + 1);
+        }
+
+        public static double GetProperValueForSertainRange(double __Value, double __Min, double __Max)
+        {
+            var ProperValue = 0.0;
+
+            if (__Value < __Min)
+                ProperValue = __Min;
+            else if (__Value > __Max)
+                ProperValue = __Max;
+            else
+                ProperValue = __Value;
+
+            return ProperValue;
+        }
+
+        public static double GetProperValueForSertainRange(double __Value, Ranges __CompilanceType)
+        {
+            var __Min = (__CompilanceType == Ranges.VoltageRange) ? -210.0 : -0.105;
+            var __Max = (__CompilanceType == Ranges.VoltageRange) ? 210.0 : 0.105;
+
+            var ProperValue = 0.0;
+
+            if (__Value < __Min)
+                ProperValue = __Min;
+            else if (__Value > __Max)
+                ProperValue = __Max;
+            else
+                ProperValue = __Value;
+
+            return ProperValue;
         }
     }
 }
