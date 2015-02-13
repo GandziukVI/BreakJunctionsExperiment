@@ -96,7 +96,7 @@
     <Compile Include="LAN_Device.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\CheckValue.cs" />
-    <Compile Include="AgilentUSB_Device.cs" />
+    <Compile Include="USB_Device.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

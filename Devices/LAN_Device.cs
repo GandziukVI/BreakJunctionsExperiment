@@ -165,6 +165,19 @@ namespace Devices
                 Opened();
         }
 
+        public void Open(string hostname, int port)
+        {
+            if (IsOpen)
+                Close();
+            m_Hostname = hostname;
+            m_Client = new TcpClient(hostname, port);
+            m_Stream = m_Client.GetStream();
+            m_Stream.ReadTimeout = ReadTimeout;
+            m_IsOpen = true;
+            if (Opened != null)
+                Opened();
+        }
+
         public void Close()
         {
             if (!m_IsOpen)
@@ -194,6 +207,8 @@ namespace Devices
 
         private string _HostName;
         public string HostName { get { return _HostName; } }
+        private int _Port;
+        public int Port { get { return _Port; } }
 
         TelnetConnection _TheConnection;
 
@@ -201,10 +216,12 @@ namespace Devices
 
         #region Constructor / Destructor
 
-        public LAN_Device(string __HostName)
+        public LAN_Device(string __HostName, int __Port)
         {
             _HostName = __HostName;
+            _Port = __Port;
             _TheConnection = new TelnetConnection();
+            InitDevice();
         }
 
         ~LAN_Device()
@@ -221,7 +238,7 @@ namespace Devices
             try
             {
                 if (!_TheConnection.IsOpen)
-                    _TheConnection.Open(_HostName);
+                    _TheConnection.Open(_HostName, _Port);
 
                 if (_TheConnection.IsOpen)
                     return true;

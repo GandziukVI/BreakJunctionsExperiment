@@ -156,6 +156,25 @@ namespace Keithley_4200
         CurrentRange
     }
 
+    public enum DisplayModes
+    {
+        GraphicsDisplayMode = 1,
+        ListDisplayMode = 2
+    }
+
+    public enum X_AxisScaleType
+    {
+        LinearScale = 1,
+        LogScale = 2
+    }
+
+    public enum Y_AxisScaleType
+    {
+        LinearScale = 1,
+        LogScale = 2,
+        LogScaleAbsoluteValue = 3
+    }
+
     public struct ReturnData
     {
         /// <summary>
