@@ -195,6 +195,25 @@ namespace Keithley_4200
         StopAbortTest = 4
     }
 
+    public enum FileType
+    {
+        ProgramFile,
+        DataFile
+    }
+
+    public enum ChannelType
+    {
+        SMU,
+        VS,
+        VM
+    }
+
+    public enum SourceRanges
+    {
+        Auto = 0,
+        BestFixedRange = 2
+    }
+
     public struct ReturnData
     {
         /// <summary>
