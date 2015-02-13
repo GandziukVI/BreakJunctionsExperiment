@@ -65,7 +65,7 @@ namespace Keithley_4200
         VS8 = 8
     }
 
-    public enum TtiggerVoltages
+    public enum TriggerVoltage
     {
         SMU1 = 1,
         SMU2 = 2,
@@ -161,19 +161,19 @@ namespace Keithley_4200
         /// <summary>
         /// The status of the data
         /// </summary>
-        string X;
+        public string X;
         /// <summary>
         /// The measure channel
         /// </summary>
-        string Y;
+        public string Y;
         /// <summary>
         /// The measure mode
         /// </summary>
-        string Z;
+        public string Z;
         /// <summary>
         /// Thr data reading
         /// </summary>
-        double Data;
+        public double Data;
 
         public ReturnData(string __X, string __Y, string __Z, double __Data)
         {

@@ -116,7 +116,7 @@ namespace Keithley_4200.Pages
             _TheDevice.SendCommandRequest(command);
         }
 
-        ReturnData TriggerVoltage(TtiggerVoltages __ChannelToTrigger)
+        public ReturnData TriggerVoltage(TriggerVoltage __ChannelToTrigger)
         {
             if (!IsUserModeSelected)
                 AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
@@ -125,7 +125,7 @@ namespace Keithley_4200.Pages
             return new ReturnData(_TheDevice.RequestQuery(query));
         }
 
-        ReturnData TriggerCurrent(TriggerCurrent __ChannelToTrigger)
+        public ReturnData TriggerCurrent(TriggerCurrent __ChannelToTrigger)
         {
             if (!IsUserModeSelected)
                 AllEventsHandler.Instance.On_SystemModeChanged(new object(), new SystemModeChanged_EventArgs(SystemModeCommands.UserMode));
