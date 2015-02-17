@@ -79,6 +79,10 @@
       <Project>{ae52526e-d660-426e-a2ec-1a475b02aa9e}</Project>
       <Name>Devices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\E_755_PI_Controller\E_755_PI_Controller.csproj">
+      <Project>{793ef705-ccdc-4e79-b0aa-66a55735697b}</Project>
+      <Name>E_755_PI_Controller</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Keithley_2400\Keithley_2400.csproj">
       <Project>{5b17e426-cba0-47b9-b255-56e7d344356d}</Project>
       <Name>Keithley_2400</Name>
