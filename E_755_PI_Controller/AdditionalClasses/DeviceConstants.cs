@@ -78,4 +78,11 @@ namespace E_755_PI_Controller
         /// </summary>
         Highest = 2
     }
+
+    public enum ServoControlModes
+    {
+        OFF = 0,
+        ON_CurrentPos = 1,
+        ON_MoveToZero = 2
+    }
 }

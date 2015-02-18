@@ -22,7 +22,7 @@ namespace SMU.KeithleyTest
         {
             InitializeComponent();
 
-            IExperimentalDevice d = new GPIB_Device(17, 0, 0);
+            IExperimentalDevice d = new COM_Device("COM4", 57600);
             //var a = new Keithley_4200_SMU(ref d, SMUs.SMU2);
             //a.CurrentLimit = 0.001;
             //var b = a.MeasureResistance(0.01, 2, 0, SourceMode.Voltage);
@@ -30,7 +30,9 @@ namespace SMU.KeithleyTest
             //c.DisableChannel(SMUs.SMU2);
 
             var e = new E_755(ref d);
-            e.AutoPiezoGainCalibration(GainIDs.ChannelID_02);
+            e.SetServoControlMode(AxisIdentifier._1, ServoControlModes.ON_MoveToZero);
+            //e.SetServoControlMode(AxisIdentifier._1, ServoControlModes.ON_CurrentPos);
+            //e.MoveAbsolute(AxisIdentifier._1, 2500);
         }
     }
 }

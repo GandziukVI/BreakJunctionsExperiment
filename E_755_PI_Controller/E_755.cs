@@ -5,12 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.IO;
+using System.IO.Ports;
+using System.Globalization;
+
 namespace E_755_PI_Controller
 {
     public class E_755
     {
         #region E_755 settings
 
+        private COM_Device _COM_Device;
         private IExperimentalDevice _TheDevice;
 
         #endregion
@@ -20,6 +25,15 @@ namespace E_755_PI_Controller
         public E_755(ref IExperimentalDevice __TheDevice)
         {
             _TheDevice = __TheDevice;
+            _COM_Device = __TheDevice as COM_Device;
+
+            _COM_Device.COM_Port.DataReceived += COM_Port_DataReceived;
+        }
+
+        void COM_Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            var motionPort = sender as SerialPort;
+            var responce = motionPort.ReadExisting();
         }
 
         #endregion
@@ -41,20 +55,20 @@ namespace E_755_PI_Controller
             _TheDevice.SendCommandRequest("#24");
         }
 
-        public string GetID()
+        public void GetID()
         {
-            return _TheDevice.RequestQuery("*IDN?");
+            _TheDevice.SendCommandRequest("*IDN?");
         }
 
         public void AutoPiezoGainCalibration(GainIDs __GainID)
         {
-            var command = String.Format("APG [{{{0}}}]", (int)__GainID);
+            var command = String.Format("APG [{0}]", (int)__GainID);
             _TheDevice.SendCommandRequest(command);
         }
 
         public APG_State ReadAutoPiezoGainCalibrationState(GainIDs __GainID)
         {
-            var query = String.Format("APG? [{{{0}}}]", (int)__GainID);
+            var query = String.Format("APG? [{0}]", (int)__GainID);
             var responce = 0;
 
             int.TryParse(_TheDevice.RequestQuery(query), out responce);
@@ -112,13 +126,13 @@ namespace E_755_PI_Controller
 
         public void ClearAxisStatus(AxisIdentifier __AxisID)
         {
-            var command = String.Format("CLR [{{{0}}}]", (int)__AxisID);
+            var command = String.Format("CLR [{0}]", (int)__AxisID);
             _TheDevice.SendCommandRequest(command);
         }
 
         public string GetAssignmentOfStagesToAxes(AxisIdentifier __AxesID)
         {
-            var query = String.Format("CST? {{{0}}}", (int)__AxesID);
+            var query = String.Format("CST? {0}", (int)__AxesID);
             return _TheDevice.RequestQuery(query);
         }
 
@@ -142,13 +156,13 @@ namespace E_755_PI_Controller
 
         public void DefineHome(AxisIdentifier __AxisID)
         {
-            var command = String.Format("DFH [{{{0}}}]", (int)__AxisID);
+            var command = String.Format("DFH [{0}]", (int)__AxisID);
             _TheDevice.SendCommandRequest(command);
         }
 
         public string GetHomePositions(AxisIdentifier __AxisID)
         {
-            var query = String.Format("DFH? [{{{0}}}]", (int)__AxisID);
+            var query = String.Format("DFH? [{0}]", (int)__AxisID);
             return _TheDevice.RequestQuery(query);
         }
 
@@ -156,23 +170,33 @@ namespace E_755_PI_Controller
 
         public void FastMoveToNegativeLimit(AxisIdentifier __AxisID)
         {
-            var command = String.Format("FNL [{{{0}}}]", (int)__AxisID);
+            var command = String.Format("FNL [{0}]", (int)__AxisID);
             _TheDevice.SendCommandRequest(command);
         }
 
         public void FastMoveToPositiveLimit(AxisIdentifier __AxisID)
         {
-            var command = String.Format("FPL [{{{0}}}]", (int)__AxisID);
+            var command = String.Format("FPL [{0}]", (int)__AxisID);
             _TheDevice.SendCommandRequest(command);
         }
 
         public void GoHome(AxisIdentifier __AxisID)
         {
-            var command = String.Format("GOH [{{{0}}}]", (int)__AxisID);
+            var command = String.Format("GOH [{0}]", (int)__AxisID);
             _TheDevice.SendCommandRequest(command);
         }
 
-        //public void MoveAbsolute
+        public void SetServoControlMode(AxisIdentifier __AxisID, ServoControlModes __State)
+        {
+            var command = String.Format("SVO {0} {1}", (int)__AxisID, (int)__State);
+            _TheDevice.SendCommandRequest(command);
+        }
+
+        public void MoveAbsolute(AxisIdentifier __AxisID, double __Position)
+        {
+            var command = String.Format("MOV {0} {1}", (int)__AxisID, __Position.ToString(NumberFormatInfo.InvariantInfo));
+            _TheDevice.SendCommandRequest(command);
+        }
 
         #endregion
     }
