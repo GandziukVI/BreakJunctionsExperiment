@@ -13,6 +13,7 @@ using Devices.SMU;
 using Keithley_4200;
 using Keithley_4200.Pages;
 using E_755_PI_Controller;
+using System.Threading;
 
 namespace SMU.KeithleyTest
 {
@@ -30,7 +31,14 @@ namespace SMU.KeithleyTest
             //c.DisableChannel(SMUs.SMU2);
 
             var e = new E_755(ref d);
-            e.SetServoControlMode(AxisIdentifier._1, ServoControlModes.ON_MoveToZero);
+            e.SetServoControlMode(AxisIdentifier._1, ServoControlModes.ON_CurrentPos);
+            e.MoveAbsolute(AxisIdentifier._1, 0);
+
+            e.GetTargetPosition(AxisIdentifier._1);
+            e.GetOnTargetStatus(AxisIdentifier._1);
+            e.GetCurrentPosition(AxisIdentifier._1);
+
+            e.ReadAutoPiezoGainCalibrationState(GainIDs.ChannelID_01);
             //e.SetServoControlMode(AxisIdentifier._1, ServoControlModes.ON_CurrentPos);
             //e.MoveAbsolute(AxisIdentifier._1, 2500);
         }

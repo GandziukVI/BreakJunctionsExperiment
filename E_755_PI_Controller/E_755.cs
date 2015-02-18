@@ -40,9 +40,9 @@ namespace E_755_PI_Controller
 
         #region Functionality
 
-        public string RequestMotionStatus()
+        public void RequestMotionStatus()
         {
-            return _TheDevice.RequestQuery("#5");
+            _TheDevice.SendCommandRequest("#5");
         }
 
         public string GetReadyStatus()
@@ -66,13 +66,10 @@ namespace E_755_PI_Controller
             _TheDevice.SendCommandRequest(command);
         }
 
-        public APG_State ReadAutoPiezoGainCalibrationState(GainIDs __GainID)
+        public void ReadAutoPiezoGainCalibrationState(GainIDs __GainID)
         {
-            var query = String.Format("APG? [{0}]", (int)__GainID);
-            var responce = 0;
-
-            int.TryParse(_TheDevice.RequestQuery(query), out responce);
-            return (APG_State)responce;
+            var command = String.Format("APG? [{0}]", (int)__GainID);
+            _TheDevice.SendCommandRequest(command);
         }
 
         public void SetBaudRate(BaudRates __BaudRate)
@@ -195,6 +192,24 @@ namespace E_755_PI_Controller
         public void MoveAbsolute(AxisIdentifier __AxisID, double __Position)
         {
             var command = String.Format("MOV {0} {1}", (int)__AxisID, __Position.ToString(NumberFormatInfo.InvariantInfo));
+            _TheDevice.SendCommandRequest(command);
+        }
+
+        public void GetTargetPosition(AxisIdentifier __AxisID)
+        {
+            var command = String.Format("MOV? {0}", (int)__AxisID);
+            _TheDevice.SendCommandRequest(command);
+        }
+
+        public void GetOnTargetStatus(AxisIdentifier __AxisID)
+        {
+            var command = String.Format("ONT? {0}", (int)__AxisID);
+            _TheDevice.SendCommandRequest(command);
+        }
+
+        public void GetCurrentPosition(AxisIdentifier __AxisID)
+        {
+            var command = String.Format("POS? {0}", (int)__AxisID);
             _TheDevice.SendCommandRequest(command);
         }
 
