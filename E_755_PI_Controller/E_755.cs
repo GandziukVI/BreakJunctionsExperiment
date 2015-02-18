@@ -152,6 +152,28 @@ namespace E_755_PI_Controller
             return _TheDevice.RequestQuery(query);
         }
 
+        //===========================================================================================================================
+
+        public void FastMoveToNegativeLimit(AxisIdentifier __AxisID)
+        {
+            var command = String.Format("FNL [{{{0}}}]", (int)__AxisID);
+            _TheDevice.SendCommandRequest(command);
+        }
+
+        public void FastMoveToPositiveLimit(AxisIdentifier __AxisID)
+        {
+            var command = String.Format("FPL [{{{0}}}]", (int)__AxisID);
+            _TheDevice.SendCommandRequest(command);
+        }
+
+        public void GoHome(AxisIdentifier __AxisID)
+        {
+            var command = String.Format("GOH [{{{0}}}]", (int)__AxisID);
+            _TheDevice.SendCommandRequest(command);
+        }
+
+        //public void MoveAbsolute
+
         #endregion
     }
 }
