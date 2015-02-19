@@ -170,7 +170,9 @@
     <Compile Include="Measurements\Real Time Measurement\RealTime_VoltageMeasurement.cs" />
     <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
     <Compile Include="Motion\Motion Controllers Factories\FaulhaberMinimotor_SA_2036_U012V_K1155_RealTime_ControllerFactory.cs" />
+    <Compile Include="Motion\Motion Controllers Factories\PI_E755_ControllerFactory.cs" />
     <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController.cs" />
+    <Compile Include="Motion\Motion Controllers\PI_E755_MotionController.cs" />
     <Compile Include="Plotting\ExperimentalNoiseSpectra_DataSource.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\InotifyPropertyChanged.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\NoiseMeasurementDataModel.cs" />
@@ -307,6 +309,10 @@
     <ProjectReference Include="..\Devices\Devices.csproj">
       <Project>{ae52526e-d660-426e-a2ec-1a475b02aa9e}</Project>
       <Name>Devices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\E_755_PI_Controller\E_755_PI_Controller.csproj">
+      <Project>{793ef705-ccdc-4e79-b0aa-66a55735697b}</Project>
+      <Name>E_755_PI_Controller</Name>
     </ProjectReference>
     <ProjectReference Include="..\FaulhaberMinimotors\FaulhaberMinimotors.csproj">
       <Project>{dd0fd2e2-f6c7-4694-a4fa-9897786fff56}</Project>

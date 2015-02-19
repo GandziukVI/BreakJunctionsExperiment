@@ -11,12 +11,14 @@ using System.Globalization;
 
 namespace E_755_PI_Controller
 {
-    public class E_755
+    public class E_755 : IDisposable
     {
         #region E_755 settings
 
         private COM_Device _COM_Device;
+        public COM_Device COM_Device { get { return _COM_Device; } }
         private IExperimentalDevice _TheDevice;
+        public IExperimentalDevice TheDevice { get { return _TheDevice; } }
 
         #endregion
 
@@ -211,6 +213,23 @@ namespace E_755_PI_Controller
         {
             var command = String.Format("POS? {0}", (int)__AxisID);
             _TheDevice.SendCommandRequest(command);
+        }
+
+        public void ReadyToTurnOff()
+        {
+            var command = "RTO";
+            _TheDevice.SendCommandRequest(command);
+        }
+
+        #endregion
+
+        #region Correctly disposing the instance
+
+        public void Dispose()
+        {
+            StopAllAxes();
+            SetServoControlMode(AxisIdentifier._1, ServoControlModes.OFF);
+            ReadyToTurnOff();
         }
 
         #endregion
