@@ -28,14 +28,6 @@ namespace E_755_PI_Controller
         {
             _TheDevice = __TheDevice;
             _COM_Device = __TheDevice as COM_Device;
-
-            _COM_Device.COM_Port.DataReceived += COM_Port_DataReceived;
-        }
-
-        void COM_Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            var motionPort = sender as SerialPort;
-            var responce = motionPort.ReadExisting();
         }
 
         #endregion
