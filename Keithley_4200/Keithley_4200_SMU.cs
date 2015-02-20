@@ -22,7 +22,9 @@ namespace Keithley_4200
         public bool IsEnabled { get { return _IsEnabled; } }
 
         private IExperimentalDevice _TheDevice;
+
         private ChannelDefinitionPage _ChannelDefinition;
+        private CommonCommands _CommonCommands;
         private SourceSetupPage _SourceSetupPage;
         private MeasurementSetupPage _MeasurementSetupPage;
         private MeasurementControlPage _MeasurementControlPage;
@@ -38,7 +40,12 @@ namespace Keithley_4200
         {
             _SelectedSMU = __SelectedSMU;
             _TheDevice = __TheDevice;
+
             _ChannelDefinition = new ChannelDefinitionPage(ref _TheDevice);
+            _CommonCommands = new CommonCommands(ref _TheDevice);
+            _SourceSetupPage = new SourceSetupPage(ref _TheDevice);
+            _MeasurementSetupPage = new MeasurementSetupPage(ref _TheDevice);
+            _MeasurementControlPage = new MeasurementControlPage(ref _TheDevice);
             _UserModeCommands = new UserModeCommands(ref _TheDevice);
         }
 
@@ -462,6 +469,11 @@ namespace Keithley_4200
                 default:
                     return double.NaN;
             }
+        }
+
+        public void SetIntegrationTime(IntegrationTime __IntegrationTime)
+        {
+            _CommonCommands.SetIntegrationTime(__IntegrationTime);
         }
     }
 }

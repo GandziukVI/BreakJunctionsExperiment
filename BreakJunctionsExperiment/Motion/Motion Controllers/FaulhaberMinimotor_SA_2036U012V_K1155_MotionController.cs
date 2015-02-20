@@ -126,7 +126,7 @@ namespace BreakJunctions.Motion
         /// <param name="e"></param>
         private void OnTimeTraceBothChannelsPointsReceived(object sender, TimeTraceBothChannelsPointsReceived_EventArgs e)
         {
-            var positionIncrement = _MetersPerRevolution / NotificationsPerMilimeter / 2;
+            var positionIncrement = _MetersPerRevolution / PointsPerMilimeter / 2;
 
             switch (CurrentMotionKind)
             {
@@ -134,14 +134,14 @@ namespace BreakJunctions.Motion
                     {
                         if ((CurrentPosition <= FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Up))
                         {
-                            CurrentPosition += _MetersPerRevolution / NotificationsPerMilimeter / 2;
+                            CurrentPosition += positionIncrement;
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
                         }
                         else if ((CurrentPosition > FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Down))
                         {
-                            CurrentPosition -= _MetersPerRevolution / NotificationsPerMilimeter / 2;
+                            CurrentPosition -= positionIncrement;
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
@@ -235,7 +235,7 @@ namespace BreakJunctions.Motion
 
         public override void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
         {
-            switch (VelosityUnits)
+            switch (VelosityUnits) 
             {
                 case MotionVelosityUnits.rpm:
                     {
@@ -248,22 +248,6 @@ namespace BreakJunctions.Motion
                 default:
                     break;
             }
-            //switch (VelosityUnits)
-            //{
-            //    case MotionVelosityUnits.rpm:
-            //        {
-            //            _Motor.SendCommandRequest(String.Format("V{0}", Convert.ToInt32(Math.Round(VelosityValue))));
-            //        } break;
-            //    case MotionVelosityUnits.MilimetersPerMinute:
-            //        {
-            //            var RevolutionPerMinute = 0.0005; //Meters per one revolution
-            //            var _NewVelosity = Convert.ToInt32(VelosityValue / RevolutionPerMinute);
-
-            //            _Motor.SendCommandRequest(String.Format("V{0}", _NewVelosity));
-            //        } break;
-            //    default:
-            //        break;
-            //}
         }
 
         public override void SetDirection(MotionDirection motionDirection)

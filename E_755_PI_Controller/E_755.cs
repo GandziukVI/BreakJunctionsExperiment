@@ -221,6 +221,12 @@ namespace E_755_PI_Controller
             _TheDevice.SendCommandRequest(command);
         }
 
+        public void SetVelosity(AxisIdentifier __AxisID, double __Velosity)
+        {
+            var command = String.Format("VEL {0} {1}", (int)__AxisID, __Velosity.ToString(DataFormatting.NumberFormat));
+            _TheDevice.SendCommandRequest(command);
+        }
+
         #endregion
 
         #region Correctly disposing the instance

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Devices.SMU
 {
-    public enum Channels { ChannelA, ChannelB, ChannelC, ChannelD }
+    public enum Channels { ChannelA, ChannelB, ChannelC, ChannelD, ChannelE, ChannelF, ChannelG, ChannelH }
     public enum Channel_Status { Channel_ON, Channel_OFF }
     public enum Sense { SENSE_LOCAL, SENSE_REMOTE }
     public enum SourceMode { Voltage = 1, Current = 3, Common = 3 }

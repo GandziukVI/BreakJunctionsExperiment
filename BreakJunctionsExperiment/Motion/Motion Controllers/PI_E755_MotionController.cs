@@ -81,12 +81,61 @@ namespace BreakJunctions.Motion
 
         private void COM_Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            throw new NotImplementedException();
+            var motionPort = sender as SerialPort;
+            var responce = motionPort.ReadExisting();
+
+            if (responce.Contains("1=1"))
+                AllEventsHandler.Instance.OnMotion(this, new Motion_EventArgs(CurrentPosition));
+
+            _Motor.GetOnTargetStatus(AxisIdentifier._1);
         }
 
         void Instance_TimeTraceBothChannelsPointsReceived(object sender, TimeTraceBothChannelsPointsReceived_EventArgs e)
         {
-            throw new NotImplementedException();
+            var positionIncrement = 1.0 / PointsPerMilimeter;
+
+            switch (CurrentMotionKind)
+            {
+                case MotionKind.Single:
+                    {
+                        if ((CurrentPosition <= FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Up))
+                        {
+                            CurrentPosition += positionIncrement;
+                            _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(CurrentPosition));
+                        }
+                        else if ((CurrentPosition > FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Down))
+                        {
+                            CurrentPosition -= positionIncrement;
+                            _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(CurrentPosition));
+                        }
+                        else StopMotion();
+                    } break;
+                case MotionKind.Repetitive:
+                    {
+                        //Checking if measurement is completed
+                        if (CurrentIteration >= NumberOfRepetities)
+                            this.StopMotion();
+
+                        if (IsMotionInProcess == true)
+                        {
+
+                            if (CurrentPosition >= FinalDestination - positionIncrement)
+                            {
+                                this.SetDirection(MotionDirection.Down);
+                            }
+                            else if (CurrentPosition <= StartPosition + positionIncrement)
+                            {
+                                this.SetDirection(MotionDirection.Up);
+                            }
+
+                            CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+
+                            _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(CurrentPosition));
+                        }
+                    } break;
+                default:
+                    break;
+            }
         }
 
         #endregion
@@ -110,6 +159,7 @@ namespace BreakJunctions.Motion
 
             //Going to the start position
             _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(StartPosition));
+            _Motor.GetOnTargetStatus(AxisIdentifier._1);
         }
 
         public override void StartMotion(TimeSpan FinalTime)
@@ -124,12 +174,12 @@ namespace BreakJunctions.Motion
 
         public override void MoveToZeroPosition()
         {
-            throw new NotImplementedException();
+            _Motor.MoveAbsolute(AxisIdentifier._1, _MinMotionLimit);
         }
 
         public override void StopMotion()
         {
-            throw new NotImplementedException();
+            _Motor.StopAllAxes();
         }
 
         public override void ContinueMotion()
@@ -139,12 +189,26 @@ namespace BreakJunctions.Motion
 
         public override void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
         {
-            throw new NotImplementedException();
+            switch (VelosityUnits)
+            {
+                case MotionVelosityUnits.rpm:
+                    throw new Exception("rpm mode is not supported for this kind of controller!");
+                case MotionVelosityUnits.MilimetersPerMinute:
+                    {
+                        _Motor.SetVelosity(AxisIdentifier._1, 1000.0 / 60.0 * VelosityValue);
+                    } break;
+                default:
+                    break;
+            }
         }
 
         public override void SetDirection(MotionDirection motionDirection)
         {
-            throw new NotImplementedException();
+            if (CurrentDirection != motionDirection)
+            {
+                CurrentDirection = motionDirection;
+                ++CurrentIteration;
+            }
         }
 
         public override double GetCurrentPosition()
@@ -158,10 +222,10 @@ namespace BreakJunctions.Motion
 
         public override void Dispose()
         {
-            _Motor.COM_Device.COM_Port.DataReceived -= COM_Port_DataReceived;
-            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived -= Instance_TimeTraceBothChannelsPointsReceived;
+            if (_Motor != null)
+                _Motor.Dispose();
 
-            _Motor.Dispose();
+            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived -= Instance_TimeTraceBothChannelsPointsReceived;
         }
 
         #endregion

@@ -902,10 +902,37 @@ namespace BreakJunctions
 
                 //Configurations for all kinds of SMUs should be listed here
 
-                if(sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings != null)
-                    DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
-                if (sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings != null)
-                    DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
+                switch (sourceDeviceConfigurationChannel_01.SelectedSource)
+                {
+                    case AvailableSources.KEITHLEY_2602A:
+                        {
+                            if (sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings != null)
+                                DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
+                        } break;
+                    case AvailableSources.KEITHLEY_4200:
+                        {
+                            if (sourceDeviceConfigurationChannel_01.Keithley4200_DeviceSettings != null)
+                                DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley4200_DeviceSettings.Device;
+                        } break;
+                    default:
+                        throw new Exception("Not supported SMU for channel 1 selected!");
+                }
+
+                switch (sourceDeviceConfigurationChannel_02.SelectedSource)
+                {
+                    case AvailableSources.KEITHLEY_2602A:
+                        {
+                            if (sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings != null)
+                                DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
+                        } break;
+                    case AvailableSources.KEITHLEY_4200:
+                        {
+                            if (sourceDeviceConfigurationChannel_02.Keithley4200_DeviceSettings != null)
+                                DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley4200_DeviceSettings.Device;
+                        } break;
+                    default:
+                        throw new Exception("Not supported SMU for channel 2 selected!");
+                }
 
                 #region Time trace measurement configuration
 
@@ -913,10 +940,23 @@ namespace BreakJunctions
 
                 //Configurations for all kinds of motors should be listed here
 
-                if (motorConfiguration.Faulhaber_2036_U012V_Settings != null)
-                    _MotionController = motorConfiguration.Faulhaber_2036_U012V_Settings.motionController;
+                switch (motorConfiguration.SelectedMotionController)
+                {
+                    case AvailableMotionControllers.Faulhaber_2036_U012V:
+                        {
+                            if (motorConfiguration.Faulhaber_2036_U012V_Settings != null)
+                                _MotionController = motorConfiguration.Faulhaber_2036_U012V_Settings.motionController;
+                        } break;
+                    case AvailableMotionControllers.PI_E755:
+                        {
+                            if (motorConfiguration.PI_E755_Settings != null)
+                                _MotionController = motorConfiguration.PI_E755_Settings.motionController;
+                        } break;
+                    default:
+                        throw new Exception("Unsupported motion controller selected!");
+                }
 
-                _MotionController.NotificationsPerMilimeter = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceNotificationsPerRevolution;
+                _MotionController.PointsPerMilimeter = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceNotificationsPerRevolution;
 
                 if ((TimeTraceCurveChannel_01 != null) && (TimeTraceCurveChannel_02 != null))
                 {

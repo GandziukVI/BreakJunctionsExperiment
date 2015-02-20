@@ -99,14 +99,14 @@ namespace BreakJunctions.Motion
         /// </summary>
         public MotionVelosityUnits VelosityUnits { get; set; }
 
-        private int _NotificationsPerMilimeter = 10000;
+        private int _PointsPerMilimeter = 10000;
         /// <summary>
         /// The number of notifications per milimeter
         /// </summary>
-        public int NotificationsPerMilimeter
+        public int PointsPerMilimeter
         {
-            get { return _NotificationsPerMilimeter; }
-            set { _NotificationsPerMilimeter = value; }
+            get { return _PointsPerMilimeter; }
+            set { _PointsPerMilimeter = value; }
         }
         /// <summary>
         /// Initializes the device

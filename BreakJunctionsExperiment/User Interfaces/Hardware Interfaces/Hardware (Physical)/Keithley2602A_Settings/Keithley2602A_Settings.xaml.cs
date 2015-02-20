@@ -94,25 +94,5 @@ namespace BreakJunctions
             _Device = SetDevice();
             this.Close();
 		}
-
-        private void IntegerPastingHandler(object sender, DataObjectPastingEventArgs e)
-        {
-            HandlingUserInput.IntegerPastingHandler(ref sender, ref e);
-        }
-
-        private void FloatingPointPastingHandler(object sender, DataObjectPastingEventArgs e)
-        {
-            HandlingUserInput.FloatingPointPastingHandler(ref sender, ref e);
-        }
-
-        private void OnIntegerTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            HandlingUserInput.OnIntegerTextChanged(ref sender, ref e);
-        }
-
-        private void OnFloatingPointTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            HandlingUserInput.OnFloatingPointTextChanged(ref sender, ref e);
-        }
 	}
 }

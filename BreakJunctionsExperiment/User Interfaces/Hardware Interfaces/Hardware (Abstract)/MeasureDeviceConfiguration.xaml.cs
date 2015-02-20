@@ -17,8 +17,8 @@ namespace BreakJunctions
 	/// </summary>
 	public partial class MeasureDeviceConfiguration : Window
 	{
-        private AvaliableSources _SelectedSource;
-        public AvaliableSources SelectedSource
+        private AvailableSources _SelectedSource;
+        public AvailableSources SelectedSource
         {
             get { return _SelectedSource; }
         }
@@ -42,7 +42,7 @@ namespace BreakJunctions
             {
                 case "KEITHLEY 2602A":
                     {
-                        _SelectedSource = AvaliableSources.KEITHLEY_2602A;
+                        _SelectedSource = AvailableSources.KEITHLEY_2602A;
                         _Keithley2602A_DeviceSettings = new Keithley2602A_Channel_Settings();
                         _Keithley2602A_DeviceSettings.Show();
                         this.Close();

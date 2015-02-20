@@ -12,7 +12,8 @@
 
             <Label Grid.Row="0" Margin="5 5 5 2.5">Select needed instrument from motors list</Label>
             <ComboBox x:Name="comboBoxSelectMotorDevice" Grid.Row="1" Margin="5 2.5">
-                <ComboBoxItem IsSelected="True" Margin="5 2.5">Faulhaber minimotor SA 2036U012V K1155</ComboBoxItem>
+                <ComboBoxItem IsSelected="True">Faulhaber minimotor SA 2036U012V K1155</ComboBoxItem>
+            <ComboBoxItem>PI E755</ComboBoxItem>
             </ComboBox>
             <Button x:Name="cmdConfigureDevice" Grid.Row="2" Margin="0 5 0 0" Click="on_cmdConfigureDeviceClick" Background="{x:Null}" IsDefault="True">Configure Device</Button>
         </Grid>
