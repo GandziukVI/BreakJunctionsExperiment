@@ -94,7 +94,7 @@ namespace BreakJunctions
         private ExperimentalIV_DataSource _experimentalIV_DataSourceChannel_01;
         private LineGraph _IV_LineGraphChannel_01;
 
-        MeasureIV IV_CurveChannel;
+        MeasureIV IV_CurveChannel_01;
         BackgroundWorker backgroundIV_MeasureChannel_01;
 
         private IV_MeasurementLog _IV_MeasurementLogChannel_01;
@@ -117,7 +117,7 @@ namespace BreakJunctions
         private ExperimentalIV_DataSource _experimentalIV_DataSourceChannel_02;
         private LineGraph _IV_LineGraphChannel_02;
 
-        //MeasureIV IV_CurveChannel_02;
+        MeasureIV IV_CurveChannel_02;
         BackgroundWorker backgroundIV_MeasureChannel_02;
 
         private IV_MeasurementLog _IV_MeasurementLogChannel_02;
@@ -667,7 +667,7 @@ namespace BreakJunctions
                 var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_01;
                 var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_01;
 
-                IV_CurveChannel = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01);
+                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01);
 
                 #endregion
 
@@ -677,7 +677,7 @@ namespace BreakJunctions
                 var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_02;
                 var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_02;
 
-                //IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02);
+                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02);
 
                 #endregion
 
@@ -783,7 +783,7 @@ namespace BreakJunctions
             }));
 
             //Starting measurements
-            IV_CurveChannel.StartMeasurementChannel_01(sender, e);
+            IV_CurveChannel_01.StartMeasurement(sender, e);
         }
 
         private void backgroundIV_Measure_ProgressChangedChannel_01(object sender, ProgressChangedEventArgs e)
@@ -823,8 +823,7 @@ namespace BreakJunctions
             }));
 
             //Starting measurements
-            //IV_CurveChannel_02.StartMeasurementChannel_01(sender, e);
-            IV_CurveChannel.StartMeasurementChannel_02(sender, e);
+            IV_CurveChannel_02.StartMeasurement(sender, e);
         }
 
         private void backgroundIV_Measure_ProgressChangedChannel_02(object sender, ProgressChangedEventArgs e)
