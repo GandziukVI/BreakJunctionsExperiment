@@ -659,6 +659,9 @@ namespace BreakJunctions
                     DeviceSourceMode = SourceMode.Current;
                 }
 
+                var Thread_01_Step = new AutoResetEvent(false);
+                var Thread_02_Step = new AutoResetEvent(true);
+
                 #endregion
 
                 #region 1-st channel settings
@@ -667,7 +670,7 @@ namespace BreakJunctions
                 var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_01;
                 var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_01;
 
-                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01);
+                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01, ref Thread_01_Step, ref Thread_02_Step);
 
                 #endregion
 
@@ -677,7 +680,7 @@ namespace BreakJunctions
                 var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_02;
                 var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_02;
 
-                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02);
+                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02, ref Thread_01_Step, ref Thread_02_Step);
 
                 #endregion
 

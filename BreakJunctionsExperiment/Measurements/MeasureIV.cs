@@ -8,6 +8,7 @@ using BreakJunctions.Events;
 using BreakJunctions.Plotting;
 
 using Devices.SMU;
+using System.Threading;
 
 namespace BreakJunctions.Measurements
 {
@@ -62,7 +63,12 @@ namespace BreakJunctions.Measurements
 
         ChannelsToInvestigate _Channel;
 
-        public MeasureIV(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, ChannelsToInvestigate Channel) 
+        private bool _IsWaitNeeded = true;
+
+        private AutoResetEvent _Thread_01_Step;
+        private AutoResetEvent _Thread_02_Step;
+
+        public MeasureIV(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, ChannelsToInvestigate Channel, ref AutoResetEvent __Thread_01_Step, ref AutoResetEvent __Thread_02_Step) 
         {
             _StartValue = startVal;
             _EndValue = endVal;
@@ -72,6 +78,11 @@ namespace BreakJunctions.Measurements
             _sourceMode = deviceSourceMode;
             _Device = device;
             _Channel = Channel;
+
+            _Thread_01_Step = __Thread_01_Step;
+            _Thread_02_Step = __Thread_02_Step;
+
+            AllEventsHandler.Instance.IV_MeasurementsStateChanged += On_IV_MeasurementStateChanged;
         }
 
         public void StartMeasurement(object sender, DoWorkEventArgs e)
@@ -95,28 +106,42 @@ namespace BreakJunctions.Measurements
                             }
                             else
                             {
-                                var X = V;
-                                _Device.SetSourceVoltage(V);
-                                var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
-
-                                if (!(double.IsNaN(X) || double.IsNaN(Y)))
+                                var X = 0.0;
+                                switch (_Channel)
                                 {
-                                    switch (_Channel)
-                                    {
-                                        case ChannelsToInvestigate.Channel_01:
-                                            { 
-                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
-                                            } break;
-                                        case ChannelsToInvestigate.Channel_02:
-                                            {
-                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
-                                            } break;
-                                        default:
-                                            break;
-                                    }
+                                    case ChannelsToInvestigate.Channel_01:
+                                        {
+                                            if(_IsWaitNeeded)
+                                                _Thread_02_Step.WaitOne();
+                                            
+                                            X = V;
+                                            _Device.SetSourceVoltage(V);
+                                            var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
 
-                                    worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
+                                            AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                            
+                                            if(_IsWaitNeeded)
+                                                _Thread_01_Step.Set();
+                                        } break;
+                                    case ChannelsToInvestigate.Channel_02:
+                                        {
+                                            if(_IsWaitNeeded)
+                                                _Thread_01_Step.WaitOne();
+
+                                            X = V;
+                                            _Device.SetSourceVoltage(V);
+                                            var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
+
+                                            AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+
+                                            if(_IsWaitNeeded)
+                                                _Thread_02_Step.Set();
+                                        } break;
+                                    default:
+                                        break;
                                 }
+
+                                worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
                             }
                         }
                         _Device.SetSourceVoltage(0.0);
@@ -157,7 +182,7 @@ namespace BreakJunctions.Measurements
                                             break;
                                     }
 
-                                   worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
+                                    worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
                                 }
                             }
                         }
@@ -170,184 +195,10 @@ namespace BreakJunctions.Measurements
                     break;
             }
         }
-<<<<<<< HEAD
 
-        public void StartMeasurementChannel_02(object sender, DoWorkEventArgs e)
+        private void On_IV_MeasurementStateChanged(object sender, IV_MeasurementStateChanged_EventArgs e)
         {
-            AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(true));
-
-            var worker = sender as BackgroundWorker;
-
-            switch (_sourceMode)
-            {
-                case SourceMode.Voltage:
-                    {
-                        _Device.SwitchON();
-                        for (double V = _StartValue; V <= _EndValue; V += _Step)
-                        {
-                            if (worker.CancellationPending == true)
-                            {
-                                AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(false));
-                                e.Cancel = true;
-                                break;
-                            }
-                            else
-                            {
-                                _Thread_01_Step.WaitOne();
-                                var X = V;
-                                _Device.SetSourceVoltage(V);
-                                var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
-
-                                if (!(double.IsNaN(X) || double.IsNaN(Y)))
-                                {
-                                    AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
-
-                                    worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
-                                }
-
-                                _Thread_02_Step.Set();
-                            }
-                        }
-                        _Device.SetSourceVoltage(0.0);
-                        _Device.SwitchOFF();
-                        worker.ReportProgress(0);
-                        AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(false));
-                    } break;
-                case SourceMode.Current:
-                    {
-                        _Device.SwitchON();
-                        for (double I = _StartValue; I <= _EndValue; I += _Step)
-                        {
-                            if (worker.CancellationPending == true)
-                            {
-                                AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(false));
-                                e.Cancel = true;
-                                break;
-                            }
-                            else
-                            {
-                                _Thread_01_Step.WaitOne();
-                                _Device.SetSourceCurrent(I);
-                                var X = _Device.MeasureVoltage(_NumberOfAverages, _TimeDelay);
-                                var Y = I;
-
-                                if (!(double.IsNaN(X) || double.IsNaN(Y)))
-                                {
-                                    AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
-
-                                    worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
-                                }
-
-                                _Thread_02_Step.Set();
-                            }
-                        }
-                        _Device.SetSourceCurrent(0.0);
-                        _Device.SwitchOFF();
-                        worker.ReportProgress(0);
-                        AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(false));
-                    } break;
-                default:
-                    break;
-            }
+            _IsWaitNeeded = e.IV_MeasurementState;
         }
-
-        //public void StartMeasurement(object sender, DoWorkEventArgs e)
-        //{
-        //    AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(true));
-
-        //    var worker = sender as BackgroundWorker;
-
-        //    switch (_sourceMode)
-        //    {
-        //        case SourceMode.Voltage:
-        //            {
-        //                _Device.SwitchON();
-        //                for (double V = _StartValue; V <= _EndValue; V += _Step)
-        //                {
-        //                    if (worker.CancellationPending == true)
-        //                    {
-        //                        AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(false));
-        //                        e.Cancel = true;
-        //                        break;
-        //                    }
-        //                    else
-        //                    {
-        //                        var X = V;
-        //                        _Device.SetSourceVoltage(V);
-        //                        var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
-
-        //                        if (!(double.IsNaN(X) || double.IsNaN(Y)))
-        //                        {
-        //                            switch (_Channel)
-        //                            {
-        //                                case ChannelsToInvestigate.Channel_01:
-        //                                    {
-        //                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
-        //                                    } break;
-        //                                case ChannelsToInvestigate.Channel_02:
-        //                                    {
-        //                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
-        //                                    } break;
-        //                                default:
-        //                                    break;
-        //                            }
-
-        //                            worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
-        //                        }
-        //                    }
-        //                }
-        //                _Device.SetSourceVoltage(0.0);
-        //                _Device.SwitchOFF();
-        //                worker.ReportProgress(0);
-        //                AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(false));
-        //            } break;
-        //        case SourceMode.Current:
-        //            {
-        //                _Device.SwitchON();
-        //                for (double I = _StartValue; I <= _EndValue; I += _Step)
-        //                {
-        //                    if (worker.CancellationPending == true)
-        //                    {
-        //                        AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(false));
-        //                        e.Cancel = true;
-        //                        break;
-        //                    }
-        //                    else
-        //                    {
-        //                        _Device.SetSourceCurrent(I);
-        //                        var X = _Device.MeasureVoltage(_NumberOfAverages, _TimeDelay);
-        //                        var Y = I;
-
-        //                        if (!(double.IsNaN(X) || double.IsNaN(Y)))
-        //                        {
-        //                            switch (_Channel)
-        //                            {
-        //                                case ChannelsToInvestigate.Channel_01:
-        //                                    {
-        //                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
-        //                                    } break;
-        //                                case ChannelsToInvestigate.Channel_02:
-        //                                    {
-        //                                        AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
-        //                                    } break;
-        //                                default:
-        //                                    break;
-        //                            }
-
-        //                            worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
-        //                        }
-        //                    }
-        //                }
-        //                _Device.SetSourceCurrent(0.0);
-        //                _Device.SwitchOFF();
-        //                worker.ReportProgress(0);
-        //                AllEventsHandler.Instance.OnIV_MeasurementsStateChanged(sender, new IV_MeasurementStateChanged_EventArgs(false));
-        //            } break;
-        //        default:
-        //            break;
-        //    }
-        //}
-=======
->>>>>>> parent of 5a791fe... IV measurement thread safety implementation started
     }
 }
