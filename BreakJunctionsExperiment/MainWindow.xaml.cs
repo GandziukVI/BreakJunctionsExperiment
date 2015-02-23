@@ -1601,7 +1601,7 @@ namespace BreakJunctions
         private void On_NoiseCalibration_Start_Click(object sender, RoutedEventArgs e)
         {
             _SingleCalibrationMeasurement_CH_01 = new NoiseCalibrationSingleMeasurement(GetFileNameWithIncrement(_NoiseCalibrationDataFileName.Insert(_NoiseCalibrationDataFileName.LastIndexOf('.'), "_CH_01_")), ChannelsToInvestigate.Channel_01);
-            _SingleCalibrationMeasurement_CH_01 = new NoiseCalibrationSingleMeasurement(GetFileNameWithIncrement(_NoiseCalibrationDataFileName.Insert(_NoiseCalibrationDataFileName.LastIndexOf('.'), "_CH_02_")), ChannelsToInvestigate.Channel_02);
+            _SingleCalibrationMeasurement_CH_02 = new NoiseCalibrationSingleMeasurement(GetFileNameWithIncrement(_NoiseCalibrationDataFileName.Insert(_NoiseCalibrationDataFileName.LastIndexOf('.'), "_CH_02_")), ChannelsToInvestigate.Channel_02);
             
             InitNoiseMeasurement();
             _Background_NoiseMeasurement.RunWorkerAsync();

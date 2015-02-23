@@ -36,7 +36,8 @@ namespace BreakJunctions.DataHandling
             _SelectedChannel = __SelectedChannel;
             _CalibrationData = __CalibrationMeasurement.CalibrationData;
 
-            __CalibrationMeasurement.Detach_PointRecieveEvent();
+            __CalibrationMeasurement.Dispose();
+            Attach_DataRecieveEvent();
         }
 
         ~NoiseSingleMeasurement()
@@ -88,7 +89,7 @@ namespace BreakJunctions.DataHandling
             for (int i = 0; i < _Data.Count; i++)
                 ToWrite.Add(new Point(_Data[i].X, _Data[i].Y - _CalibrationData[i].Y));
 
-            using (_NoiseData_StreamWriter = new FileStream(_FileName, FileMode.Open, FileAccess.Write,
+            using (_NoiseData_StreamWriter = new FileStream(_FileName, FileMode.Create, FileAccess.Write,
                 FileShare.None, bufferSize: 4096, useAsync: true))
             {
                 var result = string.Empty;

@@ -67,25 +67,14 @@ namespace BreakJunctions.DataHandling
 
         public void Detach_PointRecieveEvent()
         {
-            switch (_SelectedChannel)
-            {
-                case ChannelsToInvestigate.Channel_01:
-                    {
-                        AllEventsHandler.Instance.LastNoiseSpectra_Channel_01_DataArrived -= On_Noise_LastSpectrum_DataArrived;
-                    } break;
-                case ChannelsToInvestigate.Channel_02:
-                    {
-                        AllEventsHandler.Instance.LastNoiseSpectra_Channel_02_DataArrived -= On_Noise_LastSpectrum_DataArrived;
-                    } break;
-                default:
-                    break;
-            }
+            AllEventsHandler.Instance.LastNoiseSpectra_Channel_01_DataArrived -= On_Noise_LastSpectrum_DataArrived;
+            AllEventsHandler.Instance.LastNoiseSpectra_Channel_02_DataArrived -= On_Noise_LastSpectrum_DataArrived;
         }
 
         private async Task WriteChannelData(List<Point> _Data)
         {
             CalibrationData = _Data;
-            using (_NoiseCalibrationData_StreamWriter = new FileStream(_FileName, FileMode.Open, FileAccess.Write,
+            using (_NoiseCalibrationData_StreamWriter = new FileStream(_FileName, FileMode.Create, FileAccess.Write,
                 FileShare.None, bufferSize: 4096, useAsync: true))
             {
                 var result = string.Empty;
