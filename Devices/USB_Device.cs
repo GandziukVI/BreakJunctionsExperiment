@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace Agilent_U2542A
 {
-    public class AgilentUSB_Device : IExperimentalDevice, IDisposable
+    public class USB_Device : IExperimentalDevice, IDisposable
     {
         #region AgilentUSB_Device settings
 
@@ -55,13 +55,13 @@ namespace Agilent_U2542A
 
         #region Singleton pattern implementation
 
-        private static AgilentUSB_Device _Instance;
-        public static AgilentUSB_Device Instance
+        private static USB_Device _Instance;
+        public static USB_Device Instance
         {
             get
             {
                 if (_Instance == null)
-                    _Instance = new AgilentUSB_Device();
+                    _Instance = new USB_Device();
 
                 return _Instance;
             }
@@ -71,7 +71,7 @@ namespace Agilent_U2542A
 
         #region Constructor / destructor
 
-        public AgilentUSB_Device()
+        public USB_Device()
         {
             _Id = "USB0::0x0957::0x1718::TW52524501::INSTR";
             _rMgr = new ResourceManager();
@@ -80,7 +80,7 @@ namespace Agilent_U2542A
             _IsBusy = false;
         }
 
-        ~AgilentUSB_Device()
+        ~USB_Device()
         {
             this.Dispose();
         }

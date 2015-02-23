@@ -16,7 +16,8 @@
 		
 		<Label Grid.Row="0" Margin="5 5 5 2.5">Select needed instrument from source device list</Label>
 		<ComboBox x:Name="comboBoxSelectSourceDevice" Grid.Row="1" Margin="5 2.5">
-			<ComboBoxItem IsSelected="True" Margin="5 2.5">KEITHLEY 2602A</ComboBoxItem>
+			<ComboBoxItem IsSelected="True">KEITHLEY 2602A</ComboBoxItem>
+            <ComboBoxItem>KEITHLEY 4200</ComboBoxItem>
 		</ComboBox>
 		<Button x:Name="cmdConfigureDevice" Grid.Row="2" Margin="5 2.5" Click="on_cmdConfigureDeviceClick" Background="{x:Null}" IsDefault="True">Configure Device</Button>
 	</Grid>

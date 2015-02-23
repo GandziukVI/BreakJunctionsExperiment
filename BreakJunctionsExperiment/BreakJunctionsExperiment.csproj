@@ -156,11 +156,19 @@
     <Compile Include="Events\Custom Events\TimeTraceBothChannelsPointsReceived_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTraceMeasurementStateChanged_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_02_EventArgs.cs" />
-    <Compile Include="Events\EventsHandler.cs" />
+    <Compile Include="Events\AllEventsHandler.cs" />
     <Compile Include="Events\Custom Events\IV_PointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\LastNoiseSpectra_Channel_01_DataArrived_EventArgs.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\MVVM_PI_E755_ConfigurationPage.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\PI_E755_ConfigurationPage.xaml.cs">
+      <DependentUpon>PI_E755_ConfigurationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\Keithley 4200_Settings\MVVM_Keithley4200_ChannelSettings.cs" />
+    <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\Keithley 4200_Settings\Keithley4200_Channel_Settings.xaml.cs">
+      <DependentUpon>Keithley4200_Channel_Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Measurements\MeasureNoise.cs" />
     <Compile Include="Measurements\Real Time Measurement\IRealTime_TimeTrace_Factory.cs" />
     <Compile Include="Measurements\Real Time Measurement\MeasureRealTimeTimeTrace.cs" />
@@ -170,7 +178,9 @@
     <Compile Include="Measurements\Real Time Measurement\RealTime_VoltageMeasurement.cs" />
     <Compile Include="Measurements\Real Time Measurement\VoltageMeasurement.cs" />
     <Compile Include="Motion\Motion Controllers Factories\FaulhaberMinimotor_SA_2036_U012V_K1155_RealTime_ControllerFactory.cs" />
+    <Compile Include="Motion\Motion Controllers Factories\PI_E755_ControllerFactory.cs" />
     <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController.cs" />
+    <Compile Include="Motion\Motion Controllers\PI_E755_MotionController.cs" />
     <Compile Include="Plotting\ExperimentalNoiseSpectra_DataSource.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\InotifyPropertyChanged.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\NoiseMeasurementDataModel.cs" />
@@ -254,6 +264,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\PI_E755_ConfigurationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\Keithley 4200_Settings\Keithley4200_Channel_Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\NoiseMeasurementSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -308,6 +326,10 @@
       <Project>{ae52526e-d660-426e-a2ec-1a475b02aa9e}</Project>
       <Name>Devices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\E_755_PI_Controller\E_755_PI_Controller.csproj">
+      <Project>{793ef705-ccdc-4e79-b0aa-66a55735697b}</Project>
+      <Name>E_755_PI_Controller</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FaulhaberMinimotors\FaulhaberMinimotors.csproj">
       <Project>{dd0fd2e2-f6c7-4694-a4fa-9897786fff56}</Project>
       <Name>FaulhaberMinimotors</Name>
@@ -323,6 +345,10 @@
     <ProjectReference Include="..\Keithley_2602A\Keithley_2602A.csproj">
       <Project>{f98764a2-e410-4b56-8690-db03da26373b}</Project>
       <Name>Keithley_2602A</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Keithley_4200\Keithley_4200.csproj">
+      <Project>{0cb55b0b-c6dc-44df-b46b-70266c091ecd}</Project>
+      <Name>Keithley_4200</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -342,6 +368,7 @@
   <ItemGroup>
     <Resource Include="ProgramIcon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

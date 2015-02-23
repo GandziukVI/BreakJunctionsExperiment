@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Devices.SMU;
+using Keithley_4200;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-
-using Devices.SMU;
-using SMU.KEITHLEY_2602A;
+using System.Threading.Tasks;
 
 namespace BreakJunctions
 {
-    /// <summary>
-    /// Implementation MVVM for Keithley 2602A settings window
-    /// </summary>
-    public class MVVM_Keithley2602A_Settings : INotifyPropertyChanged
+    public class MVVM_Keithley4200_ChannelSettings : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged implementation
 
@@ -28,11 +25,11 @@ namespace BreakJunctions
 
         #region GPIB settings
 
-        private byte _PrimaryAddress = 26;
+        private byte _PrimaryAddress = 17;
         public byte PrimaryAddress
         {
             get { return _PrimaryAddress; }
-            set 
+            set
             {
                 _PrimaryAddress = value;
                 OnPropertyChanged("PrimaryAddress");
@@ -43,7 +40,7 @@ namespace BreakJunctions
         public byte SecondaryAddress
         {
             get { return _SecondaryAddress; }
-            set 
+            set
             {
                 _SecondaryAddress = value;
                 OnPropertyChanged("SecondaryAddress");
@@ -54,7 +51,7 @@ namespace BreakJunctions
         public byte BoardNumber
         {
             get { return _BoardNumber; }
-            set 
+            set
             {
                 _BoardNumber = value;
                 OnPropertyChanged("BoardNumber");
@@ -77,7 +74,7 @@ namespace BreakJunctions
         }
 
         private bool _IsCurrentModeChecked = false;
-        public bool  IsCurrentModeCheched
+        public bool IsCurrentModeCheched
         {
             get { return _IsCurrentModeChecked; }
             set
@@ -88,18 +85,18 @@ namespace BreakJunctions
         }
 
         private LimitMode _LimitMode;
-        public LimitMode LimitMode 
+        public LimitMode LimitMode
         {
-            get 
+            get
             {
                 if (_IsCurrentModeChecked == true)
                     _LimitMode = LimitMode.Voltage;
                 else if (_IsVoltageModeChecked == true)
                     _LimitMode = LimitMode.Current;
 
-                return _LimitMode; 
+                return _LimitMode;
             }
-            set 
+            set
             {
                 _LimitMode = value;
                 OnPropertyChanged("LimitMode");
@@ -117,14 +114,14 @@ namespace BreakJunctions
             }
         }
 
-        private double _LimitValueVoltage = 12.0;
-        public double LimitValueVoltage 
+        private double _LimitValueVoltage = 20.0;
+        public double LimitValueVoltage
         {
-            get 
+            get
             {
                 return _LimitValueVoltage * HandlingUserInput.GetMultiplier(_LimitValueVoltageMultiplier);
             }
-            set 
+            set
             {
                 _LimitValueVoltage = value;
                 OnPropertyChanged("LimitValueVoltage");
@@ -142,21 +139,21 @@ namespace BreakJunctions
             }
         }
 
-        private double _LimitValueCurrent = 1.0;
-        public double LimitValueCurrent 
+        private double _LimitValueCurrent = 0.0105;
+        public double LimitValueCurrent
         {
-            get 
+            get
             {
-                return _LimitValueCurrent * HandlingUserInput.GetMultiplier(_LimitValueCurrentMultiplier); 
+                return _LimitValueCurrent * HandlingUserInput.GetMultiplier(_LimitValueCurrentMultiplier);
             }
-            set 
+            set
             {
                 _LimitValueCurrent = value;
                 OnPropertyChanged("LimitValueCurrent");
             }
         }
 
-        private string _SelectedChannelString = "Channel A";
+        private string _SelectedChannelString = "SMU 1";
         public string SelectedChannelString
         {
             get { return _SelectedChannelString; }
@@ -167,33 +164,60 @@ namespace BreakJunctions
             }
         }
 
-        private Channels _SelectedChannel = Channels.ChannelA;
-        public Channels SelectedChannel 
+        private SMUs _SelectedSMU = SMUs.SMU1;
+        public SMUs SelectedSMU
         {
-            get 
+            get
             {
-                if (_SelectedChannelString == "Channel A")
-                    _SelectedChannel = Channels.ChannelA;
-                else
-                    _SelectedChannel = Channels.ChannelB;
+                if (_SelectedChannelString == "SMU 1")
+                    _SelectedSMU = SMUs.SMU1;
+                else if (_SelectedChannelString == "SMU 2")
+                    _SelectedSMU = SMUs.SMU2;
+                else if (_SelectedChannelString == "SMU 3")
+                    _SelectedSMU = SMUs.SMU3;
+                else if (_SelectedChannelString == "SMU 4")
+                    _SelectedSMU = SMUs.SMU4;
+                else if (_SelectedChannelString == "SMU 5")
+                    _SelectedSMU = SMUs.SMU5;
+                else if (_SelectedChannelString == "SMU 6")
+                    _SelectedSMU = SMUs.SMU6;
+                else if (_SelectedChannelString == "SMU 7")
+                    _SelectedSMU = SMUs.SMU7;
+                else if (_SelectedChannelString == "SMU 8")
+                    _SelectedSMU = SMUs.SMU8;
 
-                return _SelectedChannel; 
+                return _SelectedSMU;
             }
             set
             {
-                _SelectedChannel = value;
+                _SelectedSMU = value;
                 OnPropertyChanged("SelectedChannel");
             }
         }
 
-        private double _AccuracyCoefficient = 1.0;
-        public double AccuracyCoefficient
+        private string _TheIntegrationTime = "Medium";
+        public string TheIntegrationTime
         {
-            get { return _AccuracyCoefficient; }
+            get { return _TheIntegrationTime; }
             set
             {
-                _AccuracyCoefficient = value;
-                OnPropertyChanged("AccuracyCoefficient");
+                _TheIntegrationTime = value;
+                OnPropertyChanged("TheIntegrationTime");
+            }
+        }
+
+        public IntegrationTime CurrentIntegrationTime
+        {
+            get
+            {
+                if (_TheIntegrationTime == "Short")
+                    return IntegrationTime.Short;
+                if (_TheIntegrationTime == "Medium")
+                    return IntegrationTime.Medium;
+                else if (_TheIntegrationTime == "Long")
+                    return IntegrationTime.Long;
+                else
+                    return IntegrationTime.Medium;
             }
         }
 
