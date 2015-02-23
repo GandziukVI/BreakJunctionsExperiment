@@ -49,7 +49,7 @@ namespace BreakJunctions.Motion
 
         private double ConvertPositionToMotorUnits(double __Position)
         {
-            var result = __Position * 1000000.0;
+            var result = __Position * 1000000.0 - 2500.0;
 
             if (result < _MinMotionLimit)
                 result = _MinMotionLimit;
