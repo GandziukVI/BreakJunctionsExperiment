@@ -188,7 +188,7 @@ namespace BreakJunctions.Measurements
 
                                 if (!(double.IsNaN(X) || double.IsNaN(Y)))
                                 {
-                                    AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                    AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
 
                                     worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
                                 }
@@ -221,7 +221,7 @@ namespace BreakJunctions.Measurements
 
                                 if (!(double.IsNaN(X) || double.IsNaN(Y)))
                                 {
-                                    AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                    AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
 
                                     worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
                                 }
