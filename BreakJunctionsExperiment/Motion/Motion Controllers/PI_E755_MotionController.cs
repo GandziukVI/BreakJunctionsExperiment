@@ -21,6 +21,7 @@ namespace BreakJunctions.Motion
 
             _Motor.COM_Device.COM_Port.DataReceived += COM_Port_DataReceived;
             AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += Instance_TimeTraceBothChannelsPointsReceived;
+            AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += TimeTraceMeasurementsStateChanged;
             
         }
 
@@ -87,12 +88,13 @@ namespace BreakJunctions.Motion
             if (responce.Contains("1=1"))
                 AllEventsHandler.Instance.OnMotion(this, new Motion_EventArgs(CurrentPosition));
 
-            _Motor.GetOnTargetStatus(AxisIdentifier._1);
+            if(IsMotionInProcess)
+                _Motor.GetOnTargetStatus(AxisIdentifier._1);
         }
 
         void Instance_TimeTraceBothChannelsPointsReceived(object sender, TimeTraceBothChannelsPointsReceived_EventArgs e)
         {
-            var positionIncrement = 1.0 / PointsPerMilimeter;
+            var positionIncrement = 0.001 / PointsPerMilimeter;
 
             switch (CurrentMotionKind)
             {
@@ -158,6 +160,7 @@ namespace BreakJunctions.Motion
             this.IsMotionInProcess = true;
 
             //Going to the start position
+            InitDevice();
             _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(StartPosition));
             _Motor.GetOnTargetStatus(AxisIdentifier._1);
         }
@@ -180,6 +183,7 @@ namespace BreakJunctions.Motion
         public override void StopMotion()
         {
             _Motor.StopAllAxes();
+            IsMotionInProcess = false;
         }
 
         public override void ContinueMotion()
@@ -216,6 +220,11 @@ namespace BreakJunctions.Motion
             throw new NotImplementedException();
         }
 
+        private void TimeTraceMeasurementsStateChanged(object sender, TimeTraceMeasurementStateChanged_EventArgs e)
+        {
+            IsMotionInProcess = e.TimeTrace_MeasurementState;
+        }
+
         #endregion
 
         #region Correctly disposing the instance
@@ -226,6 +235,7 @@ namespace BreakJunctions.Motion
                 _Motor.Dispose();
 
             AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived -= Instance_TimeTraceBothChannelsPointsReceived;
+            AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged -= TimeTraceMeasurementsStateChanged;
         }
 
         #endregion
