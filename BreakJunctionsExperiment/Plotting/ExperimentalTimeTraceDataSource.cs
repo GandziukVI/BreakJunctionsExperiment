@@ -25,8 +25,8 @@ namespace BreakJunctions.Plotting
             set { _ResistanceValueOverflow = value; }
         }
 
-        private List<Point> _ExperimentalData;
-        public List<Point> ExperimentalData
+        private LinkedList<Point> _ExperimentalData;
+        public LinkedList<Point> ExperimentalData
         {
             get { return _ExperimentalData; }
             set { _ExperimentalData = value; }
@@ -35,9 +35,9 @@ namespace BreakJunctions.Plotting
         private Dispatcher _Dispatcher;
         private EnumerableDataSource<Point> _ExperimentalDataSource;
 
-        public ExperimentalTimeTraceDataSource(List<Point> data)
+        public ExperimentalTimeTraceDataSource()
         {
-            _ExperimentalData = data;
+            _ExperimentalData = new LinkedList<Point>();
             _ExperimentalDataSource = new EnumerableDataSource<Point>(_ExperimentalData);
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
@@ -59,12 +59,11 @@ namespace BreakJunctions.Plotting
         public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
             if (_ExperimentalData.Count > 10000)
-                _ExperimentalData.RemoveAt(0);
+                _ExperimentalData.RemoveFirst();
 
             if (e.Y <= _ResistanceValueOverflow)
             {
-                _ExperimentalData.Add(new Point(e.X, e.Y));
-                //_ExperimentalDataSource.RaiseDataChanged();
+                _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
                 await _Dispatcher.BeginInvoke(new Action(delegate()
                 {
@@ -79,12 +78,11 @@ namespace BreakJunctions.Plotting
         public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
         {
             if (_ExperimentalData.Count > 10000)
-                _ExperimentalData.RemoveAt(0);
+                _ExperimentalData.RemoveFirst();
 
             if (e.Y <= _ResistanceValueOverflow)
             {
-                _ExperimentalData.Add(new Point(e.X, e.Y));
-                _ExperimentalDataSource.RaiseDataChanged();
+                _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
                 await _Dispatcher.BeginInvoke(new Action(delegate()
                 {
@@ -102,8 +100,8 @@ namespace BreakJunctions.Plotting
     {
         private ChannelsToInvestigate _Channel;
 
-        public ExperimentalTimetraceDataSourceChannel(List<Point> data, ChannelsToInvestigate Channel)
-            : base(data)
+        public ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate Channel)
+            : base()
         {
             _Channel = Channel;
         }

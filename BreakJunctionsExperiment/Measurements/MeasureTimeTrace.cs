@@ -352,13 +352,13 @@ namespace BreakJunctions.Measurements
                         {
                             case SourceMode.Voltage:
                                 {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage);
+                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
                                         _EmitData(e.Position, measuredResistance);
                                 } break;
                             case SourceMode.Current:
                                 {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
+                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Current);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
                                         _EmitData(e.Position, measuredResistance);
                                 } break;
@@ -375,7 +375,7 @@ namespace BreakJunctions.Measurements
                                     var measuredConductance = 0.0;
                                     try
                                     {
-                                        measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage)) / _QuantumConductance;
+                                        measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage)) / _QuantumConductance;
                                     }
                                     catch { }
 
@@ -384,7 +384,7 @@ namespace BreakJunctions.Measurements
                                 } break;
                             case SourceMode.Current:
                                 {
-                                    var measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current)) / _QuantumConductance;
+                                    var measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Current)) / _QuantumConductance;
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
                                         _EmitData(e.Position, measuredConductance);
                                 } break;
@@ -398,7 +398,7 @@ namespace BreakJunctions.Measurements
                         {
                             case SourceMode.Voltage:
                                 {
-                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Voltage);
+                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage);
                                     if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
                                         _EmitData(e.Position, measuredPower);
                                 } break;

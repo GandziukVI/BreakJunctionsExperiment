@@ -17,8 +17,8 @@ namespace BreakJunctions.Plotting
     /// </summary>
     public class ExperimentalIV_DataSource : IPointDataSource
     {
-        private List<Point> _ExperimentalData;
-        public List<Point> ExperimentalData
+        private LinkedList<Point> _ExperimentalData;
+        public LinkedList<Point> ExperimentalData
         {
             get { return _ExperimentalData; }
             set { _ExperimentalData = value; }
@@ -27,9 +27,9 @@ namespace BreakJunctions.Plotting
         private Dispatcher _Dispatcher;
         private EnumerableDataSource<Point> _ExperimentalDataSource;
 
-        public ExperimentalIV_DataSource(List<Point> _Data)
+        public ExperimentalIV_DataSource()
         {
-            _ExperimentalData = _Data;
+            _ExperimentalData = new LinkedList<Point>();
             _ExperimentalDataSource = new EnumerableDataSource<Point>(_ExperimentalData);
             _ExperimentalDataSource.SetXMapping(x => x.X);
             _ExperimentalDataSource.SetYMapping(y => y.Y);
@@ -50,11 +50,10 @@ namespace BreakJunctions.Plotting
 
         public async void OnIV_PointReceived(object sender, IV_PointReceivedChannel_01_EventArgs e)
         {
-            if (_ExperimentalData.Count > 5000)
-                _ExperimentalData.RemoveAt(0);
+            if (_ExperimentalData.Count > 10000)
+                _ExperimentalData.RemoveFirst();
 
-            _ExperimentalData.Add(new Point(e.X, e.Y));
-            //_ExperimentalDataSource.RaiseDataChanged();
+            _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
             await _Dispatcher.BeginInvoke(new Action(delegate()
             {
@@ -64,7 +63,10 @@ namespace BreakJunctions.Plotting
 
         public async void OnIV_PointReceived(object sender, IV_PointReceivedChannel_02_EventArgs e)
         {
-            _ExperimentalData.Add(new Point(e.X, e.Y));
+            if (_ExperimentalData.Count > 10000)
+                _ExperimentalData.RemoveFirst();
+
+            _ExperimentalData.AddLast(new Point(e.X, e.Y));
             _ExperimentalDataSource.RaiseDataChanged();
 
             await _Dispatcher.BeginInvoke(new Action(delegate()
@@ -78,8 +80,8 @@ namespace BreakJunctions.Plotting
     {
         private ChannelsToInvestigate _Channel;
 
-        public ExperimentalIV_DataSourceChannel(List<Point> data, ChannelsToInvestigate Channel)
-            : base(data)
+        public ExperimentalIV_DataSourceChannel(ChannelsToInvestigate Channel)
+            : base()
         {
             _Channel = Channel;
         }

@@ -604,8 +604,7 @@ namespace BreakJunctions
                     _IV_LineGraphChannel_01.RemoveFromPlotter();
                 }
                 //Creating new plot and attaching it to the chart
-                _CurrentIV_CurveChannel_01 = new List<Point>();
-                _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_01, ChannelsToInvestigate.Channel_01);
+                _experimentalIV_DataSourceChannel_01 = new ExperimentalIV_DataSourceChannel(ChannelsToInvestigate.Channel_01);
                 _experimentalIV_DataSourceChannel_01.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_01 = new LineGraph(_experimentalIV_DataSourceChannel_01);
                 _IV_LineGraphChannel_01.AddToPlotter(chartIV_CurvesChannel_01);
@@ -622,8 +621,7 @@ namespace BreakJunctions
                     _IV_LineGraphChannel_02.RemoveFromPlotter();
                 }
                 //Creating new plot and attaching it to the chart
-                _CurrentIV_CurveChannel_02 = new List<Point>();
-                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSourceChannel(_CurrentIV_CurveChannel_02, ChannelsToInvestigate.Channel_02);
+                _experimentalIV_DataSourceChannel_02 = new ExperimentalIV_DataSourceChannel(ChannelsToInvestigate.Channel_02);
                 _experimentalIV_DataSourceChannel_02.AttachPointReceiveEvent();
                 _IV_LineGraphChannel_02 = new LineGraph(_experimentalIV_DataSourceChannel_02);
                 _IV_LineGraphChannel_02.AddToPlotter(chartIV_CurvesChannel_02);
@@ -636,8 +634,33 @@ namespace BreakJunctions
 
                 /*      Better implementation for lot of SMU kinds neened     */
 
-                DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
-                DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
+                switch (sourceDeviceConfigurationChannel_01.SelectedSource)
+                {
+                    case AvailableSources.KEITHLEY_2602A:
+                        {
+                            DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
+                        } break;
+                    case AvailableSources.KEITHLEY_4200:
+                        {
+                            DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley4200_DeviceSettings.Device;
+                        } break;
+                    default:
+                        throw new Exception("Non supported source for channel 01 selected!");
+                }
+
+                switch (sourceDeviceConfigurationChannel_02.SelectedSource)
+                {
+                    case AvailableSources.KEITHLEY_2602A:
+                        {
+                            DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
+                        } break;
+                    case AvailableSources.KEITHLEY_4200:
+                        {
+                            DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley4200_DeviceSettings.Device;
+                        } break;
+                    default:
+                        throw new Exception("Non supported source for channel 01 selected!");
+                }
 
                 #region I-V measurement configuration
 
@@ -876,8 +899,7 @@ namespace BreakJunctions
                     _CurrentTimeTraceChannel_01.Clear();
                 }
 
-                _CurrentTimeTraceChannel_01 = new List<Point>();
-                _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_01, ChannelsToInvestigate.Channel_01);
+                _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate.Channel_01);
                 _experimentalTimeTraceDataSourceChannel_01.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_01 = new LineGraph(_experimentalTimeTraceDataSourceChannel_01);
                 _TimeTraceLineGraphChannel_01.AddToPlotter(chartTimeTraceChannel_01);
@@ -893,8 +915,7 @@ namespace BreakJunctions
                     _CurrentTimeTraceChannel_02.Clear();
                 }
 
-                _CurrentTimeTraceChannel_02 = new List<Point>();
-                _experimentalTimeTraceDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(_CurrentTimeTraceChannel_02, ChannelsToInvestigate.Channel_02);
+                _experimentalTimeTraceDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate.Channel_02);
                 _experimentalTimeTraceDataSourceChannel_02.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_02 = new LineGraph(_experimentalTimeTraceDataSourceChannel_02);
                 _TimeTraceLineGraphChannel_02.AddToPlotter(chartTimeTraceChannel_02);
