@@ -19,10 +19,10 @@ namespace BreakJunctions.Motion
             var _COM_Device = new COM_Device(comPort, baud, parity, dataBits, stopBits, returnToken) as IExperimentalDevice;
             _Motor = new E_755(ref _COM_Device);
 
+            InitDevice();
+
             _Motor.COM_Device.COM_Port.DataReceived += COM_Port_DataReceived;
-            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += Instance_TimeTraceBothChannelsPointsReceived;
-            AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged += TimeTraceMeasurementsStateChanged;
-            
+            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += Instance_TimeTraceBothChannelsPointsReceived;           
         }
 
         ~PI_E755_MotionController()
@@ -85,6 +85,7 @@ namespace BreakJunctions.Motion
             var motionPort = sender as SerialPort;
             var responce = motionPort.ReadExisting();
 
+            //Checking, if the motor reached target position
             if (responce.Contains("1=1"))
                 AllEventsHandler.Instance.OnMotion(this, new Motion_EventArgs(CurrentPosition));
 
@@ -110,7 +111,8 @@ namespace BreakJunctions.Motion
                             CurrentPosition -= positionIncrement;
                             _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(CurrentPosition));
                         }
-                        else StopMotion();
+                        else
+                            StopMotion();
                     } break;
                 case MotionKind.Repetitive:
                     {
@@ -160,7 +162,6 @@ namespace BreakJunctions.Motion
             this.IsMotionInProcess = true;
 
             //Going to the start position
-            InitDevice();
             _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(StartPosition));
             _Motor.GetOnTargetStatus(AxisIdentifier._1);
         }
@@ -184,6 +185,7 @@ namespace BreakJunctions.Motion
         {
             _Motor.StopAllAxes();
             IsMotionInProcess = false;
+            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         public override void ContinueMotion()

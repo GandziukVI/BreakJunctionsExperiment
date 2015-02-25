@@ -22,6 +22,7 @@ namespace BreakJunctions.Motion
             this._Motor.COM_Port.DataReceived += _COM_Device_DataReceived;
             AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += OnTimeTraceBothChannelsPointsReceived;
         }
+        
         ~FaulhaberMinimotor_SA_2036U012V_K1155_MotionController()
         {
             this.Dispose();
@@ -86,10 +87,7 @@ namespace BreakJunctions.Motion
         /// <summary>
         /// Gets FaulhaberMinimotor_SA_2036U012V_K1155 motor
         /// </summary>
-        public FaulhaberMinimotor_SA_2036U012V_K1155 Motor
-        {
-            get { return _Motor; }
-        }
+        public FaulhaberMinimotor_SA_2036U012V_K1155 Motor { get { return _Motor; } }
 
         public override bool InitDevice()
         {
@@ -114,6 +112,7 @@ namespace BreakJunctions.Motion
             var motorPort = sender as SerialPort;
             var responce = motorPort.ReadExisting();
 
+            //Checking, if the motor reached notified position
             if (responce.Contains('p'))
                 AllEventsHandler.Instance.OnMotion(this, new Motion_EventArgs(CurrentPosition));
         }
@@ -146,7 +145,8 @@ namespace BreakJunctions.Motion
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
                         }
-                        else StopMotion();
+                        else
+                            StopMotion();
                     } break;
                 case MotionKind.Repetitive:
                     {
@@ -224,7 +224,7 @@ namespace BreakJunctions.Motion
         {
             IsMotionInProcess = false;
             //Signal that the motion is completed
-            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(null, new TimeTraceMeasurementStateChanged_EventArgs(false));
+            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
 
         public override void ContinueMotion()

@@ -136,13 +136,6 @@ namespace BreakJunctions
 
         #region 1-st channel
 
-        private List<Point> _CurrentTimeTraceChannel_01;
-        public List<Point> CurrentTimeTraceChannel_01
-        {
-            get { return _CurrentTimeTraceChannel_01; }
-            set { _CurrentIV_CurveChannel_01 = value; }
-        }
-
         private ExperimentalTimeTraceDataSource _experimentalTimeTraceDataSourceChannel_01;
         private LineGraph _TimeTraceLineGraphChannel_01;
 
@@ -158,13 +151,6 @@ namespace BreakJunctions
         #endregion
 
         #region 2-nd channel
-
-        private List<Point> _CurrentTimeTraceChannel_02;
-        public List<Point> CurrentTimeTraceChannel_02
-        {
-            get { return _CurrentTimeTraceChannel_02; }
-            set { _CurrentIV_CurveChannel_02 = value; }
-        }
 
         private ExperimentalTimeTraceDataSource _experimentalTimeTraceDataSourceChannel_02;
         private LineGraph _TimeTraceLineGraphChannel_02;
@@ -896,7 +882,6 @@ namespace BreakJunctions
                 {
                     _experimentalTimeTraceDataSourceChannel_01.DetachPointReceiveEvent();
                     _TimeTraceLineGraphChannel_01.RemoveFromPlotter();
-                    _CurrentTimeTraceChannel_01.Clear();
                 }
 
                 _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate.Channel_01);
@@ -912,7 +897,6 @@ namespace BreakJunctions
                 {
                     _experimentalTimeTraceDataSourceChannel_02.DetachPointReceiveEvent();
                     _TimeTraceLineGraphChannel_02.RemoveFromPlotter();
-                    _CurrentTimeTraceChannel_02.Clear();
                 }
 
                 _experimentalTimeTraceDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate.Channel_02);
