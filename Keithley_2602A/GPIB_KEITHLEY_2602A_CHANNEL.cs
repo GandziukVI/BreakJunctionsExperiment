@@ -23,7 +23,7 @@ namespace SMU.KEITHLEY_2602A
         public GPIB_KEITHLEY_2602A_CHANNEL(byte _PrimaryAddress, byte _SecondaryAddress, byte _BoardNumber, Channels _Channel)
             : base(_PrimaryAddress, _SecondaryAddress, _BoardNumber)
         {
-            style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent | NumberStyles.AllowLeadingSign;
+            style = NumberStyles.Float;
             culture = CultureInfo.CreateSpecificCulture("en-US");
 
             _SelectedChannel = _Channel;
@@ -122,6 +122,7 @@ namespace SMU.KEITHLEY_2602A
                 default:
                     break;
             }
+            
             var measuredRessitanceString = MeasureResistanceOrPowerValueInChannel(_SelectedChannel, _sourceMode, MeasureMode.Resistance, valueThroughTheStructure, NumberOfAverages, TimeDelay).TrimEnd('\n');
             var isSucceed = double.TryParse(measuredRessitanceString, style, culture, out measuredResistance);
 

@@ -14,8 +14,8 @@ namespace Keithley_4200.Pages
 
         private IExperimentalDevice _TheDevice;
 
-        private bool _IsSourceSetupPageSelected = false;
-        public bool IsSourceSetupPageSelected { get { return _IsSourceSetupPageSelected; } }
+        private static bool _IsSourceSetupPageSelected = false;
+        public static bool IsSourceSetupPageSelected { get { return _IsSourceSetupPageSelected; } }
 
         #endregion
 

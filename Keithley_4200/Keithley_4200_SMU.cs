@@ -163,7 +163,7 @@ namespace Keithley_4200
             {
                 case SourceMode.Voltage:
                     {
-                        _UserModeCommands.SMU_SetDirectVoltage(_SelectedSMU, valueThroughTheStrusture, CurrentLimit);
+                        //_UserModeCommands.SMU_SetDirectVoltage(_SelectedSMU, valueThroughTheStrusture, CurrentLimit);
                         var MeasuredCurrent = 0.0;
                         switch (_SelectedSMU)
                         {
@@ -237,7 +237,7 @@ namespace Keithley_4200
                     }
                 case SourceMode.Current:
                     {
-                        _UserModeCommands.SMU_SetDirectCurrent(_SelectedSMU, valueThroughTheStrusture, VoltageLimit);
+                        //_UserModeCommands.SMU_SetDirectCurrent(_SelectedSMU, valueThroughTheStrusture, VoltageLimit);
                         var MeasuredVoltage = 0.0;
                         switch (_SelectedSMU)
                         {
@@ -320,7 +320,7 @@ namespace Keithley_4200
             {
                 case SourceMode.Voltage:
                     {
-                        _UserModeCommands.SMU_SetDirectVoltage(_SelectedSMU, valueThroughTheStrusture, CurrentLimit);
+                        //_UserModeCommands.SMU_SetDirectVoltage(_SelectedSMU, valueThroughTheStrusture, CurrentLimit);
                         var MeasuredCurrent = 0.0;
                         switch (_SelectedSMU)
                         {
@@ -394,7 +394,7 @@ namespace Keithley_4200
                     }
                 case SourceMode.Current:
                     {
-                        _UserModeCommands.SMU_SetDirectCurrent(_SelectedSMU, valueThroughTheStrusture, VoltageLimit);
+                        //_UserModeCommands.SMU_SetDirectCurrent(_SelectedSMU, valueThroughTheStrusture, VoltageLimit);
                         var MeasuredVoltage = 0.0;
                         switch (_SelectedSMU)
                         {

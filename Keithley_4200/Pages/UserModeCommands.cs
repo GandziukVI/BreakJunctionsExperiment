@@ -15,8 +15,8 @@ namespace Keithley_4200.Pages
 
         private IExperimentalDevice _TheDevice;
 
-        private bool _IsUserModeSelected = false;
-        public bool IsUserModeSelected { get { return _IsUserModeSelected; } }
+        private static bool _IsUserModeSelected = false;
+        public static bool IsUserModeSelected { get { return _IsUserModeSelected; } }
 
         #endregion
 

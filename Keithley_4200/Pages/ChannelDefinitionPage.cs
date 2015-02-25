@@ -15,8 +15,8 @@ namespace Keithley_4200.Pages
 
         private IExperimentalDevice _TheDevice;
 
-        private bool _IsChannelDefinitionPageSelected = false;
-        public bool IsChannelDefinitionPageSelected { get { return _IsChannelDefinitionPageSelected; } }
+        private static bool _IsChannelDefinitionPageSelected = false;
+        public static bool IsChannelDefinitionPageSelected { get { return _IsChannelDefinitionPageSelected; } }
 
         #endregion
 
