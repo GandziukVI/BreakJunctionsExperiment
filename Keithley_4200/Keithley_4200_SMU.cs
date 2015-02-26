@@ -64,7 +64,7 @@ namespace Keithley_4200
 
         public void SwitchOFF()
         {
-            _ChannelDefinition.DisableChannel(_SelectedSMU);
+            //_ChannelDefinition.DisableChannel(_SelectedSMU);
         }
 
         public bool SetVoltageLimit(double Value)
