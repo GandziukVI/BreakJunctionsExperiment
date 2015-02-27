@@ -22,22 +22,32 @@ namespace SMU.KEITHLEY_2602A
             _TheDevice = The_GPIB_Device;
         }
 
-        public KEITHLEY_2602A(ref IExperimentalDevice __TheDevice)
+        private KEITHLEY_2602A() { }
+
+        private static KEITHLEY_2602A _Instance;
+        public static KEITHLEY_2602A Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                    _Instance = new KEITHLEY_2602A();
+
+                return _Instance;
+            }
+        }
+
+        public void SetDevice(ref IExperimentalDevice __TheDevice)
         {
             _TheDevice = __TheDevice;
         }
 
         /*     Realizing advanced device functionality     */
 
-        public bool InitDevice()
+        #region Functionality
+
+        public void EnableBeeper()
         {
-            var InitSuccess = _TheDevice.InitDevice();
-            try
-            {
-                _TheDevice.SendCommandRequest("beeper.enable = 1 ");
-                return true;
-            }
-            catch { return false; }
+            _TheDevice.SendCommandRequest("beeper.enable = 1 ");
         }
 
         private double _FastestSpeed = 0.001;
@@ -548,5 +558,7 @@ namespace SMU.KEITHLEY_2602A
                     break;
             }
         }
+
+        #endregion
     }
 }
