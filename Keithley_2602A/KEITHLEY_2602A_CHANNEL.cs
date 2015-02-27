@@ -5,13 +5,14 @@ using System.Text;
 using System.Globalization;
 
 using Devices.SMU;
+using Devices;
 
 namespace SMU.KEITHLEY_2602A
 {
-    public class GPIB_KEITHLEY_2602A_CHANNEL : GPIB_KEITHLEY_2602A, I_SMU
+    public class KEITHLEY_2602A_CHANNEL : KEITHLEY_2602A, I_SMU
     {
-        private NumberStyles style;
-        private CultureInfo culture;
+        private NumberStyles _Style;
+        private CultureInfo _Culture;
 
         private Channels _SelectedChannel;
         public Channels SelectedChannel
@@ -20,11 +21,20 @@ namespace SMU.KEITHLEY_2602A
             set { _SelectedChannel = value; }
         }
 
-        public GPIB_KEITHLEY_2602A_CHANNEL(byte _PrimaryAddress, byte _SecondaryAddress, byte _BoardNumber, Channels _Channel)
+        public KEITHLEY_2602A_CHANNEL(byte _PrimaryAddress, byte _SecondaryAddress, byte _BoardNumber, Channels _Channel)
             : base(_PrimaryAddress, _SecondaryAddress, _BoardNumber)
         {
-            style = NumberStyles.Float;
-            culture = CultureInfo.CreateSpecificCulture("en-US");
+            _Style = NumberStyles.Float;
+            _Culture = CultureInfo.InvariantCulture;
+
+            _SelectedChannel = _Channel;
+        }
+
+        public KEITHLEY_2602A_CHANNEL(ref IExperimentalDevice __TheDevice, Channels _Channel)
+            : base(ref __TheDevice)
+        {
+            _Style = NumberStyles.Float;
+            _Culture = CultureInfo.InvariantCulture;
 
             _SelectedChannel = _Channel;
         }
@@ -84,7 +94,7 @@ namespace SMU.KEITHLEY_2602A
             double MeasuredVoltage;
 
             var MeasuredVoltageString = MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Voltage, NumberOfAverages, TimeDelay).TrimEnd('\n');
-            var isSucceed = double.TryParse(MeasuredVoltageString, style, culture, out MeasuredVoltage);
+            var isSucceed = double.TryParse(MeasuredVoltageString, _Style, _Culture, out MeasuredVoltage);
 
             if (isSucceed)
                 return MeasuredVoltage;
@@ -96,7 +106,7 @@ namespace SMU.KEITHLEY_2602A
             double MeasuredCurrent;
 
             var MeasuredCurrentString = MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Current, NumberOfAverages, TimeDelay).TrimEnd('\n');
-            var isSucceed = double.TryParse(MeasuredCurrentString, style, culture, out MeasuredCurrent);
+            var isSucceed = double.TryParse(MeasuredCurrentString, _Style, _Culture, out MeasuredCurrent);
 
             if (isSucceed)
                 return MeasuredCurrent;
@@ -116,14 +126,14 @@ namespace SMU.KEITHLEY_2602A
                         _sourceMode = SourceMode.Voltage;
                     } break;
                 case SourceMode.Current:
-                    { 
+                    {
                         _sourceMode = SourceMode.Current;
                     } break;
                 default:
                     break;
             }
             var measuredRessitanceString = MeasureResistanceOrPowerValueInChannel(_SelectedChannel, _sourceMode, MeasureMode.Resistance, valueThroughTheStructure, NumberOfAverages, TimeDelay).TrimEnd('\n');
-            var isSucceed = double.TryParse(measuredRessitanceString, style, culture, out measuredResistance);
+            var isSucceed = double.TryParse(measuredRessitanceString, _Style, _Culture, out measuredResistance);
 
             if (isSucceed)
                 return measuredResistance;
@@ -149,7 +159,7 @@ namespace SMU.KEITHLEY_2602A
                     break;
             }
             var measuredPowerString = MeasureResistanceOrPowerValueInChannel(_SelectedChannel, _sourceMode, MeasureMode.Power, valueThroughTheStructure, NumberOfAverages, TimeDelay).TrimEnd('\n');
-            var isSucceed = double.TryParse(measuredPowerString, style, culture, out measuredPower);
+            var isSucceed = double.TryParse(measuredPowerString, _Style, _Culture, out measuredPower);
 
             if (isSucceed)
                 return measuredPower;

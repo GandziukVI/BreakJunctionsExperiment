@@ -80,7 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GPIB_KEITHLEY_2602A_CHANNEL.cs" />
+    <Compile Include="KEITHLEY_2602A_CHANNEL.cs" />
     <Compile Include="KEITHLEY_2602A.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
