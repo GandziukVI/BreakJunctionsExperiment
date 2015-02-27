@@ -10,8 +10,9 @@ using NationalInstruments.NI4882;
 
 using Ivi.Visa.Interop;
 using System.Threading;
+using Agilent_U2542A;
 
-namespace Agilent_U2542A
+namespace Devices
 {
     public class USB_Device : IExperimentalDevice, IDisposable
     {

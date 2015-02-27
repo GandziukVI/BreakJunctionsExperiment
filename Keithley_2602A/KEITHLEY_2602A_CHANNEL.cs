@@ -93,7 +93,7 @@ namespace SMU.KEITHLEY_2602A
         {
             double MeasuredVoltage;
 
-            var MeasuredVoltageString = MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Voltage, NumberOfAverages, TimeDelay).TrimEnd('\n');
+            var MeasuredVoltageString = MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Voltage, NumberOfAverages, TimeDelay).Trim("\r\n".ToCharArray());
             var isSucceed = double.TryParse(MeasuredVoltageString, _Style, _Culture, out MeasuredVoltage);
 
             if (isSucceed)
@@ -105,7 +105,7 @@ namespace SMU.KEITHLEY_2602A
         {
             double MeasuredCurrent;
 
-            var MeasuredCurrentString = MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Current, NumberOfAverages, TimeDelay).TrimEnd('\n');
+            var MeasuredCurrentString = MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Current, NumberOfAverages, TimeDelay).Trim("\r\n".ToCharArray());
             var isSucceed = double.TryParse(MeasuredCurrentString, _Style, _Culture, out MeasuredCurrent);
 
             if (isSucceed)

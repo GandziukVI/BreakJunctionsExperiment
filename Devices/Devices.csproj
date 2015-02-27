@@ -79,6 +79,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\NationalInstruments.NI4882.dll</HintPath>
     </Reference>
+    <Reference Include="NationalInstruments.VisaNS, Version=13.0.35.167, Culture=neutral, PublicKeyToken=18cbae0f9955702a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -97,6 +98,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\CheckValue.cs" />
     <Compile Include="USB_Device.cs" />
+    <Compile Include="VisaDevice.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,13 +14,14 @@ using Devices.SMU;
 using SMU.KEITHLEY_2602A;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using Devices;
 
 namespace BreakJunctions
 {
-	/// <summary>
-	/// Interaction logic for Keithley2602A_Settings.xaml
-	/// </summary>
-	public partial class Keithley2602A_Channel_Settings : Window
+    /// <summary>
+    /// Interaction logic for Keithley2602A_Settings.xaml
+    /// </summary>
+    public partial class Keithley2602A_Channel_Settings : Window
     {
         #region MVVM for Keithley2602ASettings
 
@@ -34,21 +35,23 @@ namespace BreakJunctions
 
         //The device
 
+        //public static IExperimentalDevice vDevice = new VisaDevice("TCPIP0::134.94.243.192::inst0::INSTR") as IExperimentalDevice;
+
         private I_SMU _Device;
         public I_SMU Device
         {
             get { return _Device; }
         }
 
-		public Keithley2602A_Channel_Settings()
-		{
-			this.InitializeComponent();
+        public Keithley2602A_Channel_Settings()
+        {
+            this.InitializeComponent();
 
             #region Set MVVM
 
             _DeviceSettings = new MVVM_Keithley2602A_Settings();
             this.DataContext = _DeviceSettings;
-            
+
             this.radioSourceMeasureModeVoltage.DataContext = ModelViewInteractions.IV_VoltageChangedModel;
             this.radioSourceMeasureModeCurrent.DataContext = ModelViewInteractions.IV_CurrentChangedModel;
 
@@ -67,6 +70,9 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
                 var smu = new KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, Channels.ChannelA);
+
+                //var smu = new KEITHLEY_2602A_CHANNEL(ref vDevice, Channels.ChannelA);
+
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
@@ -81,6 +87,9 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
                 var smu = new KEITHLEY_2602A_CHANNEL(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber, Channels.ChannelB);
+
+                //var smu = new KEITHLEY_2602A_CHANNEL(ref vDevice, Channels.ChannelB);
+
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
@@ -89,10 +98,10 @@ namespace BreakJunctions
             return _Device;
         }
 
-		private void on_cmdSaveSettingsClick(object sender, System.Windows.RoutedEventArgs e)
-		{
+        private void on_cmdSaveSettingsClick(object sender, System.Windows.RoutedEventArgs e)
+        {
             _Device = SetDevice();
             this.Close();
-		}
-	}
+        }
+    }
 }
