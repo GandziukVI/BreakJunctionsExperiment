@@ -87,6 +87,10 @@
       <Project>{5b17e426-cba0-47b9-b255-56e7d344356d}</Project>
       <Name>Keithley_2400</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Keithley_2602A\Keithley_2602A.csproj">
+      <Project>{f98764a2-e410-4b56-8690-db03da26373b}</Project>
+      <Name>Keithley_2602A</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Keithley_4200\Keithley_4200.csproj">
       <Project>{0cb55b0b-c6dc-44df-b46b-70266c091ecd}</Project>
       <Name>Keithley_4200</Name>
