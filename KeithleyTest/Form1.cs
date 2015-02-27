@@ -23,7 +23,7 @@ namespace SMU.KeithleyTest
         {
             InitializeComponent();
 
-            var _TheDevice = new LAN_Device("169.254.222.49", 5050);
+            var _TheDevice = new LAN_Device("134.94.243.192", 23);
             _TheDevice.SendCommandRequest("beeper.enable = 1 ");
         }
     }
