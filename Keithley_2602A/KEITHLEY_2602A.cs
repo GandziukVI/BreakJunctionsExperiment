@@ -215,25 +215,22 @@ namespace SMU.KEITHLEY_2602A
         /// <returns></returns>
         public string MeasureIV_ValueInChannel(Channels Channel, MeasureMode MeasureMode, int NumberOfAverages, double TimeDelay)
         {
-            var _TimeDelay = TimeDelay.ToString().Replace(',', '.');
+            var _TimeDelay = TimeDelay.ToString(NumberFormatInfo.InvariantInfo);
                 
             var MeasuredValue = "";
 
-            var IV_Script = 
-                "loadscript MeasureValueInChannel\n" + 
+            var IV_Script =
                 "smu{0}.measure.autorange{1} = smu{0}.AUTORANGE_ON\n" +
                 "display.screen = display.{4}\n" +
                 "display.smu{0}.measure.func = display.{5}\n" +
-                "trigger.clear()\n" + 
+                "trigger.clear()\n" +
                 "result = 0.0\n" +
                 "for parameterMeasure = 1, {2} do\n" +
-                "trigger.wait({3})\n" + 
-                "result = result + smu{0}.measure.{1}()\n" + 
-                "end\n" + 
-                "result = result / ({2} - 1)\n" + 
-                "print (result)\n" + 
-                "endscript\n" +
-                "MeasureValueInChannel()\n";
+                "trigger.wait({3})\n" +
+                "result = result + smu{0}.measure.{1}()\n" +
+                "end\n" +
+                "result = result / ({2} - 1)\n" +
+                "print (result)\n";
 
             switch (MeasureMode)
             {
@@ -305,11 +302,10 @@ namespace SMU.KEITHLEY_2602A
             var MeasuredValue = "";
 
             var R_Script =
-                "loadscript MeasureResistanceInChannel\n" +
-                "smu{0}.source.func = smu{0}.{1}\n" + 
-                "smu{0}.source.autorange{2} = smu{0}.AUTORANGE_ON\n" + 
-                "smu{0}.source.level{2} = {3}\n" + 
-                "smu{0}.source.limit{4} = {5}\n" + 
+                "smu{0}.source.func = smu{0}.{1}\n" +
+                "smu{0}.source.autorange{2} = smu{0}.AUTORANGE_ON\n" +
+                "smu{0}.source.level{2} = {3}\n" +
+                "smu{0}.source.limit{4} = {5}\n" +
                 "smu{0}.measure.autorange{4} = smu{0}.AUTORANGE_ON\n" +
                 "display.screen = display.{6}\n" +
                 "display.smu{0}.measure.func = display.{7}\n" +
@@ -320,12 +316,9 @@ namespace SMU.KEITHLEY_2602A
                 "result = result + smu{0}.measure.r()\n" +
                 "end\n" +
                 "result = result / {8}\n" +
-                "print (result)\n" +
-                "endscript\n" +
-                "MeasureResistanceInChannel()\n";
+                "print (result)\n";
 
             var P_Script =
-                "loadscript MeasurePowerInChannel\n" +
                 "smu{0}.measure.autorange{1} = smu{0}.AUTORANGE_ON\n" +
                 "display.screen = display.{2}\n" +
                 "display.smu{0}.measure.func = display.{3}\n" +
@@ -336,9 +329,7 @@ namespace SMU.KEITHLEY_2602A
                 "result = result + smu{0}.measure.p()\n" +
                 "end\n" +
                 "result = result / ({4} - 1)\n" +
-                "print (result)\n" +
-                "endscript\n" +
-                "MeasurePowerInChannel()\n";
+                "print (result)\n";
 
             switch (MeasureMode)
             {
