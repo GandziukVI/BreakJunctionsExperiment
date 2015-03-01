@@ -35,7 +35,8 @@ namespace BreakJunctions
 
         //The device
 
-        //public static IExperimentalDevice vDevice = new VisaDevice("TCPIP0::134.94.243.192::inst0::INSTR") as IExperimentalDevice;
+        //public static IExperimentalDevice _ExperimentalDevice = new VisaDevice("GPIB0::26::INSTR") as IExperimentalDevice;
+        public static IExperimentalDevice _ExperimentalDevice =new VisaDevice("TCPIP0::134.94.243.192::inst0::INSTR") as IExperimentalDevice;
 
         private I_SMU _Device;
         public I_SMU Device
@@ -60,7 +61,7 @@ namespace BreakJunctions
 
         private I_SMU SetDevice()
         {
-            var _ExperimentalDevice = new GPIB_Device(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber) as IExperimentalDevice;
+            //var _ExperimentalDevice = new GPIB_Device(_DeviceSettings.PrimaryAddress, _DeviceSettings.SecondaryAddress, _DeviceSettings.BoardNumber) as IExperimentalDevice;
 
             if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
@@ -72,7 +73,9 @@ namespace BreakJunctions
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
+                
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                var a = _ExperimentalDevice.RequestQuery("*IDN?");
                 var smu = KEITHLEY_2602A.Instance.ChannelA;
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
@@ -89,8 +92,8 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
-                var smu = KEITHLEY_2602A.Instance.ChannelB;
-
+                var a = _ExperimentalDevice.RequestQuery("*IDN?");
+                var smu = KEITHLEY_2602A.Instance.ChannelB;                
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);

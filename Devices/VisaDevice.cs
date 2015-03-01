@@ -18,7 +18,6 @@ namespace Devices
         public VisaDevice(string __ID)
         {
             _ID = __ID;
-            InitDevice();
         }
 
         public bool InitDevice()
@@ -26,6 +25,7 @@ namespace Devices
             try
             {
                 mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open(this.ID);
+                mbSession.Timeout = 5000;
                 return true;
             }
             catch { return false; }
@@ -36,7 +36,8 @@ namespace Devices
         {
             try
             {
-                mbSession.Write(RequestString);
+                var _Request = RequestString.EndsWith("\n") ? RequestString : RequestString + "\n";
+                mbSession.Write(Encoding.ASCII.GetBytes(_Request));
                 return true;
             }
             catch { return false; }
@@ -49,8 +50,8 @@ namespace Devices
 
         public string RequestQuery(string Query)
         {
-            SendCommandRequest(Query);
-            return ReceiveDeviceAnswer();
+            var _Query = Query.EndsWith("\n") ? Encoding.ASCII.GetBytes(Query) : Encoding.ASCII.GetBytes(Query + "\n");
+            return Encoding.ASCII.GetString(mbSession.Query(_Query)).TrimEnd("\r\n".ToCharArray());
         }
     }
 }

@@ -62,8 +62,11 @@ namespace SMU.KEITHLEY_2602A
 
         public void SetDevice(ref IExperimentalDevice __TheDevice)
         {
-            if(_TheDevice == null)
+            if (_TheDevice == null)
+            {
                 _TheDevice = __TheDevice;
+                _TheDevice.InitDevice();
+            }
         }
 
         /*     Realizing advanced device functionality     */
