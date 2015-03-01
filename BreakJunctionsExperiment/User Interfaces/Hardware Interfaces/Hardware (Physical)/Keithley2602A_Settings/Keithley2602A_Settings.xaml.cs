@@ -35,9 +35,9 @@ namespace BreakJunctions
 
         //The device
 
-        //public static IExperimentalDevice _ExperimentalDevice = new VisaDevice("GPIB0::26::INSTR") as IExperimentalDevice;
+        public static IExperimentalDevice _ExperimentalDevice = new VisaDevice("GPIB0::26::INSTR") as IExperimentalDevice;
         //public static IExperimentalDevice _ExperimentalDevice = new VisaDevice("TCPIP0::134.94.243.192::inst0::INSTR") as IExperimentalDevice;
-        public static IExperimentalDevice _ExperimentalDevice = new LAN_Device("134.94.243.192", 23) as IExperimentalDevice;
+        //public static IExperimentalDevice _ExperimentalDevice = new LAN_Device("134.94.243.192", 23) as IExperimentalDevice;
 
         private I_SMU _Device;
         public I_SMU Device
