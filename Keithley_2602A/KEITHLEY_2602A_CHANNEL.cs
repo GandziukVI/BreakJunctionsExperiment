@@ -21,14 +21,16 @@ namespace SMU.KEITHLEY_2602A
             set { _SelectedChannel = value; }
         }
 
-        public KEITHLEY_2602A_CHANNEL(ref IExperimentalDevice __TheDevice, Channels _Channel)
+        private KEITHLEY_2602A _TheDevice;
+
+        public KEITHLEY_2602A_CHANNEL(KEITHLEY_2602A __TheDevice, Channels _Channel)
         {
             _Style = NumberStyles.Float;
             _Culture = CultureInfo.InvariantCulture;
 
             _SelectedChannel = _Channel;
 
-            KEITHLEY_2602A.Instance.SetDevice(ref __TheDevice);
+            _TheDevice = __TheDevice;
             InitDevice();
         }
 
@@ -36,27 +38,32 @@ namespace SMU.KEITHLEY_2602A
         {
             try
             {
-                KEITHLEY_2602A.Instance.EnableBeeper();
+                _TheDevice.EnableBeeper();
                 return true;
             }
             catch { return false; }
         }
 
+        public void SetSpeed(double Speed, Channels SelectedChannel)
+        {
+            _TheDevice.SetSpeed(Speed, SelectedChannel);
+        }
+
         public void SwitchON()
         {
-            KEITHLEY_2602A.Instance.SwitchChannelState(_SelectedChannel, Channel_Status.Channel_ON);
+            _TheDevice.SwitchChannelState(_SelectedChannel, Channel_Status.Channel_ON);
         }
 
         public void SwitchOFF()
         {
-            KEITHLEY_2602A.Instance.SwitchChannelState(_SelectedChannel, Channel_Status.Channel_OFF);
+            _TheDevice.SwitchChannelState(_SelectedChannel, Channel_Status.Channel_OFF);
         }
 
         public bool SetVoltageLimit(double Value)
         {
             try
             {
-                KEITHLEY_2602A.Instance.SetSourceLimit(Value, LimitMode.Voltage, _SelectedChannel);
+                _TheDevice.SetSourceLimit(Value, LimitMode.Voltage, _SelectedChannel);
                 return true;
             }
             catch { return false; }
@@ -66,7 +73,7 @@ namespace SMU.KEITHLEY_2602A
         {
             try
             {
-                KEITHLEY_2602A.Instance.SetSourceLimit(Value, LimitMode.Current, _SelectedChannel);
+                _TheDevice.SetSourceLimit(Value, LimitMode.Current, _SelectedChannel);
                 return true;
             }
             catch { return false; }
@@ -76,7 +83,7 @@ namespace SMU.KEITHLEY_2602A
         {
             try
             {
-                KEITHLEY_2602A.Instance.SetValueToChannel(Value, SourceMode.Voltage, _SelectedChannel);
+                _TheDevice.SetValueToChannel(Value, SourceMode.Voltage, _SelectedChannel);
                 return true;
             }
             catch { return false; }
@@ -86,7 +93,7 @@ namespace SMU.KEITHLEY_2602A
         {
             try
             {
-                KEITHLEY_2602A.Instance.SetValueToChannel(Value, SourceMode.Current, _SelectedChannel);
+                _TheDevice.SetValueToChannel(Value, SourceMode.Current, _SelectedChannel);
                 return true;
             }
             catch { return false; }
@@ -96,7 +103,7 @@ namespace SMU.KEITHLEY_2602A
         {
             double MeasuredVoltage;
 
-            var MeasuredVoltageString = KEITHLEY_2602A.Instance.MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Voltage, NumberOfAverages, TimeDelay).Trim("\r\n".ToCharArray());
+            var MeasuredVoltageString = _TheDevice.MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Voltage, NumberOfAverages, TimeDelay).Trim("\r\n".ToCharArray());
             var isSucceed = double.TryParse(MeasuredVoltageString, _Style, _Culture, out MeasuredVoltage);
 
             if (isSucceed)
@@ -108,7 +115,7 @@ namespace SMU.KEITHLEY_2602A
         {
             double MeasuredCurrent;
 
-            var MeasuredCurrentString = KEITHLEY_2602A.Instance.MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Current, NumberOfAverages, TimeDelay).Trim("\r\n".ToCharArray());
+            var MeasuredCurrentString = _TheDevice.MeasureIV_ValueInChannel(_SelectedChannel, MeasureMode.Current, NumberOfAverages, TimeDelay).Trim("\r\n".ToCharArray());
             var isSucceed = double.TryParse(MeasuredCurrentString, _Style, _Culture, out MeasuredCurrent);
 
             if (isSucceed)
@@ -135,7 +142,7 @@ namespace SMU.KEITHLEY_2602A
                 default:
                     break;
             }
-            var measuredRessitanceString = KEITHLEY_2602A.Instance.MeasureResistanceOrPowerValueInChannel(_SelectedChannel, _sourceMode, MeasureMode.Resistance, valueThroughTheStructure, NumberOfAverages, TimeDelay).TrimEnd('\n');
+            var measuredRessitanceString = _TheDevice.MeasureResistanceOrPowerValueInChannel(_SelectedChannel, _sourceMode, MeasureMode.Resistance, valueThroughTheStructure, NumberOfAverages, TimeDelay).TrimEnd('\n');
             var isSucceed = double.TryParse(measuredRessitanceString, _Style, _Culture, out measuredResistance);
 
             if (isSucceed)
@@ -161,7 +168,7 @@ namespace SMU.KEITHLEY_2602A
                 default:
                     break;
             }
-            var measuredPowerString = KEITHLEY_2602A.Instance.MeasureResistanceOrPowerValueInChannel(_SelectedChannel, _sourceMode, MeasureMode.Power, valueThroughTheStructure, NumberOfAverages, TimeDelay).TrimEnd('\n');
+            var measuredPowerString = _TheDevice.MeasureResistanceOrPowerValueInChannel(_SelectedChannel, _sourceMode, MeasureMode.Power, valueThroughTheStructure, NumberOfAverages, TimeDelay).TrimEnd('\n');
             var isSucceed = double.TryParse(measuredPowerString, _Style, _Culture, out measuredPower);
 
             if (isSucceed)

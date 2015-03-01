@@ -36,9 +36,34 @@ namespace SMU.KEITHLEY_2602A
             }
         }
 
+        private KEITHLEY_2602A_CHANNEL _ChannelA;
+        public KEITHLEY_2602A_CHANNEL ChannelA
+        {
+            get
+            {
+                if (_ChannelA == null)
+                    _ChannelA = new KEITHLEY_2602A_CHANNEL(this, Channels.ChannelA);
+
+                return _ChannelA;
+            }
+        }
+
+        private KEITHLEY_2602A_CHANNEL _ChannelB;
+        public KEITHLEY_2602A_CHANNEL ChannelB
+        {
+            get
+            {
+                if (_ChannelB == null)
+                    _ChannelB = new KEITHLEY_2602A_CHANNEL(this, Channels.ChannelB);
+
+                return _ChannelB;
+            }
+        }
+
         public void SetDevice(ref IExperimentalDevice __TheDevice)
         {
-            _TheDevice = __TheDevice;
+            if(_TheDevice == null)
+                _TheDevice = __TheDevice;
         }
 
         /*     Realizing advanced device functionality     */
