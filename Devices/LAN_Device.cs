@@ -105,7 +105,7 @@ namespace Devices
             int i = m_Stream.ReadByte();
             byte b = (byte)i;
             int bytesToRead = 0;
-            var bytes = new List<byte>();
+            var bytes = new LinkedList<byte>();
             if ((char)b == '#')
             {
                 bytesToRead = ReadLengthHeader();
@@ -113,14 +113,14 @@ namespace Devices
                 {
                     i = m_Stream.ReadByte();
                     if ((char)i != '\n') // discard carriage return after length header.
-                        bytes.Add((byte)i);
+                        bytes.AddLast((byte)i);
                 }
             }
             if (bytesToRead == 0)
             {
                 while (i != -1 && b != (byte)'\n')
                 {
-                    bytes.Add(b);
+                    bytes.AddLast(b);
                     i = m_Stream.ReadByte();
                     b = (byte)i;
                 }
@@ -136,7 +136,7 @@ namespace Devices
                         bytesRead++;
                         // record all bytes except \n if it is the last char.
                         if (bytesRead < bytesToRead || (char)i != '\n')
-                            bytes.Add((byte)i);
+                            bytes.AddLast((byte)i);
                     }
                 }
             }
