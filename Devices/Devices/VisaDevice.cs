@@ -18,6 +18,7 @@ namespace Devices
         public VisaDevice(string __ID)
         {
             _ID = __ID;
+            InitDevice();
         }
 
         public bool InitDevice()

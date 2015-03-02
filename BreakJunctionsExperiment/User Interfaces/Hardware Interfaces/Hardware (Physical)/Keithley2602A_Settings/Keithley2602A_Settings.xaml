@@ -5,10 +5,13 @@
 	x:Class="BreakJunctions.Keithley2602A_Channel_Settings"
 	x:Name="Window"
 	Title="Keithley2602A_Channel_Settings"
-	Width="360" Height="420"
+	Width="360" Height="380"
 	ResizeMode="NoResize">
 	
 	<Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value=" 1 2.5" />
+        </Style>
 		<Style TargetType="wpfTool:IntegerUpDown">
 			<Setter Property="Margin" Value="1 2.5" />
 			<Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -41,35 +44,23 @@
 		<Grid x:Name="ConnectionSettings" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
 			<Grid.RowDefinitions>
 				<RowDefinition />
-				<RowDefinition />
-				<RowDefinition />
-				<RowDefinition />
-			</Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition />
 			</Grid.ColumnDefinitions>
 			
-			<Label Grid.Row="0" Grid.Column="0">Board Number</Label>
-			<wpfTool:IntegerUpDown Grid.Row="0" Grid.Column="1" Value="{Binding Path=BoardNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-			<Label Grid.Row="1" Grid.Column="0" Content="Primary Address">
-				<Label.ToolTip>
-					<ToolTip>
-						<TextBlock MaxWidth="250">Range is 0 - 30. By default it is 26.</TextBlock>
-					</ToolTip>
-				</Label.ToolTip>
-			</Label>
-			<wpfTool:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Path=PrimaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-			<Label Grid.Row="2" Grid.Column="0">Secondary Address</Label>
-			<wpfTool:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding Path=SecondaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-			<Label Grid.Row="3" Grid.Column="0" Content="Accuracy Coeficient">
+			<Label Grid.Row="0" Grid.Column="0">Visa ID</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=VisaID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			<Label Grid.Row="1" Grid.Column="0" Content="Accuracy Coeficient">
 				<Label.ToolTip>
 					<ToolTip>
 						<TextBlock MaxWidth="250" TextWrapping="Wrap">Range is 0.001 - 25. The higher is the value - the higher is the accuracy</TextBlock>
 					</ToolTip>
 				</Label.ToolTip>
 			</Label>
-			<wpfTool:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding Path=AccuracyCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+			<wpfTool:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Path=AccuracyCoefficient, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 		</Grid>
 		<GroupBox Grid.Row="1" Grid.Column="0" Header="Source Mode" HorizontalAlignment="Stretch" Margin="5 5 5 2.5">
 			<StackPanel>
