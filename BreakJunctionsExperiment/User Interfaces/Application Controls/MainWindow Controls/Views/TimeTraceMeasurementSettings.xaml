@@ -8,6 +8,15 @@
              xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit" >
 
 	<UserControl.Resources>
+		<Style TargetType="ComboBox">
+			<Setter Property="Margin" Value="0 2" />
+		</Style>
+		<Style TargetType="TextBox">
+			<Setter Property="MaxWidth" Value="250" />
+			<Setter Property="MaxHeight" Value="75" />
+			<Setter Property="Margin" Value="0 2.5" />
+			<Setter Property="Width" Value="200" />
+		</Style>
 		<Style TargetType="wpfTool:IntegerUpDown">
 			<Setter Property="Margin" Value="1 2.5" />
 		</Style>
@@ -17,9 +26,6 @@
 			<Setter Property="Increment" Value="0.01" />
 			<Setter Property="Margin" Value="1 2.5" />
 			<Setter Property="MinWidth" Value="70" />
-		</Style>
-		<Style TargetType="ComboBox">
-			<Setter Property="Margin" Value="0 2" />
 		</Style>
 	</UserControl.Resources>
 

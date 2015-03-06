@@ -129,7 +129,7 @@ namespace BreakJunctions
         }
 
         //Saving data
-        private string _IV_MeasurementDataFileNameChannel_01 = "IV_MeasurementChannel_01.dat";
+        private string _IV_MeasurementDataFileNameChannel_01 = "IV_CH_01.dat";
         public string IV_MeasurementDataFileNameChannel_01
         {
             get { return _IV_MeasurementDataFileNameChannel_01; }
@@ -223,7 +223,7 @@ namespace BreakJunctions
         }
 
         //Saving data
-        private string _IV_MeasurementDataFileNameChannel_02 = "IV_MeasurementChannel_02.dat";
+        private string _IV_MeasurementDataFileNameChannel_02 = "IV_CH_02.dat";
         public string IV_MeasurementDataFileNameChannel_02
         {
             get { return _IV_MeasurementDataFileNameChannel_02; }

@@ -73,7 +73,7 @@ namespace BreakJunctions
         }
 
         //File name settings
-        private string _TimeTraceMeasurementChannel_01_DataFileName = "TimeTraceMeasurementChannel_01_.dat";
+        private string _TimeTraceMeasurementChannel_01_DataFileName = "TimeTrace_CH_01_.dat";
         public string TimeTraceMeasurementChannel_01_DataFileName
         {
             get { return _TimeTraceMeasurementChannel_01_DataFileName; }
@@ -137,7 +137,7 @@ namespace BreakJunctions
         }
 
         //File name settings
-        private string _TimeTraceMeasurementChannel_02_DataFileName = "TimeTraceMeasurementChannel_02_.dat";
+        private string _TimeTraceMeasurementChannel_02_DataFileName = "TimeTrace_CH_02_.dat";
         public string TimeTraceMeasurementChannel_02_DataFileName
         {
             get { return _TimeTraceMeasurementChannel_02_DataFileName; }
