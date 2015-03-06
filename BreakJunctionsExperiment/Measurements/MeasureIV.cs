@@ -141,7 +141,7 @@ namespace BreakJunctions.Measurements
                                         break;
                                 }
 
-                                worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
+                                worker.ReportProgress((int)(100 - (Math.Abs(_StartValue) + Math.Abs(_EndValue) - Math.Abs(_StartValue - X)) / (Math.Abs(_StartValue) + Math.Abs(_EndValue)) * 100));
                             }
                         }
                         _Device.SetSourceVoltage(0.0);
@@ -182,7 +182,7 @@ namespace BreakJunctions.Measurements
                                             break;
                                     }
 
-                                    worker.ReportProgress((int)(Math.Abs(1.0 - (_EndValue - X) / _EndValue) * 100 + 1));
+                                    worker.ReportProgress((int)(100 - (Math.Abs(_StartValue) + Math.Abs(_EndValue) - Math.Abs(_StartValue - X)) / (Math.Abs(_StartValue) + Math.Abs(_EndValue)) * 100));
                                 }
                             }
                         }

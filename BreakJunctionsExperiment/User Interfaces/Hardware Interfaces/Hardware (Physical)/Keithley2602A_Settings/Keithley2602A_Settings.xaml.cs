@@ -41,8 +41,6 @@ namespace BreakJunctions
             get { return _Device; }
         }
 
-        KEITHLEY_2602A _TheDevice;
-
         public Keithley2602A_Channel_Settings()
         {
             this.InitializeComponent();
@@ -64,33 +62,32 @@ namespace BreakJunctions
 
             if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
-                _TheDevice.SetDevice(ref _ExperimentalDevice);
-                var smu = _TheDevice.ChannelA;
+                KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                var smu = KEITHLEY_2602A.Instance.ChannelA;
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
-
-                _TheDevice.SetDevice(ref _ExperimentalDevice);
-                var smu = _TheDevice.ChannelA;
+                KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                var smu = KEITHLEY_2602A.Instance.ChannelA;
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
-                _TheDevice.SetDevice(ref _ExperimentalDevice);
-                var smu = _TheDevice.ChannelB;
+                KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                var smu = KEITHLEY_2602A.Instance.ChannelB;
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
-                _TheDevice.SetDevice(ref _ExperimentalDevice);
-                var smu = _TheDevice.ChannelB;                
+                KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                var smu = KEITHLEY_2602A.Instance.ChannelB;                
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);

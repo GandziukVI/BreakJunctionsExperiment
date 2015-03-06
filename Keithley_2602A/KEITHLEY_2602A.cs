@@ -22,7 +22,7 @@ namespace SMU.KEITHLEY_2602A
             _TheDevice = The_GPIB_Device;
         }
 
-        private KEITHLEY_2602A() { }
+        public KEITHLEY_2602A() { }
 
         private static KEITHLEY_2602A _Instance;
         public static KEITHLEY_2602A Instance
@@ -217,14 +217,16 @@ namespace SMU.KEITHLEY_2602A
             var MeasuredValue = "";
 
             var IV_Script =
+                //"status.reset()\n" +
+                //"errorqueue.clear()\n" + 
                 "smu{0}.measure.autorange{1} = smu{0}.AUTORANGE_ON\n" +
                 "display.screen = display.{4}\n" +
                 "display.smu{0}.measure.func = display.{5}\n" +
                 "trigger.clear()\n" +
                 "result = 0.0\n" +
-                "for parameterMeasure = 1, {2} do\n" +
-                "trigger.wait({3})\n" +
-                "result = result + smu{0}.measure.{1}()\n" +
+                "for parameterMeasure = 1, {2} do " +
+                "trigger.wait({3}) " +
+                "result = result + smu{0}.measure.{1}() " +
                 "end\n" +
                 "result = result / ({2} - 1)\n" +
                 "print (result)\n";
@@ -299,6 +301,8 @@ namespace SMU.KEITHLEY_2602A
             var MeasuredValue = "";
 
             var R_Script =
+                //"status.reset()\n" +
+                //"errorqueue.clear()\n" + 
                 "smu{0}.source.func = smu{0}.{1}\n" +
                 "smu{0}.source.autorange{2} = smu{0}.AUTORANGE_ON\n" +
                 "smu{0}.source.level{2} = {3}\n" +
@@ -308,22 +312,24 @@ namespace SMU.KEITHLEY_2602A
                 "display.smu{0}.measure.func = display.{7}\n" +
                 "trigger.clear()\n" +
                 "result = 0.0\n" +
-                "for parameterMeasure = 1, {8} do\n" +
-                "trigger.wait({9})\n" +
-                "result = result + smu{0}.measure.r()\n" +
+                "for parameterMeasure = 1, {8} do " +
+                "trigger.wait({9}) " +
+                "result = result + smu{0}.measure.r() " +
                 "end\n" +
                 "result = result / {8}\n" +
                 "print (result)\n";
 
             var P_Script =
+                //"status.reset()\n" +
+                //"errorqueue.clear()\n" + 
                 "smu{0}.measure.autorange{1} = smu{0}.AUTORANGE_ON\n" +
                 "display.screen = display.{2}\n" +
                 "display.smu{0}.measure.func = display.{3}\n" +
                 "trigger.clear()\n" +
                 "result = 0.0\n" +
-                "for parameterMeasure = 1, {4} do\n" +
-                "trigger.wait({5})\n" +
-                "result = result + smu{0}.measure.p()\n" +
+                "for parameterMeasure = 1, {4} do " +
+                "trigger.wait({5}) " +
+                "result = result + smu{0}.measure.p() " +
                 "end\n" +
                 "result = result / ({4} - 1)\n" +
                 "print (result)\n";

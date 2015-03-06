@@ -28,7 +28,7 @@ namespace BreakJunctions
 
         #region VisaDevice settings
 
-        private string _VisaID = "GPIB0::26::INSTR";//"TCPIP0::134.94.243.192::inst0::INSTR";
+        private string _VisaID = "TCPIP0::134.94.243.192::inst0::INSTR";
         public string VisaID
         {
             get { return _VisaID; }
