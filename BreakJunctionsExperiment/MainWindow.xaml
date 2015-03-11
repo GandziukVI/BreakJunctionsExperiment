@@ -55,7 +55,7 @@
 						</Grid.ColumnDefinitions>
 							
 						<!-- Chart plotter to plot I-V curves -->
-						<d3:ChartPlotter Grid.Row="0" Grid.Column="0" x:Name="chartIV_CurvesChannel_01" Margin="10" LegendVisibility="Hidden">
+						<d3:ChartPlotter Grid.Row="0" Grid.Column="0" x:Name="chartIV_CurvesChannel_01" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
 							<d3:Header Content="I-V characteristics CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>
@@ -68,7 +68,7 @@
 							
 						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-						<d3:ChartPlotter Grid.Row="0" Grid.Column="2" x:Name="chartIV_CurvesChannel_02" Margin="10" LegendVisibility="Hidden">
+						<d3:ChartPlotter Grid.Row="0" Grid.Column="2" x:Name="chartIV_CurvesChannel_02" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
 							<d3:Header Content="I-V characteristics CH_02"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>
@@ -99,7 +99,7 @@
 						</Grid.ColumnDefinitions>
 							
 						<!-- Time trace chart -->
-						<d3:ChartPlotter x:Name="chartTimeTraceChannel_01" Grid.Row="0" Grid.Column="0" Margin="10" LegendVisibility="Hidden">	
+						<d3:ChartPlotter x:Name="chartTimeTraceChannel_01" Grid.Row="0" Grid.Column="0" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">	
 							<d3:Header Content="Time trace CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Distance"/>
@@ -112,7 +112,7 @@
 						
 						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-						<d3:ChartPlotter x:Name="chartTimeTraceChannel_02" Grid.Row="0" Grid.Column="2" Margin="10" LegendVisibility="Hidden">	
+						<d3:ChartPlotter x:Name="chartTimeTraceChannel_02" Grid.Row="0" Grid.Column="2" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">	
 							<d3:Header Content="Time trace CH_02"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Distance"/>
@@ -182,7 +182,7 @@
                     
                     <!--Begin Sample 01 Resistance-->
 
-                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisibility="Hidden">
+                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
                         <d3:Header Content="Real Time Resistance Sample_01"/>
                         <d3:HorizontalAxis>
                             <d3:HorizontalAxisTitle Content="Time"/>
@@ -199,7 +199,7 @@
 
                     <!--Begin Sample 01 Resistance-->
 
-                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisibility="Hidden">
+                    <d3:ChartPlotter x:Name="chartRealTimeTimeTraceSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
                         <d3:Header Content="Real Time Resistance Sample_02"/>
                         <d3:HorizontalAxis>
                             <d3:HorizontalAxisTitle Content="Time"/>
@@ -264,7 +264,7 @@
 
                         <!--Begin Sample 01 Resistance-->
 
-                        <d3:ChartPlotter x:Name="chartNoiseSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisibility="Hidden">
+                        <d3:ChartPlotter x:Name="chartNoiseSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
                             <d3:Header Content="Noise Sample_01"/>
                             <d3:HorizontalAxis>
                                 <d3:HorizontalAxisTitle Content="Frequency"/>
@@ -281,7 +281,7 @@
 
                         <!--Begin Sample 01 Resistance-->
 
-                        <d3:ChartPlotter x:Name="chartNoiseSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisibility="Hidden">
+                        <d3:ChartPlotter x:Name="chartNoiseSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisibility="Collapsed"  NewLegendVisible="False">
                             <d3:Header Content="Noise Sample_02"/>
                             <d3:HorizontalAxis>
                                 <d3:HorizontalAxisTitle Content="Frequency"/>

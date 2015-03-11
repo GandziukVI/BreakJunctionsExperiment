@@ -100,7 +100,7 @@ namespace BreakJunctions
         private IV_MeasurementLog _IV_MeasurementLogChannel_01;
         private IV_SingleMeasurement _IV_SingleMeasurementChannel_01;
 
-        private SaveFileDialog _SaveIV_MeasureDialogChannel_01;
+        private System.Windows.Forms.FolderBrowserDialog _SaveIV_MeasureDialogChannel_01;
         private string _SaveIV_MeasuremrentFileNameChannel_01;
 
         #endregion
@@ -123,7 +123,7 @@ namespace BreakJunctions
         private IV_MeasurementLog _IV_MeasurementLogChannel_02;
         private IV_SingleMeasurement _IV_SingleMeasurementChannel_02;
 
-        private SaveFileDialog _SaveIV_MeasureDialogChannel_02;
+        private System.Windows.Forms.FolderBrowserDialog _SaveIV_MeasureDialogChannel_02;
         private string _SaveIV_MeasuremrentFileNameChannel_02;
 
         #endregion
@@ -145,7 +145,7 @@ namespace BreakJunctions
         private TimeTraceMeasurementLog _TimeTraceMeasurementLogChannel_01;
         private TimeTraceSingleMeasurement _TimeTraceSingleMeasurementChannel_01;
 
-        private SaveFileDialog _SaveTimeTraceMeasureDialogChannel_01;
+        private System.Windows.Forms.FolderBrowserDialog _SaveTimeTraceMeasureDialogChannel_01;
         private string _SaveTimeTraceMeasuremrentFileNameChannel_01;
 
         #endregion
@@ -161,7 +161,7 @@ namespace BreakJunctions
         private TimeTraceMeasurementLog _TimeTraceMeasurementLogChannel_02;
         private TimeTraceSingleMeasurement _TimeTraceSingleMeasurementChannel_02;
 
-        private SaveFileDialog _SaveTimeTraceMeasureDialogChannel_02;
+        private System.Windows.Forms.FolderBrowserDialog _SaveTimeTraceMeasureDialogChannel_02;
         private string _SaveTimeTraceMeasuremrentFileNameChannel_02;
 
         #endregion
@@ -210,7 +210,7 @@ namespace BreakJunctions
         private BackgroundWorker _Background_RealTime_TimeTrace_Measurement;
         private MeasureRealTimeTimeTrace _RealTime_TimeTrace_Curve;
 
-        private SaveFileDialog _SaveRealTimeTraceMeasureDataDialog;
+        private System.Windows.Forms.FolderBrowserDialog _SaveRealTimeTraceMeasureDataDialog;
         private string _SaveRealTimeTraceMeasuremrentDataFileName;
 
         #endregion
@@ -477,22 +477,14 @@ namespace BreakJunctions
             #region 1-st channel
 
             _SaveIV_MeasuremrentFileNameChannel_01 = string.Empty;
-
-            _SaveIV_MeasureDialogChannel_01 = new SaveFileDialog();
-            _SaveIV_MeasureDialogChannel_01.FileName = "IV_MeasurementChannel_01_";
-            _SaveIV_MeasureDialogChannel_01.DefaultExt = ".dat";
-            _SaveIV_MeasureDialogChannel_01.Filter = "Measure data (.dat)|*.dat";
+            _SaveIV_MeasureDialogChannel_01 = new System.Windows.Forms.FolderBrowserDialog();
 
             #endregion
 
             #region 2-nd channel
 
             _SaveIV_MeasuremrentFileNameChannel_02 = string.Empty;
-
-            _SaveIV_MeasureDialogChannel_02 = new SaveFileDialog();
-            _SaveIV_MeasureDialogChannel_02.FileName = "IV_MeasurementChannel_02_";
-            _SaveIV_MeasureDialogChannel_02.DefaultExt = ".dat";
-            _SaveIV_MeasureDialogChannel_02.Filter = "Measure data (.dat)|*.dat";
+            _SaveIV_MeasureDialogChannel_02 = new System.Windows.Forms.FolderBrowserDialog();
 
             #endregion
 
@@ -500,30 +492,26 @@ namespace BreakJunctions
 
             #region Save Time Trace data to file dialog configuration
 
-            _SaveTimeTraceMeasuremrentFileNameChannel_01 = string.Empty;
+            #region 1-st channel
 
-            _SaveTimeTraceMeasureDialogChannel_01 = new SaveFileDialog();
-            _SaveTimeTraceMeasureDialogChannel_01.FileName = "TimeTraceMeasurementChannel_01_"; //String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "TimeTraceMeasurementChannel_01_");
-            _SaveTimeTraceMeasureDialogChannel_01.DefaultExt = ".dat";
-            _SaveTimeTraceMeasureDialogChannel_01.Filter = "Measure data (.dat)|*.dat";
+            _SaveTimeTraceMeasuremrentFileNameChannel_01 = string.Empty;
+            _SaveTimeTraceMeasureDialogChannel_01 = new System.Windows.Forms.FolderBrowserDialog();
+
+            #endregion
+
+            #region 2-nd channel
 
             _SaveTimeTraceMeasuremrentFileNameChannel_02 = string.Empty;
+            _SaveTimeTraceMeasureDialogChannel_02 = new System.Windows.Forms.FolderBrowserDialog();
 
-            _SaveTimeTraceMeasureDialogChannel_02 = new SaveFileDialog();
-            _SaveTimeTraceMeasureDialogChannel_02.FileName = "TimeTraceMeasurementChannel_02_"; //String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "TimeTraceMeasurementChannel_02_");
-            _SaveTimeTraceMeasureDialogChannel_02.DefaultExt = ".dat";
-            _SaveTimeTraceMeasureDialogChannel_02.Filter = "Measure data (.dat)|*.dat";
+            #endregion
 
             #endregion
 
             #region Save Real Time Time trace data to fie dialog configuration
 
             _SaveRealTimeTraceMeasuremrentDataFileName = string.Empty;
-
-            _SaveRealTimeTraceMeasureDataDialog = new SaveFileDialog();
-            _SaveRealTimeTraceMeasureDataDialog.FileName = "RealTime_TimeTrace_Measurement_";//String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), "RealTime_TimeTrace_Measurement_");
-            _SaveRealTimeTraceMeasureDataDialog.DefaultExt = ".dat";
-            _SaveRealTimeTraceMeasureDataDialog.Filter = "Measure data (.dat)|*.dat";
+            _SaveRealTimeTraceMeasureDataDialog = new System.Windows.Forms.FolderBrowserDialog();
 
             #endregion
         }
@@ -813,12 +801,21 @@ namespace BreakJunctions
         private void on_cmdIV_DataFileNameBrowseClickChannel_01(object sender, RoutedEventArgs e)
         {
             //Choosing file name to save data
-            Nullable<bool> dialogResult = _SaveIV_MeasureDialogChannel_01.ShowDialog();
+            var dialogResult =  _SaveIV_MeasureDialogChannel_01.ShowDialog();
 
-            if (dialogResult == true)
+            var _FileName = controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_01.EndsWith(".dat") ?
+                    controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_01
+                    : controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_01 + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveIV_MeasuremrentFileNameChannel_01 = String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName);
+            else
             {
-                _SaveIV_MeasuremrentFileNameChannel_01 = _SaveIV_MeasureDialogChannel_01.FileName;
-                this.controlIV_MeasurementSettings.textBoxIV_FileNameChannel_01.Text = _SaveIV_MeasureDialogChannel_01.SafeFileName;
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveIV_MeasuremrentFileNameChannel_01 = String.Format("{0}\\{1}", _Path, _FileName);
             }
         }
 
@@ -853,12 +850,21 @@ namespace BreakJunctions
         private void on_cmdIV_DataFileNameBrowseClickChannel_02(object sender, RoutedEventArgs e)
         {
             //Choosing file name to save data
-            Nullable<bool> dialogResult = _SaveIV_MeasureDialogChannel_02.ShowDialog();
+            var dialogResult = _SaveIV_MeasureDialogChannel_02.ShowDialog();
 
-            if (dialogResult == true)
+            var _FileName = controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_02.EndsWith(".dat") ?
+                    controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_02
+                    : controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_02 + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveIV_MeasuremrentFileNameChannel_02 = String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_02.SelectedPath, _FileName);
+            else
             {
-                _SaveIV_MeasuremrentFileNameChannel_02 = _SaveIV_MeasureDialogChannel_02.FileName;
-                this.controlIV_MeasurementSettings.textBoxIV_FileNameChannel_02.Text = _SaveIV_MeasureDialogChannel_02.SafeFileName;
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveIV_MeasuremrentFileNameChannel_02 = String.Format("{0}\\{1}", _Path, _FileName);
             }
         }
 
@@ -1285,24 +1291,42 @@ namespace BreakJunctions
         private void on_cmdTimeTraceDataFileNameBrowseClickChannel_01(object sender, RoutedEventArgs e)
         {
             //Choosing file name to save data
-            Nullable<bool> dialogResult = _SaveTimeTraceMeasureDialogChannel_01.ShowDialog();
+            var dialogResult = _SaveTimeTraceMeasureDialogChannel_01.ShowDialog();
 
-            if (dialogResult == true)
+            var _FileName = controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName.EndsWith(".dat") ?
+                    controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName
+                    : controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveTimeTraceMeasuremrentFileNameChannel_01 = String.Format("{0}\\{1}", _SaveTimeTraceMeasureDialogChannel_01.SelectedPath, _FileName);
+            else
             {
-                _SaveTimeTraceMeasuremrentFileNameChannel_01 = _SaveTimeTraceMeasureDialogChannel_01.FileName;
-                this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName = _SaveTimeTraceMeasureDialogChannel_01.SafeFileName;
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveIV_MeasuremrentFileNameChannel_01 = String.Format("{0}\\{1}", _Path, _FileName);
             }
         }
 
         private void on_cmdTimeTraceDataFileNameBrowseClickChannel_02(object sender, RoutedEventArgs e)
         {
             //Choosing file name to save data
-            Nullable<bool> dialogResult = _SaveTimeTraceMeasureDialogChannel_02.ShowDialog();
+            var dialogResult = _SaveTimeTraceMeasureDialogChannel_02.ShowDialog();
 
-            if (dialogResult == true)
+            var _FileName = controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName.EndsWith(".dat") ?
+                    controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName
+                    : controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveTimeTraceMeasuremrentFileNameChannel_02 = String.Format("{0}\\{1}", _SaveTimeTraceMeasureDialogChannel_02.SelectedPath, _FileName);
+            else
             {
-                _SaveTimeTraceMeasuremrentFileNameChannel_02 = _SaveTimeTraceMeasureDialogChannel_02.FileName;
-                this.controlTimeTraceMeasurementSettings.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName = _SaveTimeTraceMeasureDialogChannel_02.SafeFileName;
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveIV_MeasuremrentFileNameChannel_02 = String.Format("{0}\\{1}", _Path, _FileName);
             }
         }
 
@@ -1400,9 +1424,23 @@ namespace BreakJunctions
 
         private void on_cmdRealTime_TimeTrace_SaveFileClick(object sender, RoutedEventArgs e)
         {
-            _SaveRealTimeTraceMeasureDataDialog.ShowDialog();
-            this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.SaveFileName = _SaveRealTimeTraceMeasureDataDialog.SafeFileName;
-            _SaveRealTimeTraceMeasuremrentDataFileName = _SaveRealTimeTraceMeasureDataDialog.FileName;
+            //Choosing file name to save data
+            var dialogResult = _SaveRealTimeTraceMeasureDataDialog.ShowDialog();
+
+            var _FileName = controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.SaveFileName.EndsWith(".dat") ?
+                    controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.SaveFileName
+                    : controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.SaveFileName + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveRealTimeTraceMeasuremrentDataFileName = String.Format("{0}\\{1}", _SaveRealTimeTraceMeasureDataDialog.SelectedPath, _FileName);
+            else
+            {
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveRealTimeTraceMeasuremrentDataFileName = String.Format("{0}\\{1}", _Path, _FileName);
+            }
         }
 
         private void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
