@@ -162,6 +162,7 @@
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\LastNoiseSpectra_Channel_01_DataArrived_EventArgs.cs" />
+    <Compile Include="Measurements\MeasureIV_Simulation.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\MVVM_PI_E755_ConfigurationPage.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\PI_E755_ConfigurationPage.xaml.cs">
       <DependentUpon>PI_E755_ConfigurationPage.xaml</DependentUpon>

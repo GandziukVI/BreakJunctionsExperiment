@@ -872,6 +872,212 @@ namespace BreakJunctions
 
         #endregion
 
+        #region IV Measurements Simulation Interface Interactions
+
+        LineGraph _IV_Simulation_LineGraphChannel_01;
+        LineGraph _IV_Simulation_LineGraphChannel_02;
+
+        ExperimentalIV_DataSourceChannel _experimentalIV_Simulation_DataSourceChannel_01;
+        ExperimentalIV_DataSourceChannel _experimentalIV_Simulation_DataSourceChannel_02;
+
+        private bool InitIV_Simulation_Measurements()
+        {
+            if (_experimentalIV_Simulation_DataSourceChannel_01 == null)
+                _experimentalIV_Simulation_DataSourceChannel_01 = new ExperimentalIV_DataSourceChannel(ChannelsToInvestigate.Channel_01);
+            if (_experimentalIV_Simulation_DataSourceChannel_02 == null)
+                _experimentalIV_Simulation_DataSourceChannel_02 = new ExperimentalIV_DataSourceChannel(ChannelsToInvestigate.Channel_02);
+
+            if (_IV_Simulation_LineGraphChannel_01 == null)
+                _IV_Simulation_LineGraphChannel_01 = new LineGraph(_experimentalIV_Simulation_DataSourceChannel_01);
+            if (_IV_Simulation_LineGraphChannel_02 == null)
+                _IV_Simulation_LineGraphChannel_02 = new LineGraph(_experimentalIV_Simulation_DataSourceChannel_02);
+
+            #region SMU, rendering and save data configurations
+
+            //Checking the SMU settings
+            if ((sourceDeviceConfigurationChannel_01 != null) && (sourceDeviceConfigurationChannel_02 != null))
+            {
+                #region Chart rendering settings
+
+                #region 1-st channel
+
+                //Initializing a new plot on I-V chart
+                if (_IV_Simulation_LineGraphChannel_01 != null)
+                {
+                    //Detaching receive event from "old" data source
+                    _experimentalIV_Simulation_DataSourceChannel_01.DetachPointReceiveEvent();
+                    _IV_Simulation_LineGraphChannel_01.RemoveFromPlotter();
+                }
+                //Creating new plot and attaching it to the chart
+                _experimentalIV_Simulation_DataSourceChannel_01 = new ExperimentalIV_DataSourceChannel(ChannelsToInvestigate.Channel_01);
+                _experimentalIV_Simulation_DataSourceChannel_01.AttachPointReceiveEvent();
+                _IV_Simulation_LineGraphChannel_01 = new LineGraph(_experimentalIV_Simulation_DataSourceChannel_01);
+                _IV_Simulation_LineGraphChannel_01.AddToPlotter(chartIV_CurvesChannel_01_Simulation);
+
+                #endregion
+
+                #region 2-nd channel
+
+                //Initializing a new plot on I-V chart
+                if (_IV_Simulation_LineGraphChannel_02 != null)
+                {
+                    //Detaching receive event from "old" data source
+                    _experimentalIV_Simulation_DataSourceChannel_02.DetachPointReceiveEvent();
+                    _IV_Simulation_LineGraphChannel_02.RemoveFromPlotter();
+                }
+                //Creating new plot and attaching it to the chart
+                _experimentalIV_Simulation_DataSourceChannel_02 = new ExperimentalIV_DataSourceChannel(ChannelsToInvestigate.Channel_02);
+                _experimentalIV_Simulation_DataSourceChannel_02.AttachPointReceiveEvent();
+                _IV_Simulation_LineGraphChannel_02 = new LineGraph(_experimentalIV_Simulation_DataSourceChannel_02);
+                _IV_Simulation_LineGraphChannel_02.AddToPlotter(chartIV_CurvesChannel_02_Simulation);
+
+                #endregion
+
+                #endregion
+
+                //Getting SMU device
+
+                /*      Better implementation for lot of SMU kinds neened     */
+
+                switch (sourceDeviceConfigurationChannel_01.SelectedSource)
+                {
+                    case AvailableSources.KEITHLEY_2602A:
+                        {
+                            DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
+                        } break;
+                    case AvailableSources.KEITHLEY_4200:
+                        {
+                            DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley4200_DeviceSettings.Device;
+                        } break;
+                    default:
+                        throw new Exception("Non supported source for channel 01 selected!");
+                }
+
+                switch (sourceDeviceConfigurationChannel_02.SelectedSource)
+                {
+                    case AvailableSources.KEITHLEY_2602A:
+                        {
+                            DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
+                        } break;
+                    case AvailableSources.KEITHLEY_4200:
+                        {
+                            DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley4200_DeviceSettings.Device;
+                        } break;
+                    default:
+                        throw new Exception("Non supported source for channel 01 selected!");
+                }
+
+                #region I-V measurement configuration
+
+                #region General configuration
+
+                _IV_ExperimentSettings = controlIV_MeasurementSettings.MeasurementSettings;
+
+                var NumberOfAverages = _IV_ExperimentSettings.IV_MeasurementNumberOfAverages;
+                var TimeDelay = _IV_ExperimentSettings.IV_MeasurementTimeDelay;
+
+                SourceMode DeviceSourceMode = SourceMode.Voltage;
+
+                if (_IV_ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
+                {
+                    DeviceSourceMode = SourceMode.Voltage;
+                }
+                else if (_IV_ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
+                {
+                    DeviceSourceMode = SourceMode.Current;
+                }
+
+                var Thread_01_Step = new AutoResetEvent(false);
+                var Thread_02_Step = new AutoResetEvent(true);
+
+                #endregion
+
+                #region 1-st channel settings
+
+                var StartValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementStartValueWithMultiplierChannel_01;
+                var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_01;
+                var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_01;
+
+                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01, ref Thread_01_Step, ref Thread_02_Step);
+
+                #endregion
+
+                #region 2-nd channel settings
+
+                var StartValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementStartValueWithMultiplierChannel_02;
+                var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_02;
+                var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_02;
+
+                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02, ref Thread_01_Step, ref Thread_02_Step);
+
+                #endregion
+
+                #endregion
+
+                #region Saving I-V data into files
+
+                var newFileNameChannel_01 = string.Empty;
+                var newFileNameChannel_02 = string.Empty;
+
+                if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_02))
+                {
+                    _IV_MeasurementLogChannel_01 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_01)).DirectoryName + "\\IV_MeasurementLogChannel_01.dat");
+                    _IV_MeasurementLogChannel_02 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_02)).DirectoryName + "\\IV_MeasurementLogChannel_02.dat");
+
+                    newFileNameChannel_01 = GetFileNameWithIncrement(_SaveIV_MeasuremrentFileNameChannel_01);
+                    newFileNameChannel_02 = GetFileNameWithIncrement(_SaveIV_MeasuremrentFileNameChannel_02);
+                }
+
+                if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_02))
+                {
+                    var fileNameChannel_01 = (new FileInfo(newFileNameChannel_01)).Name;
+                    var fileNameChannel_02 = (new FileInfo(newFileNameChannel_02)).Name;
+
+                    var sourceMode = string.Empty;
+
+                    if (_IV_ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
+                    {
+                        sourceMode = "Source mode: Voltage";
+                    }
+                    else if (_IV_ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
+                    {
+                        sourceMode = "SourceMode: Current";
+                    }
+
+                    //Some Comment
+                    double micrometricBoltPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
+
+                    string comment = _IV_ExperimentSettings.IV_MeasurementDataComment;
+
+                    _IV_MeasurementLogChannel_01.AddNewIV_MeasurementLog(fileNameChannel_01, sourceMode, micrometricBoltPosition, comment);
+                    _IV_MeasurementLogChannel_02.AddNewIV_MeasurementLog(fileNameChannel_02, sourceMode, micrometricBoltPosition, comment);
+                }
+
+                if ((_IV_SingleMeasurementChannel_01 != null) && (_IV_SingleMeasurementChannel_02 != null))
+                {
+                    _IV_SingleMeasurementChannel_01.Dispose();
+                    _IV_SingleMeasurementChannel_02.Dispose();
+                }
+
+
+                _IV_SingleMeasurementChannel_01 = new IV_SingleMeasurement(newFileNameChannel_01, ChannelsToInvestigate.Channel_01);
+                _IV_SingleMeasurementChannel_02 = new IV_SingleMeasurement(newFileNameChannel_02, ChannelsToInvestigate.Channel_02);
+
+                #endregion
+
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("The channels of the device are not initialized.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            #endregion
+        }
+
+        #endregion
+
         #region Time Trace Measurements Interface Interactions
 
         private bool InitTimeTraceMeasurements()
