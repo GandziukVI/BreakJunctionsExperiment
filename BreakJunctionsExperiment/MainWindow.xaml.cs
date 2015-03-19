@@ -132,6 +132,24 @@ namespace BreakJunctions
 
         #endregion
 
+        #region I-V simulation data handling and presenting
+
+        #region 1-st channel
+
+        MeasureIV_Simulation IV_Simulation_CurveChannel_01;
+        BackgroundWorker backgroundIV_Simulation_MeasureChannel_01;
+
+        #endregion
+
+        #region 2-nd channel
+
+        MeasureIV_Simulation IV_Simulation_CurveChannel_02;
+        BackgroundWorker backgroundIV_Simulation_MeasureChannel_02;
+
+        #endregion
+
+        #endregion
+
         #region Time Trace data handling and presenting
 
         #region 1-st channel
@@ -343,6 +361,26 @@ namespace BreakJunctions
             chartNoiseSample_02.MainHorizontalAxis = LogarifmicHorizontalNoiseAxisChannel_02;
             chartNoiseSample_02.AxisGrid.DrawHorizontalMinorTicks = true;
 
+            chartTimeTraceChannel_01_Simulation.DataTransform = new Log10YTransform();
+            VerticalAxis LogarifmicTimeTraceAxis_Channel_01_Simulation = new VerticalAxis
+            {
+                TicksProvider = new LogarithmNumericTicksProvider(10),
+                LabelProvider = new UnroundingLabelProvider()
+            };
+
+            chartTimeTraceChannel_01_Simulation.MainVerticalAxis = LogarifmicTimeTraceAxis_Channel_01_Simulation;
+            chartTimeTraceChannel_01_Simulation.AxisGrid.DrawVerticalMinorTicks = true;
+
+            chartTimeTraceChannel_02_Simulation.DataTransform = new Log10YTransform();
+            VerticalAxis LogarifmicTimeTraceAxis_Channel_02_Simulation = new VerticalAxis
+            {
+                TicksProvider = new LogarithmNumericTicksProvider(10),
+                LabelProvider = new UnroundingLabelProvider()
+            };
+
+            chartTimeTraceChannel_02_Simulation.MainVerticalAxis = LogarifmicTimeTraceAxis_Channel_02_Simulation;
+            chartTimeTraceChannel_02_Simulation.AxisGrid.DrawVerticalMinorTicks = true;
+
             #endregion
 
             #region Interface model-view interactions
@@ -354,6 +392,16 @@ namespace BreakJunctions
 
             controlIV_MeasurementSettings.cmdIV_StartMeasurement.Click += on_cmdIV_StartMeasurementClick;
             controlIV_MeasurementSettings.cmdIV_StopMeasurement.Click += on_cmdIV_StopMeasurementClick;
+
+            #endregion
+
+            #region I-V simulation model-view interactions
+
+            controlIV_MeasurementSettings_Simulation.cmdIV_DataFileNameBrowseChannel_01.Click += on_cmdIV_Simulation_DataFileNameBrowseClickChannel_01;
+            controlIV_MeasurementSettings_Simulation.cmdIV_DataFileNameBrowseChannel_02.Click += on_cmdIV_Simulation_DataFileNameBrowseClickChannel_02;
+
+            controlIV_MeasurementSettings_Simulation.cmdIV_StartMeasurement.Click += on_cmdIV_Simulation_StartMeasurementClick;
+            controlIV_MeasurementSettings_Simulation.cmdIV_StopMeasurement.Click += on_cmdIV_Simulation_StopMeasurementClick;
 
             #endregion
 
@@ -420,6 +468,32 @@ namespace BreakJunctions
             backgroundIV_MeasureChannel_02.DoWork += backgroundIV_Measure_DoWorkChannel_02;
             backgroundIV_MeasureChannel_02.ProgressChanged += backgroundIV_Measure_ProgressChangedChannel_02;
             backgroundIV_MeasureChannel_02.RunWorkerCompleted += backgroundIV_Measure_RunWorkerCompletedChannel_02;
+
+            #endregion
+
+            #endregion
+
+            #region Background I-V Simulation Measuremrent
+
+            #region 1-st channel
+
+            backgroundIV_Simulation_MeasureChannel_01 = new BackgroundWorker();
+            backgroundIV_Simulation_MeasureChannel_01.WorkerSupportsCancellation = true;
+            backgroundIV_Simulation_MeasureChannel_01.WorkerReportsProgress = true;
+            backgroundIV_Simulation_MeasureChannel_01.DoWork += backgroundIV_Simulation_Measure_DoWorkChannel_01;
+            backgroundIV_Simulation_MeasureChannel_01.ProgressChanged += backgroundIV_Simulation_Measure_ProgressChangedChannel_01;
+            backgroundIV_Simulation_MeasureChannel_01.RunWorkerCompleted += backgroundIV_Simulation_Measure_RunWorkerCompletedChannel_01;
+
+            #endregion
+
+            #region 2-nd channel
+
+            backgroundIV_Simulation_MeasureChannel_02 = new BackgroundWorker();
+            backgroundIV_Simulation_MeasureChannel_02.WorkerSupportsCancellation = true;
+            backgroundIV_Simulation_MeasureChannel_02.WorkerReportsProgress = true;
+            backgroundIV_Simulation_MeasureChannel_02.DoWork += backgroundIV_Simulation_Measure_DoWorkChannel_02;
+            backgroundIV_Simulation_MeasureChannel_02.ProgressChanged += backgroundIV_Simulation_Measure_ProgressChangedChannel_02;
+            backgroundIV_Simulation_MeasureChannel_02.RunWorkerCompleted += backgroundIV_Simulation_Measure_RunWorkerCompletedChannel_02;
 
             #endregion
 
@@ -971,7 +1045,7 @@ namespace BreakJunctions
 
                 #region General configuration
 
-                _IV_ExperimentSettings = controlIV_MeasurementSettings.MeasurementSettings;
+                _IV_ExperimentSettings = controlIV_MeasurementSettings_Simulation.MeasurementSettings;
 
                 var NumberOfAverages = _IV_ExperimentSettings.IV_MeasurementNumberOfAverages;
                 var TimeDelay = _IV_ExperimentSettings.IV_MeasurementTimeDelay;
@@ -998,7 +1072,7 @@ namespace BreakJunctions
                 var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_01;
                 var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_01;
 
-                IV_CurveChannel_01 = new MeasureIV(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01, ref Thread_01_Step, ref Thread_02_Step);
+                IV_Simulation_CurveChannel_01 = new MeasureIV_Simulation(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01, ref Thread_01_Step, ref Thread_02_Step);
 
                 #endregion
 
@@ -1008,60 +1082,19 @@ namespace BreakJunctions
                 var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_02;
                 var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_02;
 
-                IV_CurveChannel_02 = new MeasureIV(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02, ref Thread_01_Step, ref Thread_02_Step);
+                IV_Simulation_CurveChannel_02 = new MeasureIV_Simulation(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02, ref Thread_01_Step, ref Thread_02_Step);
 
                 #endregion
 
                 #endregion
 
-                #region Saving I-V data into files
+                #region Getting I-V data into files
 
-                var newFileNameChannel_01 = string.Empty;
-                var newFileNameChannel_02 = string.Empty;
+                var _FileName_CH_01 = _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01.EndsWith(".dat") ? _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01 : _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01 + ".dat";
+                IV_Simulation_CurveChannel_01.SimulationFileName = String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName_CH_01);
 
-                if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_02))
-                {
-                    _IV_MeasurementLogChannel_01 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_01)).DirectoryName + "\\IV_MeasurementLogChannel_01.dat");
-                    _IV_MeasurementLogChannel_02 = new IV_MeasurementLog((new FileInfo(_SaveIV_MeasuremrentFileNameChannel_02)).DirectoryName + "\\IV_MeasurementLogChannel_02.dat");
-
-                    newFileNameChannel_01 = GetFileNameWithIncrement(_SaveIV_MeasuremrentFileNameChannel_01);
-                    newFileNameChannel_02 = GetFileNameWithIncrement(_SaveIV_MeasuremrentFileNameChannel_02);
-                }
-
-                if (!string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_01) && !string.IsNullOrEmpty(_SaveIV_MeasuremrentFileNameChannel_02))
-                {
-                    var fileNameChannel_01 = (new FileInfo(newFileNameChannel_01)).Name;
-                    var fileNameChannel_02 = (new FileInfo(newFileNameChannel_02)).Name;
-
-                    var sourceMode = string.Empty;
-
-                    if (_IV_ExperimentSettings.IsIV_MeasurementVoltageModeChecked == true)
-                    {
-                        sourceMode = "Source mode: Voltage";
-                    }
-                    else if (_IV_ExperimentSettings.IsIV_MeasurementCurrentModeChecked == true)
-                    {
-                        sourceMode = "SourceMode: Current";
-                    }
-
-                    //Some Comment
-                    double micrometricBoltPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition;
-
-                    string comment = _IV_ExperimentSettings.IV_MeasurementDataComment;
-
-                    _IV_MeasurementLogChannel_01.AddNewIV_MeasurementLog(fileNameChannel_01, sourceMode, micrometricBoltPosition, comment);
-                    _IV_MeasurementLogChannel_02.AddNewIV_MeasurementLog(fileNameChannel_02, sourceMode, micrometricBoltPosition, comment);
-                }
-
-                if ((_IV_SingleMeasurementChannel_01 != null) && (_IV_SingleMeasurementChannel_02 != null))
-                {
-                    _IV_SingleMeasurementChannel_01.Dispose();
-                    _IV_SingleMeasurementChannel_02.Dispose();
-                }
-
-
-                _IV_SingleMeasurementChannel_01 = new IV_SingleMeasurement(newFileNameChannel_01, ChannelsToInvestigate.Channel_01);
-                _IV_SingleMeasurementChannel_02 = new IV_SingleMeasurement(newFileNameChannel_02, ChannelsToInvestigate.Channel_02);
+                var _FileName_CH_02 = _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_02.EndsWith(".dat") ? _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_02 : _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_02 + ".dat";
+                IV_Simulation_CurveChannel_02.SimulationFileName = String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName_CH_01);
 
                 #endregion
 
@@ -1075,6 +1108,131 @@ namespace BreakJunctions
 
             #endregion
         }
+
+        private void on_cmdIV_Simulation_StartMeasurementClick(object sender, RoutedEventArgs e)
+        {
+            if (backgroundIV_MeasureChannel_01.IsBusy == true || backgroundIV_MeasureChannel_02.IsBusy == true)
+            {
+                on_cmdIV_Simulation_StopMeasurementClick(sender, e);
+                Thread.Sleep(1000);
+            }
+
+            var isInitSuccess = InitIV_Simulation_Measurements();
+
+            //Starting I-V measurements in background
+            if ((isInitSuccess == true) && (backgroundIV_MeasureChannel_01.IsBusy == false) && (backgroundIV_MeasureChannel_02.IsBusy == false))
+            {
+                backgroundIV_MeasureChannel_01.RunWorkerAsync();
+                backgroundIV_MeasureChannel_02.RunWorkerAsync();
+            }
+        }
+
+        private void on_cmdIV_Simulation_StopMeasurementClick(object sender, RoutedEventArgs e)
+        {
+            //Canceling I-V measures
+            if (backgroundIV_Simulation_MeasureChannel_01.IsBusy == true)
+                backgroundIV_Simulation_MeasureChannel_01.CancelAsync();
+            if (backgroundIV_Simulation_MeasureChannel_02.IsBusy == true)
+                backgroundIV_Simulation_MeasureChannel_02.CancelAsync();
+        }
+
+        #region 1-st Channel Background Work
+
+        private void backgroundIV_Simulation_Measure_DoWorkChannel_01(object sender, DoWorkEventArgs e)
+        {
+            //Updating interface to show that measurement is in process
+            this.Dispatcher.BeginInvoke(new Action(delegate()
+            {
+                this.labelMeasurementStatusChannel_01.Content = "In process...";
+            }));
+
+            //Starting measurements
+            IV_Simulation_CurveChannel_01.StartMeasurement(sender, e);
+        }
+
+        private void backgroundIV_Simulation_Measure_ProgressChangedChannel_01(object sender, ProgressChangedEventArgs e)
+        {
+            //Updating interface to show measurement progress
+            this.progressBarMeasurementProgressChannel_01.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundIV_Simulation_Measure_RunWorkerCompletedChannel_01(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //Updating interface to show that measurement is completed
+            this.labelMeasurementStatusChannel_01.Content = "Ready";
+        }
+
+        private void on_cmdIV_Simulation_DataFileNameBrowseClickChannel_01(object sender, RoutedEventArgs e)
+        {
+            //Choosing file name to save data
+            var dialogResult = _SaveIV_MeasureDialogChannel_01.ShowDialog();
+
+            var _FileName = controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_01.EndsWith(".dat") ?
+                    controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_01
+                    : controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_01 + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveIV_MeasuremrentFileNameChannel_01 = String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName);
+            else
+            {
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveIV_MeasuremrentFileNameChannel_01 = String.Format("{0}\\{1}", _Path, _FileName);
+            }
+        }
+
+        #endregion
+
+        #region 2-nd Channel Background Work
+
+        private void backgroundIV_Simulation_Measure_DoWorkChannel_02(object sender, DoWorkEventArgs e)
+        {
+            //Updating interface to show that measurement is in process
+            this.Dispatcher.BeginInvoke(new Action(delegate()
+            {
+                this.labelMeasurementStatusChannel_02.Content = "In process...";
+            }));
+
+            //Starting measurements
+            IV_Simulation_CurveChannel_02.StartMeasurement(sender, e);
+        }
+
+        private void backgroundIV_Simulation_Measure_ProgressChangedChannel_02(object sender, ProgressChangedEventArgs e)
+        {
+            //Updating interface to show measurement progress
+            this.progressBarMeasurementProgressChannel_02.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundIV_Simulation_Measure_RunWorkerCompletedChannel_02(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //Updating interface to show that measurement is completed
+            this.labelMeasurementStatusChannel_02.Content = "Ready";
+        }
+
+        private void on_cmdIV_Simulation_DataFileNameBrowseClickChannel_02(object sender, RoutedEventArgs e)
+        {
+            //Choosing file name to save data
+            var dialogResult = _SaveIV_MeasureDialogChannel_02.ShowDialog();
+
+            var _FileName = controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_02.EndsWith(".dat") ?
+                    controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_02
+                    : controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_02 + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveIV_MeasuremrentFileNameChannel_02 = String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_02.SelectedPath, _FileName);
+            else
+            {
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveIV_MeasuremrentFileNameChannel_02 = String.Format("{0}\\{1}", _Path, _FileName);
+            }
+        }
+
+        #endregion
 
         #endregion
 

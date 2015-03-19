@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using BreakJunctions.Events;
 using BreakJunctions.Plotting;
@@ -12,7 +13,7 @@ using System.Threading;
 
 namespace BreakJunctions.Measurements
 {
-    class MeasureIV_Simulation
+    class MeasureIV_Simulation : IDisposable
     {
         private double _StartValue;
         public double StartValue
@@ -61,6 +62,10 @@ namespace BreakJunctions.Measurements
             set { _Device = value; }
         }
 
+        public string SimulationFileName { get; set; }
+
+        private StreamReader ReadSimulationFile;
+
         ChannelsToInvestigate _Channel;
 
         private bool _IsWaitNeeded = true;
@@ -82,7 +87,30 @@ namespace BreakJunctions.Measurements
             _Thread_01_Step = __Thread_01_Step;
             _Thread_02_Step = __Thread_02_Step;
 
+            try
+            {
+                ReadSimulationFile = new StreamReader(new FileStream(SimulationFileName, FileMode.Open, FileAccess.Read));
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.Message, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+
             AllEventsHandler.Instance.IV_MeasurementsStateChanged += On_IV_MeasurementStateChanged;
+        }
+
+        private void ReadData()
+        {
+            try
+            {
+                var Data = Array.ConvertAll(ReadSimulationFile.ReadLine()
+                    .TrimEnd("\r\n".ToCharArray())
+                    .Split(",\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries), Double.Parse);
+
+                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(Data[0], Data[1]));
+
+            }
+            catch { }
         }
 
         public void StartMeasurement(object sender, DoWorkEventArgs e)
@@ -118,7 +146,8 @@ namespace BreakJunctions.Measurements
                                             _Device.SetSourceVoltage(V);
                                             var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
 
-                                            AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                            //AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                            ReadData();
 
                                             if (_IsWaitNeeded)
                                                 _Thread_01_Step.Set();
@@ -132,7 +161,8 @@ namespace BreakJunctions.Measurements
                                             _Device.SetSourceVoltage(V);
                                             var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
 
-                                            AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                            //AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                            ReadData();
 
                                             if (_IsWaitNeeded)
                                                 _Thread_02_Step.Set();
@@ -172,11 +202,13 @@ namespace BreakJunctions.Measurements
                                     {
                                         case ChannelsToInvestigate.Channel_01:
                                             {
-                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                                //AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
+                                                ReadData();
                                             } break;
                                         case ChannelsToInvestigate.Channel_02:
                                             {
-                                                AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                                //AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
+                                                ReadData();
                                             } break;
                                         default:
                                             break;
@@ -199,6 +231,16 @@ namespace BreakJunctions.Measurements
         private void On_IV_MeasurementStateChanged(object sender, IV_MeasurementStateChanged_EventArgs e)
         {
             _IsWaitNeeded = e.IV_MeasurementState;
+        }
+
+        public void Dispose()
+        {
+            if (ReadSimulationFile != null)
+                ReadSimulationFile.Close();
+
+            ReadSimulationFile.Dispose();
+
+            AllEventsHandler.Instance.IV_MeasurementsStateChanged -= On_IV_MeasurementStateChanged;
         }
     }
 }
