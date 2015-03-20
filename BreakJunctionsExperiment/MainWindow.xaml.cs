@@ -190,6 +190,16 @@ namespace BreakJunctions
 
         #endregion
 
+        #region Time Trace simulation data handling and presenting
+
+        MeasureTimeTrace_Simulation TimeTraceSimulationCurveChannel_01;
+        MeasureTimeTrace_Simulation TimeTraceSimulationCurveChannel_02;
+
+        BackgroundWorker backgroundTimeTraceSimulationMeasureChannel_01;
+        BackgroundWorker backgroundTimeTraceSimulationMeasureChannel_02;
+
+        #endregion
+
         #region Real Time Time Trace data handling and presenting
 
         #region Sample 01
@@ -415,6 +425,16 @@ namespace BreakJunctions
 
             #endregion
 
+            #region TimeTrace Simulation Model-view interactions
+
+            controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceChannel_01_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01;
+            controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceChannel_02_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_02;
+            controlTimeTraceMeasurementSettings_Simulation.MotionParameters.cmdTimeTraceDistanceMoveToInitialPosition.Click += on_cmdTimeTraceDistanceMoveToInitialPosition;
+            controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceSimulationStartMeasurementClick;
+            controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceSimulationStopMeasurementClick;
+
+            #endregion
+
             #region Real time TimeTrace Model-view interactions
 
             controlRealTimeTimeTraceMeasurementSettings.cmdQuickSampleCheck.Click += on_cmdRealTime_TimeTrace_QuickSampleCheckClick;
@@ -520,6 +540,32 @@ namespace BreakJunctions
             backgroundTimeTraceMeasureChannel_02.DoWork += backgroundTimeTraceMeasureDoWorkChannel_02;
             backgroundTimeTraceMeasureChannel_02.ProgressChanged += backgroundTimeTraceMeasureProgressChangedChannel_02;
             backgroundTimeTraceMeasureChannel_02.RunWorkerCompleted += backgroundTimeTrace_RunWorkerCompletedChannel_02;
+
+            #endregion
+
+            #endregion
+
+            #region Background Timw Trace Simulation Measureemnts
+
+            #region 1-st channel
+
+            backgroundTimeTraceSimulationMeasureChannel_01 = new BackgroundWorker();
+            backgroundTimeTraceSimulationMeasureChannel_01.WorkerSupportsCancellation = true;
+            backgroundTimeTraceSimulationMeasureChannel_01.WorkerReportsProgress = true;
+            backgroundTimeTraceSimulationMeasureChannel_01.DoWork += backgroundTimeTraceSimulationMeasureDoWorkChannel_01;
+            backgroundTimeTraceSimulationMeasureChannel_01.ProgressChanged += backgroundTimeTraceSimulationMeasureProgressChangedChannel_01;
+            backgroundTimeTraceSimulationMeasureChannel_01.RunWorkerCompleted += backgroundTimeTraceSimulation_RunWorkerCompletedChannel_01;
+
+            #endregion
+
+            #region 2-nd channel
+
+            backgroundTimeTraceSimulationMeasureChannel_02 = new BackgroundWorker();
+            backgroundTimeTraceSimulationMeasureChannel_02.WorkerSupportsCancellation = true;
+            backgroundTimeTraceSimulationMeasureChannel_02.WorkerReportsProgress = true;
+            backgroundTimeTraceSimulationMeasureChannel_02.DoWork += backgroundTimeTraceSimulationMeasureDoWorkChannel_02;
+            backgroundTimeTraceSimulationMeasureChannel_02.ProgressChanged += backgroundTimeTraceSimulationMeasureProgressChangedChannel_02;
+            backgroundTimeTraceSimulationMeasureChannel_02.RunWorkerCompleted += backgroundTimeTraceSimulation_RunWorkerCompletedChannel_02;
 
             #endregion
 
@@ -1072,7 +1118,7 @@ namespace BreakJunctions
                 var EndValueChannel_01 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_01;
                 var StepChannel_01 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_01;
 
-                IV_Simulation_CurveChannel_01 = new MeasureIV_Simulation(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01, ref Thread_01_Step, ref Thread_02_Step);
+                var _FileName_CH_01 = _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01.EndsWith(".dat") ? _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01 : _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01 + ".dat";
 
                 #endregion
 
@@ -1082,19 +1128,12 @@ namespace BreakJunctions
                 var EndValueChannel_02 = _IV_ExperimentSettings.IV_MeasurementEndValueWithMultiplierChannel_02;
                 var StepChannel_02 = _IV_ExperimentSettings.IV_MeasurementStepWithMultiplierChannel_02;
 
-                IV_Simulation_CurveChannel_02 = new MeasureIV_Simulation(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02, ref Thread_01_Step, ref Thread_02_Step);
-
-                #endregion
-
-                #endregion
-
-                #region Getting I-V data into files
-
-                var _FileName_CH_01 = _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01.EndsWith(".dat") ? _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01 : _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_01 + ".dat";
-                IV_Simulation_CurveChannel_01.SimulationFileName = String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName_CH_01);
-
                 var _FileName_CH_02 = _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_02.EndsWith(".dat") ? _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_02 : _IV_ExperimentSettings.IV_MeasurementDataFileNameChannel_02 + ".dat";
-                IV_Simulation_CurveChannel_02.SimulationFileName = String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName_CH_01);
+
+                #endregion
+
+                IV_Simulation_CurveChannel_01 = new MeasureIV_Simulation(StartValueChannel_01, EndValueChannel_01, StepChannel_01, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_01, ChannelsToInvestigate.Channel_01, ref Thread_01_Step, ref Thread_02_Step, String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName_CH_01), String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName_CH_02));
+                IV_Simulation_CurveChannel_02 = new MeasureIV_Simulation(StartValueChannel_02, EndValueChannel_02, StepChannel_02, NumberOfAverages, TimeDelay, DeviceSourceMode, DeviceChannel_02, ChannelsToInvestigate.Channel_02, ref Thread_01_Step, ref Thread_02_Step, String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName_CH_01), String.Format("{0}\\{1}", _SaveIV_MeasureDialogChannel_01.SelectedPath, _FileName_CH_02));
 
                 #endregion
 
@@ -1111,7 +1150,7 @@ namespace BreakJunctions
 
         private void on_cmdIV_Simulation_StartMeasurementClick(object sender, RoutedEventArgs e)
         {
-            if (backgroundIV_MeasureChannel_01.IsBusy == true || backgroundIV_MeasureChannel_02.IsBusy == true)
+            if (backgroundIV_Simulation_MeasureChannel_01.IsBusy == true || backgroundIV_Simulation_MeasureChannel_02.IsBusy == true)
             {
                 on_cmdIV_Simulation_StopMeasurementClick(sender, e);
                 Thread.Sleep(1000);
@@ -1120,10 +1159,10 @@ namespace BreakJunctions
             var isInitSuccess = InitIV_Simulation_Measurements();
 
             //Starting I-V measurements in background
-            if ((isInitSuccess == true) && (backgroundIV_MeasureChannel_01.IsBusy == false) && (backgroundIV_MeasureChannel_02.IsBusy == false))
+            if ((isInitSuccess == true) && (backgroundIV_Simulation_MeasureChannel_01.IsBusy == false) && (backgroundIV_Simulation_MeasureChannel_02.IsBusy == false))
             {
-                backgroundIV_MeasureChannel_01.RunWorkerAsync();
-                backgroundIV_MeasureChannel_02.RunWorkerAsync();
+                backgroundIV_Simulation_MeasureChannel_01.RunWorkerAsync();
+                backgroundIV_Simulation_MeasureChannel_02.RunWorkerAsync();
             }
         }
 
@@ -1143,7 +1182,7 @@ namespace BreakJunctions
             //Updating interface to show that measurement is in process
             this.Dispatcher.BeginInvoke(new Action(delegate()
             {
-                this.labelMeasurementStatusChannel_01.Content = "In process...";
+                this.labelMeasurementStatusChannel_01_Simulation.Content = "In process...";
             }));
 
             //Starting measurements
@@ -1153,13 +1192,13 @@ namespace BreakJunctions
         private void backgroundIV_Simulation_Measure_ProgressChangedChannel_01(object sender, ProgressChangedEventArgs e)
         {
             //Updating interface to show measurement progress
-            this.progressBarMeasurementProgressChannel_01.Value = e.ProgressPercentage;
+            this.progressBarMeasurementProgressChannel_01_Simulation.Value = e.ProgressPercentage;
         }
 
         private void backgroundIV_Simulation_Measure_RunWorkerCompletedChannel_01(object sender, RunWorkerCompletedEventArgs e)
         {
             //Updating interface to show that measurement is completed
-            this.labelMeasurementStatusChannel_01.Content = "Ready";
+            this.labelMeasurementStatusChannel_01_Simulation.Content = "Ready";
         }
 
         private void on_cmdIV_Simulation_DataFileNameBrowseClickChannel_01(object sender, RoutedEventArgs e)
@@ -1192,7 +1231,7 @@ namespace BreakJunctions
             //Updating interface to show that measurement is in process
             this.Dispatcher.BeginInvoke(new Action(delegate()
             {
-                this.labelMeasurementStatusChannel_02.Content = "In process...";
+                this.labelMeasurementStatusChannel_02_Simulation.Content = "In process...";
             }));
 
             //Starting measurements
@@ -1202,13 +1241,13 @@ namespace BreakJunctions
         private void backgroundIV_Simulation_Measure_ProgressChangedChannel_02(object sender, ProgressChangedEventArgs e)
         {
             //Updating interface to show measurement progress
-            this.progressBarMeasurementProgressChannel_02.Value = e.ProgressPercentage;
+            this.progressBarMeasurementProgressChannel_02_Simulation.Value = e.ProgressPercentage;
         }
 
         private void backgroundIV_Simulation_Measure_RunWorkerCompletedChannel_02(object sender, RunWorkerCompletedEventArgs e)
         {
             //Updating interface to show that measurement is completed
-            this.labelMeasurementStatusChannel_02.Content = "Ready";
+            this.labelMeasurementStatusChannel_02_Simulation.Content = "Ready";
         }
 
         private void on_cmdIV_Simulation_DataFileNameBrowseClickChannel_02(object sender, RoutedEventArgs e)
@@ -1519,7 +1558,7 @@ namespace BreakJunctions
 		{
             if (backgroundTimeTraceMeasureChannel_01.IsBusy == true || backgroundTimeTraceMeasureChannel_02.IsBusy == true)
             {
-                on_cmdRealTime_TimeTraceStopMeasurementClick(sender, e);
+                on_cmdTimeTraceStopMeasurementClick(sender, e);
                 Thread.Sleep(1000);
             }
 
@@ -1701,6 +1740,356 @@ namespace BreakJunctions
             this.controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionCurrentPosition = e.Position;
             this.controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementMicrometricBoltPosition = e.Position;
         }
+
+        #endregion
+
+        #region Time Trace Measurements Simulation Interface Interactions
+
+        LineGraph _TimeTraceSimulationLineGraphChannel_01;
+        LineGraph _TimeTraceSimulationLineGraphChannel_02;
+
+        ExperimentalTimeTraceDataSource _experimentalTimeTraceSimulationDataSourceChannel_01;
+        ExperimentalTimeTraceDataSource _experimentalTimeTraceSimulationDataSourceChannel_02;
+
+        private bool InitTimeTraceSimulationMeasurements()
+        {
+            #region SMU, rendering and save data configurations
+
+            if ((sourceDeviceConfigurationChannel_01 != null) && (sourceDeviceConfigurationChannel_01 != null))
+            {
+                #region Chart rendering settings
+
+                #region 1-st channel
+
+                if (_TimeTraceSimulationLineGraphChannel_01 != null)
+                {
+                    _experimentalTimeTraceSimulationDataSourceChannel_01.DetachPointReceiveEvent();
+                    _TimeTraceSimulationLineGraphChannel_01.RemoveFromPlotter();
+                }
+
+                _experimentalTimeTraceSimulationDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate.Channel_01);
+                _experimentalTimeTraceSimulationDataSourceChannel_01.AttachPointReceiveEvent();
+                _TimeTraceSimulationLineGraphChannel_01 = new LineGraph(_experimentalTimeTraceSimulationDataSourceChannel_01);
+                _TimeTraceSimulationLineGraphChannel_01.AddToPlotter(chartTimeTraceChannel_01_Simulation);
+
+                #endregion
+
+                #region 2-nd channel
+
+                if (_TimeTraceSimulationLineGraphChannel_02 != null)
+                {
+                    _experimentalTimeTraceSimulationDataSourceChannel_02.DetachPointReceiveEvent();
+                    _TimeTraceSimulationLineGraphChannel_02.RemoveFromPlotter();
+                }
+
+                _experimentalTimeTraceSimulationDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate.Channel_02);
+                _experimentalTimeTraceSimulationDataSourceChannel_02.AttachPointReceiveEvent();
+                _TimeTraceSimulationLineGraphChannel_02 = new LineGraph(_experimentalTimeTraceSimulationDataSourceChannel_02);
+                _TimeTraceSimulationLineGraphChannel_02.AddToPlotter(chartTimeTraceChannel_02_Simulation);
+
+                #endregion
+
+                #endregion
+
+                //Configurations for all kinds of SMUs should be listed here
+
+                switch (sourceDeviceConfigurationChannel_01.SelectedSource)
+                {
+                    case AvailableSources.KEITHLEY_2602A:
+                        {
+                            if (sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings != null)
+                                DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley2602A_DeviceSettings.Device;
+                        } break;
+                    case AvailableSources.KEITHLEY_4200:
+                        {
+                            if (sourceDeviceConfigurationChannel_01.Keithley4200_DeviceSettings != null)
+                                DeviceChannel_01 = sourceDeviceConfigurationChannel_01.Keithley4200_DeviceSettings.Device;
+                        } break;
+                    default:
+                        throw new Exception("Not supported SMU for channel 1 selected!");
+                }
+
+                switch (sourceDeviceConfigurationChannel_02.SelectedSource)
+                {
+                    case AvailableSources.KEITHLEY_2602A:
+                        {
+                            if (sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings != null)
+                                DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley2602A_DeviceSettings.Device;
+                        } break;
+                    case AvailableSources.KEITHLEY_4200:
+                        {
+                            if (sourceDeviceConfigurationChannel_02.Keithley4200_DeviceSettings != null)
+                                DeviceChannel_02 = sourceDeviceConfigurationChannel_02.Keithley4200_DeviceSettings.Device;
+                        } break;
+                    default:
+                        throw new Exception("Not supported SMU for channel 2 selected!");
+                }
+
+                #region Time trace measurement configuration
+
+                _TimeTraceExperimentSettings = controlTimeTraceMeasurementSettings_Simulation.MeasurementSettings;
+
+                //Configurations for all kinds of motors should be listed here
+
+                switch (motorConfiguration.SelectedMotionController)
+                {
+                    case AvailableMotionControllers.Faulhaber_2036_U012V:
+                        {
+                            if (motorConfiguration.Faulhaber_2036_U012V_Settings != null)
+                                _MotionController = motorConfiguration.Faulhaber_2036_U012V_Settings.motionController;
+                        } break;
+                    case AvailableMotionControllers.PI_E755:
+                        {
+                            if (motorConfiguration.PI_E755_Settings != null)
+                                _MotionController = motorConfiguration.PI_E755_Settings.motionController;
+                        } break;
+                    default:
+                        throw new Exception("Unsupported motion controller selected!");
+                }
+
+                _MotionController.PointsPerMilimeter = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceNotificationsPerRevolution;
+
+                if ((TimeTraceSimulationCurveChannel_01 != null) && (TimeTraceSimulationCurveChannel_02 != null))
+                {
+                    TimeTraceSimulationCurveChannel_01.Dispose();
+                    TimeTraceSimulationCurveChannel_02.Dispose();
+                }
+
+                if (_ChannelController != null)
+                    _ChannelController.Dispose();
+
+                _ChannelController = new MeasureTimeTraceChannelController();
+
+                var timeTraceChannel_01_ValueThroughTheStructure = _TimeTraceExperimentSettings.TimeTraceMeasurementChannel_01_ValueThrougtTheStructureWithMultiplier;
+                var isTimeTraceChannel_01_VoltageModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_01_VoltageModeChecked;
+                var isTimeTraceChannel_01_CurrentModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_01_CurrentModeChecked;
+
+                var timeTraceChannel_02_ValueThroughTheStructure = _TimeTraceExperimentSettings.TimeTraceMeasurementChannel_02_ValueThrougtTheStructureWithMultiplier;
+                var isTimeTraceChannel_02_VoltageModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_02_VoltageModeChecked;
+                var isTimeTraceChannel_02_CurrentModeChecked = _TimeTraceExperimentSettings.IsTimeTraceMeasurementChannel_02_CurrentModeChecked;
+
+                var selectedTimeTraceModeItem = (controlTimeTraceMeasurementSettings.MotionParameters.tabControlTimeTraceMeasurementParameters.SelectedItem as TabItem).Header.ToString();
+
+                switch (selectedTimeTraceModeItem)
+                {
+                    case "Distance":
+                        {
+                            var motionStartPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionStartPosition;
+                            var motionFinalDestination = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceMotionFinalDestination;
+
+                            if (isTimeTraceChannel_01_VoltageModeChecked == true)
+                            {
+                                TimeTraceSimulationCurveChannel_01 = new MeasureTimeTrace_Simulation(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, SourceMode.Voltage, MeasureMode.Conductance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceSimulationMeasureChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_02);
+                                TimeTraceSimulationCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceSimulationCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                            else if (isTimeTraceChannel_01_CurrentModeChecked == true)
+                            {
+                                TimeTraceSimulationCurveChannel_01 = new MeasureTimeTrace_Simulation(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, SourceMode.Current, MeasureMode.Conductance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceSimulationMeasureChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_02);
+                                TimeTraceSimulationCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceSimulationCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+
+                            if (isTimeTraceChannel_02_VoltageModeChecked == true)
+                            {
+                                TimeTraceSimulationCurveChannel_02 = new MeasureTimeTrace_Simulation(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, SourceMode.Voltage, MeasureMode.Conductance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceSimulationMeasureChannel_02, _SaveTimeTraceMeasuremrentFileNameChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_02);
+                                TimeTraceSimulationCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceSimulationCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                            else if (isTimeTraceChannel_02_CurrentModeChecked == true)
+                            {
+                                TimeTraceSimulationCurveChannel_02 = new MeasureTimeTrace_Simulation(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, SourceMode.Current, MeasureMode.Conductance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceSimulationMeasureChannel_02, _SaveTimeTraceMeasuremrentFileNameChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_02);
+                                TimeTraceSimulationCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceSimulationCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                        } break;
+                    case "Distance (Repetitive)":
+                        {
+                            var motionRepetitiveStartPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceRepetitiveStartPosition;
+                            var motionRepetitiveEndPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.TimeTraceMeasurementDistanceRepetitiveFinalDestination;
+
+                            if (isTimeTraceChannel_01_VoltageModeChecked == true)
+                            {
+                                TimeTraceSimulationCurveChannel_01 = new MeasureTimeTrace_Simulation(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, SourceMode.Voltage, MeasureMode.Conductance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceSimulationMeasureChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_02);
+                                TimeTraceSimulationCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceSimulationCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                            else if (isTimeTraceChannel_01_CurrentModeChecked == true)
+                            {
+                                TimeTraceSimulationCurveChannel_01 = new MeasureTimeTrace_Simulation(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_01, SourceMode.Current, MeasureMode.Conductance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceSimulationMeasureChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_02);
+                                TimeTraceSimulationCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceSimulationCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+
+                            if (isTimeTraceChannel_02_VoltageModeChecked == true)
+                            {
+                                TimeTraceSimulationCurveChannel_02 = new MeasureTimeTrace_Simulation(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, SourceMode.Voltage, MeasureMode.Conductance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceSimulationMeasureChannel_02, _SaveTimeTraceMeasuremrentFileNameChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_02);
+                                TimeTraceSimulationCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceSimulationCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                            else if (isTimeTraceChannel_02_CurrentModeChecked == true)
+                            {
+                                TimeTraceSimulationCurveChannel_02 = new MeasureTimeTrace_Simulation(_MotionController, motionRepetitiveStartPosition, motionRepetitiveEndPosition, DeviceChannel_02, SourceMode.Current, MeasureMode.Conductance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceSimulationMeasureChannel_02, _SaveTimeTraceMeasuremrentFileNameChannel_01, _SaveTimeTraceMeasuremrentFileNameChannel_02);
+                                TimeTraceSimulationCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceSimulationCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                        } break;
+                    case "Time":
+                        {
+                        } break;
+                    case "Fixed R":
+                        {
+                        } break;
+                    default:
+                        break;
+                }
+
+                #endregion
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+            #endregion
+        }
+
+        private void on_cmdTimeTraceSimulationStartMeasurementClick(object sender, RoutedEventArgs e)
+        {
+            if (backgroundTimeTraceSimulationMeasureChannel_01.IsBusy == true || backgroundTimeTraceSimulationMeasureChannel_02.IsBusy == true)
+            {
+                on_cmdTimeTraceSimulationStopMeasurementClick(sender, e);
+                Thread.Sleep(1000);
+            }
+
+            var timeTtraceSimulationMeasurementsInitSuccess = InitTimeTraceSimulationMeasurements();
+
+            if (timeTtraceSimulationMeasurementsInitSuccess)
+            {
+                backgroundTimeTraceSimulationMeasureChannel_01.RunWorkerAsync();
+                backgroundTimeTraceSimulationMeasureChannel_02.RunWorkerAsync();
+
+                AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
+            }
+            else MessageBox.Show("The device was not initialized!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void on_cmdTimeTraceSimulationStopMeasurementClick(object sender, RoutedEventArgs e)
+        {
+            if (backgroundTimeTraceSimulationMeasureChannel_01.IsBusy == true)
+                backgroundTimeTraceSimulationMeasureChannel_01.CancelAsync();
+
+            if (backgroundTimeTraceSimulationMeasureChannel_02.IsBusy == true)
+                backgroundTimeTraceSimulationMeasureChannel_02.CancelAsync();
+
+            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
+        }
+
+        private void on_cmdTimeTraceSimulationDistanceMoveToInitialPosition(object sender, RoutedEventArgs e)
+        {
+            if (_MotionController != null)
+            {
+                _MotionController.MoveToZeroPosition();
+            }
+        }
+
+        #region 1-st Channel Background Work
+
+        private void backgroundTimeTraceSimulationMeasureDoWorkChannel_01(object sender, DoWorkEventArgs e)
+        {
+            if ((DeviceChannel_01 != null) && (DeviceChannel_01.InitDevice()))
+            {
+
+                var ExperimentSettings = controlTimeTraceMeasurementSettings_Simulation.MotionParameters.MeasurementSettings;
+                var numerCycles = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
+
+                var selectedTimeTraceModeHeader = ExperimentSettings.TimeTraceMeasurementSelectedTabIndex;
+
+                switch (selectedTimeTraceModeHeader)
+                {
+                    case 0: //"Distance" measurement
+                        {
+                            TimeTraceSimulationCurveChannel_01.StartMeasurement(sender, e, MotionKind.Single);
+                        } break;
+                    case 1: //"Distance (Repetitive)" measurement
+                        {
+                            TimeTraceSimulationCurveChannel_01.StartMeasurement(sender, e, MotionKind.Repetitive, numerCycles);
+                        } break;
+                    case 2: //"Time" measurement
+                        {
+                        } break;
+                    case 3: //"Fixed R" measurement
+                        {
+                        } break;
+                    default:
+                        break;
+                }
+            }
+            else MessageBox.Show("The device was not initialized!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void backgroundTimeTraceSimulationMeasureProgressChangedChannel_01(object sender, ProgressChangedEventArgs e)
+        {
+            //Updating interface to show measurement progress
+            this.progressBarMeasurementProgressChannel_01_Simulation.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundTimeTraceSimulation_RunWorkerCompletedChannel_01(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
+        }
+
+        #endregion
+
+        #region 2-nd Channel Background Work
+
+        private void backgroundTimeTraceSimulationMeasureDoWorkChannel_02(object sender, DoWorkEventArgs e)
+        {
+            if ((DeviceChannel_02 != null) && (DeviceChannel_02.InitDevice()))
+            {
+
+                var ExperimentSettings = controlTimeTraceMeasurementSettings_Simulation.MotionParameters.MeasurementSettings;
+                var numerCycles = ExperimentSettings.TimeTraceMeasurementDistanceRepetitiveNumberCycles;
+
+                var selectedTimeTraceModeHeader = ExperimentSettings.TimeTraceMeasurementSelectedTabIndex;
+
+                switch (selectedTimeTraceModeHeader)
+                {
+                    case 0: //"Distance" measurement
+                        {
+                            TimeTraceSimulationCurveChannel_02.StartMeasurement(sender, e, MotionKind.Single);
+                        } break;
+                    case 1: //"Distance (Repetitive)" measurement
+                        {
+                            TimeTraceSimulationCurveChannel_02.StartMeasurement(sender, e, MotionKind.Repetitive, numerCycles);
+                        } break;
+                    case 2: //"Time" measurement
+                        {
+                        } break;
+                    case 3: //"Fixed R" measurement
+                        {
+                        } break;
+                    default:
+                        break;
+                }
+            }
+            else MessageBox.Show("The device was not initialized!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void backgroundTimeTraceSimulationMeasureProgressChangedChannel_02(object sender, ProgressChangedEventArgs e)
+        {
+            //Updating interface to show measurement progress
+            this.progressBarMeasurementProgressChannel_02_Simulation.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundTimeTraceSimulation_RunWorkerCompletedChannel_02(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
+        }
+
+        #endregion
 
         #endregion
 

@@ -44,23 +44,23 @@ namespace BreakJunctions.DataHandling
         /// <param name="fileName">File name</param>
         /// <param name="sourceMode">Source mode</param>
         public TimeTraceSingleMeasurement(string fileName, SourceMode sourceMode, ChannelsToInvestigate Channel)
-        { 
+        {
             _FileName = fileName;
             _Channel = Channel;
 
             using (_OutputSingleMeasureStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
                 var _Header = Encoding.ASCII.GetBytes("Distance\tR\r\n");
-                var _Subheader = Encoding.ASCII.GetBytes("m\tOhm");
+                var _Subheader = Encoding.ASCII.GetBytes("m\tOhm\r\n");
 
                 _OutputSingleMeasureStream.Write(_Header, 0, _Header.Length);
-                _OutputSingleMeasureStream.Write(_Subheader,0, _Subheader.Length);
+                _OutputSingleMeasureStream.Write(_Subheader, 0, _Subheader.Length);
             }
 
             _NumberFormatInfo = NumberFormatInfo.InvariantInfo;
 
             _DataString = "{0}\t{1}\r\n";
-            
+
             switch (_Channel)
             {
                 case ChannelsToInvestigate.Channel_01:

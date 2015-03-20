@@ -10,6 +10,7 @@ using BreakJunctions.Plotting;
 
 using Devices.SMU;
 using System.Threading;
+using System.Globalization;
 
 namespace BreakJunctions.Measurements
 {
@@ -62,9 +63,11 @@ namespace BreakJunctions.Measurements
             set { _Device = value; }
         }
 
-        public string SimulationFileName { get; set; }
+        public string SimulationFileName_CH_01 { get; set; }
+        public string SimulationFileName_CH_02 { get; set; }
 
-        private StreamReader ReadSimulationFile;
+        private StreamReader ReadSimulationFile_CH_01;
+        private StreamReader ReadSimulationFile_CH_02;
 
         ChannelsToInvestigate _Channel;
 
@@ -73,7 +76,7 @@ namespace BreakJunctions.Measurements
         private AutoResetEvent _Thread_01_Step;
         private AutoResetEvent _Thread_02_Step;
 
-        public MeasureIV_Simulation(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, ChannelsToInvestigate Channel, ref AutoResetEvent __Thread_01_Step, ref AutoResetEvent __Thread_02_Step)
+        public MeasureIV_Simulation(double startVal, double endVal, double step, int numberOfAverages, double timeDelay, SourceMode deviceSourceMode, I_SMU device, ChannelsToInvestigate Channel, ref AutoResetEvent __Thread_01_Step, ref AutoResetEvent __Thread_02_Step, string _SimulationFilaName_CH_01, string _SimulationFilaName_CH_02)
         {
             _StartValue = startVal;
             _EndValue = endVal;
@@ -87,9 +90,28 @@ namespace BreakJunctions.Measurements
             _Thread_01_Step = __Thread_01_Step;
             _Thread_02_Step = __Thread_02_Step;
 
+            SimulationFileName_CH_01 = _SimulationFilaName_CH_01;
+            SimulationFileName_CH_02 = _SimulationFilaName_CH_02;
+
             try
             {
-                ReadSimulationFile = new StreamReader(new FileStream(SimulationFileName, FileMode.Open, FileAccess.Read));
+                switch (Channel)
+                {
+                    case ChannelsToInvestigate.Channel_01:
+                        {
+                            ReadSimulationFile_CH_01 = new StreamReader(new FileStream(SimulationFileName_CH_01, FileMode.Open, FileAccess.Read));
+
+                            ReadSimulationFile_CH_01.ReadLine();
+                            ReadSimulationFile_CH_01.ReadLine();
+                        } break;
+                    case ChannelsToInvestigate.Channel_02:
+                        {
+                            ReadSimulationFile_CH_02 = new StreamReader(new FileStream(SimulationFileName_CH_02, FileMode.Open, FileAccess.Read));
+
+                            ReadSimulationFile_CH_02.ReadLine();
+                            ReadSimulationFile_CH_02.ReadLine();
+                        } break;
+                }
             }
             catch (Exception e)
             {
@@ -99,16 +121,42 @@ namespace BreakJunctions.Measurements
             AllEventsHandler.Instance.IV_MeasurementsStateChanged += On_IV_MeasurementStateChanged;
         }
 
+        private double ConvertFromString(string _str)
+        {
+            try
+            {
+                return double.Parse(_str, NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+            }
+            catch
+            {
+                return double.NaN;
+            }
+        }
+
+
         private void ReadData()
         {
             try
             {
-                var Data = Array.ConvertAll(ReadSimulationFile.ReadLine()
-                    .TrimEnd("\r\n".ToCharArray())
-                    .Split(",\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries), Double.Parse);
+                switch (_Channel)
+                {
+                    case ChannelsToInvestigate.Channel_01:
+                        {
+                            var Data = Array.ConvertAll(ReadSimulationFile_CH_01.ReadLine()
+                                .TrimEnd("\r\n".ToCharArray())
+                                .Split(",\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries), new Converter<string, double>(ConvertFromString));
 
-                AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(Data[0], Data[1]));
+                            AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(Data[0], Data[1]));
+                        } break;
+                    case ChannelsToInvestigate.Channel_02:
+                        {
+                            var Data = Array.ConvertAll(ReadSimulationFile_CH_02.ReadLine()
+                                .TrimEnd("\r\n".ToCharArray())
+                                .Split(",\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries), new Converter<string, double>(ConvertFromString));
 
+                            AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(Data[0], Data[1]));
+                        } break;
+                }
             }
             catch { }
         }
@@ -146,7 +194,6 @@ namespace BreakJunctions.Measurements
                                             _Device.SetSourceVoltage(V);
                                             var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
 
-                                            //AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
                                             ReadData();
 
                                             if (_IsWaitNeeded)
@@ -161,7 +208,6 @@ namespace BreakJunctions.Measurements
                                             _Device.SetSourceVoltage(V);
                                             var Y = _Device.MeasureCurrent(_NumberOfAverages, _TimeDelay);
 
-                                            //AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
                                             ReadData();
 
                                             if (_IsWaitNeeded)
@@ -198,21 +244,7 @@ namespace BreakJunctions.Measurements
 
                                 if (!(double.IsNaN(X) || double.IsNaN(Y)))
                                 {
-                                    switch (_Channel)
-                                    {
-                                        case ChannelsToInvestigate.Channel_01:
-                                            {
-                                                //AllEventsHandler.Instance.OnIV_PointReceivedChannel_01(this, new IV_PointReceivedChannel_01_EventArgs(X, Y));
-                                                ReadData();
-                                            } break;
-                                        case ChannelsToInvestigate.Channel_02:
-                                            {
-                                                //AllEventsHandler.Instance.OnIV_PointReceivedChannel_02(this, new IV_PointReceivedChannel_02_EventArgs(X, Y));
-                                                ReadData();
-                                            } break;
-                                        default:
-                                            break;
-                                    }
+                                    ReadData();
 
                                     worker.ReportProgress((int)(100 - (Math.Abs(_StartValue) + Math.Abs(_EndValue) - Math.Abs(_StartValue - X)) / (Math.Abs(_StartValue) + Math.Abs(_EndValue)) * 100));
                                 }
@@ -235,10 +267,10 @@ namespace BreakJunctions.Measurements
 
         public void Dispose()
         {
-            if (ReadSimulationFile != null)
-                ReadSimulationFile.Close();
+            if (ReadSimulationFile_CH_01 != null)
+                ReadSimulationFile_CH_01.Close();
 
-            ReadSimulationFile.Dispose();
+            ReadSimulationFile_CH_01.Dispose();
 
             AllEventsHandler.Instance.IV_MeasurementsStateChanged -= On_IV_MeasurementStateChanged;
         }

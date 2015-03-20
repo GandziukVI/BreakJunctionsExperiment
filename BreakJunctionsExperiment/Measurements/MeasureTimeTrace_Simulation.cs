@@ -16,6 +16,7 @@ using SMU.KEITHLEY_2602A;
 using BreakJunctions.Motion;
 using System.Windows;
 using System.Threading;
+using System.Globalization;
 
 namespace BreakJunctions.Measurements
 {
@@ -154,15 +155,17 @@ namespace BreakJunctions.Measurements
 
         private bool _CancelMeasures = false;
 
-        public string SimulationFileName { get; set; }
+        public string SimulationFileName_CH_01 { get; set; }
+        public string SimulationFileName_CH_02 { get; set; }
 
-        private StreamReader ReadSimulationFile;
+        private StreamReader ReadSimulationFile_CH_01;
+        private StreamReader ReadSimulationFile_CH_02;
 
         #endregion
 
         #region Constructor / Destructor
 
-        public MeasureTimeTrace_Simulation(MotionController __Motor, double __StartPosition, double __FinalDestination, I_SMU __MeasureDevice, SourceMode __SourceMode, MeasureMode __MeasureMode, double __ValueThroughTheStructure, ChannelsToInvestigate __Channel, MeasureTimeTraceChannelController __ChannelController, ref BackgroundWorker __MeasurementWorker)
+        public MeasureTimeTrace_Simulation(MotionController __Motor, double __StartPosition, double __FinalDestination, I_SMU __MeasureDevice, SourceMode __SourceMode, MeasureMode __MeasureMode, double __ValueThroughTheStructure, ChannelsToInvestigate __Channel, MeasureTimeTraceChannelController __ChannelController, ref BackgroundWorker __MeasurementWorker, string _SimulationFileName_CH_01, string _SimulationFileName_CH_02)
         {
             _Motor = __Motor;
             _StartPosition = __StartPosition;
@@ -176,9 +179,28 @@ namespace BreakJunctions.Measurements
 
             _worker = __MeasurementWorker;
 
+            SimulationFileName_CH_01 = _SimulationFileName_CH_01;
+            SimulationFileName_CH_02 = _SimulationFileName_CH_02;
+
             try
             {
-                ReadSimulationFile = new StreamReader(new FileStream(SimulationFileName, FileMode.Open, FileAccess.Read));
+                switch (__Channel)
+                {
+                    case ChannelsToInvestigate.Channel_01:
+                        {
+                            ReadSimulationFile_CH_01 = new StreamReader(new FileStream(SimulationFileName_CH_01, FileMode.Open, FileAccess.Read));
+
+                            ReadSimulationFile_CH_01.ReadLine();
+                            ReadSimulationFile_CH_01.ReadLine();
+                        } break;
+                    case ChannelsToInvestigate.Channel_02:
+                        {
+                            ReadSimulationFile_CH_02 = new StreamReader(new FileStream(SimulationFileName_CH_02, FileMode.Open, FileAccess.Read));
+
+                            ReadSimulationFile_CH_02.ReadLine();
+                            ReadSimulationFile_CH_02.ReadLine();
+                        } break;
+                }
             }
             catch (Exception e)
             {
@@ -266,7 +288,7 @@ namespace BreakJunctions.Measurements
             {
                 case ChannelsToInvestigate.Channel_01:
                     {
-                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(new object(), new TimeTracePointReceivedChannel_01_EventArgs(X, Y));
+                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(X, Y));
                         _CurrentPosition = X;
                         try
                         {
@@ -304,7 +326,7 @@ namespace BreakJunctions.Measurements
                     } break;
                 case ChannelsToInvestigate.Channel_02:
                     {
-                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(new object(), new TimeTracePointReceivedChannel_02_EventArgs(X, Y));
+                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(X, Y));
                         _CurrentPosition = X;
                         try
                         {
@@ -344,18 +366,45 @@ namespace BreakJunctions.Measurements
             }
         }
 
+        private double ConvertFromString(string _str)
+        {
+            try
+            {
+                return double.Parse(_str, NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+            }
+            catch
+            {
+                return double.NaN;
+            }
+        }
+
         private double[] GetDataArray()
         {
             try
             {
-                var Data = Array.ConvertAll(ReadSimulationFile.ReadLine()
-                    .TrimEnd("\r\n".ToCharArray())
-                    .Split(",\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries), Double.Parse);
+                switch (_Channel)
+                {
+                    case ChannelsToInvestigate.Channel_01:
+                        {
+                            var Data = Array.ConvertAll(ReadSimulationFile_CH_01.ReadLine()
+                                .TrimEnd("\r\n".ToCharArray())
+                                .Split(",\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries), new Converter<string, double>(ConvertFromString));
 
-                return Data;
+                            return new double[] { Data[0], Data[1] };
+                        }
+                    case ChannelsToInvestigate.Channel_02:
+                        {
+                            var Data = Array.ConvertAll(ReadSimulationFile_CH_02.ReadLine()
+                                .TrimEnd("\r\n".ToCharArray())
+                                .Split(",\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries), new Converter<string, double>(ConvertFromString));
 
+                            return new double[] { Data[0], Data[1] };
+                        }
+                    default:
+                        return new double[] { double.NaN, double.NaN };
+                }
             }
-            catch 
+            catch
             {
                 return new double[] { double.NaN, double.NaN };
             }
@@ -483,9 +532,23 @@ namespace BreakJunctions.Measurements
 
         public void Dispose()
         {
-            if (ReadSimulationFile != null)
-                ReadSimulationFile.Close();
-            ReadSimulationFile.Dispose();
+            switch (_Channel)
+            {
+                case ChannelsToInvestigate.Channel_01:
+                    {
+                        if (ReadSimulationFile_CH_01 != null)
+                            ReadSimulationFile_CH_01.Close();
+
+                        ReadSimulationFile_CH_01.Dispose();
+                    } break;
+                case ChannelsToInvestigate.Channel_02:
+                    {
+                        if (ReadSimulationFile_CH_02 != null)
+                            ReadSimulationFile_CH_02.Close();
+
+                        ReadSimulationFile_CH_02.Dispose(); 
+                    } break;
+            }
 
             AllEventsHandler.Instance.Motion -= OnMotionPositionMeasured;
             AllEventsHandler.Instance.TimeTraceMeasurementsStateChanged -= OnTimeTraceMeasurementsStateChanged;
