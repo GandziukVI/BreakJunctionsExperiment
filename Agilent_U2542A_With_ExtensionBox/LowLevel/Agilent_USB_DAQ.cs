@@ -38,8 +38,8 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
             _rMgr = new ResourceManager();
             _src = new FormattedIO488();
 
-            //_Id = "USB0::0x0957::0x1718::TW52524501::INSTR";
-            _Id = "USB0::0x0957::0x1718::TW54334510::0::INSTR";
+            _Id = "USB0::0x0957::0x1718::TW52524501::INSTR";
+            //_Id = "USB0::0x0957::0x1718::TW54334510::0::INSTR";
             _Alive = false;
             _Busy = false;
         }
