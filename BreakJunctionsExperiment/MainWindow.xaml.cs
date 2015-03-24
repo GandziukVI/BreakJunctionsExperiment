@@ -427,8 +427,8 @@ namespace BreakJunctions
 
             #region TimeTrace Simulation Model-view interactions
 
-            controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceChannel_01_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01;
-            controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceChannel_02_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_02;
+            controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceChannel_01_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_01_Simulation;
+            controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceChannel_02_DataFileNameBrowse.Click += on_cmdTimeTraceDataFileNameBrowseClickChannel_02_Simulation;
             controlTimeTraceMeasurementSettings_Simulation.MotionParameters.cmdTimeTraceDistanceMoveToInitialPosition.Click += on_cmdTimeTraceDistanceMoveToInitialPosition;
             controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceStartMeasurement.Click += on_cmdTimeTraceSimulationStartMeasurementClick;
             controlTimeTraceMeasurementSettings_Simulation.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceSimulationStopMeasurementClick;
@@ -1994,6 +1994,52 @@ namespace BreakJunctions
                 _MotionController.MoveToZeroPosition();
             }
         }
+
+        #region General settings
+
+        private void on_cmdTimeTraceDataFileNameBrowseClickChannel_01_Simulation(object sender, RoutedEventArgs e)
+        {
+            //Choosing file name to save data
+            var dialogResult = _SaveTimeTraceMeasureDialogChannel_01.ShowDialog();
+
+            var _FileName = controlTimeTraceMeasurementSettings_Simulation.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName.EndsWith(".dat") ?
+                    controlTimeTraceMeasurementSettings_Simulation.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName
+                    : controlTimeTraceMeasurementSettings_Simulation.MeasurementSettings.TimeTraceMeasurementChannel_01_DataFileName + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveTimeTraceMeasuremrentFileNameChannel_01 = String.Format("{0}\\{1}", _SaveTimeTraceMeasureDialogChannel_01.SelectedPath, _FileName);
+            else
+            {
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveIV_MeasuremrentFileNameChannel_01 = String.Format("{0}\\{1}", _Path, _FileName);
+            }
+        }
+
+        private void on_cmdTimeTraceDataFileNameBrowseClickChannel_02_Simulation(object sender, RoutedEventArgs e)
+        {
+            //Choosing file name to save data
+            var dialogResult = _SaveTimeTraceMeasureDialogChannel_02.ShowDialog();
+
+            var _FileName = controlTimeTraceMeasurementSettings_Simulation.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName.EndsWith(".dat") ?
+                    controlTimeTraceMeasurementSettings_Simulation.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName
+                    : controlTimeTraceMeasurementSettings_Simulation.MeasurementSettings.TimeTraceMeasurementChannel_02_DataFileName + ".dat";
+
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                _SaveTimeTraceMeasuremrentFileNameChannel_02 = String.Format("{0}\\{1}", _SaveTimeTraceMeasureDialogChannel_02.SelectedPath, _FileName);
+            else
+            {
+                var _Path = String.Format("{0}\\{1}", Directory.GetCurrentDirectory(), DateTime.Now.ToString("yyyy.MM.dd"));
+                if (!Directory.Exists(_Path))
+                    Directory.CreateDirectory(_Path);
+
+                _SaveIV_MeasuremrentFileNameChannel_02 = String.Format("{0}\\{1}", _Path, _FileName);
+            }
+        }
+
+        #endregion
 
         #region 1-st Channel Background Work
 
