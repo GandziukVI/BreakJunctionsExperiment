@@ -252,7 +252,7 @@ namespace BreakJunctions.Measurements
             {
                 case ChannelsToInvestigate.Channel_01:
                     {
-                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(new object(), new TimeTracePointReceivedChannel_01_EventArgs(X, Y));
+                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(new object(), new TimeTracePointReceivedChannel_01_EventArgs(X, Math.Abs(Y)));
                         _CurrentPosition = X;
                         try
                         {
@@ -290,7 +290,7 @@ namespace BreakJunctions.Measurements
                     } break;
                 case ChannelsToInvestigate.Channel_02:
                     {
-                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(new object(), new TimeTracePointReceivedChannel_02_EventArgs(X, Y));
+                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(new object(), new TimeTracePointReceivedChannel_02_EventArgs(X, Math.Abs(Y)));
                         _CurrentPosition = X;
                         try
                         {
