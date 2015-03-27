@@ -4,6 +4,7 @@
 	x:Class="BreakJunctions.SourceDeviceConfiguration"
 	x:Name="Window"
 	Title="Source Device Configuration"
+    WindowStartupLocation="CenterScreen"
 	Width="360" Height="200"
 	ResizeMode="NoResize">
 

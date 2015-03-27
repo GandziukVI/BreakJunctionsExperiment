@@ -1163,10 +1163,10 @@ namespace BreakJunctions
 
             if (timeTtraceMeasurementsInitSuccess)
             {
+                AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
+
                 backgroundTimeTraceMeasureChannel_01.RunWorkerAsync();
                 backgroundTimeTraceMeasureChannel_02.RunWorkerAsync();
-
-                AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
             }
             else MessageBox.Show("The device was not initialized!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
@@ -1194,6 +1194,7 @@ namespace BreakJunctions
 
         private void backgroundTimeTraceMeasureDoWorkChannel_01(object sender, DoWorkEventArgs e)
         {
+            labelMeasurementStatusChannel_01.Dispatcher.BeginInvoke(new Action(() => { labelMeasurementStatusChannel_01.Content = "In progress..."; }));
             if ((DeviceChannel_01 != null) && (DeviceChannel_01.InitDevice()))
             {
 
@@ -1228,12 +1229,13 @@ namespace BreakJunctions
         private void backgroundTimeTraceMeasureProgressChangedChannel_01(object sender, ProgressChangedEventArgs e)
         {
             //Updating interface to show measurement progress
-            this.progressBarMeasurementProgressChannel_01.Value = e.ProgressPercentage;
+            progressBarMeasurementProgressChannel_01.Value = e.ProgressPercentage;
         }
 
         private void backgroundTimeTrace_RunWorkerCompletedChannel_01(object sender, RunWorkerCompletedEventArgs e)
         {
-            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
+            progressBarMeasurementProgressChannel_01.Value = 0;
+            labelMeasurementStatusChannel_01.Content = "Ready";
         }
 
         #endregion
@@ -1242,6 +1244,7 @@ namespace BreakJunctions
 
         private void backgroundTimeTraceMeasureDoWorkChannel_02(object sender, DoWorkEventArgs e)
         {
+            labelMeasurementStatusChannel_02.Dispatcher.BeginInvoke(new Action(() => { labelMeasurementStatusChannel_02.Content = "In progress..."; }));
             if ((DeviceChannel_02 != null) && (DeviceChannel_02.InitDevice()))
             {
 
@@ -1281,7 +1284,8 @@ namespace BreakJunctions
 
         private void backgroundTimeTrace_RunWorkerCompletedChannel_02(object sender, RunWorkerCompletedEventArgs e)
         {
-            //AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
+            progressBarMeasurementProgressChannel_02.Value = 0;
+            labelMeasurementStatusChannel_02.Content = "Ready";
         }
 
         #endregion

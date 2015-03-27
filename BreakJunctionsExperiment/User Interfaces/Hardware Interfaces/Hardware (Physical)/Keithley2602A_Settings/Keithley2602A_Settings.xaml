@@ -5,6 +5,7 @@
 	x:Class="BreakJunctions.Keithley2602A_Channel_Settings"
 	x:Name="Window"
 	Title="Keithley2602A_Channel_Settings"
+    WindowStartupLocation="CenterScreen"
 	Width="360" Height="380"
 	ResizeMode="NoResize">
 	

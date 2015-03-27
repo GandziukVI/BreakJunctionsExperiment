@@ -125,12 +125,13 @@ namespace BreakJunctions.Motion
         /// <param name="e"></param>
         private void OnTimeTraceBothChannelsPointsReceived(object sender, TimeTraceBothChannelsPointsReceived_EventArgs e)
         {
-            var positionIncrement = _MetersPerRevolution / PointsPerMilimeter / 2;
+            var positionIncrement = _MetersPerRevolution / PointsPerMilimeter * 2;
 
             switch (CurrentMotionKind)
             {
                 case MotionKind.Single:
                     {
+                        CurrentIteration = 0;
                         if ((CurrentPosition <= FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Up))
                         {
                             CurrentPosition += positionIncrement;
@@ -151,7 +152,7 @@ namespace BreakJunctions.Motion
                 case MotionKind.Repetitive:
                     {
                         //Checking if measurement is completed
-                        if (CurrentIteration >= NumberOfRepetities)
+                        if (CurrentIteration >= NumberOfRepetities * 2)
                             this.StopMotion();
 
                         if (IsMotionInProcess == true)

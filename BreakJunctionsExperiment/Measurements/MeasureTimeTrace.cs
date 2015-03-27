@@ -246,82 +246,80 @@ namespace BreakJunctions.Measurements
             _MeasureDevice.SwitchOFF();
         }
 
+        public int Progress
+        {
+            get
+            {
+                switch (_Motor.CurrentDirection)
+                {
+                    case MotionDirection.Up:
+                        {
+                            switch (_CurrentMotionKind)
+                            {
+                                case MotionKind.Single:
+                                    {
+                                        var progress = Convert.ToInt32(((_Motor.CurrentIteration + Math.Abs((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities) * 100.0);
+                                        return progress;
+                                    }
+                                case MotionKind.Repetitive:
+                                    {
+                                        var progress = Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0);
+                                        return progress;
+                                    }
+                                default:
+                                    return 0;
+                            }
+                        }
+                    case MotionDirection.Down:
+                        {
+                            switch (_CurrentMotionKind)
+                            {
+                                case MotionKind.Single:
+                                    {
+                                        var a = _Motor.CurrentIteration;
+                                        var b = Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition));
+                                        var c = (_Motor.CurrentIteration + Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)));
+                                        var d = ((_Motor.CurrentIteration + Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities);
+
+                                        var progress = 100 - Convert.ToInt32(((_Motor.CurrentIteration + Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities) * 100.0);
+                                        return progress;
+                                    }
+                                case MotionKind.Repetitive:
+                                    {
+                                        var progress = 100 - Convert.ToInt32(((_Motor.CurrentIteration + Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities) * 50.0);
+                                        return progress;
+                                    }
+                                default:
+                                    return 0;
+                            }
+                        }
+                    default:
+                        return 0;
+                }
+            }
+        }
+
         private void _EmitData(double X, double Y)
         {
             switch (_Channel)
             {
                 case ChannelsToInvestigate.Channel_01:
                     {
-                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(new object(), new TimeTracePointReceivedChannel_01_EventArgs(X, Math.Abs(Y)));
+                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_01(this, new TimeTracePointReceivedChannel_01_EventArgs(X, Math.Abs(Y)));
                         _CurrentPosition = X;
                         try
                         {
-                            if (_Motor.CurrentDirection == MotionDirection.Up)
-                                switch (_CurrentMotionKind)
-                                {
-                                    case MotionKind.Single:
-                                        {
-                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100.0));
-                                        }
-                                        break;
-                                    case MotionKind.Repetitive:
-                                        {
-                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
-                                        } break;
-                                    default:
-                                        break;
-                                }
-                            else
-                                switch (_CurrentMotionKind)
-                                {
-                                    case MotionKind.Single:
-                                        {
-                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100.0));
-                                        } break;
-                                    case MotionKind.Repetitive:
-                                        {
-                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
-                                        } break;
-                                    default:
-                                        break;
-                                }
+                            _worker.ReportProgress(Progress);
                         }
                         catch { }
                     } break;
                 case ChannelsToInvestigate.Channel_02:
                     {
-                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(new object(), new TimeTracePointReceivedChannel_02_EventArgs(X, Math.Abs(Y)));
+                        AllEventsHandler.Instance.OnTimeTracePointReceivedChannel_02(this, new TimeTracePointReceivedChannel_02_EventArgs(X, Math.Abs(Y)));
                         _CurrentPosition = X;
                         try
                         {
-                            if (_Motor.CurrentDirection == MotionDirection.Up)
-                                switch (_CurrentMotionKind)
-                                {
-                                    case MotionKind.Single:
-                                        {
-                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100.0));
-                                        } break;
-                                    case MotionKind.Repetitive:
-                                        {
-                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
-                                        } break;
-                                    default:
-                                        break;
-                                }
-                            else
-                                switch (_CurrentMotionKind)
-                                {
-                                    case MotionKind.Single:
-                                        {
-                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 100.0));
-                                        } break;
-                                    case MotionKind.Repetitive:
-                                        {
-                                            _worker.ReportProgress(Convert.ToInt32(((_Motor.CurrentIteration + (FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)) / _Motor.NumberOfRepetities) * 50.0));
-                                        } break;
-                                    default:
-                                        break;
-                                }
+                            _worker.ReportProgress(Progress);
                         }
                         catch { }
                     } break;
@@ -420,6 +418,7 @@ namespace BreakJunctions.Measurements
         private void OnTimeTraceMeasurementsStateChanged(object sender, TimeTraceMeasurementStateChanged_EventArgs e)
         {
             _CancelMeasures = !e.TimeTrace_MeasurementState;
+            _Motor.CurrentIteration = 0;
         }
 
         #endregion

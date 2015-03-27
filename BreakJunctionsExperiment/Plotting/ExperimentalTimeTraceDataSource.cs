@@ -15,6 +15,7 @@ namespace BreakJunctions.Plotting
     public class ExperimentalTimeTraceDataSource : IPointDataSource
     {
         private double _ResistanceValueOverflow = 10000000000.0;
+        private double _ScaledConductanceOverflow = (1.0 / 10000000000.0) / 0.00007748091734625;
         /// <summary>
         /// All measured values, higher then this would
         /// be ignored either in displaying or in saving on HDD
@@ -80,7 +81,7 @@ namespace BreakJunctions.Plotting
             if (_ExperimentalData.Count > 10000)
                 _ExperimentalData.RemoveFirst();
 
-            if (e.Y <= _ResistanceValueOverflow)
+            if (e.Y >= _ScaledConductanceOverflow)
             {
                 _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
