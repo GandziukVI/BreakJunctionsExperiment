@@ -35,7 +35,6 @@ namespace FaulhaberMinimotors
             set { _GearFactor = value; }
         }
 
-        private int _ValuePerRevolution = 4578000;
         /// <summary>
         /// Gets ValuePerRevolution value.
         /// For correct work, specify IncPerRevolution and TransferFactor values!

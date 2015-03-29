@@ -51,8 +51,8 @@ namespace BreakJunctions
         #region 1-st Channel Measurement value settings
 
         //Start value settings
-        private string _IV_MeasurementStartValueMultiplierChannel_01 = "None";
-        public string IV_MeasurementStartValueMultiplierChannel_01
+        private double _IV_MeasurementStartValueMultiplierChannel_01 = 1.0;
+        public double IV_MeasurementStartValueMultiplierChannel_01
         {
             get { return _IV_MeasurementStartValueMultiplierChannel_01; }
             set
@@ -73,7 +73,7 @@ namespace BreakJunctions
         }
         public double IV_MeasurementStartValueWithMultiplierChannel_01
         {
-            get { return _IV_MeasurementStartValueChannel_01 * HandlingUserInput.GetMultiplier(_IV_MeasurementStartValueMultiplierChannel_01); }
+            get { return _IV_MeasurementStartValueChannel_01 * _IV_MeasurementStartValueMultiplierChannel_01; }
         }
 
         //End value settings
@@ -145,8 +145,8 @@ namespace BreakJunctions
         #region 2-nd Channel Measurement value settings
 
         //Start value settings
-        private string _IV_MeasurementStartValueMultiplierChannel_02 = "None";
-        public string IV_MeasurementStartValueMultiplierChannel_02
+        private double _IV_MeasurementStartValueMultiplierChannel_02 = 1.0;
+        public double IV_MeasurementStartValueMultiplierChannel_02
         {
             get { return _IV_MeasurementStartValueMultiplierChannel_02; }
             set
@@ -167,7 +167,7 @@ namespace BreakJunctions
         }
         public double IV_MeasurementStartValueWithMultiplierChannel_02
         {
-            get { return _IV_MeasurementStartValueChannel_02 * HandlingUserInput.GetMultiplier(_IV_MeasurementStartValueMultiplierChannel_02); }
+            get { return _IV_MeasurementStartValueChannel_02 * _IV_MeasurementStartValueMultiplierChannel_02; }
         }
 
         //End value settings

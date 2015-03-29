@@ -24,7 +24,6 @@ namespace Agilent_U2542A_With_ExtensionBox.Classes
             byte[] data = Encoding.ASCII.GetBytes(dataString);
             short[] result = new short[(data.Length / 2)];
 
-            int _MaxIndex;
             for (int i = 0; i < data.Length; i += 2)
             {
                 if(i + 1 < data.Length)

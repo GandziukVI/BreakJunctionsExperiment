@@ -162,6 +162,7 @@
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\LastNoiseSpectra_Channel_01_DataArrived_EventArgs.cs" />
+    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\DataConvertions.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\MVVM_PI_E755_ConfigurationPage.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\PI_E755_ConfigurationPage.xaml.cs">
       <DependentUpon>PI_E755_ConfigurationPage.xaml</DependentUpon>
@@ -183,7 +184,6 @@
     <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController.cs" />
     <Compile Include="Motion\Motion Controllers\PI_E755_MotionController.cs" />
     <Compile Include="Plotting\ExperimentalNoiseSpectra_DataSource.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\InotifyPropertyChanged.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\NoiseMeasurementDataModel.cs" />
     <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\NoiseMeasurementSettings.xaml.cs">
       <DependentUpon>NoiseMeasurementSettings.xaml</DependentUpon>

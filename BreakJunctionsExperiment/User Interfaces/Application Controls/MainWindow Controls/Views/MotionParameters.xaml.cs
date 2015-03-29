@@ -40,29 +40,5 @@ namespace BreakJunctions
 
             #endregion
         }
-
-        #region Checking User Input
-
-        private void IntegerPastingHandler(object sender, DataObjectPastingEventArgs e)
-        {
-            HandlingUserInput.IntegerPastingHandler(ref sender, ref e);
-        }
-
-        private void OnIntegerTextChanged(object sender, TextChangedEventArgs e)
-        {
-            HandlingUserInput.OnIntegerTextChanged(ref sender, ref e);
-        }
-
-        private void FloatingPointPastingHandler(object sender, DataObjectPastingEventArgs e)
-        {
-            HandlingUserInput.FloatingPointPastingHandler(ref sender, ref e);
-        }
-
-        private void OnFloatingPointTextChanged(object sender, TextChangedEventArgs e)
-        {
-            HandlingUserInput.OnFloatingPointTextChanged(ref sender, ref e);
-        }
-
-        #endregion
     }
 }
