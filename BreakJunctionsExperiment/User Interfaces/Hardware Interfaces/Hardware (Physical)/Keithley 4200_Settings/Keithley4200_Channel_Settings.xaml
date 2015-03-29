@@ -3,9 +3,12 @@
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
-        Title="Keithley4200_Channel_Settings" Height="420" Width="360">
+        Title="Keithley4200_Channel_Settings" Height="380" Width="360">
 
     <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="1 2.5"  />
+        </Style>
         <Style TargetType="wpfTool:IntegerUpDown">
             <Setter Property="Margin" Value="1 2.5" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -39,27 +42,16 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0">Board Number</Label>
-            <wpfTool:IntegerUpDown Grid.Row="0" Grid.Column="1" Value="{Binding Path=BoardNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-            <Label Grid.Row="1" Grid.Column="0" Content="Primary Address">
-                <Label.ToolTip>
-                    <ToolTip>
-                        <TextBlock MaxWidth="250">Range is 0 - 30. By default it is 26.</TextBlock>
-                    </ToolTip>
-                </Label.ToolTip>
-            </Label>
-            <wpfTool:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Path=PrimaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-            <Label Grid.Row="2" Grid.Column="0">Secondary Address</Label>
-            <wpfTool:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding Path=SecondaryAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-            <Label Grid.Row="3" Grid.Column="0" Content="Measurement Speed">
+            <Label Grid.Row="0" Grid.Column="0">Visa ID</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=VisaID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            
+            <Label Grid.Row="1" Grid.Column="0" Content="Measurement Speed">
                 <Label.ToolTip>
                     <ToolTip>
                         <TextBlock MaxWidth="250" TextWrapping="Wrap">Defines the speed of measurement</TextBlock>

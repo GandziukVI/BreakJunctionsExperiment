@@ -57,7 +57,7 @@ namespace BreakJunctions
 
         private I_SMU SetDevice()
         {
-            var TheDevice = new GPIB_Device(DeviceSettings.PrimaryAddress, DeviceSettings.SecondaryAddress, DeviceSettings.BoardNumber) as IExperimentalDevice;
+            var TheDevice = AvailableDevices.AddOrGetExistingDevice(_DeviceSettings.VisaID);
             var smu = new Keithley_4200_SMU(ref TheDevice, DeviceSettings.SelectedSMU);
 
             smu.VoltageLimit = DeviceSettings.LimitValueVoltage;

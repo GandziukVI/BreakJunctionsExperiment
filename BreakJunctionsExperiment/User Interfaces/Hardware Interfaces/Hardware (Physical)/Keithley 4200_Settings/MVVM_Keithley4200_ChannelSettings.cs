@@ -23,38 +23,16 @@ namespace BreakJunctions
 
         #endregion
 
-        #region GPIB settings
+        #region Visa device settings
 
-        private byte _PrimaryAddress = 17;
-        public byte PrimaryAddress
+        private string _VisaID = "GPIB0::17::INSTR";
+        public string VisaID
         {
-            get { return _PrimaryAddress; }
+            get { return _VisaID; }
             set
             {
-                _PrimaryAddress = value;
-                OnPropertyChanged("PrimaryAddress");
-            }
-        }
-
-        private byte _SecondaryAddress = 0;
-        public byte SecondaryAddress
-        {
-            get { return _SecondaryAddress; }
-            set
-            {
-                _SecondaryAddress = value;
-                OnPropertyChanged("SecondaryAddress");
-            }
-        }
-
-        private byte _BoardNumber = 0;
-        public byte BoardNumber
-        {
-            get { return _BoardNumber; }
-            set
-            {
-                _BoardNumber = value;
-                OnPropertyChanged("BoardNumber");
+                _VisaID = value;
+                OnPropertyChanged("VisaID");
             }
         }
 

@@ -13,8 +13,6 @@ using System.Globalization;
 
 namespace BreakJunctions.DataHandling
 {
-    #region Time trace single measurement file operations implementation
-
     /// <summary>
     /// Represents time trace single measurement data file
     /// </summary>
@@ -50,8 +48,8 @@ namespace BreakJunctions.DataHandling
 
             using (_OutputSingleMeasureStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
-                var _Header = Encoding.ASCII.GetBytes("Distance\tR\r\n");
-                var _Subheader = Encoding.ASCII.GetBytes("m\tOhm\r\n");
+                var _Header = Encoding.ASCII.GetBytes("Distance\tG/G0\r\n");
+                var _Subheader = Encoding.ASCII.GetBytes("m\tDimentionless\r\n");
 
                 _OutputSingleMeasureStream.Write(_Header, 0, _Header.Length);
                 _OutputSingleMeasureStream.Write(_Subheader, 0, _Subheader.Length);
@@ -81,7 +79,7 @@ namespace BreakJunctions.DataHandling
         /// </summary>
         ~TimeTraceSingleMeasurement()
         {
-            this.Dispose();
+            Dispose();
         }
 
         #endregion
@@ -145,6 +143,4 @@ namespace BreakJunctions.DataHandling
 
         #endregion
     }
-
-    #endregion
 }

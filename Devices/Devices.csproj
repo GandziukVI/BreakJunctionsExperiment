@@ -98,7 +98,6 @@
     <Compile Include="Devices\LAN_Device.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\CheckValue.cs" />
-    <Compile Include="Devices\USB_Device.cs" />
     <Compile Include="Devices\VisaDevice.cs" />
   </ItemGroup>
   <ItemGroup />
