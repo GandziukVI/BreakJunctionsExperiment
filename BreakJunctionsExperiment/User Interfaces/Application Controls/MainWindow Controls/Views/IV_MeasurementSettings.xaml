@@ -10,8 +10,6 @@
 	x:Name="IV_MeasurementSettingsWindow">
 
 	<UserControl.Resources>
-        <local:MultiplierConversion x:Key="IV_MultiplierConversion" />
-        
         <Style TargetType="Button">
             <Setter Property="Margin" Value="0 5 0 0" />
             <Setter Property="MinHeight" Value="30" />
@@ -88,7 +86,7 @@
                             <Label Grid.Row="0" Grid.Column="0" Content="Start Value"/>
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
 								<wpfTool:DoubleUpDown x:Name="textBoxIV_StartValueChannel_01" Value="{Binding Path=IV_MeasurementStartValueChannel_01, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
-                                <ComboBox x:Name="comboBoxIV_StartValueMultiplierChannel_01" Text="{Binding Path=IV_MeasurementStartValueMultiplierChannel_01, UpdateSourceTrigger=LostFocus, Mode=TwoWay, Converter={StaticResource IV_MultiplierConversion}}" HorizontalAlignment="Stretch" Width="65">
+                                <ComboBox x:Name="comboBoxIV_StartValueMultiplierChannel_01" Text="{Binding Path=IV_MeasurementStartValueMultiplierChannel_01, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Micro</ComboBoxItem>
@@ -101,7 +99,7 @@
                             <Label Content="End Value" Grid.Row="1" Grid.Column="0"/>
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
 								<wpfTool:DoubleUpDown x:Name="textBoxIV_EndValueChannel_01" Value="{Binding Path=IV_MeasurementEndValueChannel_01, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
-                                <ComboBox x:Name="comboBoxIV_EndValueMultiplierChannel_01" Text="{Binding Path=IV_MeasurementEndValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IV_MultiplierConversion}}" HorizontalAlignment="Stretch" Width="65">
+                                <ComboBox x:Name="comboBoxIV_EndValueMultiplierChannel_01" Text="{Binding Path=IV_MeasurementEndValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Mikro</ComboBoxItem>
@@ -114,7 +112,7 @@
                             <Label Content="Step" Grid.Row="2" Grid.Column="0"/>
                             <StackPanel Grid.Row="2" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
 								<wpfTool:DoubleUpDown Value="{Binding Path=IV_MeasurementStepChannel_01, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
-                                <ComboBox x:Name="comboBoxIV_StepMultiplierChannel_01" Text="{Binding Path=IV_MeasurementStepValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IV_MultiplierConversion}}" HorizontalAlignment="Stretch" Width="65">
+                                <ComboBox x:Name="comboBoxIV_StepMultiplierChannel_01" Text="{Binding Path=IV_MeasurementStepValueMultiplierChannel_01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Micro</ComboBoxItem>
@@ -157,7 +155,7 @@
                             <Label Grid.Row="0" Grid.Column="0" Content="Start Value"/>
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
 								<wpfTool:DoubleUpDown Value="{Binding Path=IV_MeasurementStartValueChannel_02, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
-                                <ComboBox x:Name="comboBoxIV_StartValueMultiplierChannel_02" Text="{Binding Path=IV_MeasurementStartValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IV_MultiplierConversion}}" HorizontalAlignment="Stretch" Width="65">
+                                <ComboBox x:Name="comboBoxIV_StartValueMultiplierChannel_02" Text="{Binding Path=IV_MeasurementStartValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Micro</ComboBoxItem>
@@ -170,7 +168,7 @@
                             <Label Content="End Value" Grid.Row="1" Grid.Column="0"/>
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
 								<wpfTool:DoubleUpDown Value="{Binding Path=IV_MeasurementEndValueChannel_02, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
-                                <ComboBox x:Name="comboBoxIV_EndValueMultiplierChannel_02" Text="{Binding Path=IV_MeasurementEndValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IV_MultiplierConversion}}" HorizontalAlignment="Stretch" Width="65">
+                                <ComboBox x:Name="comboBoxIV_EndValueMultiplierChannel_02" Text="{Binding Path=IV_MeasurementEndValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Mikro</ComboBoxItem>
@@ -183,7 +181,7 @@
                             <Label Content="Step" Grid.Row="2" Grid.Column="0"/>
                             <StackPanel Grid.Row="2" Grid.Column="1" Margin="2.5" Orientation="Horizontal">
 								<wpfTool:DoubleUpDown Value="{Binding Path=IV_MeasurementStepChannel_02, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
-                                <ComboBox x:Name="comboBoxIV_StepMultiplierChannel_02" Text="{Binding Path=IV_MeasurementStepValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IV_MultiplierConversion}}" HorizontalAlignment="Stretch" Width="65">
+                                <ComboBox x:Name="comboBoxIV_StepMultiplierChannel_02" Text="{Binding Path=IV_MeasurementStepValueMultiplierChannel_02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Width="65">
                                     <ComboBoxItem>Pico</ComboBoxItem>
                                     <ComboBoxItem>Nano</ComboBoxItem>
                                     <ComboBoxItem>Micro</ComboBoxItem>

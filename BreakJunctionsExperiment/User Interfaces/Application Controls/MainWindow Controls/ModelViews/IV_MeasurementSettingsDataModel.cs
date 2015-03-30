@@ -51,8 +51,8 @@ namespace BreakJunctions
         #region 1-st Channel Measurement value settings
 
         //Start value settings
-        private double _IV_MeasurementStartValueMultiplierChannel_01 = 1.0;
-        public double IV_MeasurementStartValueMultiplierChannel_01
+        private string _IV_MeasurementStartValueMultiplierChannel_01 = "None";
+        public string IV_MeasurementStartValueMultiplierChannel_01
         {
             get { return _IV_MeasurementStartValueMultiplierChannel_01; }
             set
@@ -73,7 +73,7 @@ namespace BreakJunctions
         }
         public double IV_MeasurementStartValueWithMultiplierChannel_01
         {
-            get { return _IV_MeasurementStartValueChannel_01 * _IV_MeasurementStartValueMultiplierChannel_01; }
+            get { return _IV_MeasurementStartValueChannel_01 * HandlingUserInput.GetMultiplier(_IV_MeasurementStartValueMultiplierChannel_01); }
         }
 
         //End value settings
