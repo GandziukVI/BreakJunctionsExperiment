@@ -184,19 +184,19 @@
     <Compile Include="Motion\Motion Controllers\FaulhaberMinimotor_SA_2036U012V_K1155_RealTime_MotionController.cs" />
     <Compile Include="Motion\Motion Controllers\PI_E755_MotionController.cs" />
     <Compile Include="Plotting\ExperimentalNoiseSpectra_DataSource.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\NoiseMeasurementDataModel.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\NoiseMeasurementSettings.xaml.cs">
+    <Compile Include="User Interfaces\Application Controls\ModelViews\NoiseMeasurementDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\Views\NoiseMeasurementSettings.xaml.cs">
       <DependentUpon>NoiseMeasurementSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plotting\ExperimentalIV_DataSource.cs" />
     <Compile Include="Plotting\ExperimentalTimeTraceDataSource.cs" />
     <Compile Include="Plotting\Experimental_RealTime_TimeTrace_DataSource.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\MotionParametersDataModel.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\RealTimeTimeTraceMeasurementSettingsDataModel.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\MotionParameters.xaml.cs">
+    <Compile Include="User Interfaces\Application Controls\ModelViews\MotionParametersDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\ModelViews\RealTimeTimeTraceMeasurementSettingsDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\Views\MotionParameters.xaml.cs">
       <DependentUpon>MotionParameters.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\RealTimeTimeTraceMeasurementSettings.xaml.cs">
+    <Compile Include="User Interfaces\Application Controls\Views\RealTimeTimeTraceMeasurementSettings.xaml.cs">
       <DependentUpon>RealTimeTimeTraceMeasurementSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\FaulhaberMinimotor\Faulhaber_2036_U012V.xaml.cs">
@@ -214,12 +214,12 @@
       <DependentUpon>MotorConfiguration.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plotting\ExperimentaDataSourceSettings.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\IV_MeasurementSettingsDataModel.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\ModelViews\TimeTraceMeasurementSettingsDataModel.cs" />
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\IV_MeasurementSettings.xaml.cs">
+    <Compile Include="User Interfaces\Application Controls\ModelViews\IV_MeasurementSettingsDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\ModelViews\TimeTraceMeasurementSettingsDataModel.cs" />
+    <Compile Include="User Interfaces\Application Controls\Views\IV_MeasurementSettings.xaml.cs">
       <DependentUpon>IV_MeasurementSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="User Interfaces\Application Controls\MainWindow Controls\Views\TimeTraceMeasurementSettings.xaml.cs">
+    <Compile Include="User Interfaces\Application Controls\Views\TimeTraceMeasurementSettings.xaml.cs">
       <DependentUpon>TimeTraceMeasurementSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="User Interfaces\HandlingUserInput.cs" />
@@ -273,15 +273,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\NoiseMeasurementSettings.xaml">
+    <Page Include="User Interfaces\Application Controls\Views\NoiseMeasurementSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\MotionParameters.xaml">
+    <Page Include="User Interfaces\Application Controls\Views\MotionParameters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\RealTimeTimeTraceMeasurementSettings.xaml">
+    <Page Include="User Interfaces\Application Controls\Views\RealTimeTimeTraceMeasurementSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -297,11 +297,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\IV_MeasurementSettings.xaml">
+    <Page Include="User Interfaces\Application Controls\Views\IV_MeasurementSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="User Interfaces\Application Controls\MainWindow Controls\Views\TimeTraceMeasurementSettings.xaml">
+    <Page Include="User Interfaces\Application Controls\Views\TimeTraceMeasurementSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -364,7 +364,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="User Interfaces\Application Controls\MainWindow Controls\Views\OpenFile.png" />
+    <Resource Include="User Interfaces\Application Controls\Views\OpenFile.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ProgramIcon.ico" />

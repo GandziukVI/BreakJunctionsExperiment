@@ -69,7 +69,7 @@ namespace BreakJunctions.Plotting
             if (_ExperimentalData.Count > 10000)
                 _ExperimentalData.RemoveFirst();
 
-            if (e.Y <= _ResistanceValueOverflow)
+            if (e.Y >= _ScaledConductanceOverflow)
             {
                 _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
