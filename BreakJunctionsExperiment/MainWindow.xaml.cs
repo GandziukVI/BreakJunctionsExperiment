@@ -50,10 +50,10 @@ namespace BreakJunctions
         public static IV_CurrentChangedViewModel IV_CurrentChangedModel = new IV_CurrentChangedViewModel();
     }
 
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
         #region For reading settings from form
 
@@ -67,7 +67,7 @@ namespace BreakJunctions
         I_SMU DeviceChannel_01;
         I_SMU DeviceChannel_02;
 
-        MotionController _MotionController; 
+        MotionController _MotionController;
 
         #endregion
 
@@ -396,6 +396,7 @@ namespace BreakJunctions
 
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
             AllEventsHandler.Instance.Motion_RealTime += OnMotion_RealTime;
+            AllEventsHandler.Instance.MotionDirectionChanged += MotionDirectionChanged;
 
             #endregion
 
@@ -519,19 +520,19 @@ namespace BreakJunctions
         #region Menu actions realization
 
         private void onMenuOpenClick(object sender, RoutedEventArgs e)
-		{
-			// TODO: Add event handler implementation here.
-		}
+        {
+            // TODO: Add event handler implementation here.
+        }
 
-		private void onMenuSaveClick(object sender, RoutedEventArgs e)
-		{
-			// TODO: Add event handler implementation here.
-		}
-		
-		private void onMenuExitClick(object sender, RoutedEventArgs e)
-		{
-			Application.Current.Shutdown();
-		}
+        private void onMenuSaveClick(object sender, RoutedEventArgs e)
+        {
+            // TODO: Add event handler implementation here.
+        }
+
+        private void onMenuExitClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
 
         private void onSetMotor_Click(object sender, RoutedEventArgs e)
         {
@@ -539,11 +540,11 @@ namespace BreakJunctions
             motorConfiguration.ShowDialog();
         }
 
-		private void onSetSMU_Click(object sender, RoutedEventArgs e)
-		{
+        private void onSetSMU_Click(object sender, RoutedEventArgs e)
+        {
             sourceDeviceConfigurationChannel_01 = new SourceDeviceConfiguration();
             sourceDeviceConfigurationChannel_01.ShowDialog();
-		}
+        }
 
         private void onSetSMU_Channel_02_Click(object sender, RoutedEventArgs e)
         {
@@ -747,14 +748,14 @@ namespace BreakJunctions
 
         private void on_cmdIV_StartMeasurementClick(object sender, RoutedEventArgs e)
         {
-            if(backgroundIV_MeasureChannel_01.IsBusy==true || backgroundIV_MeasureChannel_02.IsBusy == true)
+            if (backgroundIV_MeasureChannel_01.IsBusy == true || backgroundIV_MeasureChannel_02.IsBusy == true)
             {
                 on_cmdIV_StopMeasurementClick(sender, e);
                 Thread.Sleep(1000);
             }
 
             var isInitSuccess = InitIV_Measurements();
-            
+
             //Starting I-V measurements in background
             if ((isInitSuccess == true) && (backgroundIV_MeasureChannel_01.IsBusy == false) && (backgroundIV_MeasureChannel_02.IsBusy == false))
             {
@@ -763,14 +764,14 @@ namespace BreakJunctions
             }
         }
 
-		private void on_cmdIV_StopMeasurementClick(object sender, RoutedEventArgs e)
-		{
+        private void on_cmdIV_StopMeasurementClick(object sender, RoutedEventArgs e)
+        {
             //Canceling I-V measures
-            if(backgroundIV_MeasureChannel_01.IsBusy == true)
+            if (backgroundIV_MeasureChannel_01.IsBusy == true)
                 backgroundIV_MeasureChannel_01.CancelAsync();
             if (backgroundIV_MeasureChannel_02.IsBusy == true)
                 backgroundIV_MeasureChannel_02.CancelAsync();
-		}
+        }
 
         #region 1-st Channel Background Work
 
@@ -801,7 +802,7 @@ namespace BreakJunctions
         private void on_cmdIV_DataFileNameBrowseClickChannel_01(object sender, RoutedEventArgs e)
         {
             //Choosing file name to save data
-            var dialogResult =  _SaveIV_MeasureDialogChannel_01.ShowDialog();
+            var dialogResult = _SaveIV_MeasureDialogChannel_01.ShowDialog();
 
             var _FileName = controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_01.EndsWith(".dat") ?
                     controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementDataFileNameChannel_01
@@ -1152,7 +1153,7 @@ namespace BreakJunctions
         }
 
         private void on_cmdTimeTraceStartMeasurementClick(object sender, RoutedEventArgs e)
-		{
+        {
             if (backgroundTimeTraceMeasureChannel_01.IsBusy == true || backgroundTimeTraceMeasureChannel_02.IsBusy == true)
             {
                 on_cmdTimeTraceStopMeasurementClick(sender, e);
@@ -1169,7 +1170,7 @@ namespace BreakJunctions
                 backgroundTimeTraceMeasureChannel_02.RunWorkerAsync();
             }
             else MessageBox.Show("The device was not initialized!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-		}
+        }
 
         private void on_cmdTimeTraceStopMeasurementClick(object sender, RoutedEventArgs e)
         {
@@ -1342,6 +1343,21 @@ namespace BreakJunctions
             this.controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementMicrometricBoltPosition = e.Position;
         }
 
+        private void MotionDirectionChanged(object sender, MotionDirectionChanged_EventArgs e)
+        {
+            switch (e.NewDirection)
+            {
+                case MotionDirection.Up:
+                    {
+                        controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.IsTimeTraceMeasurementDistanceMotionModeUpChecked = true;
+                    } break;
+                case MotionDirection.Down:
+                    {
+                        controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.IsTimeTraceMeasurementDistanceMotionModeDownChecked = true;
+                    } break;
+            }
+        }
+
         #endregion
 
         #region Real Time Time Trace Measurement Interface Interactions
@@ -1352,7 +1368,7 @@ namespace BreakJunctions
 
             #region Sample 01
 
-            if(_RealTimeTimeTraceLineGraphSample_01 != null)
+            if (_RealTimeTimeTraceLineGraphSample_01 != null)
             {
                 _ExperimentalRealTimeTimetraceDataSourceSample_01.DetachPointReceiveEvent();
                 _RealTimeTimeTraceLineGraphSample_01.RemoveFromPlotter();
@@ -1419,7 +1435,7 @@ namespace BreakJunctions
 
                 _RealTime_TimeTrace_Curve.StartContiniousAcquisitionInThread();
             }
-            else 
+            else
             {
                 AllEventsHandler.Instance.RealTime_TimeTraceDataArrived -= OnRealTime_TimeTrace_DataArrived;
                 _RealTime_TimeTrace_Curve.StopContiniousAcquisitionInThread();
@@ -1449,7 +1465,7 @@ namespace BreakJunctions
 
         private void OnRealTime_TimeTrace_DataArrived(object sender, RealTime_TimeTrace_DataArrived_EventArgs e)
         {
-            this.Dispatcher.BeginInvoke(new Action(delegate() 
+            this.Dispatcher.BeginInvoke(new Action(delegate()
                 {
                     if (e.Data != null)
                     {
@@ -1479,13 +1495,13 @@ namespace BreakJunctions
             this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStopMeasurementButtonEnabled = true;
 
             InitRealTime_TimeTraceMeasurement();
-            
+
             _Background_RealTime_TimeTrace_Measurement.RunWorkerAsync();
         }
 
         private void _SetGUI_AfterRT_Measurement()
         {
-            controlRealTimeTimeTraceMeasurementSettings.Dispatcher.BeginInvoke(new Action(() => 
+            controlRealTimeTimeTraceMeasurementSettings.Dispatcher.BeginInvoke(new Action(() =>
             {
                 controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartStopEnabled = false;
                 controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.IsStartMeasurementButtonEnabled = true;
@@ -1507,7 +1523,7 @@ namespace BreakJunctions
 
         private void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
         {
-            if(e.MeasurementInProcess == false)
+            if (e.MeasurementInProcess == false)
                 _SetGUI_AfterRT_Measurement();
         }
 
@@ -1516,7 +1532,7 @@ namespace BreakJunctions
             this.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.Resistance_1st_Sample = e.Averaged_RealTime_TimeTrace_Data * controlRealTimeTimeTraceMeasurementSettings.MeasurementSettings.AmplificationCoefficient;
-            }));
+                }));
         }
 
         private void OnRealTime_TimeTrace_AveragedDataArrived_Sample_02(object sender, RealTime_TimeTrace_AveragedDataArrived_EventArgs_Sample_02 e)
@@ -1556,7 +1572,7 @@ namespace BreakJunctions
             var _MotionKind = MotionKind.Single;
             var _NumberCycles = 1;
 
-            switch(MotionSettings.TimeTraceMeasurementSelectedTabIndex)
+            switch (MotionSettings.TimeTraceMeasurementSelectedTabIndex)
             {
                 case 0:
                     {
@@ -1602,7 +1618,7 @@ namespace BreakJunctions
 
             #region Sample 01
 
-            if(_Noise_LineGraph_Sample_01 != null)
+            if (_Noise_LineGraph_Sample_01 != null)
             {
                 _Experimental_Noise_DataSource_Sample_01.DetachPointReceiveEvent();
                 _Noise_LineGraph_Sample_01.RemoveFromPlotter();
@@ -1641,7 +1657,7 @@ namespace BreakJunctions
             var MeasurementSettings = controlNoiseTraceMeasurementSettings.MeasurementSettings;
 
             _Noise_Spectra = new MeasureNoise(MeasurementSettings.MunberOfSpectra, MeasurementSettings.DisplayUpdateNumber, ref _Background_NoiseMeasurement);
-            
+
             _Noise_Spectra.AmplificationCoefficient_CH_01 = MeasurementSettings.AmplificationCoefficient_CH1;
             _Noise_Spectra.AmplificationCoefficient_CH_02 = MeasurementSettings.AmplificationCoefficient_CH2;
 
@@ -1694,7 +1710,7 @@ namespace BreakJunctions
         {
             _SingleCalibrationMeasurement_CH_01 = new NoiseCalibrationSingleMeasurement(GetFileNameWithIncrement(_NoiseCalibrationDataFileName.Insert(_NoiseCalibrationDataFileName.LastIndexOf('.'), "_CH_01_")), ChannelsToInvestigate.Channel_01);
             _SingleCalibrationMeasurement_CH_02 = new NoiseCalibrationSingleMeasurement(GetFileNameWithIncrement(_NoiseCalibrationDataFileName.Insert(_NoiseCalibrationDataFileName.LastIndexOf('.'), "_CH_02_")), ChannelsToInvestigate.Channel_02);
-            
+
             InitNoiseMeasurement();
             _Background_NoiseMeasurement.RunWorkerAsync();
         }

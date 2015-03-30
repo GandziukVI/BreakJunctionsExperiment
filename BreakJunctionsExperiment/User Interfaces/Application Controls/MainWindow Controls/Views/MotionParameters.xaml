@@ -25,7 +25,7 @@
 		<Style TargetType="wpfTool:DoubleUpDown">
 			<Setter Property="Margin" Value="1 2.5" />
 			<Setter Property="CultureInfo" Value="en-US" />
-			<Setter Property="FormatString" Value="F5" />
+			<Setter Property="FormatString" Value="F4" />
 			<Setter Property="Increment" Value="0.01" />
 		</Style>
 		<Style BasedOn="{StaticResource {x:Type wpfTool:DoubleUpDown}}"
@@ -105,7 +105,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <GroupBox Grid.Row="0" Grid.Column="0" Header="Moving direction" Margin="2.5">
+                        <GroupBox Grid.Row="0" Grid.Column="0" Header="Moving direction" Margin="2.5" IsHitTestVisible="False">
                             <StackPanel>
                                 <RadioButton x:Name="radioTimeTraceDistanceMoveUp" IsChecked="{Binding IsTimeTraceMeasurementDistanceMotionModeUpChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Up"/>
                                 <RadioButton x:Name="radioTimeTraceDistanceMoveDown" IsChecked="{Binding IsTimeTraceMeasurementDistanceMotionModeDownChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Down"/>

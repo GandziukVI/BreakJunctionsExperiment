@@ -421,6 +421,39 @@ namespace BreakJunctions.Events
             }
         }
 
+        private readonly object MotionDirectionChanged_EventLock = new object();
+        private EventHandler<MotionDirectionChanged_EventArgs> _MotionDirectionChanged;
+        public event EventHandler<MotionDirectionChanged_EventArgs> MotionDirectionChanged
+        {
+            add
+            {
+                lock(MotionDirectionChanged_EventLock)
+                {
+                    if (_MotionDirectionChanged == null || !_MotionDirectionChanged.GetInvocationList().Contains(value))
+                        _MotionDirectionChanged += value;
+                }
+            }
+            remove
+            {
+                lock(MotionDirectionChanged_EventLock)
+                {
+                    _MotionDirectionChanged -= value;
+                }
+            }
+        }
+        public virtual void OnMotionDirectionChanged(object sender, MotionDirectionChanged_EventArgs e)
+        {
+            EventHandler<MotionDirectionChanged_EventArgs> handler;
+            lock (MotionDirectionChanged_EventLock)
+            {
+                handler = _MotionDirectionChanged;
+            }
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
         #endregion
 
         #endregion

@@ -12,7 +12,7 @@ namespace BreakJunctions.Plotting
 {
     #region Experimental TimeTrace data source implementation
 
-    public class ExperimentalTimeTraceDataSource : IPointDataSource
+    public class ExperimentalTimeTraceDataSource : IPointDataSource, IDisposable
     {
         private double _ResistanceValueOverflow = 10000000000.0;
         private double _ScaledConductanceOverflow = (1.0 / 10000000000.0) / 0.00007748091734625;
@@ -44,6 +44,13 @@ namespace BreakJunctions.Plotting
             _ExperimentalDataSource.SetYMapping(y => y.Y);
 
             _Dispatcher = Dispatcher.CurrentDispatcher;
+
+            AllEventsHandler.Instance.MotionDirectionChanged += MotionDirectionChanged;
+        }
+
+        void MotionDirectionChanged(object sender, MotionDirectionChanged_EventArgs e)
+        {
+            _ExperimentalData.Clear();
         }
 
         public event EventHandler DataChanged;
@@ -94,6 +101,12 @@ namespace BreakJunctions.Plotting
                     catch { }
                 }));
             }
+        }
+
+        public void Dispose()
+        {
+            AllEventsHandler.Instance.MotionDirectionChanged -= MotionDirectionChanged;
+            _ExperimentalData.Clear();
         }
     }
 

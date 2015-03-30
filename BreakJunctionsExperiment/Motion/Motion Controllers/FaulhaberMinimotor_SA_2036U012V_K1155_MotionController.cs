@@ -257,6 +257,7 @@ namespace BreakJunctions.Motion
             {
                 CurrentDirection = motionDirection;
                 ++CurrentIteration;
+                AllEventsHandler.Instance.OnMotionDirectionChanged(this, new MotionDirectionChanged_EventArgs(motionDirection));
             }
         }
 
