@@ -120,7 +120,7 @@
                                 </ToolTip>
                             </Label.ToolTip>
                         </Label>
-                        <wpfTool:DoubleUpDown  Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource MilimetersToMetersConverter}}" Style="{StaticResource MotionDoubleUpDown}" />
+                        <wpfTool:DoubleUpDown  Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource MilimetersToMetersConverter}}" Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
 
                         <Label Grid.Row="2" Grid.Column="0" Content="Motion current pos.">
                             <Label.ToolTip>
@@ -129,7 +129,7 @@
                                 </ToolTip>
                             </Label.ToolTip>
                         </Label>
-                        <wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True"  Style="{StaticResource MotionDoubleUpDown}" />
+                        <wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
 
                         <Label Grid.Row="3" Grid.Column="0" Content="Motion final dest.">
                             <Label.ToolTip>
@@ -138,7 +138,7 @@
                                 </ToolTip>
                             </Label.ToolTip>
                         </Label>
-                        <wpfTool:DoubleUpDown Grid.Row="3" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionFinalDestination, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource MilimetersToMetersConverter}}"  Style="{StaticResource MotionDoubleUpDown}" />
+                        <wpfTool:DoubleUpDown Grid.Row="3" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionFinalDestination, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource MilimetersToMetersConverter}}"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
                     </Grid>
                 </TabItem>
                 <!-- End tab item single time trace distance measuremebts -->
@@ -157,11 +157,11 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="Start position"/>
-                        <wpfTool:DoubleUpDown Grid.Row="0" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceRepetitiveStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource MilimetersToMetersConverter}}"  Style="{StaticResource MotionDoubleUpDown}" />
+                        <wpfTool:DoubleUpDown Grid.Row="0" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceRepetitiveStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource MilimetersToMetersConverter}}"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
                         <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
-                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True"  Style="{StaticResource MotionDoubleUpDown}" />
+                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
                         <Label Grid.Row="2" Grid.Column="0" Content="End position"/>
-                        <wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceRepetitiveFinalDestination, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource MilimetersToMetersConverter}}"  Style="{StaticResource MotionDoubleUpDown}" />
+                        <wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceRepetitiveFinalDestination, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource MilimetersToMetersConverter}}"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
                         <Label Grid.Row="3" Grid.Column="0" Content="Number cycles"/>
 						<wpfTool:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceRepetitiveNumberCycles, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     </Grid>
@@ -182,7 +182,7 @@
                         <Label Grid.Row="0" Grid.Column="0" Content="Measure time"/>
                         <wpfTool:TimeSpanUpDown Grid.Row="0" Grid.Column="1" Margin="0 2.5" Value="{Binding TimeTraceMeasurementTime_TimeFinal, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                         <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
-                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True" Minimum="0" Maximum="1.5" />
+                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True" Minimum="0" Maximum="15" />
                     </Grid>
                 </TabItem>
                 <!-- End tab item time trace "time" measuremebts -->
@@ -201,7 +201,7 @@
                         <Label Grid.Row="0" Grid.Column="0" Content="Value of R"/>
 						<wpfTool:DoubleUpDown Grid.Row="0" Grid.Column="1" Value="{Binding TimeTraceMeasurementFixedR_R_Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource MotionDoubleUpDown}" />
                         <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
-                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True" Minimum="0" Maximum="1.5" />
+                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True" Minimum="0" Maximum="15" />
                     </Grid>
                 </TabItem>
             </TabControl>

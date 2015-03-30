@@ -13,13 +13,13 @@ namespace BreakJunctions
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var ValueInMilimiters = (double)value;
-            return ValueInMilimiters / 1000.0;
+            return ValueInMilimiters * 1000.0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var ValueInMeters = (double)value;
-            return ValueInMeters * 1000.0;
+            return ValueInMeters / 1000.0;
         }
     }
     public class MotionParametersDataModel : INotifyPropertyChanged
