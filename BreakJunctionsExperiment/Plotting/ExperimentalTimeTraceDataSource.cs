@@ -36,6 +36,8 @@ namespace BreakJunctions.Plotting
         private Dispatcher _Dispatcher;
         private EnumerableDataSource<Point> _ExperimentalDataSource;
 
+        private int _Counter = 0;
+
         public ExperimentalTimeTraceDataSource()
         {
             _ExperimentalData = new LinkedList<Point>();
@@ -66,26 +68,32 @@ namespace BreakJunctions.Plotting
 
         public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
-            if (_ExperimentalData.Count > 10000)
+            if (_ExperimentalData.Count > 5000)
                 _ExperimentalData.RemoveFirst();
 
             if (e.Y >= _ScaledConductanceOverflow)
             {
+                ++_Counter;
                 _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
-                await _Dispatcher.BeginInvoke(new Action(delegate()
+                if (_Counter % 10 == 0)
                 {
-                    try
+                    await _Dispatcher.BeginInvoke(new Action(delegate()
                     {
-                        DataChanged(sender, new EventArgs());
-                    }
-                    catch { }
-                }));
+                        try
+                        {
+                            DataChanged(sender, new EventArgs());
+                        }
+                        catch { }
+                    }));
+
+                    _Counter = 0;
+                }
             }
         }
         public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
         {
-            if (_ExperimentalData.Count > 10000)
+            if (_ExperimentalData.Count > 5000)
                 _ExperimentalData.RemoveFirst();
 
             if (e.Y >= _ScaledConductanceOverflow)

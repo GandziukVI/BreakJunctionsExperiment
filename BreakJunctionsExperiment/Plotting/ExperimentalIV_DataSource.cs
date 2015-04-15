@@ -50,7 +50,7 @@ namespace BreakJunctions.Plotting
 
         public async void OnIV_PointReceived(object sender, IV_PointReceivedChannel_01_EventArgs e)
         {
-            if (_ExperimentalData.Count > 10000)
+            if (_ExperimentalData.Count > 5000)
                 _ExperimentalData.RemoveFirst();
 
             _ExperimentalData.AddLast(new Point(e.X, e.Y));
@@ -63,7 +63,7 @@ namespace BreakJunctions.Plotting
 
         public async void OnIV_PointReceived(object sender, IV_PointReceivedChannel_02_EventArgs e)
         {
-            if (_ExperimentalData.Count > 10000)
+            if (_ExperimentalData.Count > 5000)
                 _ExperimentalData.RemoveFirst();
 
             _ExperimentalData.AddLast(new Point(e.X, e.Y));
