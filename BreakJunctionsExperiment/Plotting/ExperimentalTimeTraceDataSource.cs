@@ -36,7 +36,8 @@ namespace BreakJunctions.Plotting
         private Dispatcher _Dispatcher;
         private EnumerableDataSource<Point> _ExperimentalDataSource;
 
-        private int _Counter = 0;
+        private int _Counter_CH_01 = 0;
+        private int _Counter_CH_02 = 0;
 
         public ExperimentalTimeTraceDataSource()
         {
@@ -73,10 +74,10 @@ namespace BreakJunctions.Plotting
 
             if (e.Y >= _ScaledConductanceOverflow)
             {
-                ++_Counter;
+                ++_Counter_CH_01;
                 _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
-                if (_Counter % 10 == 0)
+                if (_Counter_CH_01 % 10 == 0)
                 {
                     await _Dispatcher.BeginInvoke(new Action(delegate()
                     {
@@ -87,7 +88,7 @@ namespace BreakJunctions.Plotting
                         catch { }
                     }));
 
-                    _Counter = 0;
+                    _Counter_CH_01 = 0;
                 }
             }
         }
@@ -98,16 +99,22 @@ namespace BreakJunctions.Plotting
 
             if (e.Y >= _ScaledConductanceOverflow)
             {
+                ++_Counter_CH_02;
                 _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
-                await _Dispatcher.BeginInvoke(new Action(delegate()
+                if (_Counter_CH_02 % 10 == 0)
                 {
-                    try
+                    await _Dispatcher.BeginInvoke(new Action(delegate()
                     {
-                        DataChanged(sender, new EventArgs());
-                    }
-                    catch { }
-                }));
+                        try
+                        {
+                            DataChanged(sender, new EventArgs());
+                        }
+                        catch { }
+                    }));
+
+                    _Counter_CH_02 = 0;
+                }
             }
         }
 
