@@ -67,7 +67,7 @@
                         
                         <TextBlock Grid.Column="0" Grid.Row="3" Text="Amplification coeff CH_01" />
                         <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding Path=AmplificationCoefficient_CH1, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                        <TextBlock Grid.Column="0" Grid.Row="4" Text="Amplification coeff CH_01" />
+                        <TextBlock Grid.Column="0" Grid.Row="4" Text="Amplification coeff CH_02" />
                         <wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="4" Value="{Binding Path=AmplificationCoefficient_CH2, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     </Grid>
                     
