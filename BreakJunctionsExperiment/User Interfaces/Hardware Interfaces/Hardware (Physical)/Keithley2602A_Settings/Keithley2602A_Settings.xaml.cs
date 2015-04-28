@@ -110,10 +110,10 @@ namespace BreakJunctions
             if (AccuracyListBox.SelectedIndex == -1)
                 return;
 
-            (AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>).RemoveAt(AccuracyListBox.SelectedIndex);
-
             var selected = AccuracyListBox.SelectedItem as RangeAccuracySet;
             AccuracyParams.Instance.Remove_RangeAccuracy_Value(new double[] { selected.MinRangeLimit, selected.MaxRangeLimit });
+
+            (AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>).RemoveAt(AccuracyListBox.SelectedIndex);
         }
 
         private void on_cmd_AddNewRangeClick(object sender, RoutedEventArgs e)

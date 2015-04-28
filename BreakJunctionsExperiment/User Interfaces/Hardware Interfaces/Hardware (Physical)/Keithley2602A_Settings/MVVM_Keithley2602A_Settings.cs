@@ -10,20 +10,6 @@ using System.Collections.ObjectModel;
 
 namespace BreakJunctions
 {
-    public class RangeAccuracySet
-    {
-        public double MinRangeLimit { get; set; }
-        public double MaxRangeLimit { get; set; }
-        public double Accuracy { get; set; }
-
-        public RangeAccuracySet(double _MinRangeLimit, double _MaxRangeLimit, double _Accuracy)
-        {
-            MinRangeLimit = _MinRangeLimit;
-            MaxRangeLimit = _MaxRangeLimit;
-            Accuracy = _Accuracy;
-        }
-    }
-
     /// <summary>
     /// Implementation MVVM for Keithley 2602A settings window
     /// </summary>
@@ -187,18 +173,6 @@ namespace BreakJunctions
             {
                 _AccuracyCoefficient = value;
                 OnPropertyChanged("AccuracyCoefficient");
-            }
-        }
-
-        private ObservableCollection<RangeAccuracySet> _RangeAccuracySetList;
-        public ObservableCollection<RangeAccuracySet> RangeAccuracySetList
-        {
-            get
-            {
-                if (_RangeAccuracySetList == null)
-                    _RangeAccuracySetList = new ObservableCollection<RangeAccuracySet>();
-
-                return _RangeAccuracySetList;
             }
         }
 

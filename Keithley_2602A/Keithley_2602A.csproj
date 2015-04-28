@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeviceConfiguration\AccuracyParams.cs" />
+    <Compile Include="DeviceConfiguration\ObservableCollection.cs" />
     <Compile Include="KEITHLEY_2602A_CHANNEL.cs" />
     <Compile Include="KEITHLEY_2602A.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
