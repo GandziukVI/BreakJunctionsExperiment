@@ -250,52 +250,6 @@ namespace BreakJunctions.Measurements
         {
             get
             {
-                //switch (_Motor.CurrentDirection)
-                //{
-                //    case MotionDirection.Up:
-                //        {
-                //            switch (_CurrentMotionKind)
-                //            {
-                //                case MotionKind.Single:
-                //                    {
-                //                        var progress = Convert.ToInt32(((_Motor.CurrentIteration + Math.Abs((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities) * 100.0);
-                //                        return progress;
-                //                    }
-                //                case MotionKind.Repetitive:
-                //                    {
-                //                        var progress = Convert.ToInt32(((_Motor.CurrentIteration + Math.Abs((_CurrentPosition - _StartPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities) * 50.0);
-                //                        return progress;
-                //                    }
-                //                default:
-                //                    return 0;
-                //            }
-                //        }
-                //    case MotionDirection.Down:
-                //        {
-                //            switch (_CurrentMotionKind)
-                //            {
-                //                case MotionKind.Single:
-                //                    {
-                //                        var a = _Motor.CurrentIteration;
-                //                        var b = Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition));
-                //                        var c = (_Motor.CurrentIteration + Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition)));
-                //                        var d = ((_Motor.CurrentIteration + Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities);
-
-                //                        var progress = 100 - Convert.ToInt32(((_Motor.CurrentIteration + Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities) * 100.0);
-                //                        return progress;
-                //                    }
-                //                case MotionKind.Repetitive:
-                //                    {
-                //                        var progress = 100 - Convert.ToInt32(((_Motor.CurrentIteration + Math.Abs((FinalDestination - _CurrentPosition) / (_FinalDestination - _StartPosition))) / _Motor.NumberOfRepetities) * 50.0);
-                //                        return progress;
-                //                    }
-                //                default:
-                //                    return 0;
-                //            }
-                //        }
-                //    default:
-                //        return 0;
-                //}
                 switch (_CurrentMotionKind)
                 {
                     case MotionKind.Single:

@@ -15,6 +15,8 @@ using SMU.KEITHLEY_2602A;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using Devices;
+using System.Collections.ObjectModel;
+using Keithley_2602A.DeviceConfiguration;
 
 namespace BreakJunctions
 {
@@ -67,6 +69,7 @@ namespace BreakJunctions
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
+                
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
@@ -96,10 +99,27 @@ namespace BreakJunctions
             return _Device;
         }
 
-        private void on_cmdSaveSettingsClick(object sender, System.Windows.RoutedEventArgs e)
+        private void on_cmdSaveSettingsClick(object sender, RoutedEventArgs e)
         {
             _Device = SetDevice();
             this.Close();
+        }
+
+        private void Menu_ItemDeleteClick(object sender, RoutedEventArgs e)
+        {
+            if (AccuracyListBox.SelectedIndex == -1)
+                return;
+
+            (AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>).RemoveAt(AccuracyListBox.SelectedIndex);
+
+            var selected = AccuracyListBox.SelectedItem as RangeAccuracySet;
+            AccuracyParams.Instance.Remove_RangeAccuracy_Value(new double[] { selected.MinRangeLimit, selected.MaxRangeLimit });
+        }
+
+        private void on_cmd_AddNewRangeClick(object sender, RoutedEventArgs e)
+        {
+            (AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>).Add(new RangeAccuracySet(DeviceSettings.NewMinRangeLimit, DeviceSettings.NewMaxRangeLimit, DeviceSettings.NewAccuracy));
+            AccuracyParams.Instance.Add_New_RangeAccuracy_Value(new double[] { DeviceSettings.NewMinRangeLimit, DeviceSettings.NewMaxRangeLimit }, DeviceSettings.NewAccuracy);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading;
 using Devices;
 using Devices.SMU;
 using System.Globalization;
+using Keithley_2602A.DeviceConfiguration;
 
 /*     Realizes KEITHLY 2602A functionality     */
 
@@ -70,6 +71,9 @@ namespace SMU.KEITHLEY_2602A
 
         #region Functionality
 
+        /// <summary>
+        /// Enables beeper
+        /// </summary>
         public void EnableBeeper()
         {
             _TheDevice.SendCommandRequest("beeper.enable = 1 ");
@@ -77,6 +81,11 @@ namespace SMU.KEITHLEY_2602A
 
         private double _FastestSpeed = 0.001;
         private double _LowestSpeed = 25.0;
+        /// <summary>
+        /// Sets the accuracy and speed of measurement
+        /// </summary>
+        /// <param name="Speed">Accuracy parameter</param>
+        /// <param name="SelectedChannel">Selected channel</param>
         public void SetSpeed(double Speed, Channels SelectedChannel)
         {
             var Command = "smu{0}.measure.nplc = {1} ";
@@ -217,8 +226,6 @@ namespace SMU.KEITHLEY_2602A
             var MeasuredValue = "";
 
             var IV_Script =
-                //"status.reset()\n" +
-                //"errorqueue.clear()\n" + 
                 "smu{0}.measure.autorange{1} = smu{0}.AUTORANGE_ON\n" +
                 "display.screen = display.{4}\n" +
                 "display.smu{0}.measure.func = display.{5}\n" +
@@ -301,8 +308,6 @@ namespace SMU.KEITHLEY_2602A
             var MeasuredValue = "";
 
             var R_Script =
-                //"status.reset()\n" +
-                //"errorqueue.clear()\n" + 
                 "smu{0}.source.func = smu{0}.{1}\n" +
                 "smu{0}.source.autorange{2} = smu{0}.AUTORANGE_ON\n" +
                 "smu{0}.source.level{2} = {3}\n" +
@@ -320,8 +325,6 @@ namespace SMU.KEITHLEY_2602A
                 "print (result)\n";
 
             var P_Script =
-                //"status.reset()\n" +
-                //"errorqueue.clear()\n" + 
                 "smu{0}.measure.autorange{1} = smu{0}.AUTORANGE_ON\n" +
                 "display.screen = display.{2}\n" +
                 "display.smu{0}.measure.func = display.{3}\n" +
@@ -437,7 +440,7 @@ namespace SMU.KEITHLEY_2602A
 
             //Changing value to appropriate format
 
-            var _Value = Value.ToString().Replace(',', '.');
+            var _Value = Value.ToString(NumberFormatInfo.InvariantInfo);
 
             var script = "smu{0}.source.level{1} = {2} ";
 

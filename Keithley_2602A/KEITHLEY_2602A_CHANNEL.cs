@@ -6,6 +6,7 @@ using System.Globalization;
 
 using Devices.SMU;
 using Devices;
+using Keithley_2602A.DeviceConfiguration;
 
 namespace SMU.KEITHLEY_2602A
 {
@@ -99,6 +100,26 @@ namespace SMU.KEITHLEY_2602A
             catch { return false; }
         }
 
+        private double[] _CurrentRow = new double[] { 0.0, 0.0 };
+        private void CheckValueAccuracy(ref double value)
+        {
+            foreach (var row in AccuracyParams.Instance.RangeAccuracySet.Keys)
+            {
+                if (row != _CurrentRow)
+                {
+                    var min = row.Min();
+                    var max = row.Max();
+
+                    if ((value >= min) && (value <= max))
+                    {
+                        _CurrentRow = row;
+                        SetSpeed(AccuracyParams.Instance.RangeAccuracySet[row], _SelectedChannel);
+                        break;
+                    }
+                }
+            }
+        }
+
         public double MeasureVoltage(int NumberOfAverages, double TimeDelay)
         {
             double MeasuredVoltage;
@@ -107,7 +128,10 @@ namespace SMU.KEITHLEY_2602A
             var isSucceed = double.TryParse(MeasuredVoltageString, _Style, _Culture, out MeasuredVoltage);
 
             if (isSucceed)
+            {
+                CheckValueAccuracy(ref MeasuredVoltage);
                 return MeasuredVoltage;
+            }
             else return double.NaN;
         }
 
@@ -119,7 +143,10 @@ namespace SMU.KEITHLEY_2602A
             var isSucceed = double.TryParse(MeasuredCurrentString, _Style, _Culture, out MeasuredCurrent);
 
             if (isSucceed)
+            {
+                CheckValueAccuracy(ref MeasuredCurrent);
                 return MeasuredCurrent;
+            }
             else return double.NaN;
         }
 
@@ -146,7 +173,10 @@ namespace SMU.KEITHLEY_2602A
             var isSucceed = double.TryParse(measuredRessitanceString, _Style, _Culture, out measuredResistance);
 
             if (isSucceed)
+            {
+                CheckValueAccuracy(ref measuredResistance);
                 return measuredResistance;
+            }
             else return double.NaN;
         }
 
@@ -172,7 +202,10 @@ namespace SMU.KEITHLEY_2602A
             var isSucceed = double.TryParse(measuredPowerString, _Style, _Culture, out measuredPower);
 
             if (isSucceed)
+            {
+                CheckValueAccuracy(ref measuredPower);
                 return measuredPower;
+            }
             else return double.NaN;
         }
     }

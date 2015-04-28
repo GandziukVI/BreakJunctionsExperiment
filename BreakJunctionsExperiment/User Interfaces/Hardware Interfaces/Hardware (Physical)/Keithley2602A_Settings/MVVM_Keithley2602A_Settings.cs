@@ -6,9 +6,24 @@ using System.Text;
 
 using Devices.SMU;
 using SMU.KEITHLEY_2602A;
+using System.Collections.ObjectModel;
 
 namespace BreakJunctions
 {
+    public class RangeAccuracySet
+    {
+        public double MinRangeLimit { get; set; }
+        public double MaxRangeLimit { get; set; }
+        public double Accuracy { get; set; }
+
+        public RangeAccuracySet(double _MinRangeLimit, double _MaxRangeLimit, double _Accuracy)
+        {
+            MinRangeLimit = _MinRangeLimit;
+            MaxRangeLimit = _MaxRangeLimit;
+            Accuracy = _Accuracy;
+        }
+    }
+
     /// <summary>
     /// Implementation MVVM for Keithley 2602A settings window
     /// </summary>
@@ -55,7 +70,7 @@ namespace BreakJunctions
         }
 
         private bool _IsCurrentModeChecked = false;
-        public bool  IsCurrentModeCheched
+        public bool IsCurrentModeCheched
         {
             get { return _IsCurrentModeChecked; }
             set
@@ -66,18 +81,18 @@ namespace BreakJunctions
         }
 
         private LimitMode _LimitMode;
-        public LimitMode LimitMode 
+        public LimitMode LimitMode
         {
-            get 
+            get
             {
                 if (_IsCurrentModeChecked == true)
                     _LimitMode = LimitMode.Voltage;
                 else if (_IsVoltageModeChecked == true)
                     _LimitMode = LimitMode.Current;
 
-                return _LimitMode; 
+                return _LimitMode;
             }
-            set 
+            set
             {
                 _LimitMode = value;
                 OnPropertyChanged("LimitMode");
@@ -96,13 +111,13 @@ namespace BreakJunctions
         }
 
         private double _LimitValueVoltage = 12.0;
-        public double LimitValueVoltage 
+        public double LimitValueVoltage
         {
-            get 
+            get
             {
                 return _LimitValueVoltage * HandlingUserInput.GetMultiplier(_LimitValueVoltageMultiplier);
             }
-            set 
+            set
             {
                 _LimitValueVoltage = value;
                 OnPropertyChanged("LimitValueVoltage");
@@ -121,13 +136,13 @@ namespace BreakJunctions
         }
 
         private double _LimitValueCurrent = 1.0;
-        public double LimitValueCurrent 
+        public double LimitValueCurrent
         {
-            get 
+            get
             {
-                return _LimitValueCurrent * HandlingUserInput.GetMultiplier(_LimitValueCurrentMultiplier); 
+                return _LimitValueCurrent * HandlingUserInput.GetMultiplier(_LimitValueCurrentMultiplier);
             }
-            set 
+            set
             {
                 _LimitValueCurrent = value;
                 OnPropertyChanged("LimitValueCurrent");
@@ -146,16 +161,16 @@ namespace BreakJunctions
         }
 
         private Channels _SelectedChannel = Channels.ChannelA;
-        public Channels SelectedChannel 
+        public Channels SelectedChannel
         {
-            get 
+            get
             {
                 if (_SelectedChannelString == "Channel A")
                     _SelectedChannel = Channels.ChannelA;
                 else
                     _SelectedChannel = Channels.ChannelB;
 
-                return _SelectedChannel; 
+                return _SelectedChannel;
             }
             set
             {
@@ -172,6 +187,51 @@ namespace BreakJunctions
             {
                 _AccuracyCoefficient = value;
                 OnPropertyChanged("AccuracyCoefficient");
+            }
+        }
+
+        private ObservableCollection<RangeAccuracySet> _RangeAccuracySetList;
+        public ObservableCollection<RangeAccuracySet> RangeAccuracySetList
+        {
+            get
+            {
+                if (_RangeAccuracySetList == null)
+                    _RangeAccuracySetList = new ObservableCollection<RangeAccuracySet>();
+
+                return _RangeAccuracySetList;
+            }
+        }
+
+        private double _NewMinRangeLimit = 0.0;
+        public double NewMinRangeLimit 
+        {
+            get { return _NewMinRangeLimit; }
+            set
+            {
+                _NewMinRangeLimit = value;
+                OnPropertyChanged("NewMinRangeLimit");
+            }
+        }
+
+        private double _NewMaxRangeLimit = 0.0;
+        public double NewMaxRangeLimit
+        {
+            get { return _NewMaxRangeLimit; }
+            set
+            {
+                _NewMaxRangeLimit = value;
+                OnPropertyChanged("NewMaxRangeLimit");
+            }
+        }
+
+        private double _NewAccuracy = 1.0;
+        public double NewAccuracy
+        {
+            get { return _NewAccuracy; }
+            set
+            {
+                _NewAccuracy = value;
+                OnPropertyChanged("NewAccuracy");
             }
         }
 
