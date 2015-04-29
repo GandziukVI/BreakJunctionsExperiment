@@ -65,8 +65,11 @@ namespace BreakJunctions
             if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
-                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as List<RangeAccuracySet>;
+                
                 var smu = KEITHLEY_2602A.Instance.ChannelA;
+
+                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
@@ -75,8 +78,11 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
-                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as List<RangeAccuracySet>;
+
                 var smu = KEITHLEY_2602A.Instance.ChannelA;
+
+                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
@@ -84,8 +90,11 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
-                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as List<RangeAccuracySet>;
+                
                 var smu = KEITHLEY_2602A.Instance.ChannelB;
+
+                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
@@ -93,8 +102,11 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
-                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as List<RangeAccuracySet>;
-                var smu = KEITHLEY_2602A.Instance.ChannelB;                
+                
+                var smu = KEITHLEY_2602A.Instance.ChannelB;
+
+                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);

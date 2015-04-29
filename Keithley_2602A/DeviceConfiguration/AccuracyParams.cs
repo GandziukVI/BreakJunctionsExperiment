@@ -28,7 +28,7 @@ namespace Keithley_2602A.DeviceConfiguration
 
     public class AccuracyParams
     {
-        public List<RangeAccuracySet> RangeAccuracySet { get; set; }
+        public ObservableCollection<RangeAccuracySet> RangeAccuracySet { get; set; }
 
         public void Add_New_RangeAccuracy_Value(double[] _Range, double _Accuracy)
         {

@@ -32,6 +32,9 @@ namespace SMU.KEITHLEY_2602A
             _SelectedChannel = _Channel;
 
             _TheDevice = __TheDevice;
+
+            _ChannelAccuracyParams = new AccuracyParams();
+
             InitDevice();
         }
 
@@ -105,28 +108,32 @@ namespace SMU.KEITHLEY_2602A
         {
             get
             {
-                if (_ChannelAccuracyParams == null)
-                    _ChannelAccuracyParams = new AccuracyParams();
-
                 return _ChannelAccuracyParams;
+            }
+            set
+            {
+                _ChannelAccuracyParams = value;
             }
         }
 
         private RangeAccuracySet _CurrentRow;
-        private void CheckValueAccuracy(ref double value)
+        private void CheckValueAccuracy(double value)
         {
-            foreach (var row in ChannelAccuracyParams.RangeAccuracySet)
+            if (ChannelAccuracyParams.RangeAccuracySet != null)
             {
-                var min = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Min();
-                var max = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Max();
-
-                if ((value >= min) && (value <= max))
+                foreach (var row in ChannelAccuracyParams.RangeAccuracySet)
                 {
-                    if (row != _CurrentRow)
+                    var min = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Min();
+                    var max = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Max();
+
+                    if ((value >= min) && (value <= max))
                     {
-                        _CurrentRow = row;
-                        SetSpeed(row.Accuracy, _SelectedChannel);
-                        break;
+                        if (row != _CurrentRow)
+                        {
+                            _CurrentRow = row;
+                            SetSpeed(row.Accuracy, _SelectedChannel);
+                            break;
+                        }
                     }
                 }
             }
@@ -141,7 +148,7 @@ namespace SMU.KEITHLEY_2602A
 
             if (isSucceed)
             {
-                CheckValueAccuracy(ref MeasuredVoltage);
+                CheckValueAccuracy(MeasuredVoltage);
                 return MeasuredVoltage;
             }
             else return double.NaN;
@@ -156,7 +163,7 @@ namespace SMU.KEITHLEY_2602A
 
             if (isSucceed)
             {
-                CheckValueAccuracy(ref MeasuredCurrent);
+                CheckValueAccuracy(MeasuredCurrent);
                 return MeasuredCurrent;
             }
             else return double.NaN;
@@ -186,7 +193,7 @@ namespace SMU.KEITHLEY_2602A
 
             if (isSucceed)
             {
-                CheckValueAccuracy(ref measuredResistance);
+                CheckValueAccuracy(measuredResistance);
                 return measuredResistance;
             }
             else return double.NaN;
@@ -215,7 +222,7 @@ namespace SMU.KEITHLEY_2602A
 
             if (isSucceed)
             {
-                CheckValueAccuracy(ref measuredPower);
+                CheckValueAccuracy(measuredPower);
                 return measuredPower;
             }
             else return double.NaN;
