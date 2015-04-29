@@ -7,6 +7,7 @@ using System.Text;
 using Devices.SMU;
 using SMU.KEITHLEY_2602A;
 using System.Collections.ObjectModel;
+using Keithley_2602A.DeviceConfiguration;
 
 namespace BreakJunctions
 {
@@ -173,6 +174,18 @@ namespace BreakJunctions
             {
                 _AccuracyCoefficient = value;
                 OnPropertyChanged("AccuracyCoefficient");
+            }
+        }
+
+        private ObservableCollection<RangeAccuracySet> _RangeAccuracyCollection;
+        public ObservableCollection<RangeAccuracySet> RangeAccuracyCollection 
+        {
+            get
+            {
+                if (_RangeAccuracyCollection == null)
+                    _RangeAccuracyCollection = new ObservableCollection<RangeAccuracySet>();
+
+                return _RangeAccuracyCollection; 
             }
         }
 

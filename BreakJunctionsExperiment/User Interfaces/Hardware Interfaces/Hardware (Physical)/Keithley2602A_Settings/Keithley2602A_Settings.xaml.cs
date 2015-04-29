@@ -65,6 +65,7 @@ namespace BreakJunctions
             if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as List<RangeAccuracySet>;
                 var smu = KEITHLEY_2602A.Instance.ChannelA;
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
@@ -74,6 +75,7 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as List<RangeAccuracySet>;
                 var smu = KEITHLEY_2602A.Instance.ChannelA;
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
@@ -82,6 +84,7 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as List<RangeAccuracySet>;
                 var smu = KEITHLEY_2602A.Instance.ChannelB;
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
@@ -90,6 +93,7 @@ namespace BreakJunctions
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as List<RangeAccuracySet>;
                 var smu = KEITHLEY_2602A.Instance.ChannelB;                
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
@@ -99,27 +103,45 @@ namespace BreakJunctions
             return _Device;
         }
 
-        private void on_cmdSaveSettingsClick(object sender, RoutedEventArgs e)
-        {
-            _Device = SetDevice();
-            this.Close();
-        }
-
         private void Menu_ItemDeleteClick(object sender, RoutedEventArgs e)
         {
             if (AccuracyListBox.SelectedIndex == -1)
                 return;
 
             var selected = AccuracyListBox.SelectedItem as RangeAccuracySet;
-            AccuracyParams.Instance.Remove_RangeAccuracy_Value(new double[] { selected.MinRangeLimit, selected.MaxRangeLimit });
 
             (AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>).RemoveAt(AccuracyListBox.SelectedIndex);
         }
 
+        private bool IsOverlapped(RangeAccuracySet NewRangeAccuracyElement)
+        {
+            var RangesAccuracyCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+            
+            var Overlapped = false;
+            
+            foreach (var element in RangesAccuracyCollection)
+                Overlapped = Overlapped ||
+                    ((NewRangeAccuracyElement.MinRangeLimit >= element.MinRangeLimit && NewRangeAccuracyElement.MaxRangeLimit <= element.MaxRangeLimit) ||
+                    (NewRangeAccuracyElement.MinRangeLimit <= element.MinRangeLimit && NewRangeAccuracyElement.MaxRangeLimit >= element.MaxRangeLimit) ||
+                    (NewRangeAccuracyElement.MinRangeLimit <= element.MinRangeLimit && NewRangeAccuracyElement.MaxRangeLimit <= element.MaxRangeLimit && NewRangeAccuracyElement.MaxRangeLimit >= element.MinRangeLimit) ||
+                    (NewRangeAccuracyElement.MinRangeLimit >= element.MinRangeLimit && NewRangeAccuracyElement.MinRangeLimit <= element.MaxRangeLimit && NewRangeAccuracyElement.MaxRangeLimit >= element.MaxRangeLimit));
+
+            return Overlapped;
+        }
+
         private void on_cmd_AddNewRangeClick(object sender, RoutedEventArgs e)
         {
-            (AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>).Add(new RangeAccuracySet(DeviceSettings.NewMinRangeLimit, DeviceSettings.NewMaxRangeLimit, DeviceSettings.NewAccuracy));
-            AccuracyParams.Instance.Add_New_RangeAccuracy_Value(new double[] { DeviceSettings.NewMinRangeLimit, DeviceSettings.NewMaxRangeLimit }, DeviceSettings.NewAccuracy);
+            var NewElement = new RangeAccuracySet(DeviceSettings.NewMinRangeLimit, DeviceSettings.NewMaxRangeLimit, DeviceSettings.NewAccuracy);
+            var ElementCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+
+            if (!ElementCollection.Contains(NewElement) && !IsOverlapped(NewElement))
+                ElementCollection.Add(NewElement);
+        }
+
+        private void on_cmdSaveSettingsClick(object sender, RoutedEventArgs e)
+        {
+            _Device = SetDevice();
+            this.Close();
         }
     }
 }

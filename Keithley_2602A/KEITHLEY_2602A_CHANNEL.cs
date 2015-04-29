@@ -33,8 +33,6 @@ namespace SMU.KEITHLEY_2602A
 
             _TheDevice = __TheDevice;
             InitDevice();
-
-            _ChannelAccuracyParams = new AccuracyParams();
         }
 
         public bool InitDevice()
@@ -103,22 +101,31 @@ namespace SMU.KEITHLEY_2602A
         }
 
         private AccuracyParams _ChannelAccuracyParams;
-        public AccuracyParams ChannelAccuracyParams { get { return _ChannelAccuracyParams; } }
+        public AccuracyParams ChannelAccuracyParams 
+        {
+            get
+            {
+                if (_ChannelAccuracyParams == null)
+                    _ChannelAccuracyParams = new AccuracyParams();
 
-        private double[] _CurrentRow = new double[] { 0.0, 0.0 };
+                return _ChannelAccuracyParams;
+            }
+        }
+
+        private RangeAccuracySet _CurrentRow;
         private void CheckValueAccuracy(ref double value)
         {
             foreach (var row in ChannelAccuracyParams.RangeAccuracySet)
             {
-                var min = row.Min();
-                var max = row.Max();
+                var min = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Min();
+                var max = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Max();
 
                 if ((value >= min) && (value <= max))
                 {
                     if (row != _CurrentRow)
                     {
                         _CurrentRow = row;
-                        SetSpeed(AccuracyParams.Instance.RangeAccuracySet[row], _SelectedChannel);
+                        SetSpeed(row.Accuracy, _SelectedChannel);
                         break;
                     }
                 }

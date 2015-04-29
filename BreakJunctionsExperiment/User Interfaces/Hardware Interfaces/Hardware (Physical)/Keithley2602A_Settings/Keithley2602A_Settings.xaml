@@ -72,8 +72,9 @@
 			<ListBox 
 				x:Name="AccuracyListBox"
 				Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
-				ItemsSource="{Binding Path=RangeAccuracySetList, Mode=OneWay}" 
+				ItemsSource="{Binding Path=RangeAccuracyCollection}" 
 				HorizontalContentAlignment="Stretch"
+                ScrollViewer.CanContentScroll="False"
 				Height="150"
 				Margin="10">
 				<ListBox.ItemTemplate>

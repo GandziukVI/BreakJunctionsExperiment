@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Keithley_2602A.DeviceConfiguration
 {
-    public class RangeAccuracySet
+    public class RangeAccuracySet : IEquatable<RangeAccuracySet>
     {
         public double MinRangeLimit { get; set; }
         public double MaxRangeLimit { get; set; }
@@ -19,26 +19,25 @@ namespace Keithley_2602A.DeviceConfiguration
             MaxRangeLimit = _MaxRangeLimit;
             Accuracy = _Accuracy;
         }
+
+        public bool Equals(RangeAccuracySet Other)
+        {
+            return (MinRangeLimit == Other.MinRangeLimit) && (MaxRangeLimit == Other.MaxRangeLimit) && (Accuracy == Other.Accuracy);
+        }
     }
 
     public class AccuracyParams
     {
-        private ObservableCollection<RangeAccuracySet> _RangeAccuracySet;
-        public ObservableCollection<RangeAccuracySet> RangeAccuracySet { get { return _RangeAccuracySet; } }
-
-        public AccuracyParams()
-        {
-            _RangeAccuracySet = new ObservableCollection<RangeAccuracySet>();
-        }
+        public List<RangeAccuracySet> RangeAccuracySet { get; set; }
 
         public void Add_New_RangeAccuracy_Value(double[] _Range, double _Accuracy)
         {
-            _RangeAccuracySet.Add(new RangeAccuracySet(_Range[0], _Range[1], _Accuracy));
+            RangeAccuracySet.Add(new RangeAccuracySet(_Range[0], _Range[1], _Accuracy));
         }
 
         public void Remove_RangeAccuracy_Value(double[] _Range, double _Accuracy)
         {
-            _RangeAccuracySet.Remove(new RangeAccuracySet(_Range[0], _Range[1], _Accuracy));
+            RangeAccuracySet.Remove(new RangeAccuracySet(_Range[0], _Range[1], _Accuracy));
         }
     }
 }
