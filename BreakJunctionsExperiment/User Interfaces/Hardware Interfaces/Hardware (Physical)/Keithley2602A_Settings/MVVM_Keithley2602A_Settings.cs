@@ -30,13 +30,14 @@ namespace BreakJunctions
 
         #region VisaDevice settings
 
-        private string _VisaID = "GPIB0::26::INSTR";
+        private string _VisaID = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.VisaID;
         public string VisaID
         {
             get { return _VisaID; }
             set
             {
                 _VisaID = value;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.VisaID = value;
                 OnPropertyChanged("VisaID");
             }
         }
@@ -45,24 +46,26 @@ namespace BreakJunctions
 
         #region Device Source / Measurement settings
 
-        private bool _IsVoltageModeChecked = true;
+        private bool _IsVoltageModeChecked = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.IsVoltageModeChecked;
         public bool IsVoltageModeChecked
         {
             get { return _IsVoltageModeChecked; }
             set
             {
                 _IsVoltageModeChecked = value;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.IsVoltageModeChecked = value;
                 OnPropertyChanged("IsVoltageModeChecked");
             }
         }
 
-        private bool _IsCurrentModeChecked = false;
+        private bool _IsCurrentModeChecked = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.IsCurrentModeChecked;
         public bool IsCurrentModeCheched
         {
             get { return _IsCurrentModeChecked; }
             set
             {
                 _IsCurrentModeChecked = value;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.IsCurrentModeChecked = value;
                 OnPropertyChanged("IsCurrentModeCheched");
             }
         }
@@ -97,7 +100,7 @@ namespace BreakJunctions
             }
         }
 
-        private double _LimitValueVoltage = 12.0;
+        private double _LimitValueVoltage = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.VoltageLimit;
         public double LimitValueVoltage
         {
             get
@@ -107,6 +110,7 @@ namespace BreakJunctions
             set
             {
                 _LimitValueVoltage = value;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.VoltageLimit = value;
                 OnPropertyChanged("LimitValueVoltage");
             }
         }
@@ -122,7 +126,7 @@ namespace BreakJunctions
             }
         }
 
-        private double _LimitValueCurrent = 1.0;
+        private double _LimitValueCurrent = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.CurrentLimit;
         public double LimitValueCurrent
         {
             get
@@ -132,6 +136,7 @@ namespace BreakJunctions
             set
             {
                 _LimitValueCurrent = value;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.CurrentLimit = value;
                 OnPropertyChanged("LimitValueCurrent");
             }
         }
@@ -166,13 +171,14 @@ namespace BreakJunctions
             }
         }
 
-        private double _AccuracyCoefficient = 1.0;
+        private double _AccuracyCoefficient = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Accuracy;
         public double AccuracyCoefficient
         {
             get { return _AccuracyCoefficient; }
             set
             {
                 _AccuracyCoefficient = value;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Accuracy = value;
                 OnPropertyChanged("AccuracyCoefficient");
             }
         }

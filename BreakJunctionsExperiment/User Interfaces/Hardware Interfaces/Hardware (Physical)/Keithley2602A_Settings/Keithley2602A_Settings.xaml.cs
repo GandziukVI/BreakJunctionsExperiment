@@ -45,17 +45,17 @@ namespace BreakJunctions
 
         public Keithley2602A_Channel_Settings()
         {
-            this.InitializeComponent();
-
             #region Set MVVM
 
             _DeviceSettings = new MVVM_Keithley2602A_Settings();
             this.DataContext = _DeviceSettings;
 
+            #endregion
+
+            InitializeComponent();
+
             this.radioSourceMeasureModeVoltage.DataContext = ModelViewInteractions.IV_VoltageChangedModel;
             this.radioSourceMeasureModeCurrent.DataContext = ModelViewInteractions.IV_CurrentChangedModel;
-
-            #endregion
         }
 
         private I_SMU SetDevice()
@@ -65,7 +65,7 @@ namespace BreakJunctions
             if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
-                
+
                 var smu = KEITHLEY_2602A.Instance.ChannelA;
 
                 KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
@@ -73,7 +73,9 @@ namespace BreakJunctions
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
-                
+
+
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet;
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
@@ -86,11 +88,13 @@ namespace BreakJunctions
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
+
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet;
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
-                
+
                 var smu = KEITHLEY_2602A.Instance.ChannelB;
 
                 KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
@@ -98,11 +102,13 @@ namespace BreakJunctions
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
+
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet;
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
                 KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
-                
+
                 var smu = KEITHLEY_2602A.Instance.ChannelB;
 
                 KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
@@ -110,6 +116,8 @@ namespace BreakJunctions
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
+
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet;
             }
 
             return _Device;
@@ -128,9 +136,9 @@ namespace BreakJunctions
         private bool IsOverlapped(RangeAccuracySet NewRangeAccuracyElement)
         {
             var RangesAccuracyCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
-            
+
             var Overlapped = false;
-            
+
             foreach (var element in RangesAccuracyCollection)
                 Overlapped = Overlapped ||
                     ((NewRangeAccuracyElement.MinRangeLimit >= element.MinRangeLimit && NewRangeAccuracyElement.MaxRangeLimit <= element.MaxRangeLimit) ||
@@ -154,6 +162,42 @@ namespace BreakJunctions
         {
             _Device = SetDevice();
             this.Close();
+        }
+
+        private void on_WorkingChannelSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var box = sender as ComboBox;
+            switch (box.SelectedIndex)
+            {
+                case 0:
+                    {
+                        var collection = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection;
+                        var itemsCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+
+                        if (collection != null)
+                        {
+                            if (itemsCollection.Count > 0)
+                                itemsCollection.Clear();
+
+                            foreach (var item in collection)
+                                itemsCollection.Add(item);
+                        }
+                    } break;
+                case 1:
+                    {
+                        var collection = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection;
+                        var itemsCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+
+                        if (collection != null)
+                        {
+                            if (itemsCollection.Count > 0)
+                                itemsCollection.Clear();
+
+                            foreach (var item in collection)
+                                itemsCollection.Add(item);
+                        }
+                    }break;
+            }
         }
     }
 }

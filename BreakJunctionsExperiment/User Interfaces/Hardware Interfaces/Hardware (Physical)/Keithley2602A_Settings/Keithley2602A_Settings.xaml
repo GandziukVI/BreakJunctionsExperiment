@@ -23,7 +23,7 @@
 		</Style>
 		<Style TargetType="wpfTool:DoubleUpDown">
 			<Setter Property="CultureInfo" Value="en-US" />
-			<Setter Property="FormatString" Value="F3" />
+			<Setter Property="FormatString" Value="F4" />
 			<Setter Property="HorizontalAlignment" Value="Stretch" />
 			<Setter Property="Increment" Value="0.01" />
 			<Setter Property="Margin" Value="1 2.5" />
@@ -148,7 +148,7 @@
 		<StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
 			<Label>Working Channel</Label>
 			<ComboBox 
-			x:Name="comboBoxWorkingChannel" Text="{Binding Path=SelectedChannelString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+			x:Name="comboBoxWorkingChannel" Text="{Binding Path=SelectedChannelString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionChanged="on_WorkingChannelSelectionChanged">
 				<ComboBoxItem IsSelected="True">Channel A</ComboBoxItem>
 				<ComboBoxItem>Channel B</ComboBoxItem>
 			</ComboBox>
