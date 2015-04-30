@@ -121,21 +121,25 @@ namespace SMU.KEITHLEY_2602A
         {
             if (ChannelAccuracyParams.RangeAccuracySet != null)
             {
-                foreach (var row in ChannelAccuracyParams.RangeAccuracySet)
+                try
                 {
-                    var min = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Min();
-                    var max = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Max();
-
-                    if ((value >= min) && (value <= max))
+                    foreach (var row in ChannelAccuracyParams.RangeAccuracySet)
                     {
-                        if (row != _CurrentRow)
+                        var min = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Min();
+                        var max = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Max();
+
+                        if ((value >= min) && (value <= max))
                         {
-                            _CurrentRow = row;
-                            SetSpeed(row.Accuracy, _SelectedChannel);
-                            break;
+                            if (row != _CurrentRow)
+                            {
+                                _CurrentRow = row;
+                                SetSpeed(row.Accuracy, _SelectedChannel);
+                                break;
+                            }
                         }
                     }
                 }
+                catch { }
             }
         }
 
