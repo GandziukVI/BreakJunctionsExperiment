@@ -515,6 +515,12 @@ namespace BreakJunctions
             _SaveRealTimeTraceMeasureDataDialog = new System.Windows.Forms.FolderBrowserDialog();
 
             #endregion
+
+            #region Registry settings
+
+            BreakJunctionsRegistry.Instance.CreateApplicationRegistry();
+
+            #endregion
         }
 
         #region Menu actions realization
