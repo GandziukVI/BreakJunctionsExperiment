@@ -22,26 +22,30 @@ namespace BreakJunctions
 
         #region Time trace measurement model-view interactions
 
+        private static Registry_TimeTrace_MeasurementSettings MeasurementSettings = BreakJunctionsRegistry.Instance.Reg_TimeTrace_MeasurementSettings;
+
         #region 1-st channel settings
 
         //Source mode settings
-        private bool _IsTimeTraceMeasurementChannel_01_VoltageModeChecked = true;
+        private bool _IsTimeTraceMeasurementChannel_01_VoltageModeChecked = MeasurementSettings.IsVoltageModeChecked_CH_01;
         public bool IsTimeTraceMeasurementChannel_01_VoltageModeChecked
         {
             get { return _IsTimeTraceMeasurementChannel_01_VoltageModeChecked; }
             set
             {
                 _IsTimeTraceMeasurementChannel_01_VoltageModeChecked = value;
+                MeasurementSettings.IsVoltageModeChecked_CH_01 = value;
                 OnPropertyChanged("IsTimeTraceMeasurementChannel_01_VoltageModeChecked");
             }
         }
-        private bool _IsTimeTraceMeasurementChannel_01_CurrentModeChecked = false;
+        private bool _IsTimeTraceMeasurementChannel_01_CurrentModeChecked = MeasurementSettings.IsCurrentModeChecked_CH_01;
         public bool IsTimeTraceMeasurementChannel_01_CurrentModeChecked
         {
             get { return _IsTimeTraceMeasurementChannel_01_CurrentModeChecked; }
             set
             {
                 _IsTimeTraceMeasurementChannel_01_CurrentModeChecked = value;
+                MeasurementSettings.IsCurrentModeChecked_CH_01 = value;
                 OnPropertyChanged("IsTimeTraceMeasurementChannel_01_CurrentModeChecked");
             }
         }
@@ -57,13 +61,14 @@ namespace BreakJunctions
                 OnPropertyChanged("TimeTraceMeasurementChannel_01_ValueThrougtTheStructureMultiplier");
             }
         }
-        private double _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = 0.02;
+        private double _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = MeasurementSettings.ValueThroughTheStructure_CH_01;
         public double TimeTraceMeasurementChannel_01_ValueThrougtTheStructure
         {
             get { return _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure; }
             set
             {
                 _TimeTraceMeasurementChannel_01_ValueThrougtTheStructure = value;
+                MeasurementSettings.ValueThroughTheStructure_CH_01 = value;
                 OnPropertyChanged("TimeTraceMeasurementChannel_01_ValueThrougtTheStructure");
             }
         }
@@ -73,13 +78,14 @@ namespace BreakJunctions
         }
 
         //File name settings
-        private string _TimeTraceMeasurementChannel_01_DataFileName = "TimeTrace_CH_01_.dat";
+        private string _TimeTraceMeasurementChannel_01_DataFileName = MeasurementSettings.DataFileName_CH_01;
         public string TimeTraceMeasurementChannel_01_DataFileName
         {
             get { return _TimeTraceMeasurementChannel_01_DataFileName; }
             set
             {
                 _TimeTraceMeasurementChannel_01_DataFileName = value;
+                MeasurementSettings.DataFileName_CH_01 = value;
                 OnPropertyChanged("TimeTraceMeasurementChannel_01_DataFileName");
             }
         }
@@ -89,23 +95,25 @@ namespace BreakJunctions
         #region 2-nd channel settings
 
         //Source mode settings
-        private bool _IsTimeTraceMeasurementChannel_02_VoltageModeChecked = true;
+        private bool _IsTimeTraceMeasurementChannel_02_VoltageModeChecked = MeasurementSettings.IsVoltageModeChecked_CH_02;
         public bool IsTimeTraceMeasurementChannel_02_VoltageModeChecked
         {
             get { return _IsTimeTraceMeasurementChannel_02_VoltageModeChecked; }
             set
             {
                 _IsTimeTraceMeasurementChannel_02_VoltageModeChecked = value;
+                MeasurementSettings.IsVoltageModeChecked_CH_02 = value;
                 OnPropertyChanged("IsTimeTraceMeasurementChannel_02_VoltageModeChecked");
             }
         }
-        private bool _IsTimeTraceMeasurementChannel_02_CurrentModeChecked = false;
+        private bool _IsTimeTraceMeasurementChannel_02_CurrentModeChecked = MeasurementSettings.IsCurrentModeChecked_CH_02;
         public bool IsTimeTraceMeasurementChannel_02_CurrentModeChecked
         {
             get { return _IsTimeTraceMeasurementChannel_02_CurrentModeChecked; }
             set
             {
                 _IsTimeTraceMeasurementChannel_02_CurrentModeChecked = value;
+                MeasurementSettings.IsCurrentModeChecked_CH_02 = true;
                 OnPropertyChanged("IsTimeTraceMeasurementChannel_02_CurrentModeChecked");
             }
         }
@@ -121,13 +129,14 @@ namespace BreakJunctions
                 OnPropertyChanged("TimeTraceMeasurementChannel_02_ValueThrougtTheStructureMultiplier");
             }
         }
-        private double _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = 0.02;
+        private double _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = MeasurementSettings.ValueThroughTheStructure_CH_02;
         public double TimeTraceMeasurementChannel_02_ValueThrougtTheStructure
         {
             get { return _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure; }
             set
             {
                 _TimeTraceMeasurementChannel_02_ValueThrougtTheStructure = value;
+                MeasurementSettings.ValueThroughTheStructure_CH_02 = value;
                 OnPropertyChanged("TimeTraceMeasurementChannel_02_ValueThrougtTheStructure");
             }
         }
@@ -137,13 +146,14 @@ namespace BreakJunctions
         }
 
         //File name settings
-        private string _TimeTraceMeasurementChannel_02_DataFileName = "TimeTrace_CH_02_.dat";
+        private string _TimeTraceMeasurementChannel_02_DataFileName = MeasurementSettings.DataFileName_CH_02;
         public string TimeTraceMeasurementChannel_02_DataFileName
         {
             get { return _TimeTraceMeasurementChannel_02_DataFileName; }
             set
             {
                 _TimeTraceMeasurementChannel_02_DataFileName = value;
+                MeasurementSettings.DataFileName_CH_02 = value;
                 OnPropertyChanged("TimeTraceMeasurementChannel_02_DataFileName");
             }
         }
@@ -153,18 +163,19 @@ namespace BreakJunctions
         #region General settings
 
         //Measurement settings
-        private int _TimeTraceMeasurementNumberOfAverages = 1;
+        private int _TimeTraceMeasurementNumberOfAverages = MeasurementSettings.NumberOfAverages;
         public int TimeTraceMeasurementNumberOfAverages
         {
             get { return _TimeTraceMeasurementNumberOfAverages; }
             set
             {
                 _TimeTraceMeasurementNumberOfAverages = value;
+                MeasurementSettings.NumberOfAverages = value;
                 OnPropertyChanged("TimeTraceMeasurementNumberOfAverages");
             }
         }
 
-        private double _TimeTraceMeasurementTimeDelay = 0.0;
+        private double _TimeTraceMeasurementTimeDelay = MeasurementSettings.TimeDelay;
         public double TimeTraceMeasurementTimeDelay
         {
             get
@@ -174,6 +185,7 @@ namespace BreakJunctions
             set
             {
                 _TimeTraceMeasurementTimeDelay = value;
+                MeasurementSettings.TimeDelay = value;
                 OnPropertyChanged("TimeTraceMeasurementTimeDelay");
             }
         }
@@ -189,13 +201,14 @@ namespace BreakJunctions
         }
 
         //Comments
-        private string _TimeTraceMeasurementDataComment = "";
+        private string _TimeTraceMeasurementDataComment = MeasurementSettings.Comments;
         public string TimeTraceMeasurementDataComment
         {
             get { return _TimeTraceMeasurementDataComment; }
             set
             {
                 _TimeTraceMeasurementDataComment = value;
+                MeasurementSettings.Comments = value;
                 OnPropertyChanged("TimeTraceMeasurementDataComment");
             }
         }

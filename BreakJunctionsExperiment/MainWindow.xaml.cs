@@ -251,6 +251,12 @@ namespace BreakJunctions
 
             #endregion
 
+            #region Registry settings
+
+            BreakJunctionsRegistry.Instance.CreateApplicationRegistry();
+
+            #endregion
+
             #region Initializing graphical components
 
             this.InitializeComponent();
@@ -513,12 +519,6 @@ namespace BreakJunctions
 
             _SaveRealTimeTraceMeasuremrentDataFileName = string.Empty;
             _SaveRealTimeTraceMeasureDataDialog = new System.Windows.Forms.FolderBrowserDialog();
-
-            #endregion
-
-            #region Registry settings
-
-            BreakJunctionsRegistry.Instance.CreateApplicationRegistry();
 
             #endregion
         }

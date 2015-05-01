@@ -111,7 +111,16 @@
                                 <RadioButton x:Name="radioTimeTraceDistanceMoveDown" IsChecked="{Binding IsTimeTraceMeasurementDistanceMotionModeDownChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Down"/>
                             </StackPanel>
                         </GroupBox>
-                        <Button Grid.Row="0" Grid.Column="1" x:Name="cmdTimeTraceDistanceMoveToInitialPosition" Margin="5" Content="Move to initial"/>
+                        <Button Grid.Row="0" Grid.Column="1" x:Name="cmdTimeTraceDistanceMoveToInitialPosition" Margin="5" Content="Move to zero position" Padding="5,1">
+                        	<Button.Background>
+                        		<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        			<GradientStop Color="#FFF3F3F3" Offset="0"/>
+                        			<GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                        			<GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                        			<GradientStop Color="#FFCDCDCD" Offset="1"/>
+                        		</LinearGradientBrush>
+                        	</Button.Background>
+                        </Button>
 
                         <Label Grid.Row="1" Grid.Column="0" Content="Motion start pos.">
                             <Label.ToolTip>

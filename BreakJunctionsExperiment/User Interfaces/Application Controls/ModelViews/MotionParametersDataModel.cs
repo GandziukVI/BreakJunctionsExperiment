@@ -22,6 +22,7 @@ namespace BreakJunctions
             return ValueInMeters / 1000.0;
         }
     }
+
     public class MotionParametersDataModel : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged implementation
@@ -35,6 +36,8 @@ namespace BreakJunctions
         }
 
         #endregion
+
+        private static Registry_MotionSettings MeasurementSettings = BreakJunctionsRegistry.Instance.Reg_MotionSettings;
 
         #region General settings
 
@@ -50,24 +53,26 @@ namespace BreakJunctions
             }
         }
 
-        private double _TimeTraceMotionSpeedUp = 2.5;
+        private double _TimeTraceMotionSpeedUp = MeasurementSettings.SpeedGoingUp;
         public double TimeTraceMotionSpeedUp
         {
             get { return _TimeTraceMotionSpeedUp; }
             set
             {
                 _TimeTraceMotionSpeedUp = value;
+                MeasurementSettings.SpeedGoingUp = value;
                 OnPropertyChanged("TimeTraceMotionSpeedUp");
             }
         }
 
-        private double _TimeTraceMotionSpeedDown = 3.0;
+        private double _TimeTraceMotionSpeedDown = MeasurementSettings.SpeedGoingDown;
         public double TimeTraceMotionSpeedDown
         {
             get { return _TimeTraceMotionSpeedDown; }
             set
             {
                 _TimeTraceMotionSpeedDown = value;
+                MeasurementSettings.SpeedGoingDown = value;
                 OnPropertyChanged("TimeTraceMotionSpeedDown");
             }
         }
@@ -107,33 +112,36 @@ namespace BreakJunctions
                 OnPropertyChanged("IsTimeTraceMeasurementDistanceMotionModeDownChecked");
             }
         }
-        private double _TimeTraceMeasurementDistanceMotionStartPosition = 0.0;
+        private double _TimeTraceMeasurementDistanceMotionStartPosition = MeasurementSettings.DistanceStartPosition;
         public double TimeTraceMeasurementDistanceMotionStartPosition
         {
             get { return _TimeTraceMeasurementDistanceMotionStartPosition; }
             set
             {
                 _TimeTraceMeasurementDistanceMotionStartPosition = value;
+                MeasurementSettings.DistanceStartPosition = value;
                 OnPropertyChanged("TimeTraceMeasurementDistanceMotionStartPosition");
             }
         }
-        private double _TimeTraceMeasurementDistanceMotionCurrentPosition = 0.0;
+        private double _TimeTraceMeasurementDistanceMotionCurrentPosition = MeasurementSettings.CurrentPosition;
         public double TimeTraceMeasurementDistanceMotionCurrentPosition
         {
             get { return _TimeTraceMeasurementDistanceMotionCurrentPosition; }
             set
             {
                 _TimeTraceMeasurementDistanceMotionCurrentPosition = value;
+                MeasurementSettings.CurrentPosition = value;
                 OnPropertyChanged("TimeTraceMeasurementDistanceMotionCurrentPosition");
             }
         }
-        private double _TimeTraceMeasurementDistanceMotionFinalDestination = 0.005;
+        private double _TimeTraceMeasurementDistanceMotionFinalDestination = MeasurementSettings.DistanceFinalDestination;
         public double TimeTraceMeasurementDistanceMotionFinalDestination
         {
             get { return _TimeTraceMeasurementDistanceMotionFinalDestination; }
             set
             {
                 _TimeTraceMeasurementDistanceMotionFinalDestination = value;
+                MeasurementSettings.DistanceFinalDestination = value;
                 OnPropertyChanged("TimeTraceMeasurementDistanceMotionFinalDestination");
             }
         }
@@ -142,33 +150,36 @@ namespace BreakJunctions
 
         #region Motion "Distance (Repetitive)" parameters
 
-        private double _TimeTraceMeasurementDistanceRepetitiveStartPosition = 0.0;
+        private double _TimeTraceMeasurementDistanceRepetitiveStartPosition = MeasurementSettings.DistanceRepetitiveStartPosition;
         public double TimeTraceMeasurementDistanceRepetitiveStartPosition
         {
             get { return _TimeTraceMeasurementDistanceRepetitiveStartPosition; }
             set
             {
                 _TimeTraceMeasurementDistanceRepetitiveStartPosition = value;
+                MeasurementSettings.DistanceRepetitiveStartPosition = value;
                 OnPropertyChanged("TimeTraceMeasurementDistanceRepetitiveStartPosition");
             }
         }
-        private double _TimeTraceMeasurementDistanceRepetitiveFinalDestination = 0.005;
+        private double _TimeTraceMeasurementDistanceRepetitiveFinalDestination = MeasurementSettings.DistanceRepetitiveFinalDestination;
         public double TimeTraceMeasurementDistanceRepetitiveFinalDestination
         {
             get { return _TimeTraceMeasurementDistanceRepetitiveFinalDestination; }
             set
             {
                 _TimeTraceMeasurementDistanceRepetitiveFinalDestination = value;
+                MeasurementSettings.DistanceRepetitiveFinalDestination = value;
                 OnPropertyChanged("TimeTraceMeasurementDistanceRepetitiveFinalDestination");
             }
         }
-        private int _TimeTraceMeasurementDistanceRepetitiveNumberCycles = 10;
+        private int _TimeTraceMeasurementDistanceRepetitiveNumberCycles = MeasurementSettings.DistanceRepetitiveNumberCycles;
         public int TimeTraceMeasurementDistanceRepetitiveNumberCycles
         {
             get { return _TimeTraceMeasurementDistanceRepetitiveNumberCycles; }
             set
             {
                 _TimeTraceMeasurementDistanceRepetitiveNumberCycles = value;
+                MeasurementSettings.DistanceRepetitiveNumberCycles = value;
                 OnPropertyChanged("TimeTraceMeasurementDistanceRepetitiveNumberCycles");
             }
         }
@@ -177,13 +188,14 @@ namespace BreakJunctions
 
         #region Motion "Time" parameters
 
-        private TimeSpan _TimeTraceMeasurementTime_TimeFinal = TimeSpan.Zero;
+        private TimeSpan _TimeTraceMeasurementTime_TimeFinal = MeasurementSettings.MeasureTime;
         public TimeSpan TimeTraceMeasurementTime_TimeFinal
         {
             get { return _TimeTraceMeasurementTime_TimeFinal; }
             set
             {
                 _TimeTraceMeasurementTime_TimeFinal = value;
+                MeasurementSettings.MeasureTime = value;
                 OnPropertyChanged("TimeTraceMeasurementTime_TimeFinal");
             }
         }
@@ -192,13 +204,14 @@ namespace BreakJunctions
 
         #region Motion "Fixed R" parameters
 
-        private double _TimeTraceMeasurementFixedR_R_Value = 0.0;
+        private double _TimeTraceMeasurementFixedR_R_Value = MeasurementSettings.ResistanceValue;
         public double TimeTraceMeasurementFixedR_R_Value
         {
             get { return _TimeTraceMeasurementFixedR_R_Value; }
             set
             {
                 _TimeTraceMeasurementFixedR_R_Value = value;
+                MeasurementSettings.ResistanceValue = value;
                 OnPropertyChanged("TimeTraceMeasurementFixedR_R_Value");
             }
         }
