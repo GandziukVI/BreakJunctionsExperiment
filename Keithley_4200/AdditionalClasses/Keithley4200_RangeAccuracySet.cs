@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Keithley_4200.AdditionalClasses
+namespace Keithley_4200
 {
     public class Keithley4200_RangeAccuracySet : IEquatable<Keithley4200_RangeAccuracySet>
     {

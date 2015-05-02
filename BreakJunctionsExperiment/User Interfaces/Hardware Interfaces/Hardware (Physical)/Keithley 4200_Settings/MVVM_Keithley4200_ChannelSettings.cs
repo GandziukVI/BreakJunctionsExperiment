@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using Keithley_4200.AdditionalClasses;
+using Keithley_4200;
 using System.Collections.ObjectModel;
 
 namespace BreakJunctions
