@@ -6,9 +6,46 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using Keithley_4200.AdditionalClasses;
+using System.Collections.ObjectModel;
 
 namespace BreakJunctions
 {
+    [ValueConversion(typeof(IntegrationTime), typeof(int))]
+    public class Keithley4200_Accuracy_Converter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            switch ((IntegrationTime)value)
+            {
+                case IntegrationTime.Short:
+                    return 0;
+                case IntegrationTime.Medium:
+                    return 1;
+                case IntegrationTime.Long:
+                    return 2;
+                default:
+                    return 1;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            switch((int)value)
+            {
+                case 0:
+                    return IntegrationTime.Short;
+                case 1:
+                    return IntegrationTime.Medium;
+                case 2:
+                    return IntegrationTime.Long;
+                default:
+                    return IntegrationTime.Medium;
+            }
+        }
+    }    
+
     public class MVVM_Keithley4200_ChannelSettings : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged implementation
@@ -196,6 +233,18 @@ namespace BreakJunctions
                     return IntegrationTime.Long;
                 else
                     return IntegrationTime.Medium;
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _RangeAccuracyCollection;
+        public ObservableCollection<Keithley4200_RangeAccuracySet> RangeAccuracyCollection
+        {
+            get
+            {
+                if (_RangeAccuracyCollection == null)
+                    _RangeAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+
+                return _RangeAccuracyCollection;
             }
         }
 

@@ -116,7 +116,7 @@ namespace SMU.KEITHLEY_2602A
             }
         }
 
-        private RangeAccuracySet _CurrentRow;
+        private Keithley2602A_RangeAccuracySet _CurrentRow;
         private void CheckValueAccuracy(double value)
         {
             if (ChannelAccuracyParams.RangeAccuracySet != null)

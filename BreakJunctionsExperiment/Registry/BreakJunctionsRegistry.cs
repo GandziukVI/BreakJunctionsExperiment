@@ -147,8 +147,8 @@ namespace BreakJunctions
             }
         }
 
-        private ObservableCollection<RangeAccuracySet> _Keithley2602A_Channel_A_RangesAccuracyCollection = new ObservableCollection<RangeAccuracySet>();
-        public ObservableCollection<RangeAccuracySet> Keithley2602A_Channel_A_RangesAccuracyCollection
+        private ObservableCollection<Keithley2602A_RangeAccuracySet> _Keithley2602A_Channel_A_RangesAccuracyCollection = new ObservableCollection<Keithley2602A_RangeAccuracySet>();
+        public ObservableCollection<Keithley2602A_RangeAccuracySet> Keithley2602A_Channel_A_RangesAccuracyCollection
         {
             get
             {
@@ -167,7 +167,7 @@ namespace BreakJunctions
                             var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
                             var Accuracy = double.Parse((string)range.GetValue("Accuracy"), NumberStyles.Float, _NumberFormat);
 
-                            _Keithley2602A_Channel_A_RangesAccuracyCollection.Add(new RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                            _Keithley2602A_Channel_A_RangesAccuracyCollection.Add(new Keithley2602A_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
                         }
                     }
                 }
@@ -198,8 +198,8 @@ namespace BreakJunctions
             }
         }
 
-        private ObservableCollection<RangeAccuracySet> _Keithley2602A_Channel_B_RangesAccuracyCollection = new ObservableCollection<RangeAccuracySet>();
-        public ObservableCollection<RangeAccuracySet> Keithley2602A_Channel_B_RangesAccuracyCollection
+        private ObservableCollection<Keithley2602A_RangeAccuracySet> _Keithley2602A_Channel_B_RangesAccuracyCollection = new ObservableCollection<Keithley2602A_RangeAccuracySet>();
+        public ObservableCollection<Keithley2602A_RangeAccuracySet> Keithley2602A_Channel_B_RangesAccuracyCollection
         {
             get
             {
@@ -218,7 +218,7 @@ namespace BreakJunctions
                             var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
                             var Accuracy = double.Parse((string)range.GetValue("Accuracy"), NumberStyles.Float, _NumberFormat);
 
-                            _Keithley2602A_Channel_B_RangesAccuracyCollection.Add(new RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                            _Keithley2602A_Channel_B_RangesAccuracyCollection.Add(new Keithley2602A_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
                         }
                     }
                 }

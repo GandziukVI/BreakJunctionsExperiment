@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Data;
@@ -10,13 +11,13 @@ namespace BreakJunctions
     [ValueConversion(typeof(double), typeof(double))]
     public class MotionUnitsConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var ValueInMilimiters = (double)value;
             return ValueInMilimiters * 1000.0;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var ValueInMeters = (double)value;
             return ValueInMeters / 1000.0;

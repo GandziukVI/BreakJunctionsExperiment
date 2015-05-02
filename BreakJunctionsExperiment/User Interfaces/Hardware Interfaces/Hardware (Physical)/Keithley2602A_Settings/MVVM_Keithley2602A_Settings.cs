@@ -183,13 +183,13 @@ namespace BreakJunctions
             }
         }
 
-        private ObservableCollection<RangeAccuracySet> _RangeAccuracyCollection;
-        public ObservableCollection<RangeAccuracySet> RangeAccuracyCollection 
+        private ObservableCollection<Keithley2602A_RangeAccuracySet> _RangeAccuracyCollection;
+        public ObservableCollection<Keithley2602A_RangeAccuracySet> RangeAccuracyCollection 
         {
             get
             {
                 if (_RangeAccuracyCollection == null)
-                    _RangeAccuracyCollection = new ObservableCollection<RangeAccuracySet>();
+                    _RangeAccuracyCollection = new ObservableCollection<Keithley2602A_RangeAccuracySet>();
 
                 return _RangeAccuracyCollection; 
             }

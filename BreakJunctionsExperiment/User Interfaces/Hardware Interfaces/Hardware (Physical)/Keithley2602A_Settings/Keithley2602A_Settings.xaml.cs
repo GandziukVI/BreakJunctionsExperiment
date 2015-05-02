@@ -68,7 +68,7 @@ namespace BreakJunctions
 
                 var smu = KEITHLEY_2602A.Instance.ChannelA;
 
-                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
@@ -83,7 +83,7 @@ namespace BreakJunctions
 
                 var smu = KEITHLEY_2602A.Instance.ChannelA;
 
-                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
                 _Device = smu;
@@ -97,7 +97,7 @@ namespace BreakJunctions
 
                 var smu = KEITHLEY_2602A.Instance.ChannelB;
 
-                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
@@ -111,7 +111,7 @@ namespace BreakJunctions
 
                 var smu = KEITHLEY_2602A.Instance.ChannelB;
 
-                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
                 smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
                 _Device = smu;
@@ -128,14 +128,14 @@ namespace BreakJunctions
             if (AccuracyListBox.SelectedIndex == -1)
                 return;
 
-            var selected = AccuracyListBox.SelectedItem as RangeAccuracySet;
+            var selected = AccuracyListBox.SelectedItem as Keithley2602A_RangeAccuracySet;
 
-            (AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>).RemoveAt(AccuracyListBox.SelectedIndex);
+            (AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>).RemoveAt(AccuracyListBox.SelectedIndex);
         }
 
-        private bool IsOverlapped(RangeAccuracySet NewRangeAccuracyElement)
+        private bool IsOverlapped(Keithley2602A_RangeAccuracySet NewRangeAccuracyElement)
         {
-            var RangesAccuracyCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+            var RangesAccuracyCollection = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
             var Overlapped = false;
 
@@ -151,8 +151,8 @@ namespace BreakJunctions
 
         private void on_cmd_AddNewRangeClick(object sender, RoutedEventArgs e)
         {
-            var NewElement = new RangeAccuracySet(DeviceSettings.NewMinRangeLimit, DeviceSettings.NewMaxRangeLimit, DeviceSettings.NewAccuracy);
-            var ElementCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+            var NewElement = new Keithley2602A_RangeAccuracySet(DeviceSettings.NewMinRangeLimit, DeviceSettings.NewMaxRangeLimit, DeviceSettings.NewAccuracy);
+            var ElementCollection = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
             if (!ElementCollection.Contains(NewElement) && !IsOverlapped(NewElement))
                 ElementCollection.Add(NewElement);
@@ -172,7 +172,7 @@ namespace BreakJunctions
                 case 0:
                     {
                         var collection = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection;
-                        var itemsCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+                        var itemsCollection = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
                         if (collection != null)
                         {
@@ -186,7 +186,7 @@ namespace BreakJunctions
                 case 1:
                     {
                         var collection = BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection;
-                        var itemsCollection = AccuracyListBox.ItemsSource as ObservableCollection<RangeAccuracySet>;
+                        var itemsCollection = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
                         if (collection != null)
                         {
