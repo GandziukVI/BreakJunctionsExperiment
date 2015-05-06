@@ -240,9 +240,9 @@ namespace BreakJunctions
                     {
                         using (var range = Keithley2602A_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
                         {
-                            range.SetValue("MinRangeLimit", _Keithley2602A_Channel_A_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
-                            range.SetValue("MaxRangeLimit", _Keithley2602A_Channel_A_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
-                            range.SetValue("Accuracy", _Keithley2602A_Channel_A_RangesAccuracyCollection[i].Accuracy.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MinRangeLimit", _Keithley2602A_Channel_B_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley2602A_Channel_B_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", _Keithley2602A_Channel_B_RangesAccuracyCollection[i].Accuracy.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
                         }
                     }
                 }
