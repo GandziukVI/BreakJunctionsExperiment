@@ -10,6 +10,7 @@ using Keithley_2602A.DeviceConfiguration;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using Keithley_4200;
+using BreakJunctions.NotificationSystem;
 
 namespace BreakJunctions
 {
@@ -1617,6 +1618,96 @@ namespace BreakJunctions
         #endregion
     }
 
+    public class Registry_NotificationSystem
+    {
+        private string _E_Mail_Address;
+        public string E_Mail_Address
+        {
+            get
+            {
+                using (var NotificationSystem = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\NotificationSystem"))
+                {
+                    _E_Mail_Address = (string)NotificationSystem.GetValue("BreakJunctionsExperiment_Mail");
+                    return _E_Mail_Address;
+                }
+            }
+            set
+            {
+                using (var NotificationSystem = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\NotificationSystem", true))
+                {
+                    _E_Mail_Address = value;
+                    NotificationSystem.SetValue("BreakJunctionsExperiment_Mail", value, RegistryValueKind.String);
+                }
+            }
+        }
+
+        private string _E_Mail_Password;
+        public string E_Mail_Password
+        {
+            get
+            {
+                using (var NotificationSystem = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\NotificationSystem"))
+                {
+                    _E_Mail_Password = (string)NotificationSystem.GetValue("BreakJunctionsExperiment_MailPassword");
+                    return _E_Mail_Password;
+                }
+            }
+            set
+            {
+                using (var NotificationSystem = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\NotificationSystem", true))
+                {
+                    _E_Mail_Password = value;
+                    NotificationSystem.SetValue("BreakJunctionsExperiment_MailPassword", value, RegistryValueKind.String);
+                }
+            }
+        }
+
+        private List<E_Mail_Info> _User_E_Mails = new List<E_Mail_Info>();
+        public List<E_Mail_Info> User_E_Mails
+        {
+            get
+            {
+                if (_User_E_Mails.Count > 0)
+                    _User_E_Mails.Clear();
+
+                using (var NotificationSystem = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\NotificationSystem\UserEMails"))
+                {
+                    foreach(var MailInfo in NotificationSystem.GetSubKeyNames())
+                        using(var info = NotificationSystem.OpenSubKey(MailInfo))
+                        {
+                            var FirstName = (string)info.GetValue("FirstName");
+                            var LastName = (string)info.GetValue("LastName");
+                            var Address = (string)info.GetValue("E_Mail_Address");
+
+                            _User_E_Mails.Add(new E_Mail_Info(FirstName, LastName, Address));
+                        }
+                }
+
+                return _User_E_Mails;
+            }
+            set
+            {
+                _User_E_Mails = value;
+
+                using (var NotificationSystem = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\NotificationSystem\UserEMails", true))
+                {
+                    foreach (var MailInfo in NotificationSystem.GetSubKeyNames())
+                        NotificationSystem.DeleteSubKeyTree(MailInfo);
+
+                    foreach(var MailInfo in value)
+                    {
+                        using(var info = NotificationSystem.CreateSubKey(string.Format("{0}_{1}", MailInfo.Name, MailInfo.Surname)))
+                        {
+                            info.SetValue("FirstName", MailInfo.Name, RegistryValueKind.String);
+                            info.SetValue("Lastname", MailInfo.Surname, RegistryValueKind.String);
+                            info.SetValue("E_Mail_Address", MailInfo.E_Mail_Address, RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public class BreakJunctionsRegistry
     {
         #region Singleton pattern implementation
@@ -1702,6 +1793,18 @@ namespace BreakJunctions
                     _Reg_MotionSettings = new Registry_MotionSettings();
 
                 return _Reg_MotionSettings;
+            }
+        }
+
+        private Registry_NotificationSystem _Reg_NotificationSystem;
+        public Registry_NotificationSystem Reg_NotificationSystem
+        {
+            get
+            {
+                if (_Reg_NotificationSystem == null)
+                    _Reg_NotificationSystem = new Registry_NotificationSystem();
+
+                return _Reg_NotificationSystem;
             }
         }
 

@@ -40,6 +40,7 @@ using Microsoft.Research.DynamicDataDisplay.Charts.Axes.Numeric;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls.Primitives;
+using BreakJunctions.NotificationSystem;
 
 namespace BreakJunctions
 {
@@ -521,6 +522,9 @@ namespace BreakJunctions
             _SaveRealTimeTraceMeasureDataDialog = new System.Windows.Forms.FolderBrowserDialog();
 
             #endregion
+
+            //For test
+            StatusNotification.Instance.SendStatusE_Mail("Test e-mail form MCBJ", "This is just to test mail delivery system", new string[] { "gandziuk2009@gmail.com" });
         }
 
         #region Menu actions realization
