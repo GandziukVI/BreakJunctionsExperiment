@@ -77,24 +77,28 @@ namespace BreakJunctions
 
         #region Device Source / Measurement settings
 
-        private bool _IsVoltageModeChecked = true;
+        static Registry_Keithley4200 DeviceRegistry = BreakJunctionsRegistry.Instance.Reg_Keithley_4200;
+
+        private bool _IsVoltageModeChecked = DeviceRegistry.IsVoltageModeChecked;
         public bool IsVoltageModeChecked
         {
             get { return _IsVoltageModeChecked; }
             set
             {
                 _IsVoltageModeChecked = value;
+                DeviceRegistry.IsVoltageModeChecked = value;
                 OnPropertyChanged("IsVoltageModeChecked");
             }
         }
 
-        private bool _IsCurrentModeChecked = false;
+        private bool _IsCurrentModeChecked = DeviceRegistry.IsCurrentModeChecked;
         public bool IsCurrentModeCheched
         {
             get { return _IsCurrentModeChecked; }
             set
             {
                 _IsCurrentModeChecked = value;
+                DeviceRegistry.IsCurrentModeChecked = value;
                 OnPropertyChanged("IsCurrentModeCheched");
             }
         }
@@ -129,7 +133,7 @@ namespace BreakJunctions
             }
         }
 
-        private double _LimitValueVoltage = 20.0;
+        private double _LimitValueVoltage = DeviceRegistry.VoltageLimit;
         public double LimitValueVoltage
         {
             get
@@ -139,6 +143,7 @@ namespace BreakJunctions
             set
             {
                 _LimitValueVoltage = value;
+                DeviceRegistry.VoltageLimit = value;
                 OnPropertyChanged("LimitValueVoltage");
             }
         }
@@ -154,7 +159,7 @@ namespace BreakJunctions
             }
         }
 
-        private double _LimitValueCurrent = 0.0105;
+        private double _LimitValueCurrent = DeviceRegistry.CurrentLimit;
         public double LimitValueCurrent
         {
             get
@@ -164,6 +169,7 @@ namespace BreakJunctions
             set
             {
                 _LimitValueCurrent = value;
+                DeviceRegistry.CurrentLimit = value;
                 OnPropertyChanged("LimitValueCurrent");
             }
         }
@@ -210,41 +216,64 @@ namespace BreakJunctions
             }
         }
 
-        private string _TheIntegrationTime = "Medium";
-        public string TheIntegrationTime
-        {
-            get { return _TheIntegrationTime; }
-            set
-            {
-                _TheIntegrationTime = value;
-                OnPropertyChanged("TheIntegrationTime");
-            }
-        }
-
-        public IntegrationTime CurrentIntegrationTime
+        private IntegrationTime _CurrentIntegrationTime = DeviceRegistry.MeasurementSpeed;
+        public IntegrationTime CurrentIntegrationTime 
         {
             get
             {
-                if (_TheIntegrationTime == "Short")
-                    return IntegrationTime.Short;
-                if (_TheIntegrationTime == "Medium")
-                    return IntegrationTime.Medium;
-                else if (_TheIntegrationTime == "Long")
-                    return IntegrationTime.Long;
-                else
-                    return IntegrationTime.Medium;
+                _CurrentIntegrationTime = DeviceRegistry.MeasurementSpeed;
+                return _CurrentIntegrationTime;
+            }
+            set 
+            {
+                _CurrentIntegrationTime = value;
+                DeviceRegistry.MeasurementSpeed = value;
+                OnPropertyChanged("CurrentIntegrationTime");
             }
         }
 
         private ObservableCollection<Keithley4200_RangeAccuracySet> _RangeAccuracyCollection;
         public ObservableCollection<Keithley4200_RangeAccuracySet> RangeAccuracyCollection
         {
-            get
+            get 
             {
                 if (_RangeAccuracyCollection == null)
                     _RangeAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
 
-                return _RangeAccuracyCollection;
+                return _RangeAccuracyCollection; 
+            }
+        }
+
+        private double _NewMinRangeLimit = 0.0;
+        public double NewMinRangeLimit
+        {
+            get { return _NewMinRangeLimit; }
+            set
+            {
+                _NewMinRangeLimit = value;
+                OnPropertyChanged("NewMinRangeLimit");
+            }
+        }
+
+        private double _NewMaxRangeLimit = 0.0;
+        public double NewMaxRangeLimit
+        {
+            get { return _NewMaxRangeLimit; }
+            set
+            {
+                _NewMaxRangeLimit = value;
+                OnPropertyChanged("NewMaxRangeLimit");
+            }
+        }
+
+        private IntegrationTime _NewAccuracy = IntegrationTime.Medium;
+        public IntegrationTime NewAccuracy
+        {
+            get { return _NewAccuracy; }
+            set
+            {
+                _NewAccuracy = value;
+                OnPropertyChanged("NewAccuracy");
             }
         }
 

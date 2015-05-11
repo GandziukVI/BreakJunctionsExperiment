@@ -27,7 +27,7 @@ namespace BreakJunctions
     {
         #region MVVM for Keithley2602ASettings
 
-        private MVVM_Keithley2602A_Settings _DeviceSettings = null;
+        private MVVM_Keithley2602A_Settings _DeviceSettings;
         public MVVM_Keithley2602A_Settings DeviceSettings
         {
             get { return _DeviceSettings; }

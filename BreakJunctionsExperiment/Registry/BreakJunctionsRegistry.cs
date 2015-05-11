@@ -9,9 +9,554 @@ using Microsoft.Win32;
 using Keithley_2602A.DeviceConfiguration;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using Keithley_4200;
 
 namespace BreakJunctions
 {
+    public class Registry_Keithley4200
+    {
+        private string _StringFormat = "E8";
+        private NumberFormatInfo _NumberFormat = NumberFormatInfo.InvariantInfo;
+
+        private string _VisaID = string.Empty;
+        public string VisaID
+        {
+            get
+            {
+                using (var Keithley4200A_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200"))
+                {
+                    _VisaID = (string)Keithley4200A_Settings.GetValue("VisaID", string.Empty);
+                    return _VisaID;
+                }
+            }
+            set
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200", true))
+                {
+                    _VisaID = value;
+                    Keithley4200_Settings.SetValue("VisaID", _VisaID, RegistryValueKind.String);
+                }
+            }
+        }
+
+        private IntegrationTime _MeasurementSpeed = IntegrationTime.Medium;
+        public IntegrationTime MeasurementSpeed
+        {
+            get
+            {
+                using (var Keithley4200A_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200"))
+                {
+                    _MeasurementSpeed = (IntegrationTime)int.Parse((string)Keithley4200A_Settings.GetValue("IntegrationTime"));
+                    return _MeasurementSpeed;
+                }
+            }
+            set
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200", true))
+                {
+                    _MeasurementSpeed = value;
+                    Keithley4200_Settings.SetValue("IntegrationTime", ((int)value).ToString(), RegistryValueKind.String);
+                }
+            }
+        }
+
+        private bool _IsVoltageModeChecked = true;
+        public bool IsVoltageModeChecked
+        {
+            get
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200"))
+                {
+                    _IsVoltageModeChecked = bool.Parse((string)Keithley4200_Settings.GetValue("IsVoltageModeChecked"));
+                }
+
+                return _IsVoltageModeChecked;
+            }
+            set
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200", true))
+                {
+                    _IsVoltageModeChecked = value;
+                    Keithley4200_Settings.SetValue("IsVoltageModeChecked", _IsVoltageModeChecked, RegistryValueKind.String);
+                }
+            }
+        }
+
+        private bool _IsCurrentModeChecked = false;
+        public bool IsCurrentModeChecked
+        {
+            get
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200"))
+                {
+                    _IsCurrentModeChecked = bool.Parse((string)Keithley4200_Settings.GetValue("IsCurrentModeChecked"));
+                }
+
+                return _IsCurrentModeChecked;
+            }
+            set
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200", true))
+                {
+                    _IsCurrentModeChecked = value;
+                    Keithley4200_Settings.SetValue("IsCurrentModeChecked", _IsCurrentModeChecked, RegistryValueKind.String);
+                }
+            }
+        }
+
+        private double _CurrentLimit = 0.0001;
+        public double CurrentLimit
+        {
+            get
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200"))
+                {
+                    _CurrentLimit = double.Parse((string)Keithley4200_Settings.GetValue("CurrentLimit"), NumberStyles.Float, _NumberFormat);
+                }
+
+                return _CurrentLimit;
+            }
+            set
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200", true))
+                {
+                    _CurrentLimit = value;
+                    Keithley4200_Settings.SetValue("CurrentLimit", _CurrentLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                }
+            }
+        }
+
+        private double _VoltageLimit = 1.0;
+        public double VoltageLimit
+        {
+            get
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200"))
+                {
+                    _VoltageLimit = double.Parse((string)Keithley4200_Settings.GetValue("VoltageLimit"), NumberStyles.Float, _NumberFormat);
+                }
+
+                return _VoltageLimit;
+            }
+            set
+            {
+                using (var Keithley4200_Settings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200", true))
+                {
+                    _VoltageLimit = value;
+                    Keithley4200_Settings.SetValue("VoltageLimit", _CurrentLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                }
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _Keithley4200_Channel_01_RangesAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        public ObservableCollection<Keithley4200_RangeAccuracySet> Keithley4200_Channel_01_RangesAccuracyCollection
+        {
+            get
+            {
+                if (_Keithley4200_Channel_01_RangesAccuracyCollection.Count > 0)
+                    _Keithley4200_Channel_01_RangesAccuracyCollection.Clear();
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_01"))
+                {
+                    var RangeNames = Keithley4200_Ranges.GetSubKeyNames();
+
+                    foreach (var name in RangeNames)
+                    {
+                        using (var range = Keithley4200_Ranges.OpenSubKey(name))
+                        {
+                            var MinRangeLimit = double.Parse((string)range.GetValue("MinRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var Accuracy = (IntegrationTime)int.Parse((string)range.GetValue("Accuracy"));
+
+                            _Keithley4200_Channel_01_RangesAccuracyCollection.Add(new Keithley4200_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                        }
+                    }
+                }
+
+                return _Keithley4200_Channel_01_RangesAccuracyCollection;
+            }
+            set
+            {
+                _Keithley4200_Channel_01_RangesAccuracyCollection = value;
+                var name = "Range_{0}{1}{2}";
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_01", true))
+                {
+                    var PreviousData = Keithley4200_Ranges.GetSubKeyNames();
+                    foreach (var item in PreviousData)
+                        Keithley4200_Ranges.DeleteSubKeyTree(item);
+
+                    for (int i = 0; i < _Keithley4200_Channel_01_RangesAccuracyCollection.Count; i++)
+                    {
+                        using (var range = Keithley4200_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
+                        {
+                            range.SetValue("MinRangeLimit", _Keithley4200_Channel_01_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley4200_Channel_01_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", ((int)_Keithley4200_Channel_01_RangesAccuracyCollection[i].Accuracy).ToString(), RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _Keithley4200_Channel_02_RangesAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        public ObservableCollection<Keithley4200_RangeAccuracySet> Keithley4200_Channel_02_RangesAccuracyCollection
+        {
+            get
+            {
+                if (_Keithley4200_Channel_02_RangesAccuracyCollection.Count > 0)
+                    _Keithley4200_Channel_02_RangesAccuracyCollection.Clear();
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_02"))
+                {
+                    var RangeNames = Keithley4200_Ranges.GetSubKeyNames();
+
+                    foreach (var name in RangeNames)
+                    {
+                        using (var range = Keithley4200_Ranges.OpenSubKey(name))
+                        {
+                            var MinRangeLimit = double.Parse((string)range.GetValue("MinRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var Accuracy = (IntegrationTime)int.Parse((string)range.GetValue("Accuracy"));
+
+                            _Keithley4200_Channel_02_RangesAccuracyCollection.Add(new Keithley4200_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                        }
+                    }
+                }
+
+                return _Keithley4200_Channel_02_RangesAccuracyCollection;
+            }
+            set
+            {
+                _Keithley4200_Channel_02_RangesAccuracyCollection = value;
+                var name = "Range_{0}{1}{2}";
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_02", true))
+                {
+                    var PreviousData = Keithley4200_Ranges.GetSubKeyNames();
+                    foreach (var item in PreviousData)
+                        Keithley4200_Ranges.DeleteSubKeyTree(item);
+
+                    for (int i = 0; i < _Keithley4200_Channel_02_RangesAccuracyCollection.Count; i++)
+                    {
+                        using (var range = Keithley4200_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
+                        {
+                            range.SetValue("MinRangeLimit", _Keithley4200_Channel_02_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley4200_Channel_02_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", ((int)_Keithley4200_Channel_02_RangesAccuracyCollection[i].Accuracy).ToString(), RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _Keithley4200_Channel_03_RangesAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        public ObservableCollection<Keithley4200_RangeAccuracySet> Keithley4200_Channel_03_RangesAccuracyCollection
+        {
+            get
+            {
+                if (_Keithley4200_Channel_03_RangesAccuracyCollection.Count > 0)
+                    _Keithley4200_Channel_03_RangesAccuracyCollection.Clear();
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_03"))
+                {
+                    var RangeNames = Keithley4200_Ranges.GetSubKeyNames();
+
+                    foreach (var name in RangeNames)
+                    {
+                        using (var range = Keithley4200_Ranges.OpenSubKey(name))
+                        {
+                            var MinRangeLimit = double.Parse((string)range.GetValue("MinRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var Accuracy = (IntegrationTime)int.Parse((string)range.GetValue("Accuracy"));
+
+                            _Keithley4200_Channel_03_RangesAccuracyCollection.Add(new Keithley4200_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                        }
+                    }
+                }
+
+                return _Keithley4200_Channel_03_RangesAccuracyCollection;
+            }
+            set
+            {
+                _Keithley4200_Channel_03_RangesAccuracyCollection = value;
+                var name = "Range_{0}{1}{2}";
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_03", true))
+                {
+                    var PreviousData = Keithley4200_Ranges.GetSubKeyNames();
+                    foreach (var item in PreviousData)
+                        Keithley4200_Ranges.DeleteSubKeyTree(item);
+
+                    for (int i = 0; i < _Keithley4200_Channel_03_RangesAccuracyCollection.Count; i++)
+                    {
+                        using (var range = Keithley4200_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
+                        {
+                            range.SetValue("MinRangeLimit", _Keithley4200_Channel_03_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley4200_Channel_03_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", ((int)_Keithley4200_Channel_03_RangesAccuracyCollection[i].Accuracy).ToString(), RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _Keithley4200_Channel_04_RangesAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        public ObservableCollection<Keithley4200_RangeAccuracySet> Keithley4200_Channel_04_RangesAccuracyCollection
+        {
+            get
+            {
+                if (_Keithley4200_Channel_04_RangesAccuracyCollection.Count > 0)
+                    _Keithley4200_Channel_04_RangesAccuracyCollection.Clear();
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_04"))
+                {
+                    var RangeNames = Keithley4200_Ranges.GetSubKeyNames();
+
+                    foreach (var name in RangeNames)
+                    {
+                        using (var range = Keithley4200_Ranges.OpenSubKey(name))
+                        {
+                            var MinRangeLimit = double.Parse((string)range.GetValue("MinRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var Accuracy = (IntegrationTime)int.Parse((string)range.GetValue("Accuracy"));
+
+                            _Keithley4200_Channel_04_RangesAccuracyCollection.Add(new Keithley4200_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                        }
+                    }
+                }
+
+                return _Keithley4200_Channel_04_RangesAccuracyCollection;
+            }
+            set
+            {
+                _Keithley4200_Channel_04_RangesAccuracyCollection = value;
+                var name = "Range_{0}{1}{2}";
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_04", true))
+                {
+                    var PreviousData = Keithley4200_Ranges.GetSubKeyNames();
+                    foreach (var item in PreviousData)
+                        Keithley4200_Ranges.DeleteSubKeyTree(item);
+
+                    for (int i = 0; i < _Keithley4200_Channel_04_RangesAccuracyCollection.Count; i++)
+                    {
+                        using (var range = Keithley4200_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
+                        {
+                            range.SetValue("MinRangeLimit", _Keithley4200_Channel_04_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley4200_Channel_04_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", ((int)_Keithley4200_Channel_04_RangesAccuracyCollection[i].Accuracy).ToString(), RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _Keithley4200_Channel_05_RangesAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        public ObservableCollection<Keithley4200_RangeAccuracySet> Keithley4200_Channel_05_RangesAccuracyCollection
+        {
+            get
+            {
+                if (_Keithley4200_Channel_05_RangesAccuracyCollection.Count > 0)
+                    _Keithley4200_Channel_05_RangesAccuracyCollection.Clear();
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_05"))
+                {
+                    var RangeNames = Keithley4200_Ranges.GetSubKeyNames();
+
+                    foreach (var name in RangeNames)
+                    {
+                        using (var range = Keithley4200_Ranges.OpenSubKey(name))
+                        {
+                            var MinRangeLimit = double.Parse((string)range.GetValue("MinRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var Accuracy = (IntegrationTime)int.Parse((string)range.GetValue("Accuracy"));
+
+                            _Keithley4200_Channel_05_RangesAccuracyCollection.Add(new Keithley4200_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                        }
+                    }
+                }
+
+                return _Keithley4200_Channel_05_RangesAccuracyCollection;
+            }
+            set
+            {
+                _Keithley4200_Channel_05_RangesAccuracyCollection = value;
+                var name = "Range_{0}{1}{2}";
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_05", true))
+                {
+                    var PreviousData = Keithley4200_Ranges.GetSubKeyNames();
+                    foreach (var item in PreviousData)
+                        Keithley4200_Ranges.DeleteSubKeyTree(item);
+
+                    for (int i = 0; i < _Keithley4200_Channel_05_RangesAccuracyCollection.Count; i++)
+                    {
+                        using (var range = Keithley4200_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
+                        {
+                            range.SetValue("MinRangeLimit", _Keithley4200_Channel_05_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley4200_Channel_05_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", ((int)_Keithley4200_Channel_05_RangesAccuracyCollection[i].Accuracy).ToString(), RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _Keithley4200_Channel_06_RangesAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        public ObservableCollection<Keithley4200_RangeAccuracySet> Keithley4200_Channel_06_RangesAccuracyCollection
+        {
+            get
+            {
+                if (_Keithley4200_Channel_06_RangesAccuracyCollection.Count > 0)
+                    _Keithley4200_Channel_06_RangesAccuracyCollection.Clear();
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_06"))
+                {
+                    var RangeNames = Keithley4200_Ranges.GetSubKeyNames();
+
+                    foreach (var name in RangeNames)
+                    {
+                        using (var range = Keithley4200_Ranges.OpenSubKey(name))
+                        {
+                            var MinRangeLimit = double.Parse((string)range.GetValue("MinRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var Accuracy = (IntegrationTime)int.Parse((string)range.GetValue("Accuracy"));
+
+                            _Keithley4200_Channel_06_RangesAccuracyCollection.Add(new Keithley4200_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                        }
+                    }
+                }
+
+                return _Keithley4200_Channel_06_RangesAccuracyCollection;
+            }
+            set
+            {
+                _Keithley4200_Channel_06_RangesAccuracyCollection = value;
+                var name = "Range_{0}{1}{2}";
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_06", true))
+                {
+                    var PreviousData = Keithley4200_Ranges.GetSubKeyNames();
+                    foreach (var item in PreviousData)
+                        Keithley4200_Ranges.DeleteSubKeyTree(item);
+
+                    for (int i = 0; i < _Keithley4200_Channel_06_RangesAccuracyCollection.Count; i++)
+                    {
+                        using (var range = Keithley4200_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
+                        {
+                            range.SetValue("MinRangeLimit", _Keithley4200_Channel_06_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley4200_Channel_06_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", ((int)_Keithley4200_Channel_06_RangesAccuracyCollection[i].Accuracy).ToString(), RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _Keithley4200_Channel_07_RangesAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        public ObservableCollection<Keithley4200_RangeAccuracySet> Keithley4200_Channel_07_RangesAccuracyCollection
+        {
+            get
+            {
+                if (_Keithley4200_Channel_07_RangesAccuracyCollection.Count > 0)
+                    _Keithley4200_Channel_07_RangesAccuracyCollection.Clear();
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_07"))
+                {
+                    var RangeNames = Keithley4200_Ranges.GetSubKeyNames();
+
+                    foreach (var name in RangeNames)
+                    {
+                        using (var range = Keithley4200_Ranges.OpenSubKey(name))
+                        {
+                            var MinRangeLimit = double.Parse((string)range.GetValue("MinRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var Accuracy = (IntegrationTime)int.Parse((string)range.GetValue("Accuracy"));
+
+                            _Keithley4200_Channel_07_RangesAccuracyCollection.Add(new Keithley4200_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                        }
+                    }
+                }
+
+                return _Keithley4200_Channel_07_RangesAccuracyCollection;
+            }
+            set
+            {
+                _Keithley4200_Channel_07_RangesAccuracyCollection = value;
+                var name = "Range_{0}{1}{2}";
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_07", true))
+                {
+                    var PreviousData = Keithley4200_Ranges.GetSubKeyNames();
+                    foreach (var item in PreviousData)
+                        Keithley4200_Ranges.DeleteSubKeyTree(item);
+
+                    for (int i = 0; i < _Keithley4200_Channel_07_RangesAccuracyCollection.Count; i++)
+                    {
+                        using (var range = Keithley4200_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
+                        {
+                            range.SetValue("MinRangeLimit", _Keithley4200_Channel_07_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley4200_Channel_07_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", ((int)_Keithley4200_Channel_07_RangesAccuracyCollection[i].Accuracy).ToString(), RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Keithley4200_RangeAccuracySet> _Keithley4200_Channel_08_RangesAccuracyCollection = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        public ObservableCollection<Keithley4200_RangeAccuracySet> Keithley4200_Channel_08_RangesAccuracyCollection
+        {
+            get
+            {
+                if (_Keithley4200_Channel_08_RangesAccuracyCollection.Count > 0)
+                    _Keithley4200_Channel_08_RangesAccuracyCollection.Clear();
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_08"))
+                {
+                    var RangeNames = Keithley4200_Ranges.GetSubKeyNames();
+
+                    foreach (var name in RangeNames)
+                    {
+                        using (var range = Keithley4200_Ranges.OpenSubKey(name))
+                        {
+                            var MinRangeLimit = double.Parse((string)range.GetValue("MinRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var MaxRangeLimit = double.Parse((string)range.GetValue("MaxRangeLimit"), NumberStyles.Float, _NumberFormat);
+                            var Accuracy = (IntegrationTime)int.Parse((string)range.GetValue("Accuracy"));
+
+                            _Keithley4200_Channel_08_RangesAccuracyCollection.Add(new Keithley4200_RangeAccuracySet(MinRangeLimit, MaxRangeLimit, Accuracy));
+                        }
+                    }
+                }
+
+                return _Keithley4200_Channel_08_RangesAccuracyCollection;
+            }
+            set
+            {
+                _Keithley4200_Channel_08_RangesAccuracyCollection = value;
+                var name = "Range_{0}{1}{2}";
+
+                using (var Keithley4200_Ranges = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\HardwareSettings\Keithley_4200\RangeSettings\Channel_08", true))
+                {
+                    var PreviousData = Keithley4200_Ranges.GetSubKeyNames();
+                    foreach (var item in PreviousData)
+                        Keithley4200_Ranges.DeleteSubKeyTree(item);
+
+                    for (int i = 0; i < _Keithley4200_Channel_08_RangesAccuracyCollection.Count; i++)
+                    {
+                        using (var range = Keithley4200_Ranges.CreateSubKey(string.Format(name, (i / 100) % 10, (i / 10) % 10, i % 10)))
+                        {
+                            range.SetValue("MinRangeLimit", _Keithley4200_Channel_08_RangesAccuracyCollection[i].MinRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("MaxRangeLimit", _Keithley4200_Channel_08_RangesAccuracyCollection[i].MaxRangeLimit.ToString(_StringFormat, _NumberFormat), RegistryValueKind.String);
+                            range.SetValue("Accuracy", ((int)_Keithley4200_Channel_08_RangesAccuracyCollection[i].Accuracy).ToString(), RegistryValueKind.String);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public class Registry_Keithley2602A
     {
         private string _StringFormat = "E8";
@@ -1112,6 +1657,18 @@ namespace BreakJunctions
             }
         }
 
+        private Registry_Keithley4200 _Reg_Keithley_4200;
+        public Registry_Keithley4200 Reg_Keithley_4200
+        {
+            get
+            {
+                if (_Reg_Keithley_4200 == null)
+                    _Reg_Keithley_4200 = new Registry_Keithley4200();
+
+                return _Reg_Keithley_4200;
+            }
+        }
+
         private Registry_IV_MeasurementSettings _Reg_IV_MeasurementSettings;
         public Registry_IV_MeasurementSettings Reg_IV_MeasurementSettings
         {
@@ -1319,6 +1876,13 @@ namespace BreakJunctions
                             {
                                 using (var Keithley4200_Ranges = Keithley4200_Settings.CreateSubKey("RangeSettings"))
                                 {
+                                    Keithley4200_Settings.SetValue("VisaID", "GPIB0::17::INSTR", RegistryValueKind.String);
+                                    Keithley4200_Settings.SetValue("IntegrationTime", ((int)IntegrationTime.Medium).ToString(), RegistryValueKind.String);
+                                    Keithley4200_Settings.SetValue("IsVoltageModeChecked", (true).ToString(), RegistryValueKind.String);
+                                    Keithley4200_Settings.SetValue("IsCurrentModeChecked", (false).ToString(), RegistryValueKind.String);
+                                    Keithley4200_Settings.SetValue("VoltageLimit", (1.0).ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
+                                    Keithley4200_Settings.SetValue("CurrentLimit", (0.0105).ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
+
                                     var Keithley4200_Ranges_Channel_01 = Keithley4200_Ranges.CreateSubKey("Channel_01");
                                     var Keithley4200_Ranges_Channel_02 = Keithley4200_Ranges.CreateSubKey("Channel_02");
                                     var Keithley4200_Ranges_Channel_03 = Keithley4200_Ranges.CreateSubKey("Channel_03");

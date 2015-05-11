@@ -4,7 +4,7 @@
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
-        Title="Keithley4200_Channel_Settings" Height="530" Width="360">
+        Title="Keithley4200_Channel_Settings" Height="670" Width="360">
 
     <Window.Resources>
         <local:Keithley4200_Accuracy_Converter x:Key="AccuracyConverter" />
@@ -45,6 +45,7 @@
                 <RowDefinition />
                 <RowDefinition />
 				<RowDefinition />
+				<RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -61,9 +62,9 @@
                     </ToolTip>
                 </Label.ToolTip>
             </Label>
-            <ComboBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=TheIntegrationTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBox Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding Path=CurrentIntegrationTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource AccuracyConverter}}">
                 <ComboBoxItem>Short</ComboBoxItem>
-                <ComboBoxItem IsSelected="True">Medium</ComboBoxItem>
+                <ComboBoxItem>Medium</ComboBoxItem>
                 <ComboBoxItem>Long</ComboBoxItem>
             </ComboBox>
 
@@ -94,7 +95,7 @@
 								<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="2.5" HorizontalAlignment="Center">RANGE PARAMETERS</TextBlock>
 								<TextBlock Grid.Row="1" Grid.Column="0" Margin="2.5" VerticalAlignment="Center">Min</TextBlock>
 								<TextBlock Grid.Row="2" Grid.Column="0" Margin="2.5" VerticalAlignment="Center">Max</TextBlock>
-								<TextBlock Grid.Row="1" Grid.Column="2" Margin="2.5" Grid.RowSpan="2" HorizontalAlignment="Center">Accuracy</TextBlock>
+								<TextBlock Grid.Row="1" Grid.Column="2" Margin="2.5" Grid.RowSpan="2" HorizontalAlignment="Center">Integration Time</TextBlock>
 
 								<wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Path=MinRangeLimit}" Margin="2.5 2" ShowButtonSpinner="False" FormatString="E3" />
 								<wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding Path=MaxRangeLimit}" Margin="2.5 2" ShowButtonSpinner="False" FormatString="E3" />
@@ -107,7 +108,41 @@
 						</Border>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
-			</ListBox>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Click="Menu_ItemDeleteClick" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+
+			<Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="2.5" HorizontalAlignment="Center">RANGE PARAMETERS</TextBlock>
+				<TextBlock Grid.Row="1" Grid.Column="0" Margin="2.5" VerticalAlignment="Center">Min</TextBlock>
+				<TextBlock Grid.Row="2" Grid.Column="0" Margin="2.5" VerticalAlignment="Center">Max</TextBlock>
+				<TextBlock Grid.Row="1" Grid.Column="2" Margin="2.5" Grid.RowSpan="2" HorizontalAlignment="Center">Integration Time</TextBlock>
+
+				<wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Path=NewMinRangeLimit}" Margin="2.5 2" ShowButtonSpinner="False" FormatString="E3" />
+				<wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding Path=NewMaxRangeLimit}" Margin="2.5 2" ShowButtonSpinner="False" FormatString="E3" />
+                <ComboBox Grid.Row="2" Grid.Column="2" x:Name="WorkingChannel" SelectedIndex="{Binding Path=NewAccuracy, Converter={StaticResource AccuracyConverter}}" Margin="2.5 2" >
+                    <ComboBoxItem>Short</ComboBoxItem>
+                    <ComboBoxItem>Medium</ComboBoxItem>
+                    <ComboBoxItem>Long</ComboBoxItem>
+                </ComboBox>
+
+                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" x:Name="cmd_AddNewRange" Content="Add New Range" Height="35" Margin="0 5 0 0" Click="on_cmd_AddNewRangeClick" />
+			</Grid>
         </Grid>
         <GroupBox Grid.Row="1" Grid.Column="0" Header="Source Mode" HorizontalAlignment="Stretch" Margin="5 5 5 2.5">
             <StackPanel>
@@ -117,7 +152,7 @@
         </GroupBox>
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
             <Label>Working Channel</Label>
-            <ComboBox x:Name="comboBoxWorkingChannel" Text="{Binding Path=SelectedChannelString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <ComboBox x:Name="comboBoxWorkingChannel" Text="{Binding Path=SelectedChannelString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionChanged="on_WorkingChannelSelectionChanged">
                 <ComboBoxItem IsSelected="True">SMU 1</ComboBoxItem>
                 <ComboBoxItem>SMU 2</ComboBoxItem>
                 <ComboBoxItem>SMU 3</ComboBoxItem>
