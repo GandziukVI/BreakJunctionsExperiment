@@ -163,6 +163,8 @@
     <Compile Include="Events\Custom Events\Motion_EventArgs.cs" />
     <Compile Include="Events\Custom Events\TimeTracePointReceivedChannel_01_EventArgs.cs" />
     <Compile Include="Events\Custom Events\LastNoiseSpectra_Channel_01_DataArrived_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTrace_Channel_01_Breaking_EventArgs.cs" />
+    <Compile Include="Events\Custom Events\TimeTrace_Channel_02_Breaking_EventArgs.cs" />
     <Compile Include="NotificationSystem\E_Mail_Info.cs" />
     <Compile Include="NotificationSystem\StatusNotification.cs" />
     <Compile Include="Registry\BreakJunctionsRegistry.cs" />

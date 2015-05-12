@@ -26,31 +26,32 @@ namespace BreakJunctions.NotificationSystem
 
         private static Registry_NotificationSystem NotificationSystem = BreakJunctionsRegistry.Instance.Reg_NotificationSystem;
 
-        public void SendStatusE_Mail(string _Subject, string _Body, string[] _ReceiverList)
+        public void SendStatusE_Mail(string _Subject, string _Body)
         {
-            try
+            if (NotificationSystem.User_E_Mails.Count > 0)
             {
-                var mail = new MailMessage();
-                var smtpServer = new SmtpClient("smtp.live.com");
+                try
+                {
+                    var mail = new MailMessage();
+                    var smtpServer = new SmtpClient("smtp.live.com");
 
-                mail.From = new MailAddress(NotificationSystem.E_Mail_Address);
-                foreach (var MailInfo in NotificationSystem.User_E_Mails)
-                    mail.To.Add(MailInfo.E_Mail_Address);
+                    mail.From = new MailAddress(NotificationSystem.E_Mail_Address);
+                    foreach (var MailInfo in NotificationSystem.User_E_Mails)
+                        mail.To.Add(MailInfo.E_Mail_Address);
 
-                foreach (var a in _ReceiverList)
-                    mail.To.Add(a);
 
-                mail.Subject = _Subject;
-                mail.Body = _Body;
+                    mail.Subject = _Subject;
+                    mail.Body = _Body;
 
-                smtpServer.Port = 465;
-                smtpServer.Credentials = new NetworkCredential(NotificationSystem.E_Mail_Address, NotificationSystem.E_Mail_Password);
-                smtpServer.EnableSsl = true;
-                smtpServer.Send(mail);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error sending message!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    smtpServer.Port = 587;
+                    smtpServer.Credentials = new NetworkCredential(NotificationSystem.E_Mail_Address, NotificationSystem.E_Mail_Password);
+                    smtpServer.EnableSsl = true;
+                    smtpServer.SendAsync(mail, this);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error sending message!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }
