@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="AdditionalClasses\DataFormatting.cs" />
     <Compile Include="AdditionalClasses\DeviceConstants.cs" />
-    <Compile Include="AdditionalClasses\Keithley4200_RangeAccuracySet.cs" />
+    <Compile Include="AdditionalClasses\AccuracyParams.cs" />
     <Compile Include="Events\AllEventsHandler.cs" />
     <Compile Include="Events\CustomEvents\SystemModeChanged_EventArgs.cs" />
     <Compile Include="Keithley_4200.cs" />

@@ -168,6 +168,7 @@
     <Compile Include="NotificationSystem\E_Mail_Info.cs" />
     <Compile Include="NotificationSystem\StatusNotification.cs" />
     <Compile Include="Registry\BreakJunctionsRegistry.cs" />
+    <Compile Include="User Interfaces\Application Controls\ParametersConverter.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\MVVM_PI_E755_ConfigurationPage.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\PI_E755_ConfigurationPage.xaml.cs">
       <DependentUpon>PI_E755_ConfigurationPage.xaml</DependentUpon>

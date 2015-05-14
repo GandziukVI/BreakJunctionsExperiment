@@ -99,6 +99,12 @@ namespace Keithley_4200
             catch { return false; }
         }
 
+        private Keithley4200_RangeAccuracySet _CurrentRow;
+        private void CheckIntegrationTime(double value)
+        {
+            
+        }
+
         public double MeasureVoltage(int NumberOfAverages, double TimeDelay)
         {
             try
@@ -106,7 +112,12 @@ namespace Keithley_4200
                 switch (_SelectedSMU)
                 {
                     case SMUs.SMU1:
-                        return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU1).Data;
+                        {
+                            var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU1).Data;
+                            CheckIntegrationTime(voltage);
+
+                            return voltage;
+                        }
                     case SMUs.SMU2:
                         return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU2).Data;
                     case SMUs.SMU3:
