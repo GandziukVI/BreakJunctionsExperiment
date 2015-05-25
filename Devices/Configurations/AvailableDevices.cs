@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using KeithleyInstruments;
+
 namespace Devices
 {
     public static class AvailableDevices
@@ -33,5 +35,57 @@ namespace Devices
                 return NewDevice;
             }
         }
+
+        public enum KnownDevices { Keithley2602A, Keithley4200, Agilent2542A }
+
+        public class DeviceInfo
+        {
+            public KnownDevices DeviceType { get; set; }
+            public object TheDevice { get; set; }
+
+            public DeviceInfo(KnownDevices Type, object Device)
+            {
+                DeviceType = Type;
+                TheDevice = Device;
+            }
+        }
+
+        private static Dictionary<string, DeviceInfo> _DeviceCollection;
+        public static Dictionary<string, DeviceInfo> DeviceCollection
+        {
+            get
+            {
+                if (_DeviceCollection == null)
+                    _DeviceCollection = new Dictionary<string, DeviceInfo>();
+
+                return _DeviceCollection;
+            }
+        }
+
+        //public static DeviceInfo AddOrGetExistingInstrument(string _VisaID, KnownDevices _Device)
+        //{
+        //    DeviceInfo result;
+        //    if (DeviceCollection.ContainsKey(_VisaID))
+        //    {
+        //        DeviceCollection.TryGetValue(_VisaID, out result);
+        //        return result;
+        //    }
+        //    else
+        //    {
+        //        switch (_Device)
+        //        {
+        //            case KnownDevices.Keithley2602A:
+        //                {
+        //                    //var instrument = new Keithley2602A
+        //                } break;
+        //            case KnownDevices.Keithley4200:
+        //                break;
+        //            case KnownDevices.Agilent2542A:
+        //                break;
+        //            default:
+        //                return null;
+        //        }
+        //    }
+        //}
     }
 }

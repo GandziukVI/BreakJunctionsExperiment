@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Keithley2602A
+namespace KeithleyInstruments
 {
     public class Keithley2602AChannel : I_SMU
     {

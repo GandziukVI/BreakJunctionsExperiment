@@ -4,7 +4,7 @@ using System.Text;
 
 using Keithley.Ke26XXA.Interop;
 
-namespace Keithley2602A
+namespace KeithleyInstruments
 {
     public class Keithley2602A
     {

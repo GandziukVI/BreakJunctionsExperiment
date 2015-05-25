@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace Keithley2602A
+namespace KeithleyInstruments
 {
     public class Keithley2602A_RangeAccuracySet : IEquatable<Keithley2602A_RangeAccuracySet>
     {

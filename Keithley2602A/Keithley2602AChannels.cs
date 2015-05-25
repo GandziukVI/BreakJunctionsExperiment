@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Keithley2602A
+namespace KeithleyInstruments
 {
     public enum Keithley2602AChannels { ChannelA, ChannelB }
 }
