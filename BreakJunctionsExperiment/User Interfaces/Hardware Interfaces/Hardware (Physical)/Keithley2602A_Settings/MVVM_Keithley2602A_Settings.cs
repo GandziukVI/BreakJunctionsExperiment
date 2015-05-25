@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 //using SMU.KEITHLEY_2602A;
 //using Keithley_2602A.DeviceConfiguration;
 
-using Keithley2602A;
+using KeithleyInstruments;
 
 namespace BreakJunctions
 {

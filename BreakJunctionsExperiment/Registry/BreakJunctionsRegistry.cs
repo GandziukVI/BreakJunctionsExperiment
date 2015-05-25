@@ -12,7 +12,7 @@ using Keithley_4200;
 using BreakJunctions.NotificationSystem;
 
 //using Keithley_2602A.DeviceConfiguration;
-using Keithley2602A;
+using KeithleyInstruments;
 
 namespace BreakJunctions
 {
