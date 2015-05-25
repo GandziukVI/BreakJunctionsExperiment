@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Net.Sockets;
 
@@ -140,7 +138,16 @@ namespace Devices
                     }
                 }
             }
-            return bytes.ToArray();
+
+            var result = new byte[bytes.Count];
+            var node = bytes.First;
+            for (int j = 0; j < bytes.Count; j++)
+            {
+                result[i] = node.Value;
+                node = node.Next;
+            }
+
+            return result;
         }
 
         private int ReadLengthHeader()
