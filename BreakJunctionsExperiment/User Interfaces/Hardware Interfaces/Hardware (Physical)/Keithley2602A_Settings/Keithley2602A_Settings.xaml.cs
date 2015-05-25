@@ -11,12 +11,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using Devices.SMU;
-using SMU.KEITHLEY_2602A;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using Devices;
 using System.Collections.ObjectModel;
-using Keithley_2602A.DeviceConfiguration;
+
+using Keithley2602A;
+
+//using SMU.KEITHLEY_2602A;
+//using Keithley_2602A.DeviceConfiguration;
 
 namespace BreakJunctions
 {
@@ -64,60 +67,77 @@ namespace BreakJunctions
 
             if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
-                KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                //KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
 
-                var smu = KEITHLEY_2602A.Instance.ChannelA;
+                //var smu = KEITHLEY_2602A.Instance.ChannelA;
+                var smu = Test.Device.ChannelA;
 
-                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
+                //KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
+                Test.Device.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
-                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
+                //smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
 
 
-                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet;
+                //BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection = Test.Device.ChannelA.ChannelAccuracyParams.RangeAccuracySet;
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelA) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
-                KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                //KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
 
-                var smu = KEITHLEY_2602A.Instance.ChannelA;
+                //var smu = KEITHLEY_2602A.Instance.ChannelA;
+                var smu = Test.Device.ChannelA;
 
-                KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
+                //KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
-                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
+                Test.Device.ChannelA.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
+
+                //smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelA);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
 
-                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet;
+                //BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelA.ChannelAccuracyParams.RangeAccuracySet;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_A_RangesAccuracyCollection = Test.Device.ChannelA.ChannelAccuracyParams.RangeAccuracySet;
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Voltage))
             {
-                KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                //KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
 
-                var smu = KEITHLEY_2602A.Instance.ChannelB;
+                //var smu = KEITHLEY_2602A.Instance.ChannelB;
+                var smu = Test.Device.ChannelB;
 
-                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
+                //KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
+                Test.Device.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
-                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
+                //smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient);
                 _Device = smu;
                 _Device.SetVoltageLimit(_DeviceSettings.LimitValueVoltage);
 
-                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet;
+                //BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection = Test.Device.ChannelB.ChannelAccuracyParams.RangeAccuracySet;
             }
             else if ((_DeviceSettings.SelectedChannel == Channels.ChannelB) && (_DeviceSettings.LimitMode == LimitMode.Current))
             {
-                KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
+                //KEITHLEY_2602A.Instance.SetDevice(ref _ExperimentalDevice);
 
-                var smu = KEITHLEY_2602A.Instance.ChannelB;
+                //var smu = KEITHLEY_2602A.Instance.ChannelB;
+                var smu = Test.Device.ChannelB;
 
-                KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
+                //KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
+                Test.Device.ChannelB.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley2602A_RangeAccuracySet>;
 
-                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
+                //smu.SetSpeed(_DeviceSettings.AccuracyCoefficient, Channels.ChannelB);
+                smu.SetSpeed(_DeviceSettings.AccuracyCoefficient);
                 _Device = smu;
                 _Device.SetCurrentLimit(_DeviceSettings.LimitValueCurrent);
 
-                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet;
+                //BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection = KEITHLEY_2602A.Instance.ChannelB.ChannelAccuracyParams.RangeAccuracySet;
+                BreakJunctionsRegistry.Instance.Reg_Keithley_2602A.Keithley2602A_Channel_B_RangesAccuracyCollection = Test.Device.ChannelB.ChannelAccuracyParams.RangeAccuracySet;
             }
 
             return _Device;

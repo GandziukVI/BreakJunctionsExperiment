@@ -10,11 +10,12 @@ using System.Windows.Threading;
 using BreakJunctions.Plotting;
 
 using Devices.SMU;
-using SMU.KEITHLEY_2602A;
+//using SMU.KEITHLEY_2602A;
 
 using BreakJunctions.Motion;
 using System.Windows;
 using System.Threading;
+using System.Diagnostics;
 
 namespace BreakJunctions.Measurements
 {
@@ -205,6 +206,9 @@ namespace BreakJunctions.Measurements
 
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
 
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             _MeasureDevice.SwitchON();
 
             switch (__MotionKind)
@@ -238,6 +242,9 @@ namespace BreakJunctions.Measurements
             }
 
             _MeasureDevice.SwitchOFF();
+
+            stopwatch.Stop();
+            MessageBox.Show((stopwatch.ElapsedMilliseconds / 1000.0).ToString("G8"), "Time", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void StopMeasurement()

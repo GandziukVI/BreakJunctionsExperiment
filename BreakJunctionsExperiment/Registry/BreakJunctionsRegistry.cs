@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 //For registry
 using Microsoft.Win32;
-using Keithley_2602A.DeviceConfiguration;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using Keithley_4200;
 using BreakJunctions.NotificationSystem;
+
+//using Keithley_2602A.DeviceConfiguration;
+using Keithley2602A;
 
 namespace BreakJunctions
 {

@@ -20,7 +20,7 @@ using BreakJunctions.Measurements;
 using BreakJunctions.DataHandling;
 
 using Devices.SMU;
-using SMU.KEITHLEY_2602A;
+//using SMU.KEITHLEY_2602A;
 
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;

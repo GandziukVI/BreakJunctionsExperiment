@@ -168,6 +168,7 @@
     <Compile Include="NotificationSystem\E_Mail_Info.cs" />
     <Compile Include="NotificationSystem\StatusNotification.cs" />
     <Compile Include="Registry\BreakJunctionsRegistry.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="User Interfaces\Application Controls\ParametersConverter.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\MVVM_PI_E755_ConfigurationPage.cs" />
     <Compile Include="User Interfaces\Hardware Interfaces\Hardware %28Physical%29\PI_E755\PI_E755_ConfigurationPage.xaml.cs">
@@ -348,6 +349,10 @@
     <ProjectReference Include="..\HP_35670A\HP_35670A.csproj">
       <Project>{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}</Project>
       <Name>HP_35670A</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Keithley2602A\Keithley2602A.csproj">
+      <Project>{35300475-eb06-4889-a3fd-6a4c6e2f3805}</Project>
+      <Name>Keithley2602A</Name>
     </ProjectReference>
     <ProjectReference Include="..\Keithley_2602A\Keithley_2602A.csproj">
       <Project>{f98764a2-e410-4b56-8690-db03da26373b}</Project>

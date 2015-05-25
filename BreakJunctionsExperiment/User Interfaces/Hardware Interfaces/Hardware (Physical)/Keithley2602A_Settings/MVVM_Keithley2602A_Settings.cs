@@ -5,9 +5,12 @@ using System.Linq;
 using System.Text;
 
 using Devices.SMU;
-using SMU.KEITHLEY_2602A;
 using System.Collections.ObjectModel;
-using Keithley_2602A.DeviceConfiguration;
+
+//using SMU.KEITHLEY_2602A;
+//using Keithley_2602A.DeviceConfiguration;
+
+using Keithley2602A;
 
 namespace BreakJunctions
 {
