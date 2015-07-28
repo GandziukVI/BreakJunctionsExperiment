@@ -53,7 +53,7 @@ namespace ForTesting
                     byte[] DataToWrite = _GetDataBytes(ChannelData);
                     _TimeShift += ChannelData[0].Last().X;
 
-                    await WriteAcquisitionDataBytesAsync("F:\\SuperMeasurement.dat", DataToWrite);
+                    await WriteAcquisitionDataBytesAsync("D:\\SuperMeasurement.dat", DataToWrite);
                 }
             }
         }
@@ -99,6 +99,7 @@ namespace ForTesting
 
             _Channels.DisableAllChannelsForContiniousDataAcquisition();
 
+            _Channels.SetChannelsToDC();
             _Channels.SetChannelsToAC();
 
             foreach(var ch in _Channels.ChannelArray)
