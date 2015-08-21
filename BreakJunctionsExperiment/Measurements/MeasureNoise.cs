@@ -1,4 +1,5 @@
 ﻿using Agilent_ExtensionBox;
+using Agilent_ExtensionBox.Internal;
 using Agilent_ExtensionBox.IO;
 using Agilent_U2542A_With_ExtensionBox.Classes;
 using BreakJunctions.Events;
@@ -25,12 +26,6 @@ namespace BreakJunctions.Measurements
 
         private BackgroundWorker _MeasurementWorker;
 
-        //private VoltageMeasurement _VoltageMeasurement;
-        //private IRealTime_TimeTrace_Factory _TimeTracesAcquisitionfactory;
-        //private RealTime_TimeTrace_Controller _TimeTracesAcquisition;
-        //private AI_Channels _Channels;
-        //private DataStringConverter _DataConverter;
-
         private BoxController _boxController;
 
         private AdvancedFourierTransform _FFT_Channel_01;
@@ -41,7 +36,7 @@ namespace BreakJunctions.Measurements
 
         private List<Point> FinalFFT_Channel_01;
         private List<Point> FinalFFT_Channel_02;
-        
+
         private int AveragedSpectraCounter_Channel_01;
         private int AveragedSpectraCounter_Channel_02;
 
@@ -82,22 +77,27 @@ namespace BreakJunctions.Measurements
 
             _MeasurementWorker = __MeasurementWorker;
 
-            //_VoltageMeasurement = new VoltageMeasurement();
-
-            //_TimeTracesAcquisitionfactory = new RT_Agilent_U2542A_TimeTrace_Controller_Factory();
-            //_TimeTracesAcquisition = _TimeTracesAcquisitionfactory.GetRealTime_TimeTraceController();
-
             _boxController = new BoxController();
             _boxController.Init("USB0::0x0957::0x1718::TW54334510::0::INSTR");
 
-            _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn2].DataReady += MeasureNoise_CH_02_DataReady;            
+            var _channelConfig = new AI_ChannelConfig[4]
+            {
+                new AI_ChannelConfig(){ ChannelName = AnalogInChannelsEnum.AIn1, Enabled = false, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig(){ ChannelName = AnalogInChannelsEnum.AIn2, Enabled = true, Mode = ChannelModeEnum.AC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig(){ ChannelName = AnalogInChannelsEnum.AIn3, Enabled = false, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig(){ ChannelName = AnalogInChannelsEnum.AIn4, Enabled = true, Mode = ChannelModeEnum.AC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25}
+            };
+
+            _boxController.ConfigureAI_Channels(_channelConfig);
+
+            _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn2].Parameters.SetParams(FilterCutOffFrequencies.Freq_150kHz, FilterGain.gain1, PGA_GainsEnum.gain1);
+            _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn4].Parameters.SetParams(FilterCutOffFrequencies.Freq_150kHz, FilterGain.gain1, PGA_GainsEnum.gain1);
+
+            _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn2].DataReady += MeasureNoise_CH_02_DataReady;
             _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn4].DataReady += MeasureNoise_CH_04_DataReady;
 
             _FFT_Channel_01 = new AdvancedFourierTransform(DigitalAnalyzerNamespace.DigitalAnalyzerSpectralRange.Discret499712Freq1_1600Step1Freq1647_249856Step61);
             _FFT_Channel_02 = new AdvancedFourierTransform(DigitalAnalyzerNamespace.DigitalAnalyzerSpectralRange.Discret499712Freq1_1600Step1Freq1647_249856Step61);
-
-            //_Channels = AI_Channels.Instance;
-            //_DataConverter = new DataStringConverter();
 
             QueueToGetProcessed_Channel_01 = new Queue<List<Point>>();
             QueueToGetProcessed_Channel_02 = new Queue<List<Point>>();
@@ -118,7 +118,7 @@ namespace BreakJunctions.Measurements
 
             var toProcess = res.ToList<Point>();
 
-            if(readSuccess)
+            if (readSuccess)
                 QueueToGetProcessed_Channel_01.Enqueue(toProcess);
         }
 
@@ -130,7 +130,7 @@ namespace BreakJunctions.Measurements
             var toProcess = res.ToList<Point>();
 
             if (readSuccess)
-                QueueToGetProcessed_Channel_01.Enqueue(toProcess);
+                QueueToGetProcessed_Channel_02.Enqueue(toProcess);
         }
 
         ~MeasureNoise()
@@ -147,42 +147,23 @@ namespace BreakJunctions.Measurements
             _FirstChannel_LastSpectraArrived = false;
             _SecondChannel_LastSpectraArrived = false;
 
-            //Agilent_DigitalOutput_LowLevel.Instance.AllToZero();
-
-            //_VoltageMeasurement.PerformVoltagePresiseMeasurement();
-
-            //_Channels.Read_AI_Channel_Status();
-            //var ACQ_Rate = _Channels.ACQ_Rate;
-            //_Channels.SetChannelsToAC();
-            //_Channels.ACQ_Rate = 499712;
-            //_Channels.SingleShotPointsPerBlock = 499712;
-            
             QueueToGetProcessed_Channel_01.Clear();
             QueueToGetProcessed_Channel_02.Clear();
 
             AveragedSpectraCounter_Channel_01 = 0;
             AveragedSpectraCounter_Channel_02 = 0;
 
-            //FillFrequenciesInFinalFFT(_Channels.SingleShotPointsPerBlock);
             FillFrequenciesInFinalFFT(499712);
 
             for (int i = 0; (i < _NumberOfSpectra) && (MeasurementInProgress) && !_MeasurementWorker.CancellationPending; i++)
             {
-                //QueueToGetProcessed_Channel_01.Enqueue(_TimeTracesAcquisition.MakeSingleShot(2));
-                //QueueToGetProcessed_Channel_02.Enqueue(_TimeTracesAcquisition.MakeSingleShot(4));
-                
                 _boxController.AcquireSingleShot(499712);
 
                 if (!(_FFT_Processing_Channel_01.IsAlive && _FFT_Processing_Channel_02.IsAlive))
                     this.StartFFTThread();
             }
 
-            while(!((_FirstChannel_LastSpectraArrived == true) && (_SecondChannel_LastSpectraArrived == true) || _MeasurementWorker.CancellationPending));
-
-            //if (MeasurementInProgress)
-            //    _VoltageMeasurement.PerformVoltagePresiseMeasurement();
-
-            //_Channels.ACQ_Rate = ACQ_Rate;
+            while (!((_FirstChannel_LastSpectraArrived == true) && (_SecondChannel_LastSpectraArrived == true) || _MeasurementWorker.CancellationPending)) ;
         }
 
         private void StartFFTThread()
@@ -225,7 +206,7 @@ namespace BreakJunctions.Measurements
                     }
                     catch { }
                 }
-                
+
                 if ((AveragedSpectraCounter_Channel_01 % _DisplayUpdateNumber == 0) && (AveragedSpectraCounter_Channel_01 < _NumberOfSpectra))
                     AllEventsHandler.Instance.On_NoiseSpectra_DataArrived_Channel_01(this, new NoiseSpectra_DataArrived_Channel_01_EventArgs(DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01)));
             }
@@ -233,7 +214,7 @@ namespace BreakJunctions.Measurements
             {
                 List<Point> RawData = DividePointList(FinalFFT_Channel_01, AveragedSpectraCounter_Channel_01);
                 List<Point> FinalData = DividePointList(RawData, _AmplificationCoefficient_CH_01 * _AmplificationCoefficient_CH_01);
-                
+
                 AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_01_DataArrived(this, new LastNoiseSpectra_Channel_01_DataArrived_EventArgs(FinalData));
                 _FirstChannel_LastSpectraArrived = true;
             }
@@ -267,7 +248,7 @@ namespace BreakJunctions.Measurements
             {
                 List<Point> RawData = DividePointList(FinalFFT_Channel_02, AveragedSpectraCounter_Channel_02);
                 List<Point> FinalData = DividePointList(RawData, _AmplificationCoefficient_CH_02 * _AmplificationCoefficient_CH_02);
-                
+
                 AllEventsHandler.Instance.On_LastNoiseSpectra_Channel_02_DataArrived(this, new LastNoiseSpectra_Channel_02_DataArrived_EventArgs(FinalData));
                 _SecondChannel_LastSpectraArrived = true;
             }
@@ -304,15 +285,13 @@ namespace BreakJunctions.Measurements
         {
             List<Point> result = new List<Point>();
             foreach (Point a in data)
-            {
                 result.Add(new Point(a.X, a.Y / divider));
-            }
+
             return result;
         }
 
         private void On_NoiseMeasurement_StateChanged(object sender, NoiseMeasurement_StateChanged_EventArgs e)
         {
-            //_TimeTracesAcquisition.MeasurementInProcess = e.MeasurementIsInProgress;
             _boxController.AcquisitionInProgress = e.MeasurementIsInProgress;
             this.MeasurementInProgress = e.MeasurementIsInProgress;
         }
