@@ -61,6 +61,9 @@
     <ApplicationIcon>ProgramIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Agilent_ExtensionBox">
+      <HintPath>.\Agilent_ExtensionBox.dll</HintPath>
+    </Reference>
     <Reference Include="DynamicDataDisplay, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5b7d744a7263923f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DynamicDataDisplay\DynamicDataDisplay.dll</HintPath>
