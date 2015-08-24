@@ -206,8 +206,8 @@ namespace BreakJunctions.Measurements
 
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            //var stopwatch = new Stopwatch();
+            //stopwatch.Start();
 
             _MeasureDevice.SwitchON();
 
@@ -243,8 +243,8 @@ namespace BreakJunctions.Measurements
 
             _MeasureDevice.SwitchOFF();
 
-            stopwatch.Stop();
-            MessageBox.Show((stopwatch.ElapsedMilliseconds / 1000.0).ToString("G8"), "Time", MessageBoxButton.OK, MessageBoxImage.Information);
+            //stopwatch.Stop();
+            //MessageBox.Show((stopwatch.ElapsedMilliseconds / 1000.0).ToString("G8"), "Time", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void StopMeasurement()
