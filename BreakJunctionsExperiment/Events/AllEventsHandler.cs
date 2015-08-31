@@ -9,12 +9,22 @@ namespace BreakJunctions.Events
     {
         #region Singleton class implementation
 
+        private static readonly object _InstanceCreated_Lock = new object();
+
         private static AllEventsHandler _Instance;
         public static AllEventsHandler Instance
         {
             get
             {
-                if (_Instance == null) _Instance = new AllEventsHandler();
+                if (_Instance == null)
+                {
+                    lock (_InstanceCreated_Lock) 
+                    {
+                        if (_Instance == null)
+                            _Instance = new AllEventsHandler();
+                    }
+                }
+
                 return _Instance;
             }
         }
