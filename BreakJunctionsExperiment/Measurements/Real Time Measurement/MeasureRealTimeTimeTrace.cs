@@ -4,9 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-using Agilent_U2542A_With_ExtensionBox.Classes;
-using Agilent_U2542A_With_ExtensionBox.Interfaces;
-
 using BreakJunctions.Motion;
 using BreakJunctions.Events;
 using System.Threading;
@@ -131,8 +128,6 @@ namespace BreakJunctions.Measurements
             set { _IsSample_02_MeasurementEnabled = value; }
         }
 
-        private AI_Channels _Channels;
-
         private IRealTime_TimeTrace_Factory _ITimeTraceControllerFactory;
         private RealTime_TimeTrace_Controller _TimeTraceMeasurementControler;
 
@@ -178,47 +173,8 @@ namespace BreakJunctions.Measurements
 
         #region MeasureRealTimeTimeTrace functionality
 
-        private void _initDAC()
-        {
-            _Channels = AI_Channels.Instance;
-
-            _Channels.DisableAllChannelsForContiniousDataAcquisition();
-            _Channels.PointsPerBlock = this.PointsPerBlock;
-            _Channels.ACQ_Rate = AcquistionRate;
-
-            this.ReloadChannels();
-        }
-
-        private void ReloadChannels()
-        {
-            _Channels.DisableAllChannelsForContiniousDataAcquisition();
-
-            if(_IsSample_01_MeasurementEnabled == true)
-            {
-                _Channels.ChannelArray[0].Enabled = true;
-                _Channels.ChannelArray[1].Enabled = true;
-            }
-            else
-            {
-                _Channels.ChannelArray[0].Enabled = false;
-                _Channels.ChannelArray[1].Enabled = false;
-            }
-            if (_IsSample_02_MeasurementEnabled == true)
-            {
-                _Channels.ChannelArray[2].Enabled = true;
-                _Channels.ChannelArray[3].Enabled = true;
-            }
-            else
-            {
-                _Channels.ChannelArray[2].Enabled = false;
-                _Channels.ChannelArray[3].Enabled = false;
-            }
-        }
-
         public void StartMeasurement(MotionKind __MotionKind, int __NumberOfRepetities = 1)
-        {
-            _initDAC();
-            
+        {    
             AllEventsHandler.Instance.OnRealTime_TimeTraceMeasurementStateChanged(this, new RealTime_TimeTraceMeasurementStateChanged_EventArgs(true));
             AllEventsHandler.Instance.OnRealTime_TimeTrace_ResetTimeShift(this, new RealTime_TimeTrace_ResetTimeShift_EventArgs());
 

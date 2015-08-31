@@ -89,6 +89,29 @@ namespace BreakJunctions.DataHandling
         }
 
         /// <summary>
+        /// Converts the List of PointD to the byte array
+        /// </summary>
+        /// <param name="_Data">List of data points</param>
+        /// <returns>Appropriate byte array</returns>
+        private byte[] _GetDataBytes(LinkedList<Point>[] Data)
+        {
+            var _Data = new Point[4][]
+            {
+                Data[0].ToArray(),
+                Data[1].ToArray(),
+                Data[2].ToArray(),
+                Data[3].ToArray()
+            };
+
+            string result = string.Empty;
+
+            for (int i = 0; i < this._PointsNumber; i++)
+                result += String.Format("{0}\t{1}\t{2}\t{3}\t{4}\r\n", (_Data[0][i].X + _TimeShift).ToString(_NumberFormatInfo), _Data[0][i].Y.ToString(_NumberFormatInfo), _Data[1][i].Y.ToString(_NumberFormatInfo), _Data[2][i].Y.ToString(_NumberFormatInfo), _Data[3][i].Y.ToString(_NumberFormatInfo));
+
+            return Encoding.ASCII.GetBytes(result);
+        }
+
+        /// <summary>
         /// Resets the time shift to zero for
         /// the new mwasurement
         /// </summary>

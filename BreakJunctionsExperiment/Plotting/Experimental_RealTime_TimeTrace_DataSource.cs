@@ -26,8 +26,8 @@ namespace BreakJunctions.Plotting
 
         #endregion
 
-        private List<Point> _ExperimentalData;
-        public List<Point> ExperimentalData
+        private LinkedList<Point> _ExperimentalData;
+        public LinkedList<Point> ExperimentalData
         {
             get { return _ExperimentalData; }
             set { _ExperimentalData = value; }
@@ -38,7 +38,7 @@ namespace BreakJunctions.Plotting
 
         private SamplesToInvestigate _SampleNumber;
 
-        public Experimental_RealTime_TimeTrace_DataSource_Sample(List<Point> Data, SamplesToInvestigate SampleNumber)
+        public Experimental_RealTime_TimeTrace_DataSource_Sample(LinkedList<Point> Data, SamplesToInvestigate SampleNumber)
         {
             _ExperimentalData = Data;
             _ExperimentalDataSource = new EnumerableDataSource<Point>(_ExperimentalData);
@@ -65,7 +65,7 @@ namespace BreakJunctions.Plotting
             await SetDataAsync(e.Data, CancellationToken.None);
         }
 
-        internal Task SetDataAsync(List<Point>[] Data, CancellationToken __CancellationToken)
+        internal Task SetDataAsync(LinkedList<Point>[] Data, CancellationToken __CancellationToken)
         {
             return Task.Run(() =>
                 {
@@ -88,10 +88,16 @@ namespace BreakJunctions.Plotting
                             break;
                     }
 
+                    var arr1 = new Point[Data[number].Count];
+                    Data[number].CopyTo(arr1, 0);
+
+                    var arr2 = new Point[Data[number + 1].Count];
+                    Data[number + 1].CopyTo(arr2, 0);
+
                     for (int i = 0; i < DataLendgth; i++)
                     {
-                        if (Data[number][i].Y != 0.0)
-                            _ExperimentalData.Add(new Point(Data[number][i].X, Data[number][i].Y / Data[number + 1][i].Y));
+                        if (arr2[i].Y != 0.0)
+                            _ExperimentalData.AddLast(new Point(arr1[i].X, arr1[i].Y / arr2[i].Y));
                     }
 
                     switch (_SampleNumber)

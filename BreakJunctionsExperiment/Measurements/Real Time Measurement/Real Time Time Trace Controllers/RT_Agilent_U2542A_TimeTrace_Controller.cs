@@ -7,8 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-using Agilent_U2542A_With_ExtensionBox.Classes;
-using Agilent_U2542A_With_ExtensionBox.Interfaces;
+using Agilent_ExtensionBox;
+using Agilent_ExtensionBox.Internal;
+using Agilent_ExtensionBox.IO;
 
 using BreakJunctions.Events;
 
@@ -16,150 +17,104 @@ namespace BreakJunctions.Measurements
 {
     class RT_Agilent_U2542A_TimeTrace_Controller : RealTime_TimeTrace_Controller
     {
-        #region RealTime_Agilent_U2542A_TimeTrace_Controller settings
-
-        private AI_Channels _Channels;
-        private DataStringConverter _DataConverter;
-        private VoltageMeasurement _VoltageMeasurement;
-
-        #endregion
+        BoxController _boxController;
 
         #region Constructor
 
         public RT_Agilent_U2542A_TimeTrace_Controller()
         {
-            _Channels = AI_Channels.Instance;
-            _Channels.Read_AI_Channel_Status();
-            _DataConverter = new DataStringConverter();
-            _VoltageMeasurement = new VoltageMeasurement();
+            _boxController = new BoxController();
+            _boxController.Init("USB0::0x0957::0x1718::TW54334510::0::INSTR");
 
             AllEventsHandler.Instance.RealTime_TimeTraceMeasurementStateChanged += OnRealTime_TimeTraceMeasurementStateChanged;
         }
 
-        private int ACQ_Rate;
+        ~RT_Agilent_U2542A_TimeTrace_Controller()
+        {
+            _boxController.Close();
+        }
 
-        ConcurrentQueue<string> _StringDataQueue;
+        private int _SDA_Rate = 5000;
+        public int SDA_Rate
+        {
+            get { return _SDA_Rate; }
+            set { _SDA_Rate = value; }
+        }
+
         Thread _DataTransformingAndSendingThread;
 
         #endregion
 
+        private bool flag = false;
         private void _TransformAndEmitData()
         {
-            while(MeasurementInProcess || !_StringDataQueue.IsEmpty)
+            while (MeasurementInProcess || flag)
             {
-                string _Data;
+                flag = false;
 
-                var _DequeueSuccess = _StringDataQueue.TryDequeue(out _Data);
+                LinkedList<Point> CH_01, CH_02, CH_03, CH_04;
 
-                if(_DequeueSuccess == true)
+                var _success_CH_01 = _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn1].ChannelData.TryDequeue(out CH_01);
+                var _success_CH_02 = _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn1].ChannelData.TryDequeue(out CH_02);
+                var _success_CH_03 = _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn1].ChannelData.TryDequeue(out CH_03);
+                var _success_CH_04 = _boxController.AI_ChannelCollection[AnalogInChannelsEnum.AIn1].ChannelData.TryDequeue(out CH_04);
+
+                foreach (var item in _boxController.AI_ChannelCollection)
+                    flag |= item.ChannelData.IsEmpty;
+
+                var _channelData = new LinkedList<Point>[4]
                 {
-                    var resultInt = _DataConverter.ParseDataStringToInt(_Data);
-                    var ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
-                    AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(this, new RealTime_TimeTrace_DataArrived_EventArgs(ref ChannelData));
-                }
+                    CH_01,
+                    CH_02,
+                    CH_03,
+                    CH_04
+                };
+
+                AllEventsHandler.Instance.OnRealTime_TimeTraceDataArrived(this, new RealTime_TimeTrace_DataArrived_EventArgs(ref _channelData));
             }
         }
 
         public override void ContiniousAcquisition()
         {
-            _StringDataQueue = new ConcurrentQueue<string>();
-
-            Agilent_DigitalOutput_LowLevel.Instance.AllToZero();
-
-            _Channels.Read_AI_Channel_Status();
-            
-            ACQ_Rate = _Channels.ACQ_Rate;
-
-            _Channels.SetChannelsToDC();
-
-            foreach (var channel in _Channels.ChannelArray)
+            var _channelConfig = new AI_ChannelConfig[4]
             {
-                channel.Enabled = true;
-                channel.isBiPolarDC = true;
-                channel.DC_Range = 2.5;
-            }
+                new AI_ChannelConfig() { ChannelName = AnalogInChannelsEnum.AIn1, Enabled = true, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig() { ChannelName = AnalogInChannelsEnum.AIn2, Enabled = true, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig() { ChannelName = AnalogInChannelsEnum.AIn3, Enabled = true, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig() { ChannelName = AnalogInChannelsEnum.AIn4, Enabled = true, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25}
+            };
 
-            _Channels.StartAnalogAcqusition();
+            _boxController.ConfigureAI_Channels(_channelConfig);
+
+            _boxController.StartAnalogAcquisition(_SDA_Rate);
 
             _DataTransformingAndSendingThread = new Thread(_TransformAndEmitData);
             _DataTransformingAndSendingThread.Priority = ThreadPriority.Normal;
             _DataTransformingAndSendingThread.Start();
-
-            while(MeasurementInProcess)
-            {
-                while (!_Channels.CheckAcquisitionStatus()) ;
-                string result = _Channels.AcquireStringWithData();
-                _StringDataQueue.Enqueue(result);
-            }
-
-            _Channels.StopAnalogAcqusition();
-        }
-
-        public override void ContiniousAcquisitionWithPresiseVoltageMeasurement()
-        {
-            Agilent_DigitalOutput_LowLevel.Instance.AllToZero();
-
-            _VoltageMeasurement.PerformVoltagePresiseMeasurement();
-            if (!MeasurementInProcess)
-                return;
-
-            _Channels.Read_AI_Channel_Status();
-            int ACQ_Rate = _Channels.ACQ_Rate;
-            _Channels.SetChannelsToDC();
-            _Channels.StartAnalogAcqusition();
-
-            while (MeasurementInProcess)
-            {
-                while (!_Channels.CheckAcquisitionStatus()) ;
-                string result = AI_Channels.Instance.AcquireStringWithData();
-                _StringDataQueue.Enqueue(result);
-            }
-
-            _Channels.StopAnalogAcqusition();
         }
 
         public override List<Point> MakeSingleShot(int NumberOfChannel)
         {
-            _Channels.DisableAllChannelsForContiniousDataAcquisition();
-            _Channels.ChannelArray[NumberOfChannel - 1].Enabled = true;
-            _Channels.ChannelArray[NumberOfChannel - 1].ChannelProperties.isAC = true;
-            _Channels.Read_AI_Channel_Status();
-            int ACQ_Rate = _Channels.ACQ_Rate;
-
-            _Channels.AcquireSingleShot();
-            while ((!_Channels.CheckSingleShotAcquisitionStatus()) && MeasurementInProcess) ;
-            if (!MeasurementInProcess) return null;
-            string result = AI_Channels.Instance.AcquireStringWithData();
-            Int16[] resultInt = _DataConverter.ParseDataStringToInt(result);
-            List<Point>[] ChannelData = _DataConverter.ParseIntArrayIntoChannelData(resultInt, ACQ_Rate);
-
-            return ChannelData[NumberOfChannel - 1];
-        }
-
-        public override void startAC_Autorange(int NumberOfChannel)
-        {
-            AI_Channels.Instance.SingleShotPointsPerBlock = 10000;
-            AI_Channels.Instance.ChannelArray[NumberOfChannel - 1].AC_Range = 10;
-            List<Point> data = MakeSingleShot(NumberOfChannel);
-
-            double[] AcquidredYData = data.Select(p => p.Y).ToArray();
-            double Max = AcquidredYData.Max();
-            double Min = AcquidredYData.Min();
-
-            if (Min < 0) _Channels.ChannelArray[NumberOfChannel - 1].isBiPolarAC = true;
-            else _Channels.ChannelArray[NumberOfChannel - 1].isBiPolarAC = false;
-
-            Min = Math.Abs(Min);
-            Max = Math.Max(Min, Max);
-
-            foreach (double rng in ImportantConstants.Ranges)
+            var _channelConfig = new AI_ChannelConfig[4]
             {
-                if (Max < rng)
-                {
-                    _Channels.ChannelArray[NumberOfChannel - 1].AC_Range = rng;
-                    break;
-                }
-            }
+                new AI_ChannelConfig() { ChannelName = AnalogInChannelsEnum.AIn1, Enabled = false, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig() { ChannelName = AnalogInChannelsEnum.AIn2, Enabled = false, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig() { ChannelName = AnalogInChannelsEnum.AIn3, Enabled = false, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25},
+                new AI_ChannelConfig() { ChannelName = AnalogInChannelsEnum.AIn4, Enabled = false, Mode = ChannelModeEnum.DC, Polarity = PolarityEnum.Polarity_Bipolar, Range = RangesEnum.Range_1_25}
+            };
+
+            _channelConfig[NumberOfChannel - 1].Mode = ChannelModeEnum.AC;
+            _channelConfig[NumberOfChannel - 1].Enabled = true;
+
+            _boxController.ConfigureAI_Channels(_channelConfig);
+            _boxController.AcquireSingleShot(_SDA_Rate);
+
+            LinkedList<Point> _result;
+            var _success = _boxController.AI_ChannelCollection[(AnalogInChannelsEnum)(NumberOfChannel - 1)].ChannelData.TryDequeue(out _result);
+            var result = new List<Point>();
+            result.AddRange(_result);
+
+            return _success ? result : new List<Point>();
         }
 
         public override void Dispose()
@@ -169,6 +124,7 @@ namespace BreakJunctions.Measurements
 
         public void OnRealTime_TimeTraceMeasurementStateChanged(object sender, RealTime_TimeTraceMeasurementStateChanged_EventArgs e)
         {
+            _boxController.AcquisitionInProgress = e.MeasurementInProcess;
             this.MeasurementInProcess = e.MeasurementInProcess;
         }
     }

@@ -177,8 +177,8 @@ namespace BreakJunctions
 
         #region Sample 01
 
-        private List<Point> _RealTimeTimeTraceSample_01;
-        public List<Point> RealTimeTimeTraceSample_01
+        private LinkedList<Point> _RealTimeTimeTraceSample_01;
+        public LinkedList<Point> RealTimeTimeTraceSample_01
         {
             get { return _RealTimeTimeTraceSample_01; }
             set { _RealTimeTimeTraceSample_01 = value; }
@@ -191,8 +191,8 @@ namespace BreakJunctions
 
         #region Sample 02
 
-        private List<Point> _RealTimeTimeTraceSample_02;
-        public List<Point> RealTimeTimeTraceSample_02
+        private LinkedList<Point> _RealTimeTimeTraceSample_02;
+        public LinkedList<Point> RealTimeTimeTraceSample_02
         {
             get { return _RealTimeTimeTraceSample_02; }
             set { _RealTimeTimeTraceSample_02 = value; }
@@ -1382,7 +1382,7 @@ namespace BreakJunctions
                 _RealTimeTimeTraceSample_01.Clear();
             }
 
-            _RealTimeTimeTraceSample_01 = new List<Point>();
+            _RealTimeTimeTraceSample_01 = new LinkedList<Point>();
             _ExperimentalRealTimeTimetraceDataSourceSample_01 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_01, SamplesToInvestigate.Sample_01);
             _ExperimentalRealTimeTimetraceDataSourceSample_01.AttachPointReceiveEvent();
             _RealTimeTimeTraceLineGraphSample_01 = new LineGraph(_ExperimentalRealTimeTimetraceDataSourceSample_01);
@@ -1399,7 +1399,7 @@ namespace BreakJunctions
                 _RealTimeTimeTraceSample_02.Clear();
             }
 
-            _RealTimeTimeTraceSample_02 = new List<Point>();
+            _RealTimeTimeTraceSample_02 = new LinkedList<Point>();
             _ExperimentalRealTimeTimetraceDataSourceSample_02 = new Experimental_RealTime_TimeTrace_DataSource_Sample(_RealTimeTimeTraceSample_02, SamplesToInvestigate.Sample_02);
             _ExperimentalRealTimeTimetraceDataSourceSample_02.AttachPointReceiveEvent();
             _RealTimeTimeTraceLineGraphSample_02 = new LineGraph(_ExperimentalRealTimeTimetraceDataSourceSample_02);

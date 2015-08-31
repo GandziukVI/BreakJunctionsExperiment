@@ -1,7 +1,6 @@
 ﻿using Agilent_ExtensionBox;
 using Agilent_ExtensionBox.Internal;
 using Agilent_ExtensionBox.IO;
-using Agilent_U2542A_With_ExtensionBox.Classes;
 using BreakJunctions.Events;
 using FourierTransformProvider;
 using System;

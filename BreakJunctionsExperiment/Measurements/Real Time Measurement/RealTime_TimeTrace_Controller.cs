@@ -16,22 +16,11 @@ namespace BreakJunctions.Measurements
         /// </summary>
         public abstract void ContiniousAcquisition();
         /// <summary>
-        /// Realizes the continious time trace acquisition
-        /// with precise voltage measurement
-        /// </summary>
-        public abstract void ContiniousAcquisitionWithPresiseVoltageMeasurement();
-        /// <summary>
         /// Realizes single shot measurements
         /// </summary>
         /// <param name="NumberOfChannel">The number of channel to be measured</param>
         /// <returns></returns>
         public abstract List<Point> MakeSingleShot(int NumberOfChannel);
-        /// <summary>
-        /// Alternating current autorange in
-        /// appropriate channel
-        /// </summary>
-        /// <param name="NumberOfChannel">Number of channel</param>
-        public abstract void startAC_Autorange(int NumberOfChannel);
         /// <summary>
         /// Correctly disposing the instance
         /// </summary>
