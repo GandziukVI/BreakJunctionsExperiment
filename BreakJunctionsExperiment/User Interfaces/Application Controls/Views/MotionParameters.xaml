@@ -19,6 +19,9 @@
 		<Style TargetType="Label">
             <Setter Property="Margin" Value="0 2.5" />
         </Style>
+		<Style TargetType="RadioButton">
+			<Setter Property="Margin" Value="2.5" />
+		</Style>
 		<Style TargetType="wpfTool:IntegerUpDown">
 			<Setter Property="Margin" Value="1 2.5" />
 		</Style>
@@ -205,12 +208,38 @@
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+							<RowDefinition />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="Value of R"/>
 						<wpfTool:DoubleUpDown Grid.Row="0" Grid.Column="1" Value="{Binding TimeTraceMeasurementFixedR_R_Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource MotionDoubleUpDown}" />
-                        <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
-                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True" Minimum="0" Maximum="15" />
+						<Label Grid.Row="1" Content="Allowable Deviation" ToolTip="The value of allowable deviation in [%]" />
+						<wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1"/>
+                        <Label Grid.Row="2" Grid.Column="0" Content="Current position" />
+                        <wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding TimeTraceMeasurementDistanceMotionCurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MilimetersToMetersConverter}}" IsReadOnly="True" Minimum="0" Maximum="15" />
+                        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Header="Curent Channel">
+                            <GroupBox.Content>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <RadioButton Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,2.5,2.5,2.5" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="10,2.5,1,2.5" Text="Channel_01" />
+                                    <RadioButton Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,2.5,2.5,2.5" />
+									<TextBlock Grid.Row="1" Grid.Column="1" Margin="10,2.5,1,2.5" Text="Channel_02" />
+                                </Grid>
+                            </GroupBox.Content>
+                        </GroupBox>
+                        <Label Grid.Row="4" Grid.Column="0" Content="Current R value" />
+                        <wpfTool:DoubleUpDown Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
                     </Grid>
                 </TabItem>
             </TabControl>
