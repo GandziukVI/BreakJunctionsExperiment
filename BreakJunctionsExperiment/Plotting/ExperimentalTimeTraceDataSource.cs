@@ -74,12 +74,12 @@ namespace BreakJunctions.Plotting
 
             if (e.Y >= _ScaledConductanceOverflow)
             {
-                //++_Counter_CH_01;
+                ++_Counter_CH_01;
                 _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
-                //if (_Counter_CH_01 % 10 == 0)
-                //{
-                    await _Dispatcher.BeginInvoke(new Action(delegate()
+                if (_Counter_CH_01 % 10 == 0)
+                {
+                    await _Dispatcher.BeginInvoke(new Action(()=>
                     {
                         try
                         {
@@ -88,8 +88,8 @@ namespace BreakJunctions.Plotting
                         catch { }
                     }));
 
-                    //_Counter_CH_01 = 0;
-                //}
+                    _Counter_CH_01 = 0;
+                }
             }
         }
         public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
@@ -99,12 +99,12 @@ namespace BreakJunctions.Plotting
 
             if (e.Y >= _ScaledConductanceOverflow)
             {
-                //++_Counter_CH_02;
+                ++_Counter_CH_02;
                 _ExperimentalData.AddLast(new Point(e.X, e.Y));
 
-                //if (_Counter_CH_02 % 10 == 0)
-                //{
-                    await _Dispatcher.BeginInvoke(new Action(delegate()
+                if (_Counter_CH_02 % 10 == 0)
+                {
+                    await _Dispatcher.BeginInvoke(new Action(() =>
                     {
                         try
                         {
@@ -113,8 +113,8 @@ namespace BreakJunctions.Plotting
                         catch { }
                     }));
 
-                //    _Counter_CH_02 = 0;
-                //}
+                    _Counter_CH_02 = 0;
+                }
             }
         }
 
