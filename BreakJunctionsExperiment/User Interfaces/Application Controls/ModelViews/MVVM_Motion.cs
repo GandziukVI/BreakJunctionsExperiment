@@ -1,12 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace BreakJunctions
 {
+    [ValueConversion(typeof(double), typeof(double))]
+    public class MotionUnitsConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var ValueInMilimiters = (double)value;
+            return ValueInMilimiters * 1000.0;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var ValueInMeters = (double)value;
+            return ValueInMeters / 1000.0;
+        }
+    }
+
     public class MVVM_Motion : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged implementation
@@ -23,35 +41,40 @@ namespace BreakJunctions
 
         #region General Settings
 
-        private int _pointsPerMilimeter = 2000;
+        private static Registry_MotionSettings MeasurementSettings = BreakJunctionsRegistry.Instance.Reg_MotionSettings;
+
+        private int _pointsPerMilimeter = MeasurementSettings.PointsPerMilimeter;
         public int PointsPerMilimeter
         {
             get { return _pointsPerMilimeter; }
             set
             {
                 _pointsPerMilimeter = value;
+                MeasurementSettings.PointsPerMilimeter = value;
                 OnPropertyChanged("PointsPerMilimeter");
             }
         }
 
-        private double _speedGoing_UP = 4.8;
+        private double _speedGoing_UP = MeasurementSettings.SpeedGoingUp;
         public double SpeedGoing_UP
         {
             get { return _speedGoing_UP; }
             set
             {
                 _speedGoing_UP = value;
+                MeasurementSettings.SpeedGoingUp = value;
                 OnPropertyChanged("SpeedGoing_UP");
             }
         }
 
-        private double _speedGoing_DOWN = 4.8;
+        private double _speedGoing_DOWN = MeasurementSettings.SpeedGoingDown;
         public double SpeedGoing_DOWN
         {
             get { return _speedGoing_DOWN; }
             set
             {
                 _speedGoing_DOWN = value;
+                MeasurementSettings.SpeedGoingDown = value;
                 OnPropertyChanged("SpeedGoing_DOWN");
             }
         }
@@ -79,7 +102,7 @@ namespace BreakJunctions
             }
         }
 
-        private double _currentPosition = 0.0;
+        private double _currentPosition = MeasurementSettings.CurrentPosition;
         public double CurrentPosition
         {
             get { return _currentPosition; }
@@ -120,6 +143,17 @@ namespace BreakJunctions
             }
         }
 
+        private int _measureModeSelectedIndex = 0;
+        public int MeasureModeSelectedIndex
+        {
+            get { return _measureModeSelectedIndex; }
+            set
+            {
+                _measureModeSelectedIndex = value;
+                OnPropertyChanged("MeasureModeSelectedIndex");
+            }
+        }
+
         #endregion
 
         #region Distance
@@ -150,13 +184,14 @@ namespace BreakJunctions
 
         #region Destance Repetitive
 
-        private int _numberCycles = 10;
+        private int _numberCycles = MeasurementSettings.NumberCycles;
         public int NumberCycles
         {
             get { return _numberCycles; }
             set
             {
                 _numberCycles = value;
+                MeasurementSettings.NumberCycles = value;
                 OnPropertyChanged("NumberCycles");
             }
         }
@@ -165,13 +200,14 @@ namespace BreakJunctions
 
         #region Time
 
-        private TimeSpan _measureTime = new TimeSpan(0, 0, 0);
+        private TimeSpan _measureTime = MeasurementSettings.MeasureTime;
         public TimeSpan MeasureTime
         {
             get { return _measureTime; }
             set
             {
                 _measureTime = value;
+                MeasurementSettings.MeasureTime = value;
                 OnPropertyChanged("MeasureTime");
             }
         }
@@ -180,35 +216,38 @@ namespace BreakJunctions
 
         #region Fixed R
 
-        private double _r_Value = 12900;
+        private double _r_Value = MeasurementSettings.ResistanceValue;
         public double R_Value
         {
             get { return _r_Value; }
             set
             {
                 _r_Value = value;
+                MeasurementSettings.ResistanceValue = value;
                 OnPropertyChanged("R_Value");
             }
         }
 
-        private double _Current_R_Value = 12900;
+        private double _Current_R_Value = MeasurementSettings.CurrentResistanceValue;
         public double Current_R_Value
         {
             get { return _Current_R_Value; }
             set
             {
                 _Current_R_Value = value;
+                MeasurementSettings.CurrentResistanceValue = value;
                 OnPropertyChanged("Current_R_Value");
             }
         }
 
-        private double _allowableDeviation = 20.0;
+        private double _allowableDeviation = MeasurementSettings.AllowableDeviation;
         public double AllowableDeviation
         {
             get { return _allowableDeviation; }
             set
             {
                 _allowableDeviation = value;
+                MeasurementSettings.AllowableDeviation = value;
                 OnPropertyChanged("AllowableDeviation");
             }
         }

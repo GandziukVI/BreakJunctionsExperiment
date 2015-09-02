@@ -212,7 +212,7 @@ namespace BreakJunctions.Motion
 
         public override void StartMotion(double FixedR)
         {
-            throw new NotImplementedException();
+            _Motor.EnableDevice();
         }
 
         public override void MoveToZeroPosition()
@@ -224,6 +224,7 @@ namespace BreakJunctions.Motion
         public override void StopMotion()
         {
             IsMotionInProcess = false;
+            _Motor.DisableDevice();
             //Signal that the motion is completed
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(false));
         }
@@ -282,5 +283,15 @@ namespace BreakJunctions.Motion
         }
 
         #endregion
+
+        public override void EnableDevice()
+        {
+            _Motor.EnableDevice();
+        }
+
+        public override void DisableDevice()
+        {
+            _Motor.DisableDevice();
+        }
     }
 }

@@ -64,5 +64,10 @@ namespace BreakJunctions
         }
 
         #endregion
+
+        private void MotionParameters_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

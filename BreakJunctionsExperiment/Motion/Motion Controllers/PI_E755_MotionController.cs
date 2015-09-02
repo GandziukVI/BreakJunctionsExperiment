@@ -242,5 +242,15 @@ namespace BreakJunctions.Motion
         }
 
         #endregion
+
+        public override void EnableDevice()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DisableDevice()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

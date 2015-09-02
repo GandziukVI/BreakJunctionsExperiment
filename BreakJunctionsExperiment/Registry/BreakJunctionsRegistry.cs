@@ -1463,111 +1463,67 @@ namespace BreakJunctions
             }
         }
 
-        private double _DistanceStartPosition;
-        public double DistanceStartPosition
+        private double _StartPosition;
+        public double StartPosition
         {
             get
             {
                 using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\Distance"))
                 {
-                    _DistanceStartPosition = double.Parse((string)MeasurementSettings.GetValue("StartPosition"), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+                    _StartPosition = double.Parse((string)MeasurementSettings.GetValue("StartPosition"), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
                 }
 
-                return _DistanceStartPosition;
+                return _StartPosition;
             }
             set
             {
                 using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\Distance", true))
                 {
-                    _DistanceStartPosition = value;
+                    _StartPosition = value;
                     MeasurementSettings.SetValue("StartPosition", value.ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
                 }
             }
         }
 
-        private double _DistanceFinalDestination;
-        public double DistanceFinalDestination
+        private double _FinalDestination;
+        public double FinalDestination
         {
             get
             {
                 using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\Distance"))
                 {
-                    _DistanceFinalDestination = double.Parse((string)MeasurementSettings.GetValue("FinalDestination"), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+                    _FinalDestination = double.Parse((string)MeasurementSettings.GetValue("FinalDestination"), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
                 }
 
-                return _DistanceFinalDestination;
+                return _FinalDestination;
             }
             set
             {
                 using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\Distance", true))
                 {
-                    _DistanceFinalDestination = value;
+                    _FinalDestination = value;
                     MeasurementSettings.SetValue("FinalDestination", value.ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
                 }
             }
         }
 
-        private double _DistanceRepetitiveStartPosition;
-        public double DistanceRepetitiveStartPosition
+        private int _numberCycles;
+        public int NumberCycles
         {
             get
             {
                 using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\DistanceRepetitive"))
                 {
-                    _DistanceRepetitiveStartPosition = double.Parse((string)MeasurementSettings.GetValue("StartPosition"), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+                    _numberCycles = int.Parse((string)MeasurementSettings.GetValue("NumberCycles"));
                 }
 
-                return _DistanceRepetitiveStartPosition;
+                return _numberCycles;
             }
             set
             {
                 using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\DistanceRepetitive", true))
                 {
-                    _DistanceRepetitiveStartPosition = value;
-                    MeasurementSettings.SetValue("StartPosition", value.ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
-                }
-            }
-        }
-
-        private double _DistanceRepetitiveFinalDestination;
-        public double DistanceRepetitiveFinalDestination
-        {
-            get
-            {
-                using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\DistanceRepetitive"))
-                {
-                    _DistanceRepetitiveFinalDestination = double.Parse((string)MeasurementSettings.GetValue("FinalDestination"), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
-                }
-
-                return _DistanceRepetitiveFinalDestination;
-            }
-            set
-            {
-                using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\DistanceRepetitive", true))
-                {
-                    _DistanceRepetitiveFinalDestination = value;
-                    MeasurementSettings.SetValue("FinalDestination", value.ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
-                }
-            }
-        }
-
-        private int _DistanceRepetitiveNumberCycles;
-        public int DistanceRepetitiveNumberCycles
-        {
-            get
-            {
-                using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\DistanceRepetitive"))
-                {
-                    _DistanceRepetitiveNumberCycles = int.Parse((string)MeasurementSettings.GetValue("NumberCycles"));
-                }
-
-                return _DistanceRepetitiveNumberCycles;
-            }
-            set
-            {
-                using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\DistanceRepetitive", true))
-                {
-                    _DistanceRepetitiveNumberCycles = value;
+                    _numberCycles = value;
                     MeasurementSettings.SetValue("NumberCycles", value.ToString(), RegistryValueKind.String);
                 }
             }
@@ -1613,6 +1569,52 @@ namespace BreakJunctions
                 {
                     _ResistanceValue = value;
                     MeasurementSettings.SetValue("ResistanceValue", value.ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
+                }
+            }
+        }
+
+        private double _currentResistanceValue;
+        public double CurrentResistanceValue
+        {
+            get
+            {
+                using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\FixedR"))
+                {
+                    _currentResistanceValue = double.Parse((string)MeasurementSettings.GetValue("CurrentResistanceValue"), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+                }
+
+                return _currentResistanceValue;
+            }
+
+            set
+            {
+                using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\FixedR", true))
+                {
+                    _currentResistanceValue = value;
+                    MeasurementSettings.SetValue("CurrentResistanceValue", value.ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
+                }
+            }
+        }
+
+        private double _allowableDeviation;
+        public double AllowableDeviation
+        {
+            get
+            {
+                using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\FixedR"))
+                {
+                    _allowableDeviation = double.Parse((string)MeasurementSettings.GetValue("AllowableDeviation"), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+                }
+
+                return _allowableDeviation;
+            }
+
+            set
+            {
+                using (var MeasurementSettings = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\SoftwareSettings\MotionParameters\FixedR", true))
+                {
+                    _allowableDeviation = value;
+                    MeasurementSettings.SetValue("AllowableDeviation", value.ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
                 }
             }
         }
@@ -1674,8 +1676,8 @@ namespace BreakJunctions
 
                 using (var NotificationSystem = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\V.Handziuk_Software\BreakJunctionsExperiment\NotificationSystem\UserEMails"))
                 {
-                    foreach(var MailInfo in NotificationSystem.GetSubKeyNames())
-                        using(var info = NotificationSystem.OpenSubKey(MailInfo))
+                    foreach (var MailInfo in NotificationSystem.GetSubKeyNames())
+                        using (var info = NotificationSystem.OpenSubKey(MailInfo))
                         {
                             var FirstName = (string)info.GetValue("FirstName");
                             var LastName = (string)info.GetValue("LastName");
@@ -1696,9 +1698,9 @@ namespace BreakJunctions
                     foreach (var MailInfo in NotificationSystem.GetSubKeyNames())
                         NotificationSystem.DeleteSubKeyTree(MailInfo);
 
-                    foreach(var MailInfo in value)
+                    foreach (var MailInfo in value)
                     {
-                        using(var info = NotificationSystem.CreateSubKey(string.Format("{0}_{1}", MailInfo.Name, MailInfo.Surname)))
+                        using (var info = NotificationSystem.CreateSubKey(string.Format("{0}_{1}", MailInfo.Name, MailInfo.Surname)))
                         {
                             info.SetValue("FirstName", MailInfo.Name, RegistryValueKind.String);
                             info.SetValue("Lastname", MailInfo.Surname, RegistryValueKind.String);
@@ -1714,25 +1716,25 @@ namespace BreakJunctions
     {
         #region Singleton pattern implementation
 
+        private static readonly object _singletonCreationLock = new object();
+
         private static BreakJunctionsRegistry _Instance;
         public static BreakJunctionsRegistry Instance
         {
             get
             {
                 if (_Instance == null)
-                    _Instance = new BreakJunctionsRegistry();
+                    lock (_singletonCreationLock)
+                    {
+                        if (_Instance == null)
+                            _Instance = new BreakJunctionsRegistry();
+                    }
 
                 return _Instance;
             }
         }
 
         private BreakJunctionsRegistry() { }
-
-        #endregion
-
-        #region BreakJunctionsRegistry settings
-
-
 
         #endregion
 
@@ -1918,8 +1920,6 @@ namespace BreakJunctions
 
                                 using (var DistanceRepetitiveParams = MotionParams.CreateSubKey("DistanceRepetitive"))
                                 {
-                                    DistanceRepetitiveParams.SetValue("StartPosition", (0.0).ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
-                                    DistanceRepetitiveParams.SetValue("FinalDestination", (0.005).ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
                                     DistanceRepetitiveParams.SetValue("NumberCycles", (10).ToString(), RegistryValueKind.String);
                                 }
 
@@ -1931,6 +1931,8 @@ namespace BreakJunctions
                                 using (var FixedR = MotionParams.CreateSubKey("FixedR"))
                                 {
                                     FixedR.SetValue("ResistanceValue", (0.0).ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
+                                    FixedR.SetValue("CurrentResistanceValue", (0.0).ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
+                                    FixedR.SetValue("AllowableDeviation", (20.0).ToString("E8", NumberFormatInfo.InvariantInfo), RegistryValueKind.String);
                                 }
                             }
 

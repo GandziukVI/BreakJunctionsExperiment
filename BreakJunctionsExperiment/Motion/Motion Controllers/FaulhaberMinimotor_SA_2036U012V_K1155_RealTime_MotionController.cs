@@ -412,5 +412,15 @@ namespace BreakJunctions.Motion
         }
 
         #endregion
+
+        public override void EnableDevice()
+        {
+            _Motor.EnableDevice();
+        }
+
+        public override void DisableDevice()
+        {
+            _Motor.DisableDevice();
+        }
     }
 }

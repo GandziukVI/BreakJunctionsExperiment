@@ -113,6 +113,11 @@ namespace BreakJunctions.Motion
         /// </summary>
         /// <returns>True, if initialization succeed</returns>
         abstract public bool InitDevice();
+
+        abstract public void EnableDevice();
+
+        abstract public void DisableDevice();
+
         /// <summary>
         /// Startts the motion from defined position to final
         /// destination with appropriate motion kind

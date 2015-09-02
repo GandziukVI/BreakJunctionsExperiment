@@ -21,10 +21,16 @@ namespace BreakJunctions
     {
         #region MVVM interactions
 
-        private MotionParametersDataModel _MeasurementSettings;
-        public MotionParametersDataModel MeasurementSettings
+        //private MotionParametersDataModel _MeasurementSettings;
+        //public MotionParametersDataModel MeasurementSettings
+        //{
+        //    get { return _MeasurementSettings; }
+        //}
+
+        private MVVM_Motion _measurementSettings;
+        public MVVM_Motion MeasurementSettings
         {
-            get { return _MeasurementSettings; }
+            get { return _measurementSettings; }
         }
 
         #endregion
@@ -35,8 +41,7 @@ namespace BreakJunctions
 
             #region MVVM setup
 
-            _MeasurementSettings = new MotionParametersDataModel();
-            this.DataContext = _MeasurementSettings;
+            _measurementSettings = this.Resources["Motion_Params"] as MVVM_Motion;
 
             #endregion
         }
