@@ -266,6 +266,15 @@ namespace BreakJunctions
 
             #region Removing Legend From Charts
 
+            chartTimeTraceChannel_01.AxisGrid.DrawVerticalMinorTicks = true;
+            chartTimeTraceChannel_02.AxisGrid.DrawVerticalMinorTicks = true;
+
+            chartNoiseSample_01.AxisGrid.DrawVerticalMinorTicks = true;
+            chartNoiseSample_02.AxisGrid.DrawVerticalMinorTicks = true;
+
+            chartNoiseSample_01.AxisGrid.DrawHorizontalMinorTicks = true;
+            chartNoiseSample_02.AxisGrid.DrawHorizontalMinorTicks = true;
+
             chartIV_CurvesChannel_01.LegendVisibility = System.Windows.Visibility.Hidden;
             chartIV_CurvesChannel_02.LegendVisibility = System.Windows.Visibility.Hidden;
             chartTimeTraceChannel_01.LegendVisibility = System.Windows.Visibility.Hidden;
@@ -287,68 +296,6 @@ namespace BreakJunctions
 
             chartNoiseSample_01.Children.Remove(chartNoiseSample_01.Legend);
             chartNoiseSample_02.Children.Remove(chartNoiseSample_02.Legend);
-
-            #endregion
-
-            #region Implementing logarithmic scale
-
-            chartTimeTraceChannel_01.DataTransform = new Log10YTransform();
-            VerticalAxis LogarifmicTimeTraceAxis_Channel_01 = new VerticalAxis
-            {
-                TicksProvider = new LogarithmNumericTicksProvider(10),
-                LabelProvider = new UnroundingLabelProvider()
-            };
-
-            chartTimeTraceChannel_01.MainVerticalAxis = LogarifmicTimeTraceAxis_Channel_01;
-            chartTimeTraceChannel_01.AxisGrid.DrawVerticalMinorTicks = true;
-
-            chartTimeTraceChannel_02.DataTransform = new Log10YTransform();
-            VerticalAxis LogarifmicTimeTraceAxis_Channel_02 = new VerticalAxis
-            {
-                TicksProvider = new LogarithmNumericTicksProvider(10),
-                LabelProvider = new UnroundingLabelProvider()
-            };
-
-            chartTimeTraceChannel_02.MainVerticalAxis = LogarifmicTimeTraceAxis_Channel_02;
-            chartTimeTraceChannel_02.AxisGrid.DrawVerticalMinorTicks = true;
-
-            chartNoiseSample_01.DataTransform = new Log10Transform();
-            VerticalAxis LogarifmicVerticalNoiseAxisChannel_01 = new VerticalAxis
-            {
-                TicksProvider = new LogarithmNumericTicksProvider(10),
-                LabelProvider = new UnroundingLabelProvider()
-            };
-
-            HorizontalAxis LogarifmicHorizontalNoiseAxisChannel_01 = new HorizontalAxis
-            {
-                TicksProvider = new LogarithmNumericTicksProvider(10),
-                LabelProvider = new UnroundingLabelProvider()
-            };
-
-            chartNoiseSample_01.MainVerticalAxis = LogarifmicVerticalNoiseAxisChannel_01;
-            chartNoiseSample_01.AxisGrid.DrawVerticalMinorTicks = true;
-
-            chartNoiseSample_01.MainHorizontalAxis = LogarifmicHorizontalNoiseAxisChannel_01;
-            chartNoiseSample_01.AxisGrid.DrawHorizontalMinorTicks = true;
-
-            chartNoiseSample_02.DataTransform = new Log10Transform();
-            VerticalAxis LogarifmicVerticalNoiseAxisChannel_02 = new VerticalAxis
-            {
-                TicksProvider = new LogarithmNumericTicksProvider(10),
-                LabelProvider = new UnroundingLabelProvider()
-            };
-
-            HorizontalAxis LogarifmicHorizontalNoiseAxisChannel_02 = new HorizontalAxis
-            {
-                TicksProvider = new LogarithmNumericTicksProvider(10),
-                LabelProvider = new UnroundingLabelProvider()
-            };
-
-            chartNoiseSample_02.MainVerticalAxis = LogarifmicVerticalNoiseAxisChannel_02;
-            chartNoiseSample_02.AxisGrid.DrawVerticalMinorTicks = true;
-
-            chartNoiseSample_02.MainHorizontalAxis = LogarifmicHorizontalNoiseAxisChannel_02;
-            chartNoiseSample_02.AxisGrid.DrawHorizontalMinorTicks = true;
 
             #endregion
 

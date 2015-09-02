@@ -16,7 +16,8 @@ namespace BreakJunctions
         protected virtual void OnPropertyChanged(string PropertyName)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(PropertyName));
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(PropertyName));
         }
 
         #endregion

@@ -9,7 +9,7 @@
 	Title="Break junctions measurement"
 	Width="1024" Height="768"
     WindowStartupLocation="CenterScreen" WindowState="Maximized">
-	
+
 	<Grid x:Name="LayoutRoot">
 		<TabControl Margin="0,1,0,-1">
 			<TabItem Header="I-V Measurements" VerticalAlignment="Stretch">
@@ -56,6 +56,12 @@
 							
 						<!-- Chart plotter to plot I-V curves -->
 						<d3:ChartPlotter Grid.Row="0" Grid.Column="0" x:Name="chartIV_CurvesChannel_01" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
+							<d3:ChartPlotter.MainHorizontalAxis>
+								<d3:HorizontalAxis/>
+							</d3:ChartPlotter.MainHorizontalAxis>
+							<d3:ChartPlotter.MainVerticalAxis>
+								<d3:VerticalAxis/>
+							</d3:ChartPlotter.MainVerticalAxis>
 							<d3:Header Content="I-V characteristics CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>
@@ -69,6 +75,12 @@
 						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
 						<d3:ChartPlotter Grid.Row="0" Grid.Column="2" x:Name="chartIV_CurvesChannel_02" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
+							<d3:ChartPlotter.MainVerticalAxis>
+								<d3:VerticalAxis/>
+							</d3:ChartPlotter.MainVerticalAxis>
+							<d3:ChartPlotter.MainHorizontalAxis>
+								<d3:HorizontalAxis/>
+							</d3:ChartPlotter.MainHorizontalAxis>
 							<d3:Header Content="I-V characteristics CH_02"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Voltage"/>
@@ -99,7 +111,23 @@
 						</Grid.ColumnDefinitions>
 							
 						<!-- Time trace chart -->
-						<d3:ChartPlotter x:Name="chartTimeTraceChannel_01" Grid.Row="0" Grid.Column="0" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">	
+						<d3:ChartPlotter x:Name="chartTimeTraceChannel_01" Grid.Row="0" Grid.Column="0" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
+							<d3:ChartPlotter.DataTransform>
+								<d3:Log10YTransform />
+							</d3:ChartPlotter.DataTransform>
+							<d3:ChartPlotter.MainHorizontalAxis>
+								<d3:HorizontalAxis/>
+							</d3:ChartPlotter.MainHorizontalAxis>
+							<d3:ChartPlotter.MainVerticalAxis>
+								<d3:VerticalAxis>
+									<d3:VerticalAxis.LabelProvider>
+										<d3:UnroundingLabelProvider />
+									</d3:VerticalAxis.LabelProvider>
+									<d3:VerticalAxis.TicksProvider>
+										<d3:LogarithmNumericTicksProvider LogarithmBase="10" />
+									</d3:VerticalAxis.TicksProvider>
+								</d3:VerticalAxis>
+							</d3:ChartPlotter.MainVerticalAxis>	
 							<d3:Header Content="Time trace CH_01"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Distance"/>
@@ -112,7 +140,23 @@
 						
 						<GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
 
-						<d3:ChartPlotter x:Name="chartTimeTraceChannel_02" Grid.Row="0" Grid.Column="2" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">	
+						<d3:ChartPlotter x:Name="chartTimeTraceChannel_02" Grid.Row="0" Grid.Column="2" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
+							<d3:ChartPlotter.DataTransform>
+								<d3:Log10YTransform />
+							</d3:ChartPlotter.DataTransform>
+							<d3:ChartPlotter.MainHorizontalAxis>
+								<d3:HorizontalAxis/>
+							</d3:ChartPlotter.MainHorizontalAxis>
+							<d3:ChartPlotter.MainVerticalAxis>
+								<d3:VerticalAxis>
+									<d3:VerticalAxis.LabelProvider>
+										<d3:UnroundingLabelProvider />
+									</d3:VerticalAxis.LabelProvider>
+									<d3:VerticalAxis.TicksProvider>
+										<d3:LogarithmNumericTicksProvider LogarithmBase="10" />
+									</d3:VerticalAxis.TicksProvider>
+								</d3:VerticalAxis>
+							</d3:ChartPlotter.MainVerticalAxis>	
 							<d3:Header Content="Time trace CH_02"/>
 							<d3:HorizontalAxis>
 								<d3:HorizontalAxisTitle Content="Distance"/>
@@ -265,6 +309,29 @@
                         <!--Begin Sample 01 Resistance-->
 
                         <d3:ChartPlotter x:Name="chartNoiseSample_01" Grid.Row="1" Grid.Column="0" Margin="10" LegendVisibility="Collapsed" NewLegendVisible="False">
+							<d3:ChartPlotter.DataTransform>
+								<d3:Log10Transform />
+							</d3:ChartPlotter.DataTransform>
+                        	<d3:ChartPlotter.MainVerticalAxis>
+								<d3:VerticalAxis>
+									<d3:VerticalAxis.LabelProvider>
+										<d3:UnroundingLabelProvider />
+									</d3:VerticalAxis.LabelProvider>
+									<d3:VerticalAxis.TicksProvider>
+										<d3:LogarithmNumericTicksProvider LogarithmBase="10" />
+									</d3:VerticalAxis.TicksProvider>
+								</d3:VerticalAxis>
+							</d3:ChartPlotter.MainVerticalAxis>	
+                        	<d3:ChartPlotter.MainHorizontalAxis>
+                        		<d3:HorizontalAxis>
+                        			<d3:HorizontalAxis.LabelProvider>
+                        				<d3:UnroundingLabelProvider />
+									</d3:HorizontalAxis.LabelProvider>
+									<d3:HorizontalAxis.TicksProvider>
+										<d3:LogarithmNumericTicksProvider LogarithmBase="10" />
+									</d3:HorizontalAxis.TicksProvider>
+                        		</d3:HorizontalAxis>
+                        	</d3:ChartPlotter.MainHorizontalAxis>
                             <d3:Header Content="Noise Sample_01"/>
                             <d3:HorizontalAxis>
                                 <d3:HorizontalAxisTitle Content="Frequency"/>
@@ -282,6 +349,29 @@
                         <!--Begin Sample 01 Resistance-->
 
                         <d3:ChartPlotter x:Name="chartNoiseSample_02" Grid.Row="3" Grid.Column="0" Margin="10" LegendVisibility="Collapsed"  NewLegendVisible="False">
+							<d3:ChartPlotter.DataTransform>
+								<d3:Log10Transform />
+							</d3:ChartPlotter.DataTransform>
+                        	<d3:ChartPlotter.MainVerticalAxis>
+								<d3:VerticalAxis>
+									<d3:VerticalAxis.LabelProvider>
+										<d3:UnroundingLabelProvider />
+									</d3:VerticalAxis.LabelProvider>
+									<d3:VerticalAxis.TicksProvider>
+										<d3:LogarithmNumericTicksProvider LogarithmBase="10" />
+									</d3:VerticalAxis.TicksProvider>
+								</d3:VerticalAxis>
+							</d3:ChartPlotter.MainVerticalAxis>	
+                        	<d3:ChartPlotter.MainHorizontalAxis>
+                        		<d3:HorizontalAxis>
+                        			<d3:HorizontalAxis.LabelProvider>
+                        				<d3:UnroundingLabelProvider />
+									</d3:HorizontalAxis.LabelProvider>
+									<d3:HorizontalAxis.TicksProvider>
+										<d3:LogarithmNumericTicksProvider LogarithmBase="10" />
+									</d3:HorizontalAxis.TicksProvider>
+                        		</d3:HorizontalAxis>
+                        	</d3:ChartPlotter.MainHorizontalAxis>
                             <d3:Header Content="Noise Sample_02"/>
                             <d3:HorizontalAxis>
                                 <d3:HorizontalAxisTitle Content="Frequency"/>
