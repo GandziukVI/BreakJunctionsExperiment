@@ -24,6 +24,9 @@ namespace BreakJunctions.Measurements
             this.Dispose();
         }
 
+        private double _CH_01_Reading = 0.0;
+        private double _CH_02_Reading = 0.0;
+
         public virtual void OnTimeTracePointReceivedChannel_01(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
             _FirstChannelGaveResponce = true;
@@ -35,7 +38,9 @@ namespace BreakJunctions.Measurements
                 _SecondChannelGaveResponce = false;
                 _BothChannelsGaveResponce = false;
 
-                AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs());
+                _CH_01_Reading = e.Y;
+
+                AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs(_CH_01_Reading, _CH_02_Reading));
             }
         }
 
@@ -50,7 +55,9 @@ namespace BreakJunctions.Measurements
                 _SecondChannelGaveResponce = false;
                 _BothChannelsGaveResponce = false;
 
-                AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs());
+                _CH_02_Reading = e.Y;
+
+                AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs(_CH_01_Reading, _CH_02_Reading));
             }
         }
 

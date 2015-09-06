@@ -206,9 +206,6 @@ namespace BreakJunctions.Measurements
 
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
 
-            //var stopwatch = new Stopwatch();
-            //stopwatch.Start();
-
             _MeasureDevice.SwitchON();
 
             switch (__MotionKind)
@@ -220,6 +217,11 @@ namespace BreakJunctions.Measurements
                 case MotionKind.Repetitive:
                     {
                         _Motor.StartMotion(_StartPosition, _FinalDestination, MotionKind.Repetitive, __NumberRepetities);
+                    } break;
+                case MotionKind.FixedR:
+                    {
+                        //Has to be implemented
+                        throw new NotImplementedException();
                     } break;
                 default:
                     break;
@@ -242,9 +244,45 @@ namespace BreakJunctions.Measurements
             }
 
             _MeasureDevice.SwitchOFF();
+        }
 
-            //stopwatch.Stop();
-            //MessageBox.Show((stopwatch.ElapsedMilliseconds / 1000.0).ToString("G8"), "Time", MessageBoxButton.OK, MessageBoxImage.Information);
+        public void StartMeasurement(object sender, DoWorkEventArgs e, double R_Value, double AllowableDeviation)
+        {
+            switch (_SourceMode)
+            {
+                case SourceMode.Voltage:
+                    {
+                        _MeasureDevice.SetSourceVoltage(_ValueThroughTheStructure);
+                    } break;
+                case SourceMode.Current:
+                    {
+                        _MeasureDevice.SetSourceCurrent(_ValueThroughTheStructure);
+                    } break;
+                default:
+                    break;
+            }
+
+            AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
+
+            _MeasureDevice.SwitchON();
+
+            while (true)
+            {
+                if (_worker.CancellationPending == true)
+                {
+                    _Motor.StopMotion();
+                    e.Cancel = true;
+                    break;
+                }
+                if (_CancelMeasures == true)
+                {
+                    _Motor.StopMotion();
+                    e.Cancel = true;
+                    break;
+                }
+            }
+
+            _MeasureDevice.SwitchOFF();
         }
 
         private void StopMeasurement()

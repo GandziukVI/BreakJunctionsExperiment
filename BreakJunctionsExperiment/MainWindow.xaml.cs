@@ -20,7 +20,6 @@ using BreakJunctions.Measurements;
 using BreakJunctions.DataHandling;
 
 using Devices.SMU;
-//using SMU.KEITHLEY_2602A;
 
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
@@ -1187,6 +1186,8 @@ namespace BreakJunctions
                         } break;
                     case 3: //"Fixed R" measurement
                         {
+                            if (ExperimentSettings.IsChannel_01_Selected)
+                                TimeTraceCurveChannel_01.StartMeasurement(sender, e, ExperimentSettings.R_Value, ExperimentSettings.AllowableDeviation);
                         } break;
                     default:
                         break;
@@ -1237,6 +1238,8 @@ namespace BreakJunctions
                         } break;
                     case 3: //"Fixed R" measurement
                         {
+                            if (ExperimentSettings.IsChannel_02_Selected)
+                                TimeTraceCurveChannel_01.StartMeasurement(sender, e, ExperimentSettings.R_Value, ExperimentSettings.AllowableDeviation);
                         } break;
                     default:
                         break;

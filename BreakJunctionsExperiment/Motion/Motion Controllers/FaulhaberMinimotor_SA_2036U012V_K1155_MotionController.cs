@@ -6,30 +6,12 @@ using System.IO.Ports;
 
 using FaulhaberMinimotors;
 using BreakJunctions.Events;
+using Devices.SMU;
 
 namespace BreakJunctions.Motion
 {
     public class FaulhaberMinimotor_SA_2036U012V_K1155_MotionController : MotionController
     {
-        #region Constructor / Destructor
-
-        public FaulhaberMinimotor_SA_2036U012V_K1155_MotionController(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
-        {
-            this._Motor = new FaulhaberMinimotor_SA_2036U012V_K1155(comPort, baud, parity, dataBits, stopBits, returnToken);
-
-            InitDevice();
-
-            this._Motor.COM_Port.DataReceived += _COM_Device_DataReceived;
-            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += OnTimeTraceBothChannelsPointsReceived;
-        }
-        
-        ~FaulhaberMinimotor_SA_2036U012V_K1155_MotionController()
-        {
-            this.Dispose();
-        }
-
-        #endregion
-
         #region Motion settings
 
         private double _MetersPerRevolution = 0.0005;
@@ -96,6 +78,25 @@ namespace BreakJunctions.Motion
                 _Motor.EnableDevice();
 
             return isInitSuccess;
+        }
+
+        #endregion
+
+        #region Constructor / Destructor
+
+        public FaulhaberMinimotor_SA_2036U012V_K1155_MotionController(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
+        {
+            this._Motor = new FaulhaberMinimotor_SA_2036U012V_K1155(comPort, baud, parity, dataBits, stopBits, returnToken);
+
+            InitDevice();
+
+            this._Motor.COM_Port.DataReceived += _COM_Device_DataReceived;
+            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += OnTimeTraceBothChannelsPointsReceived;
+        }
+
+        ~FaulhaberMinimotor_SA_2036U012V_K1155_MotionController()
+        {
+            this.Dispose();
         }
 
         #endregion
@@ -174,6 +175,81 @@ namespace BreakJunctions.Motion
                             _Motor.InitiateMotion();
                         }
                     } break;
+                case MotionKind.FixedR:
+                    {
+                        var _localPointsPerMilimeter_LowerLimit = 1000.0;
+                        var _localPointsPerMilimeter_UpperLimit = 100000.0;
+
+                        switch (SelectedChannel_Val)
+                        {
+                            case Channels.ChannelA:
+                                {
+                                    var _Current_R_Val = 1.0 / (e.CH_01_Val * 0.0000774809173);
+
+                                    var _valueInCompliance = ((_Current_R_Val - _Current_R_Val * AllowableDeviation_Val / 100.0) <= FixedR_Val &&
+                                        FixedR_Val <= (_Current_R_Val + _Current_R_Val * AllowableDeviation_Val / 100.0)) ? true : false;
+                                    
+                                    if (_valueInCompliance == true)
+                                        StopMotion();
+
+                                    if (IsMotionInProcess == true)
+                                    {
+                                        if (e.CH_01_Val <= FixedR_Val)
+                                            SetDirection(MotionDirection.Up);
+                                        else
+                                            SetDirection(MotionDirection.Down);
+                                    }
+
+                                    var _gradient = 0.0;
+                                    if (e.CH_01_Val <= FixedR_Val)
+                                        _gradient = 1.0 - (FixedR_Val - e.CH_01_Val) / FixedR_Val;
+
+                                    var _localPointsPerMilimeter = _localPointsPerMilimeter_LowerLimit + ((_localPointsPerMilimeter_UpperLimit - _localPointsPerMilimeter_LowerLimit) * _gradient);
+
+                                    var _localPositionIncrement = _MetersPerRevolution / _localPointsPerMilimeter * 2;
+
+                                    CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+
+                                    _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
+                                    _Motor.NotifyPosition();
+                                    _Motor.InitiateMotion();
+                                } break;
+                            case Channels.ChannelB:
+                                {
+                                    var _Current_R_Val = 1.0 / (e.CH_02_Val * 0.0000774809173);
+
+                                    var _valueInCompliance = ((_Current_R_Val - _Current_R_Val * AllowableDeviation_Val / 100.0) <= FixedR_Val &&
+                                        FixedR_Val <= (_Current_R_Val + _Current_R_Val * AllowableDeviation_Val / 100.0)) ? true : false;
+                                    
+                                    if (_valueInCompliance == true)
+                                        StopMotion();
+
+                                    if (IsMotionInProcess == true)
+                                    {
+                                        if (e.CH_02_Val <= FixedR_Val)
+                                            SetDirection(MotionDirection.Up);
+                                        else
+                                            SetDirection(MotionDirection.Down);
+                                    }
+
+                                    var _gradient = 0.0;
+                                    if (e.CH_02_Val <= FixedR_Val)
+                                        _gradient = 1.0 - (FixedR_Val - e.CH_02_Val) / FixedR_Val;
+
+                                    var _localPointsPerMilimeter = _localPointsPerMilimeter_LowerLimit + ((_localPointsPerMilimeter_UpperLimit - _localPointsPerMilimeter_LowerLimit) * _gradient);
+
+                                    var _localPositionIncrement = _MetersPerRevolution / _localPointsPerMilimeter * 2;
+
+                                    CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+
+                                    _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
+                                    _Motor.NotifyPosition();
+                                    _Motor.InitiateMotion();
+                                } break;
+                            default:
+                                break;
+                        }
+                    } break;
                 default:
                     break;
             }
@@ -210,9 +286,20 @@ namespace BreakJunctions.Motion
             throw new NotImplementedException();
         }
 
-        public override void StartMotion(double FixedR)
+        public override void StartMotion(double _StartPosition, double FixedR, double AllowableDeviation, Channels SelectedChannel)
         {
+            FixedR_Val = FixedR;
+            AllowableDeviation_Val = AllowableDeviation;
+            SelectedChannel_Val = SelectedChannel;
+            
+            StartPosition = _StartPosition;
+            CurrentPosition = _StartPosition;
+
             _Motor.EnableDevice();
+            //Going to the start position
+            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(this.StartPosition));
+            _Motor.NotifyPosition();
+            _Motor.InitiateMotion();
         }
 
         public override void MoveToZeroPosition()
@@ -237,7 +324,7 @@ namespace BreakJunctions.Motion
 
         public override void SetVelosity(double VelosityValue, MotionVelosityUnits VelosityUnits)
         {
-            switch (VelosityUnits) 
+            switch (VelosityUnits)
             {
                 case MotionVelosityUnits.rpm:
                     {

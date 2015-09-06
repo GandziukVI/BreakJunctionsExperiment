@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Devices.SMU;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -108,6 +109,13 @@ namespace BreakJunctions.Motion
             get { return _PointsPerMilimeter; }
             set { _PointsPerMilimeter = value; }
         }
+
+        public double FixedR_Val { get; set; }
+
+        public double AllowableDeviation_Val { get; set; }
+
+        public Channels SelectedChannel_Val { get; set; }
+
         /// <summary>
         /// Initializes the device
         /// </summary>
@@ -137,7 +145,7 @@ namespace BreakJunctions.Motion
         /// untill needed position is riched
         /// </summary>
         /// <param name="FixedR"></param>
-        abstract public void StartMotion(double FixedR);
+        abstract public void StartMotion(double _StartPosition, double FixedR, double AllowableDeviation, Channels SelectedChannel);
         /// <summary>
         /// Initiates the motion to zero position
         /// </summary>

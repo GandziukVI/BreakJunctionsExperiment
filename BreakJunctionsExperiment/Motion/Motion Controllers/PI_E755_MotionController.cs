@@ -1,5 +1,6 @@
 ﻿using BreakJunctions.Events;
 using Devices;
+using Devices.SMU;
 using E_755_PI_Controller;
 using System;
 using System.Collections.Generic;
@@ -171,7 +172,7 @@ namespace BreakJunctions.Motion
             throw new NotImplementedException();
         }
 
-        public override void StartMotion(double FixedR)
+        public override void StartMotion(double StartPosition, double FixedR, double AllowableDeviation, Channels SelectedChannel)
         {
             throw new NotImplementedException();
         }

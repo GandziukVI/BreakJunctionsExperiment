@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Devices.SMU;
 
 namespace BreakJunctions.Motion
 {
@@ -134,7 +135,7 @@ namespace BreakJunctions.Motion
             throw new NotImplementedException();
         }
 
-        public override void StartMotion(double FixedR)
+        public override void StartMotion(double StartPosition, double FixedR, double AllowableDeviation, Channels SelectedChannel)
         {
             throw new NotImplementedException();
         }
