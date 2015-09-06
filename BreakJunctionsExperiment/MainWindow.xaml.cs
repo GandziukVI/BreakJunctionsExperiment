@@ -1017,6 +1017,34 @@ namespace BreakJunctions
                         } break;
                     case "Fixed R":
                         {
+                            var motionStartPosition = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.StartPosition;
+                            var motionFinalDestination = controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.FinalDestination;
+
+                            if (isTimeTraceChannel_01_VoltageModeChecked == true)
+                            {
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, SourceMode.Voltage, MeasureMode.Conductance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
+                                TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                            else if (isTimeTraceChannel_01_CurrentModeChecked == true)
+                            {
+                                TimeTraceCurveChannel_01 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_01, SourceMode.Current, MeasureMode.Conductance, timeTraceChannel_01_ValueThroughTheStructure, ChannelsToInvestigate.Channel_01, _ChannelController, ref backgroundTimeTraceMeasureChannel_01);
+                                TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+
+                            if (isTimeTraceChannel_02_VoltageModeChecked == true)
+                            {
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, SourceMode.Voltage, MeasureMode.Conductance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
+                                TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
+                            else if (isTimeTraceChannel_02_CurrentModeChecked == true)
+                            {
+                                TimeTraceCurveChannel_02 = new MeasureTimeTrace(_MotionController, motionStartPosition, motionFinalDestination, DeviceChannel_02, SourceMode.Current, MeasureMode.Conductance, timeTraceChannel_02_ValueThroughTheStructure, ChannelsToInvestigate.Channel_02, _ChannelController, ref backgroundTimeTraceMeasureChannel_02);
+                                TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
+                                TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
+                            }
                         } break;
                     default:
                         break;
@@ -1239,7 +1267,7 @@ namespace BreakJunctions
                     case 3: //"Fixed R" measurement
                         {
                             if (ExperimentSettings.IsChannel_02_Selected)
-                                TimeTraceCurveChannel_01.StartMeasurement(sender, e, ExperimentSettings.R_Value, ExperimentSettings.AllowableDeviation);
+                                TimeTraceCurveChannel_02.StartMeasurement(sender, e, ExperimentSettings.R_Value, ExperimentSettings.AllowableDeviation);
                         } break;
                     default:
                         break;

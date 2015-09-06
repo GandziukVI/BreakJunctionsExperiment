@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Devices.SMU;
+using BreakJunctions.Plotting;
 
 namespace BreakJunctions.Motion
 {
@@ -135,7 +136,7 @@ namespace BreakJunctions.Motion
             throw new NotImplementedException();
         }
 
-        public override void StartMotion(double StartPosition, double FixedR, double AllowableDeviation, Channels SelectedChannel)
+        public override void StartMotion(double StartPosition, double FixedR, double AllowableDeviation, ChannelsToInvestigate SelectedChannel)
         {
             throw new NotImplementedException();
         }

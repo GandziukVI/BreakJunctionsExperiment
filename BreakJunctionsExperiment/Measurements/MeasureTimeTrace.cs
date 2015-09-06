@@ -185,8 +185,12 @@ namespace BreakJunctions.Measurements
 
         #region MeasureTimeTrace functionality
 
+        private bool _isMeasurementStarted = false;
+
         public void StartMeasurement(object sender, DoWorkEventArgs e, MotionKind __MotionKind, int __NumberRepetities = 1)
         {
+            _isMeasurementStarted = true;
+
             _CurrentMotionKind = __MotionKind;
             _NumberRepetities = __NumberRepetities;
 
@@ -220,8 +224,6 @@ namespace BreakJunctions.Measurements
                     } break;
                 case MotionKind.FixedR:
                     {
-                        //Has to be implemented
-                        throw new NotImplementedException();
                     } break;
                 default:
                     break;
@@ -248,6 +250,10 @@ namespace BreakJunctions.Measurements
 
         public void StartMeasurement(object sender, DoWorkEventArgs e, double R_Value, double AllowableDeviation)
         {
+            _isMeasurementStarted = true;
+
+            _CurrentMotionKind = MotionKind.FixedR;
+
             switch (_SourceMode)
             {
                 case SourceMode.Voltage:
@@ -265,6 +271,8 @@ namespace BreakJunctions.Measurements
             AllEventsHandler.Instance.OnTimeTraceMeasurementsStateChanged(this, new TimeTraceMeasurementStateChanged_EventArgs(true));
 
             _MeasureDevice.SwitchON();
+
+            _Motor.StartMotion(CurrentPosition, R_Value, AllowableDeviation, _Channel);
 
             while (true)
             {
@@ -287,6 +295,8 @@ namespace BreakJunctions.Measurements
 
         private void StopMeasurement()
         {
+            _isMeasurementStarted = false;
+
             _Motor.StopMotion();
             _MeasureDevice.SwitchOFF();
         }
@@ -344,89 +354,90 @@ namespace BreakJunctions.Measurements
 
         private void OnMotionPositionMeasured(object sender, Motion_EventArgs e)
         {
-            switch (_MeasureMode)
-            {
-                case MeasureMode.Voltage:
-                    {
-                        var measuredVoltage = _MeasureDevice.MeasureVoltage(_NumberOfAverages, _TimeDelay);
-                        if (!(double.IsNaN(e.Position) || double.IsNaN(measuredVoltage)))
-                            _EmitData(e.Position, measuredVoltage);
-                    } break;
-                case MeasureMode.Current:
-                    {
-                        var measuredCurrent = _MeasureDevice.MeasureCurrent(_NumberOfAverages, _TimeDelay);
-                        if (!(double.IsNaN(e.Position) || double.IsNaN(measuredCurrent)))
-                            _EmitData(e.Position, measuredCurrent);
-                    } break;
-                case MeasureMode.Resistance:
-                    {
-                        switch (_SourceMode)
+            if (_isMeasurementStarted)
+                switch (_MeasureMode)
+                {
+                    case MeasureMode.Voltage:
                         {
-                            case SourceMode.Voltage:
-                                {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage);
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
-                                        _EmitData(e.Position, measuredResistance);
-                                } break;
-                            case SourceMode.Current:
-                                {
-                                    var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Current);
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
-                                        _EmitData(e.Position, measuredResistance);
-                                } break;
-                            default:
-                                break;
-                        }
-                    } break;
-                case MeasureMode.Conductance:
-                    {
-                        switch (_SourceMode)
+                            var measuredVoltage = _MeasureDevice.MeasureVoltage(_NumberOfAverages, _TimeDelay);
+                            if (!(double.IsNaN(e.Position) || double.IsNaN(measuredVoltage)))
+                                _EmitData(e.Position, measuredVoltage);
+                        } break;
+                    case MeasureMode.Current:
                         {
-                            case SourceMode.Voltage:
-                                {
-                                    var measuredConductance = 0.0;
-                                    try
+                            var measuredCurrent = _MeasureDevice.MeasureCurrent(_NumberOfAverages, _TimeDelay);
+                            if (!(double.IsNaN(e.Position) || double.IsNaN(measuredCurrent)))
+                                _EmitData(e.Position, measuredCurrent);
+                        } break;
+                    case MeasureMode.Resistance:
+                        {
+                            switch (_SourceMode)
+                            {
+                                case SourceMode.Voltage:
                                     {
-                                        measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage)) / _QuantumConductance;
-                                    }
-                                    catch { }
-
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
-                                        _EmitData(e.Position, measuredConductance);
-                                } break;
-                            case SourceMode.Current:
-                                {
-                                    var measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Current)) / _QuantumConductance;
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
-                                        _EmitData(e.Position, measuredConductance);
-                                } break;
-                            default:
-                                break;
-                        }
-                    } break;
-                case MeasureMode.Power:
-                    {
-                        switch (_SourceMode)
+                                        var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage);
+                                        if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
+                                            _EmitData(e.Position, measuredResistance);
+                                    } break;
+                                case SourceMode.Current:
+                                    {
+                                        var measuredResistance = _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Current);
+                                        if (!(double.IsNaN(e.Position) || double.IsNaN(measuredResistance)))
+                                            _EmitData(e.Position, measuredResistance);
+                                    } break;
+                                default:
+                                    break;
+                            }
+                        } break;
+                    case MeasureMode.Conductance:
                         {
-                            case SourceMode.Voltage:
-                                {
-                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage);
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
-                                        _EmitData(e.Position, measuredPower);
-                                } break;
-                            case SourceMode.Current:
-                                {
-                                    var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
-                                    if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
-                                        _EmitData(e.Position, measuredPower);
-                                } break;
-                            default:
-                                break;
-                        }
-                    } break;
-                default:
-                    break;
-            }
+                            switch (_SourceMode)
+                            {
+                                case SourceMode.Voltage:
+                                    {
+                                        var measuredConductance = 0.0;
+                                        try
+                                        {
+                                            measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage)) / _QuantumConductance;
+                                        }
+                                        catch { }
+
+                                        if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
+                                            _EmitData(e.Position, measuredConductance);
+                                    } break;
+                                case SourceMode.Current:
+                                    {
+                                        var measuredConductance = (1.0 / _MeasureDevice.MeasureResistance(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Current)) / _QuantumConductance;
+                                        if (!(double.IsNaN(e.Position) || double.IsNaN(measuredConductance)))
+                                            _EmitData(e.Position, measuredConductance);
+                                    } break;
+                                default:
+                                    break;
+                            }
+                        } break;
+                    case MeasureMode.Power:
+                        {
+                            switch (_SourceMode)
+                            {
+                                case SourceMode.Voltage:
+                                    {
+                                        var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, SourceMode.Voltage);
+                                        if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
+                                            _EmitData(e.Position, measuredPower);
+                                    } break;
+                                case SourceMode.Current:
+                                    {
+                                        var measuredPower = _MeasureDevice.MeasurePower(_ValueThroughTheStructure, _NumberOfAverages, _TimeDelay, Devices.SMU.SourceMode.Current);
+                                        if (!(double.IsNaN(e.Position) || double.IsNaN(measuredPower)))
+                                            _EmitData(e.Position, measuredPower);
+                                    } break;
+                                default:
+                                    break;
+                            }
+                        } break;
+                    default:
+                        break;
+                }
         }
 
         private void OnTimeTraceMeasurementsStateChanged(object sender, TimeTraceMeasurementStateChanged_EventArgs e)

@@ -1,4 +1,5 @@
-﻿using Devices.SMU;
+﻿using BreakJunctions.Plotting;
+using Devices.SMU;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,7 +115,7 @@ namespace BreakJunctions.Motion
 
         public double AllowableDeviation_Val { get; set; }
 
-        public Channels SelectedChannel_Val { get; set; }
+        public ChannelsToInvestigate SelectedChannel_Val { get; set; }
 
         /// <summary>
         /// Initializes the device
@@ -145,7 +146,7 @@ namespace BreakJunctions.Motion
         /// untill needed position is riched
         /// </summary>
         /// <param name="FixedR"></param>
-        abstract public void StartMotion(double _StartPosition, double FixedR, double AllowableDeviation, Channels SelectedChannel);
+        abstract public void StartMotion(double _StartPosition, double FixedR, double AllowableDeviation, ChannelsToInvestigate SelectedChannel);
         /// <summary>
         /// Initiates the motion to zero position
         /// </summary>
