@@ -226,6 +226,31 @@ namespace BreakJunctions.Events
 
         #endregion
 
+        #region Fixed R measurement
+
+        private EventHandler<TimeTrace_ResistanceMeasured_EventArgs> _ResistanceMeasured;
+        public event EventHandler<TimeTrace_ResistanceMeasured_EventArgs> ResistanceMeasured
+        {
+            add
+            {
+                if (_ResistanceMeasured == null || !_ResistanceMeasured.GetInvocationList().Contains(value))
+                    _ResistanceMeasured += value;
+            }
+            remove
+            {
+                _ResistanceMeasured -= value;
+            }
+        }
+        public void On_ResistanceMeasured(object sender, TimeTrace_ResistanceMeasured_EventArgs e)
+        {
+            EventHandler<TimeTrace_ResistanceMeasured_EventArgs> handler;
+            handler = _ResistanceMeasured;
+            if (handler != null)
+                handler(sender, e);
+        }
+
+        #endregion
+
         #region Both channels point received
 
         //private readonly object TimeTraceBothChannelsPointsReceived_EventLock = new object();

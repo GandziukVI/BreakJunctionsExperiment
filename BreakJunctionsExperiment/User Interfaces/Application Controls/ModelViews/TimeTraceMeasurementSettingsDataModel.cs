@@ -215,6 +215,8 @@ namespace BreakJunctions
 
         #endregion
 
+        public MVVM_Motion MotionSettings { get; set; }
+
         #endregion
     }
 }

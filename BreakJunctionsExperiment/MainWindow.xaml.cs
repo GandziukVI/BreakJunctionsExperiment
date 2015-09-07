@@ -57,8 +57,8 @@ namespace BreakJunctions
     {
         #region For reading settings from form
 
-        NumberStyles numberStyle = NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent;
-        CultureInfo culture = new CultureInfo("en-US");
+        NumberStyles numberStyle = NumberStyles.Float;
+        CultureInfo culture = CultureInfo.InvariantCulture;
 
         #endregion
 
@@ -351,6 +351,7 @@ namespace BreakJunctions
             AllEventsHandler.Instance.Motion += OnMotionPositionMeasured;
             AllEventsHandler.Instance.Motion_RealTime += OnMotion_RealTime;
             AllEventsHandler.Instance.MotionDirectionChanged += MotionDirectionChanged;
+            AllEventsHandler.Instance.ResistanceMeasured += TimeTrace_ResistanceMeasured;
 
             #endregion
 
@@ -1355,6 +1356,11 @@ namespace BreakJunctions
                         controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.Direction_DOWN = true;
                     } break;
             }
+        }
+        
+        private void TimeTrace_ResistanceMeasured(object sender, TimeTrace_ResistanceMeasured_EventArgs e)
+        {
+            //this.controlTimeTraceMeasurementSettings.MeasurementSettings
         }
 
         #endregion

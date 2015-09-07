@@ -279,6 +279,8 @@ namespace BreakJunctions.Motion
                                 {
                                     var _Current_R_Val = 1.0 / (e.Y * 0.0000774809173);
 
+                                    AllEventsHandler.Instance.On_ResistanceMeasured(this, new TimeTrace_ResistanceMeasured_EventArgs(_Current_R_Val));
+
                                     var _valueInCompliance = ((_Current_R_Val - _Current_R_Val * AllowableDeviation_Val / 100.0) <= FixedR_Val &&
                                         FixedR_Val <= (_Current_R_Val + _Current_R_Val * AllowableDeviation_Val / 100.0)) ? true : false;
 
@@ -348,6 +350,8 @@ namespace BreakJunctions.Motion
                             case ChannelsToInvestigate.Channel_02:
                                 {
                                     var _Current_R_Val = 1.0 / (e.Y * 0.0000774809173);
+
+                                    AllEventsHandler.Instance.On_ResistanceMeasured(this, new TimeTrace_ResistanceMeasured_EventArgs(_Current_R_Val));
 
                                     var _valueInCompliance = ((_Current_R_Val - _Current_R_Val * AllowableDeviation_Val / 100.0) <= FixedR_Val &&
                                         FixedR_Val <= (_Current_R_Val + _Current_R_Val * AllowableDeviation_Val / 100.0)) ? true : false;
