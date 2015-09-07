@@ -308,6 +308,9 @@ namespace BreakJunctions.Motion
 
                                     var _localPositionIncrement = _MetersPerRevolution / _localPointsPerMilimeter * 2;
 
+                                    if (CurrentPosition <= 0 || CurrentPosition >= 0.015)
+                                        CurrentPosition = 0;
+
                                     CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * _localPositionIncrement;
 
                                     _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
@@ -375,6 +378,9 @@ namespace BreakJunctions.Motion
 
                                     var _localPositionIncrement = _MetersPerRevolution / _localPointsPerMilimeter * 2;
 
+                                    if (CurrentPosition <= 0 || CurrentPosition >= 0.015)
+                                        CurrentPosition = 0;
+                                    
                                     CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * _localPositionIncrement;
 
                                     _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
