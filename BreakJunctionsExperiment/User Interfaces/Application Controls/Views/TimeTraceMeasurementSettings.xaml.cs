@@ -36,6 +36,7 @@ namespace BreakJunctions
             #region MVVM setup
 
             _MeasurementSettings = new TimeTraceMeasurementSettingsDataModel();
+            _MeasurementSettings.MotionSettings = this.MotionParameters.DataContext as MVVM_Motion;
             this.DataContext = _MeasurementSettings;
 
             #endregion

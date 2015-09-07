@@ -1357,10 +1357,10 @@ namespace BreakJunctions
                     } break;
             }
         }
-        
+
         private void TimeTrace_ResistanceMeasured(object sender, TimeTrace_ResistanceMeasured_EventArgs e)
         {
-            //this.controlTimeTraceMeasurementSettings.MeasurementSettings
+            this.controlTimeTraceMeasurementSettings.MeasurementSettings.MotionSettings.Current_R_Value = e.ResistanceValue;
         }
 
         #endregion
