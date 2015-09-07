@@ -91,13 +91,14 @@ namespace BreakJunctions
             }
         }
 
-        private double _startPosition = 0.0;
+        private double _startPosition = MeasurementSettings.StartPosition;
         public double StartPosition
         {
             get { return _startPosition; }
             set
             {
                 _startPosition = value;
+                MeasurementSettings.StartPosition = value;
                 OnPropertyChanged("StartPosition");
             }
         }
@@ -109,17 +110,19 @@ namespace BreakJunctions
             set
             {
                 _currentPosition = value;
+                MeasurementSettings.CurrentPosition = value;
                 OnPropertyChanged("CurrentPosition");
             }
         }
 
-        private double _finalDestination = 0.005;
+        private double _finalDestination = MeasurementSettings.FinalDestination;
         public double FinalDestination
         {
             get { return _finalDestination; }
             set
             {
                 _finalDestination = value;
+                MeasurementSettings.FinalDestination = value;
                 OnPropertyChanged("FinalDestination");
             }
         }
