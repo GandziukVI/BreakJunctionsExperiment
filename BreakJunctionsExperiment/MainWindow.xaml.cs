@@ -1051,6 +1051,9 @@ namespace BreakJunctions
                         break;
                 }
 
+                TimeTraceCurveChannel_01.CurrentPosition = controlTimeTraceMeasurementSettings.MeasurementSettings.MotionSettings.CurrentPosition;
+                TimeTraceCurveChannel_02.CurrentPosition = controlTimeTraceMeasurementSettings.MeasurementSettings.MotionSettings.CurrentPosition;
+
                 #endregion
 
                 #region Saving Time Trace data into files
