@@ -182,78 +182,6 @@ namespace BreakJunctions.Motion
                     } break;
                 case MotionKind.FixedR:
                     {
-                        //var _localPointsPerMilimeter_LowerLimit = 1000.0;
-                        //var _localPointsPerMilimeter_UpperLimit = 100000.0;
-
-                        //switch (SelectedChannel_Val)
-                        //{
-                        //    case ChannelsToInvestigate.Channel_01:
-                        //        {
-                        //            var _Current_R_Val = 1.0 / (e.CH_01_Val * 0.0000774809173);
-
-                        //            var _valueInCompliance = ((_Current_R_Val - _Current_R_Val * AllowableDeviation_Val / 100.0) <= FixedR_Val &&
-                        //                FixedR_Val <= (_Current_R_Val + _Current_R_Val * AllowableDeviation_Val / 100.0)) ? true : false;
-
-                        //            if (_valueInCompliance == true)
-                        //                StopMotion();
-
-                        //            if (IsMotionInProcess == true)
-                        //            {
-                        //                if (e.CH_01_Val <= FixedR_Val)
-                        //                    SetDirection(MotionDirection.Up);
-                        //                else
-                        //                    SetDirection(MotionDirection.Down);
-                        //            }
-
-                        //            var _gradient = 0.0;
-                        //            if (e.CH_01_Val <= FixedR_Val)
-                        //                _gradient = 1.0 - (FixedR_Val - e.CH_01_Val) / FixedR_Val;
-
-                        //            var _localPointsPerMilimeter = _localPointsPerMilimeter_LowerLimit + ((_localPointsPerMilimeter_UpperLimit - _localPointsPerMilimeter_LowerLimit) * _gradient);
-
-                        //            var _localPositionIncrement = _MetersPerRevolution / _localPointsPerMilimeter * 2;
-
-                        //            CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
-
-                        //            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
-                        //            _Motor.NotifyPosition();
-                        //            _Motor.InitiateMotion();
-                        //        } break;
-                        //    case ChannelsToInvestigate.Channel_02:
-                        //        {
-                        //            var _Current_R_Val = 1.0 / (e.CH_02_Val * 0.0000774809173);
-
-                        //            var _valueInCompliance = ((_Current_R_Val - _Current_R_Val * AllowableDeviation_Val / 100.0) <= FixedR_Val &&
-                        //                FixedR_Val <= (_Current_R_Val + _Current_R_Val * AllowableDeviation_Val / 100.0)) ? true : false;
-
-                        //            if (_valueInCompliance == true)
-                        //                StopMotion();
-
-                        //            if (IsMotionInProcess == true)
-                        //            {
-                        //                if (e.CH_02_Val <= FixedR_Val)
-                        //                    SetDirection(MotionDirection.Up);
-                        //                else
-                        //                    SetDirection(MotionDirection.Down);
-                        //            }
-
-                        //            var _gradient = 0.0;
-                        //            if (e.CH_02_Val <= FixedR_Val)
-                        //                _gradient = 1.0 - (FixedR_Val - e.CH_02_Val) / FixedR_Val;
-
-                        //            var _localPointsPerMilimeter = _localPointsPerMilimeter_LowerLimit + ((_localPointsPerMilimeter_UpperLimit - _localPointsPerMilimeter_LowerLimit) * _gradient);
-
-                        //            var _localPositionIncrement = _MetersPerRevolution / _localPointsPerMilimeter * 2;
-
-                        //            CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
-
-                        //            _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
-                        //            _Motor.NotifyPosition();
-                        //            _Motor.InitiateMotion();
-                        //        } break;
-                        //    default:
-                        //        break;
-                        //}
                     } break;
                 default:
                     break;
@@ -301,8 +229,6 @@ namespace BreakJunctions.Motion
                                         //_gradient = 1.0 - (FixedR_Val - e.Y) / FixedR_Val; // Linear Gradient
                                         var val = _Current_R_Val / FixedR_Val;
 
-                                        //_gradient = 2 * (1.0 - (1.0 / (1.0 + (val * val)))); // 2-nd order
-                                        //_gradient = 2 * (1.0 - (1.0 / (1.0 + (val * val * val * val)))); // 4-th order
                                         _gradient = 2 * (1.0 - (1.0 / (1.0 + (val * val * val * val * val * val)))); // 6-th order
                                     }
 
@@ -373,8 +299,6 @@ namespace BreakJunctions.Motion
                                         //_gradient = 1.0 - (FixedR_Val - e.Y) / FixedR_Val; // Linear Gradient
                                         var val = _Current_R_Val / FixedR_Val;
 
-                                        //_gradient = 2 * (1.0 - (1.0 / (1.0 + (val * val)))); // 2-nd order
-                                        //_gradient = 2 * (1.0 - (1.0 / (1.0 + (val * val * val * val)))); // 4-th order
                                         _gradient = 2 * (1.0 - (1.0 / (1.0 + (val * val * val * val * val * val)))); // 6-th order
                                     }
 
