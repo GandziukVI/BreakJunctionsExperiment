@@ -46,10 +46,15 @@ namespace BreakJunctions.Measurements
             set { _StartPosition = value; }
         }
 
+        private double _CurrentPosition = 0.0;
         /// <summary>
         /// Gets the current position of the motor (meters)
         /// </summary>
-        public double CurrentPosition { get; set; }
+        public double CurrentPosition 
+        {
+            get { return _CurrentPosition; }
+            set { _CurrentPosition = value; }
+        }
 
         private double _FinalDestination;
         /// <summary>
