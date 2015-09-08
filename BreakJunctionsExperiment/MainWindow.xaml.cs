@@ -1341,6 +1341,11 @@ namespace BreakJunctions
         {
             this.controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.CurrentPosition = e.Position;
             this.controlIV_MeasurementSettings.MeasurementSettings.IV_MeasurementMicrometricBoltPosition = e.Position;
+
+            if (TimeTraceCurveChannel_01 != null)
+                TimeTraceCurveChannel_01.CurrentPosition = e.Position;
+            if (TimeTraceCurveChannel_02 != null)
+                TimeTraceCurveChannel_02.CurrentPosition = e.Position;
         }
 
         private void MotionDirectionChanged(object sender, MotionDirectionChanged_EventArgs e)
