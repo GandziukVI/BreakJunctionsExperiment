@@ -92,11 +92,6 @@ namespace BreakJunctions.Motion
             InitDevice();
 
             this._Motor.COM_Port.DataReceived += _COM_Device_DataReceived;
-
-            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += On_TT_CH_01_DataReceived;
-            AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += On_TT_CH_02_DataReceived;
-
-            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += OnTimeTraceBothChannelsPointsReceived;
         }
 
         ~FaulhaberMinimotor_SA_2036U012V_K1155_MotionController()
@@ -330,6 +325,11 @@ namespace BreakJunctions.Motion
 
         public override void StartMotion(double StartPosition, double FinalDestination, MotionKind motionKind, int numberOfRepetities = 1)
         {
+            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += OnTimeTraceBothChannelsPointsReceived;
+
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 -= On_TT_CH_01_DataReceived;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 -= On_TT_CH_02_DataReceived;
+
             //Setting motion parameters
             this.StartPosition = StartPosition;
             this.CurrentPosition = StartPosition;
@@ -357,6 +357,11 @@ namespace BreakJunctions.Motion
 
         public override void StartMotion(double _StartPosition, double FixedR, double AllowableDeviation, ChannelsToInvestigate SelectedChannel)
         {
+            AllEventsHandler.Instance.TimeTraceBothChannelsPointsReceived += OnTimeTraceBothChannelsPointsReceived;
+
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += On_TT_CH_01_DataReceived;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += On_TT_CH_02_DataReceived;
+
             CurrentMotionKind = MotionKind.FixedR;
 
             FixedR_Val = FixedR;
