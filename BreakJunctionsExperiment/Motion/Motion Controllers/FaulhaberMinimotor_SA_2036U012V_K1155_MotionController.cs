@@ -119,7 +119,7 @@ namespace BreakJunctions.Motion
         }
 
 
-        private double _currentMotionSpeed = 4.8;
+        private double _currentMotionVelosity = 4.8;
 
         /// <summary>
         /// Going to the next motor position, if the data
@@ -162,33 +162,36 @@ namespace BreakJunctions.Motion
 
                         if (IsMotionInProcess == true)
                         {
-
                             if (CurrentPosition >= FinalDestination - positionIncrement)
-                            {
-                                if (_currentMotionSpeed != 1.0)
+                            {                                
+                                if (_currentMotionVelosity != VelosityMovingDown)
                                 {
-                                    _currentMotionSpeed = 1.0;
-                                    SetVelosity(_currentMotionSpeed, MotionVelosityUnits.MilimetersPerMinute);
+                                    _currentMotionVelosity = VelosityMovingDown;
+                                    SetVelosity(_currentMotionVelosity, MotionVelosityUnits.MilimetersPerMinute);
                                 }
 
                                 this.SetDirection(MotionDirection.Down);
                             }
                             else if (CurrentPosition <= StartPosition + positionIncrement)
                             {
-                                if (_currentMotionSpeed != 4.8)
+                                if (_currentMotionVelosity != VelosityMovingUp)
                                 {
-                                    _currentMotionSpeed = 4.8;
-                                    SetVelosity(_currentMotionSpeed, MotionVelosityUnits.MilimetersPerMinute);
+                                    _currentMotionVelosity = VelosityMovingUp;
+                                    SetVelosity(_currentMotionVelosity, MotionVelosityUnits.MilimetersPerMinute);
                                 }
 
                                 this.SetDirection(MotionDirection.Up);
                             }
 
-                            //CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
-                            if (CurrentDirection == MotionDirection.Up)
-                                CurrentPosition += positionIncrement;
+                            if (AcquireClosingCurves == true)
+                                CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
                             else
-                                CurrentPosition = StartPosition;
+                            {
+                                if (CurrentDirection == MotionDirection.Up)
+                                    CurrentPosition += positionIncrement;
+                                else
+                                    CurrentPosition = StartPosition;
+                            }
 
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();

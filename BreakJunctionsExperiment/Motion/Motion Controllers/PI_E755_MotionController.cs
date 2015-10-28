@@ -95,6 +95,8 @@ namespace BreakJunctions.Motion
                 _Motor.GetOnTargetStatus(AxisIdentifier._1);
         }
 
+        private double _currentMotionVelosity = 4.8;
+
         void Instance_TimeTraceBothChannelsPointsReceived(object sender, TimeTraceBothChannelsPointsReceived_EventArgs e)
         {
             var positionIncrement = 0.001 / PointsPerMilimeter;
@@ -124,21 +126,36 @@ namespace BreakJunctions.Motion
 
                         if (IsMotionInProcess == true)
                         {
-
                             if (CurrentPosition >= FinalDestination - positionIncrement)
                             {
+                                if (_currentMotionVelosity != VelosityMovingDown)
+                                {
+                                    _currentMotionVelosity = VelosityMovingDown;
+                                    SetVelosity(_currentMotionVelosity, MotionVelosityUnits.MilimetersPerMinute);
+                                }
+
                                 this.SetDirection(MotionDirection.Down);
                             }
                             else if (CurrentPosition <= StartPosition + positionIncrement)
                             {
+                                if (_currentMotionVelosity != VelosityMovingUp)
+                                {
+                                    _currentMotionVelosity = VelosityMovingUp;
+                                    SetVelosity(_currentMotionVelosity, MotionVelosityUnits.MilimetersPerMinute);
+                                }
+
                                 this.SetDirection(MotionDirection.Up);
                             }
 
-                            //CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
-                            if (CurrentDirection == MotionDirection.Up)
-                                CurrentPosition += positionIncrement;
+                            if (AcquireClosingCurves == true)
+                                CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
                             else
-                                CurrentPosition = StartPosition;
+                            {
+                                if (CurrentDirection == MotionDirection.Up)
+                                    CurrentPosition += positionIncrement;
+                                else
+                                    CurrentPosition = StartPosition;
+                            }
 
                             _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(CurrentPosition));
                         }

@@ -163,6 +163,17 @@ namespace BreakJunctions
         #region General settings
 
         //Measurement settings
+
+        private bool _AcquireClosingCurves = false;
+        public bool AcquireClosingCurves
+        {
+            get { return _AcquireClosingCurves; }
+            set
+            {
+                _AcquireClosingCurves = value;
+                OnPropertyChanged("AcquireClosingCurves");
+            }
+        }
         private int _TimeTraceMeasurementNumberOfAverages = MeasurementSettings.NumberOfAverages;
         public int TimeTraceMeasurementNumberOfAverages
         {

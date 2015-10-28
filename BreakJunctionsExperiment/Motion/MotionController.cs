@@ -9,6 +9,16 @@ namespace BreakJunctions.Motion
 {
     public abstract class MotionController : IDisposable
     {
+        private bool _AcquireClosingCurves = false;
+        /// <summary>
+        /// Specifies if closing curves should be measured in cycle measurement or not
+        /// </summary>
+        public bool AcquireClosingCurves
+        {
+            get { return _AcquireClosingCurves; }
+            set { _AcquireClosingCurves = value; }
+        }
+
         /// <summary>
         /// Gets or sets the motion state
         /// </summary>
