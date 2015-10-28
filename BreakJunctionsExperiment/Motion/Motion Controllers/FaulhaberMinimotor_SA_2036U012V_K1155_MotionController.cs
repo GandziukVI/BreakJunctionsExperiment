@@ -165,10 +165,22 @@ namespace BreakJunctions.Motion
 
                             if (CurrentPosition >= FinalDestination - positionIncrement)
                             {
+                                if (_currentMotionSpeed != 1.0)
+                                {
+                                    _currentMotionSpeed = 1.0;
+                                    SetVelosity(_currentMotionSpeed, MotionVelosityUnits.MilimetersPerMinute);
+                                }
+
                                 this.SetDirection(MotionDirection.Down);
                             }
                             else if (CurrentPosition <= StartPosition + positionIncrement)
                             {
+                                if (_currentMotionSpeed != 4.8)
+                                {
+                                    _currentMotionSpeed = 4.8;
+                                    SetVelosity(_currentMotionSpeed, MotionVelosityUnits.MilimetersPerMinute);
+                                }
+
                                 this.SetDirection(MotionDirection.Up);
                             }
 
