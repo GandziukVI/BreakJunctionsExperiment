@@ -365,6 +365,7 @@ namespace BreakJunctions.Motion
             this.IsMotionInProcess = true;
 
             //Going to the start position
+            _Motor.EnableDevice();
             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(this.StartPosition));
             _Motor.NotifyPosition();
             _Motor.InitiateMotion();
