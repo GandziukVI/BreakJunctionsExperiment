@@ -134,7 +134,11 @@ namespace BreakJunctions.Motion
                                 this.SetDirection(MotionDirection.Up);
                             }
 
-                            CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+                            //CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+                            if (CurrentDirection == MotionDirection.Up)
+                                CurrentPosition += positionIncrement;
+                            else
+                                CurrentPosition = StartPosition;
 
                             _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(CurrentPosition));
                         }

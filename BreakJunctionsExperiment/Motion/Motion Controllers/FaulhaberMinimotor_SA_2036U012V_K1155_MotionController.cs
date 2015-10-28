@@ -118,6 +118,9 @@ namespace BreakJunctions.Motion
                 AllEventsHandler.Instance.OnMotion(this, new Motion_EventArgs(CurrentPosition));
         }
 
+
+        private double _currentMotionSpeed = 4.8;
+
         /// <summary>
         /// Going to the next motor position, if the data
         /// is measured
@@ -143,6 +146,7 @@ namespace BreakJunctions.Motion
                         else if ((CurrentPosition > FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Down))
                         {
                             CurrentPosition -= positionIncrement;
+                            
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
@@ -168,7 +172,11 @@ namespace BreakJunctions.Motion
                                 this.SetDirection(MotionDirection.Up);
                             }
 
-                            CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+                            //CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+                            if (CurrentDirection == MotionDirection.Up)
+                                CurrentPosition += positionIncrement;
+                            else
+                                CurrentPosition = StartPosition;
 
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();
