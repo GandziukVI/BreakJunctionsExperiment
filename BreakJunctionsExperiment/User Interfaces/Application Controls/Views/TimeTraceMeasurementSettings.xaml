@@ -244,9 +244,16 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-						<CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding AcquireClosingCurves, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+						<!-- <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding AcquireClosingCurves, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 							<TextBlock Margin="2.5 5" Text="Acquire Closing Curves" />
-						</CheckBox>
+						</CheckBox> -->
+						<GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+							<StackPanel HorizontalAlignment="Stretch">
+								<RadioButton Margin="5 5 5 2.5">Normal mode</RadioButton>
+								<RadioButton Margin="5 2.5 5 0">Elemenate closing</RadioButton>
+								<RadioButton Margin="5 2.5 5 2.5">Smart measurement</RadioButton>
+							</StackPanel>
+						</GroupBox>
                         <Label Grid.Row="1" Grid.Column="0" Content="Number of Averages"/>
 						<wpfTool:IntegerUpDown Grid.Row="1" Grid.Column="1" x:Name="textBoxTimeTraceNumberOfAverages" Value="{Binding TimeTraceMeasurementNumberOfAverages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                         <Label Grid.Row="2" Grid.Column="0" Content="Time Delay"/>
