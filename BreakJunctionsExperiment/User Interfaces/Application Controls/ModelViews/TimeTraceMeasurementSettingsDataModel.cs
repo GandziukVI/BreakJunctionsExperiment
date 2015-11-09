@@ -164,16 +164,39 @@ namespace BreakJunctions
 
         //Measurement settings
 
-        private bool _AcquireClosingCurves = false;
-        public bool AcquireClosingCurves
+        private bool _NormalMode = false;
+        public bool NormalMode
         {
-            get { return _AcquireClosingCurves; }
+            get { return _NormalMode; }
             set
             {
-                _AcquireClosingCurves = value;
-                OnPropertyChanged("AcquireClosingCurves");
+                _NormalMode = value;
+                OnPropertyChanged("NormalMode");
             }
         }
+
+        private bool _EliminateClosing = false;
+        public bool EliminateClosing
+        {
+            get { return _EliminateClosing; }
+            set
+            {
+                _EliminateClosing = value;
+                OnPropertyChanged("EliminateClosing");
+            }
+        }
+
+        private bool _SmartMeasurement = true;
+        public bool SmartMeasurement
+        {
+            get { return _SmartMeasurement; }
+            set
+            {
+                _SmartMeasurement = value;
+
+            }
+        }
+
         private int _TimeTraceMeasurementNumberOfAverages = MeasurementSettings.NumberOfAverages;
         public int TimeTraceMeasurementNumberOfAverages
         {

@@ -249,8 +249,8 @@
 						</CheckBox> -->
 						<GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 							<StackPanel HorizontalAlignment="Stretch">
-								<RadioButton Margin="5 5 5 2.5">Normal mode</RadioButton>
-								<RadioButton Margin="5 2.5 5 0">Elemenate closing</RadioButton>
+								<RadioButton Margin="5 5 5 2.5" IsChecked="{Binding NormalMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Normal mode</RadioButton>
+								<RadioButton Margin="5 0 5 0" IsChecked="{Binding EliminateClosing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Eliminate closing</RadioButton>
 								<RadioButton Margin="5 2.5 5 2.5">Smart measurement</RadioButton>
 							</StackPanel>
 						</GroupBox>

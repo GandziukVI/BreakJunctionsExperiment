@@ -993,7 +993,7 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
 
-                                TimeTraceCurveChannel_01.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.AcquireClosingCurves;
+                                TimeTraceCurveChannel_01.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.EliminateClosing;
                             }
                             else if (isTimeTraceChannel_01_CurrentModeChecked == true)
                             {
@@ -1001,7 +1001,7 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
 
-                                TimeTraceCurveChannel_01.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.AcquireClosingCurves;
+                                TimeTraceCurveChannel_01.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.EliminateClosing;
                             }
 
                             if (isTimeTraceChannel_02_VoltageModeChecked == true)
@@ -1010,7 +1010,7 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
 
-                                TimeTraceCurveChannel_02.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.AcquireClosingCurves;
+                                TimeTraceCurveChannel_02.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.EliminateClosing;
                             }
                             else if (isTimeTraceChannel_02_CurrentModeChecked == true)
                             {
@@ -1018,7 +1018,7 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
 
-                                TimeTraceCurveChannel_02.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.AcquireClosingCurves;
+                                TimeTraceCurveChannel_02.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.EliminateClosing;
                             }
                         } break;
                     case "Time":
