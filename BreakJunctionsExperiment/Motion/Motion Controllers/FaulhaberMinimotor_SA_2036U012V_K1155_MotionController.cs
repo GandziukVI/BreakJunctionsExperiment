@@ -87,6 +87,12 @@ namespace BreakJunctions.Motion
 
         public FaulhaberMinimotor_SA_2036U012V_K1155_MotionController(string comPort = "COM1", int baud = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One, string returnToken = ">")
         {
+            Channel_01_LastValues = new LinkedList<double>();
+            Channel_02_LastValues = new LinkedList<double>();
+
+            Channel_01_Broken = null;
+            Channel_02_Broken = null;
+
             this._Motor = new FaulhaberMinimotor_SA_2036U012V_K1155(comPort, baud, parity, dataBits, stopBits, returnToken);
 
             InitDevice();
@@ -183,14 +189,52 @@ namespace BreakJunctions.Motion
                                 this.SetDirection(MotionDirection.Up);
                             }
 
-                            if (AcquireClosingCurves == true)
+                            if (NormalMode == true)
                                 CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
-                            else
+                            else if (EliminateClosing == true)
                             {
                                 if (CurrentDirection == MotionDirection.Up)
                                     CurrentPosition += positionIncrement;
                                 else
                                     CurrentPosition = StartPosition;
+                            }
+                            else if (SmartMode == true)
+                            {
+                                CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+
+                                if(Math.Max(Channel_01_LastValues.Count, Channel_02_LastValues.Count) < ConsiderUsingLast)
+                                {
+                                    Channel_01_LastValues.AddLast(e.CH_01_Conductance);
+                                    Channel_02_LastValues.AddLast(e.CH_02_Conductance);
+                                }
+                                else
+                                {
+                                    Channel_01_LastValues.RemoveFirst();
+                                    Channel_02_LastValues.RemoveFirst();
+
+                                    Channel_01_LastValues.AddLast(e.CH_01_Conductance);
+                                    Channel_02_LastValues.AddLast(e.CH_02_Conductance);
+                                }
+
+                                if (Channel_01_LastValues.Average() >= ClosedJunctionConductance)
+                                    Channel_01_Broken = false;
+                                else if (Channel_01_LastValues.Average() <= OpenedJunctionConductance)
+                                    Channel_01_Broken = true;
+
+                                if (Channel_02_LastValues.Average() >= ClosedJunctionConductance)
+                                    Channel_02_Broken = false;
+                                else if (Channel_02_LastValues.Average() <= OpenedJunctionConductance)
+                                    Channel_02_Broken = true;
+
+                                if (Channel_01_Broken == true && Channel_02_Broken == true)
+                                    FinalDestination = CurrentPosition;
+                                else
+                                    StartPosition = CurrentPosition;
+
+                                if (StartPosition <= 0.0)
+                                    StartPosition = 0.0;
+                                if (FinalDestination >= 0.015)
+                                    FinalDestination = 0.015;
                             }
 
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));

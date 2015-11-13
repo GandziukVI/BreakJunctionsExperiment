@@ -227,7 +227,7 @@
 
                 <!-- Expander Time Trace Measurement Parameters -->
                 
-                <Expander Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
+                <Expander x:Name="MeasurementParametersExpander" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0">
                     <Expander.Header>
                         <TextBlock><Run Text="Measurement Parameters"/></TextBlock>
                     </Expander.Header>
@@ -238,6 +238,7 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+							<RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -251,13 +252,54 @@
 							<StackPanel HorizontalAlignment="Stretch">
 								<RadioButton Margin="5 5 5 2.5" IsChecked="{Binding NormalMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Normal mode</RadioButton>
 								<RadioButton Margin="5 0 5 0" IsChecked="{Binding EliminateClosing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Eliminate closing</RadioButton>
-								<RadioButton Margin="5 2.5 5 2.5">Smart measurement</RadioButton>
+								<RadioButton x:Name="SmartMode" Margin="5 2.5 5 2.5" IsChecked="{Binding SmartMeasurement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Smart measurement</RadioButton>
 							</StackPanel>
 						</GroupBox>
-                        <Label Grid.Row="1" Grid.Column="0" Content="Number of Averages"/>
-						<wpfTool:IntegerUpDown Grid.Row="1" Grid.Column="1" x:Name="textBoxTimeTraceNumberOfAverages" Value="{Binding TimeTraceMeasurementNumberOfAverages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                        <Label Grid.Row="2" Grid.Column="0" Content="Time Delay"/>
-                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+						<Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10">
+							<Grid.Style>
+								<Style TargetType="Grid">
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding ElementName=SmartMode, Path=IsChecked}" Value="True">
+											<DataTrigger.EnterActions>
+												<BeginStoryboard>
+													<Storyboard>
+														<DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="75" Duration="0:0:.1" />
+													</Storyboard>
+												</BeginStoryboard>
+											</DataTrigger.EnterActions>
+											<DataTrigger.ExitActions>
+												<BeginStoryboard>
+													<Storyboard>
+														<DoubleAnimation Storyboard.TargetProperty="Height" From="75" To="0" Duration="0:0:0.1"/>
+													</Storyboard>
+												</BeginStoryboard>
+											</DataTrigger.ExitActions>
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Grid.Style>
+
+							<Grid.RowDefinitions>
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+
+							<TextBlock VerticalAlignment="Center" Margin="0,0,5,0">Opened Junction [G/G<Run BaselineAlignment="Subscript">0</Run>]</TextBlock>
+							<wpfTool:DoubleUpDown Grid.Column="1" FormatString="F5" Value="{Binding OpenedJunctionConductance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Row="1" Margin="0,0,5,0">Closed Junction [G/G<Run BaselineAlignment="Subscript">0</Run>]</TextBlock>
+							<wpfTool:DoubleUpDown Grid.Column="1" Grid.Row="1" FormatString="F5" Value="{Binding ClosedJunctionConductance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Row="2" Margin="0,0,5,0">Consider Using Last</TextBlock>
+							<wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ConsiderUsingLast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+						</Grid>
+                        <Label Grid.Row="2" Grid.Column="0" Content="Number of Averages"/>
+						<wpfTool:IntegerUpDown Grid.Row="2" Grid.Column="1" x:Name="textBoxTimeTraceNumberOfAverages" Value="{Binding TimeTraceMeasurementNumberOfAverages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        <Label Grid.Row="3" Grid.Column="0" Content="Time Delay"/>
+                        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
 							<wpfTool:DoubleUpDown x:Name="textBoxTimrTraceTimeDelay" Value="{Binding TimeTraceMeasurementTimeDelay, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                             <ComboBox x:Name="comboBoxTimeTraceTimeDelayMultiplier" Margin="0 2.5">
                                 <ComboBoxItem Content="Pico"/>
@@ -270,8 +312,8 @@
                             </ComboBox>
                         </StackPanel>
 
-                        <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Comments:"/>
-                        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" x:Name="textBoxTimeTraceComment" Text="{Binding TimeTraceMeasurementDataComment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250"  Margin="0 2.5" VerticalScrollBarVisibility="Auto"/>
+                        <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Comments:"/>
+                        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" x:Name="textBoxTimeTraceComment" Text="{Binding TimeTraceMeasurementDataComment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" MinHeight="75" MaxHeight="90" Width="250" MaxWidth="250"  Margin="0 2.5" VerticalScrollBarVisibility="Auto"/>
                     </Grid>
                 </Expander>
                 

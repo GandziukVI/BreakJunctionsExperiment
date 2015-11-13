@@ -9,15 +9,87 @@ namespace BreakJunctions.Motion
 {
     public abstract class MotionController : IDisposable
     {
-        private bool _AcquireClosingCurves = false;
+        private bool _NormalMode = false;
         /// <summary>
-        /// Specifies if closing curves should be measured in cycle measurement or not
+        /// Aquiring both breaking and closing curves in full range od distance
         /// </summary>
-        public bool AcquireClosingCurves
+        public bool NormalMode
         {
-            get { return _AcquireClosingCurves; }
-            set { _AcquireClosingCurves = value; }
+            get { return _NormalMode; }
+            set
+            {
+                _NormalMode = value;
+                if (value)
+                {
+                    _EliminateClosing = false;
+                    _SmartMode = false;
+                }
+            }
         }
+
+        private bool _EliminateClosing = false;
+        /// <summary>
+        /// Not measuring closing curves
+        /// </summary>
+        public bool EliminateClosing
+        {
+            get { return _EliminateClosing; }
+            set
+            {
+                _EliminateClosing = value;
+                if (value)
+                {
+                    _NormalMode = false;
+                    _SmartMode = false;
+                }
+            }
+        }
+
+        private bool _SmartMode = true;
+        /// <summary>
+        /// Breaking and closing curves will be acquired in the dynamic range
+        /// which is specified by the conductance of the structure
+        /// </summary>
+        public bool SmartMode
+        {
+            get { return _SmartMode; }
+            set
+            {
+                _SmartMode = value;
+                if (value)
+                {
+                    _NormalMode = false;
+                    _EliminateClosing = false;
+                }
+            }
+        }
+
+        private double _OpenedJunctionConductance = 0.00001;
+        public double OpenedJunctionConductance
+        {
+            get { return _OpenedJunctionConductance; }
+            set { _OpenedJunctionConductance = value; }
+        }
+
+        private double _ClosedJunctionConductance = 10.0;
+        public double ClosedJunctionConductance
+        {
+            get { return _ClosedJunctionConductance; }
+            set { _ClosedJunctionConductance = value; }
+        }
+
+        private int _ConsiderUsingLast = 100;
+        public int ConsiderUsingLast
+        {
+            get { return _ConsiderUsingLast; }
+            set { _ConsiderUsingLast = value; }
+        }
+
+        public Nullable<bool> Channel_01_Broken { get; protected set; }
+        public Nullable<bool> Channel_02_Broken { get; protected set; }
+
+        public LinkedList<double> Channel_01_LastValues { get; protected set; }
+        public LinkedList<double> Channel_02_LastValues { get; protected set; }
 
         /// <summary>
         /// Gets or sets the motion state

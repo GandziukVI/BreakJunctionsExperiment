@@ -993,7 +993,13 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
 
-                                TimeTraceCurveChannel_01.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.EliminateClosing;
+                                TimeTraceCurveChannel_01.Motor.NormalMode = _TimeTraceExperimentSettings.NormalMode;
+                                TimeTraceCurveChannel_01.Motor.EliminateClosing = _TimeTraceExperimentSettings.EliminateClosing;
+                                TimeTraceCurveChannel_01.Motor.SmartMode = _TimeTraceExperimentSettings.SmartMeasurement;
+
+                                TimeTraceCurveChannel_01.Motor.OpenedJunctionConductance = _TimeTraceExperimentSettings.OpenedJunctionConductance;
+                                TimeTraceCurveChannel_01.Motor.ClosedJunctionConductance = _TimeTraceExperimentSettings.ClosedJunctionConductance;
+                                TimeTraceCurveChannel_01.Motor.ConsiderUsingLast = _TimeTraceExperimentSettings.ConsiderUsingLast;
                             }
                             else if (isTimeTraceChannel_01_CurrentModeChecked == true)
                             {
@@ -1001,7 +1007,13 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_01.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_01.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
 
-                                TimeTraceCurveChannel_01.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.EliminateClosing;
+                                TimeTraceCurveChannel_01.Motor.NormalMode = _TimeTraceExperimentSettings.NormalMode;
+                                TimeTraceCurveChannel_01.Motor.EliminateClosing = _TimeTraceExperimentSettings.EliminateClosing;
+                                TimeTraceCurveChannel_01.Motor.SmartMode = _TimeTraceExperimentSettings.SmartMeasurement;
+
+                                TimeTraceCurveChannel_01.Motor.OpenedJunctionConductance = _TimeTraceExperimentSettings.OpenedJunctionConductance;
+                                TimeTraceCurveChannel_01.Motor.ClosedJunctionConductance = _TimeTraceExperimentSettings.ClosedJunctionConductance;
+                                TimeTraceCurveChannel_01.Motor.ConsiderUsingLast = _TimeTraceExperimentSettings.ConsiderUsingLast;
                             }
 
                             if (isTimeTraceChannel_02_VoltageModeChecked == true)
@@ -1010,7 +1022,13 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
 
-                                TimeTraceCurveChannel_02.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.EliminateClosing;
+                                TimeTraceCurveChannel_02.Motor.NormalMode = _TimeTraceExperimentSettings.NormalMode;
+                                TimeTraceCurveChannel_02.Motor.EliminateClosing = _TimeTraceExperimentSettings.EliminateClosing;
+                                TimeTraceCurveChannel_02.Motor.SmartMode = _TimeTraceExperimentSettings.SmartMeasurement;
+
+                                TimeTraceCurveChannel_02.Motor.OpenedJunctionConductance = _TimeTraceExperimentSettings.OpenedJunctionConductance;
+                                TimeTraceCurveChannel_02.Motor.ClosedJunctionConductance = _TimeTraceExperimentSettings.ClosedJunctionConductance;
+                                TimeTraceCurveChannel_02.Motor.ConsiderUsingLast = _TimeTraceExperimentSettings.ConsiderUsingLast;
                             }
                             else if (isTimeTraceChannel_02_CurrentModeChecked == true)
                             {
@@ -1018,7 +1036,13 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_02.NumberOfAverages = _TimeTraceExperimentSettings.TimeTraceMeasurementNumberOfAverages;
                                 TimeTraceCurveChannel_02.TimeDelay = _TimeTraceExperimentSettings.TimeTraceMeasurementTimeDelay;
 
-                                TimeTraceCurveChannel_02.Motor.AcquireClosingCurves = _TimeTraceExperimentSettings.EliminateClosing;
+                                TimeTraceCurveChannel_02.Motor.NormalMode = _TimeTraceExperimentSettings.NormalMode;
+                                TimeTraceCurveChannel_02.Motor.EliminateClosing = _TimeTraceExperimentSettings.EliminateClosing;
+                                TimeTraceCurveChannel_02.Motor.SmartMode = _TimeTraceExperimentSettings.SmartMeasurement;
+
+                                TimeTraceCurveChannel_02.Motor.OpenedJunctionConductance = _TimeTraceExperimentSettings.OpenedJunctionConductance;
+                                TimeTraceCurveChannel_02.Motor.ClosedJunctionConductance = _TimeTraceExperimentSettings.ClosedJunctionConductance;
+                                TimeTraceCurveChannel_02.Motor.ConsiderUsingLast = _TimeTraceExperimentSettings.ConsiderUsingLast;
                             }
                         } break;
                     case "Time":

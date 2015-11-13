@@ -40,7 +40,7 @@ namespace BreakJunctions.Measurements
 
                 _CH_01_Reading = e.Y;
 
-                AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs());
+                AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs(_CH_01_Reading, _CH_02_Reading));
             }
         }
 
@@ -57,7 +57,7 @@ namespace BreakJunctions.Measurements
 
                 _CH_02_Reading = e.Y;
 
-                AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs());
+                AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs(_CH_01_Reading, _CH_02_Reading));
             }
         }
 

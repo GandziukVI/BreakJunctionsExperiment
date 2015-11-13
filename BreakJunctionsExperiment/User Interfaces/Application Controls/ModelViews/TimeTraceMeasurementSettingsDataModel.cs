@@ -197,6 +197,39 @@ namespace BreakJunctions
             }
         }
 
+        private double _OpenedJunctionConductance = 0.00001;
+        public double OpenedJunctionConductance
+        {
+            get { return _OpenedJunctionConductance; }
+            set
+            {
+                _OpenedJunctionConductance = value;
+                OnPropertyChanged("OpenedJunctionConductance");
+            }
+        }
+
+        private double _ClosedJunctionConductance = 10.0;
+        public double ClosedJunctionConductance
+        {
+            get { return _ClosedJunctionConductance; }
+            set
+            {
+                _ClosedJunctionConductance = value;
+                OnPropertyChanged("ClosedJunctionConductance");
+            }
+        }
+
+        private int _ConsiderUsingLast = 100;
+        public int ConsiderUsingLast
+        {
+            get { return _ConsiderUsingLast; }
+            set
+            {
+                _ConsiderUsingLast = value;
+                OnPropertyChanged("ConsiderUsingLast");
+            }
+        }
+
         private int _TimeTraceMeasurementNumberOfAverages = MeasurementSettings.NumberOfAverages;
         public int TimeTraceMeasurementNumberOfAverages
         {
