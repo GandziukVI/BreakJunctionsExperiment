@@ -191,9 +191,15 @@ namespace BreakJunctions.Motion
                                     Channel_02_Broken = true;
 
                                 if (Channel_01_Broken == true && Channel_02_Broken == true)
+                                {
+                                    StartPosition = 0.0;
                                     FinalDestination = CurrentPosition;
+                                }
                                 else
+                                {
                                     StartPosition = CurrentPosition;
+                                    FinalDestination = 5.0;
+                                }
 
                                 if (StartPosition <= 0.0)
                                     StartPosition = 0.0;
