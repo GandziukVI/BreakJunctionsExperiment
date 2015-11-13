@@ -32,13 +32,13 @@ namespace BreakJunctions.Measurements
             _FirstChannelGaveResponce = true;
             _BothChannelsGaveResponce = _FirstChannelGaveResponce && _SecondChannelGaveResponce;
 
+            _CH_01_Reading = e.Y;
+
             if (_BothChannelsGaveResponce == true)
             {
                 _FirstChannelGaveResponce = false;
                 _SecondChannelGaveResponce = false;
                 _BothChannelsGaveResponce = false;
-
-                _CH_01_Reading = e.Y;
 
                 AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs(_CH_01_Reading, _CH_02_Reading));
             }
@@ -49,13 +49,13 @@ namespace BreakJunctions.Measurements
             _SecondChannelGaveResponce = true;
             _BothChannelsGaveResponce = _FirstChannelGaveResponce && _SecondChannelGaveResponce;
 
+            _CH_02_Reading = e.Y;
+
             if (_BothChannelsGaveResponce == true)
             {
                 _FirstChannelGaveResponce = false;
                 _SecondChannelGaveResponce = false;
                 _BothChannelsGaveResponce = false;
-
-                _CH_02_Reading = e.Y;
 
                 AllEventsHandler.Instance.OnTimeTraceBothChannelsPointsReceived(this, new TimeTraceBothChannelsPointsReceived_EventArgs(_CH_01_Reading, _CH_02_Reading));
             }
