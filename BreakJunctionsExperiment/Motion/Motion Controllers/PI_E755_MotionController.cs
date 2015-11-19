@@ -198,7 +198,7 @@ namespace BreakJunctions.Motion
                                 else
                                 {
                                     StartPosition = CurrentPosition;
-                                    FinalDestination = 5.0;
+                                    FinalDestination = 0.005;
                                 }
 
                                 if (StartPosition <= 0.0)
