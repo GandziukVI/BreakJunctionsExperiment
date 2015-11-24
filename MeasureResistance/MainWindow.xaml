@@ -1,0 +1,19 @@
+﻿<Window x:Class="MeasureResistance.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        Title="MainWindow" Height="200" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition MaxHeight="30" />
+            <RowDefinition MaxHeight="30" />
+        </Grid.RowDefinitions>
+
+        <wpfTool:DoubleUpDown Grid.Row="0" Grid.Column="0" FormatString="F8" HorizontalContentAlignment="Center" Value="{Binding FirstChannelResistance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="36"/>
+        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="0" FormatString="F8" HorizontalContentAlignment="Center" Value="{Binding SecondChannelResistance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="36"/>
+        <Button Grid.Row="2" Grid.Column="0" Content="Start Data Capturing" Click="Button_Click" />
+        <Button Grid.Row="3" Grid.Column="0" Content="Stop Data Capturing" Click="Button_Click_1" />
+    </Grid>
+</Window>
