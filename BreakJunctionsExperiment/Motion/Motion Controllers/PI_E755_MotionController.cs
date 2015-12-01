@@ -212,7 +212,7 @@ namespace BreakJunctions.Motion
                                     FinalDestination = MotionMax_Position;
                                 }
                                 // If two channels are working, go to max position
-                                else if ((Channel_01_Broken & Channel_02_Broken) == false)
+                                else if ((!Channel_01_Broken & !Channel_02_Broken) == true)
                                 {
                                     StartPosition = CurrentPosition;
                                     FinalDestination = MotionMax_Position;
