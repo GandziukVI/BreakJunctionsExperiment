@@ -91,6 +91,9 @@ namespace BreakJunctions.Motion
         public LinkedList<double> Channel_01_LastValues { get; protected set; }
         public LinkedList<double> Channel_02_LastValues { get; protected set; }
 
+        public double MotionMin_Position { get; protected set; }
+        public double MotionMax_Position { get; protected set; }
+
         /// <summary>
         /// Gets or sets the motion state
         /// </summary>

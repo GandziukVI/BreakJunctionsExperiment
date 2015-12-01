@@ -24,6 +24,9 @@ namespace BreakJunctions.Motion
             Channel_01_Broken = null;
             Channel_02_Broken = null;
 
+            MotionMin_Position = 0.0;
+            MotionMax_Position = 0.005;
+
             var _COM_Device = new COM_Device(comPort, baud, parity, dataBits, stopBits, returnToken) as IExperimentalDevice;
             _Motor = new E_755(ref _COM_Device);
 
@@ -190,21 +193,35 @@ namespace BreakJunctions.Motion
                                 else if (Channel_02_LastValues.Average() <= OpenedJunctionConductance)
                                     Channel_02_Broken = true;
 
-                                if (Channel_01_Broken == true && Channel_02_Broken == true)
+                                // If two channels are broken, go to zero
+                                if ((Channel_01_Broken & Channel_02_Broken) == true)
                                 {
                                     StartPosition = CurrentPosition;
-                                    FinalDestination = 0.0;
+                                    FinalDestination = MotionMin_Position;
                                 }
-                                else
+                                // If one of channels is working and max position reached, go to zero
+                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true)
                                 {
                                     StartPosition = CurrentPosition;
-                                    FinalDestination = 0.005;
+                                    FinalDestination = MotionMin_Position;
+                                }
+                                // If one of channels is working and min position reached, go to max position
+                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                {
+                                    StartPosition = CurrentPosition;
+                                    FinalDestination = MotionMax_Position;
+                                }
+                                // If two channels are working, go to max position
+                                else if ((Channel_01_Broken & Channel_02_Broken) == false)
+                                {
+                                    StartPosition = CurrentPosition;
+                                    FinalDestination = MotionMax_Position;
                                 }
 
-                                if (StartPosition <= 0.0)
-                                    StartPosition = 0.0;
-                                if (FinalDestination >= 0.005)
-                                    FinalDestination = 0.005;
+                                if (StartPosition <= MotionMin_Position)
+                                    StartPosition = MotionMin_Position;
+                                if (FinalDestination >= MotionMax_Position)
+                                    FinalDestination = MotionMax_Position;
                             }
 
                             _Motor.MoveAbsolute(AxisIdentifier._1, ConvertPositionToMotorUnits(CurrentPosition));

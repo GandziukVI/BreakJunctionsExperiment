@@ -93,6 +93,9 @@ namespace BreakJunctions.Motion
             Channel_01_Broken = null;
             Channel_02_Broken = null;
 
+            MotionMin_Position = 0.0;
+            MotionMax_Position = 0.015;
+
             this._Motor = new FaulhaberMinimotor_SA_2036U012V_K1155(comPort, baud, parity, dataBits, stopBits, returnToken);
 
             InitDevice();
@@ -152,7 +155,7 @@ namespace BreakJunctions.Motion
                         else if ((CurrentPosition > FinalDestination) && (IsMotionInProcess == true) && (CurrentDirection == MotionDirection.Down))
                         {
                             CurrentPosition -= positionIncrement;
-                            
+
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
                             _Motor.NotifyPosition();
                             _Motor.InitiateMotion();
@@ -169,7 +172,7 @@ namespace BreakJunctions.Motion
                         if (IsMotionInProcess == true)
                         {
                             if (CurrentPosition >= FinalDestination - positionIncrement)
-                            {                                
+                            {
                                 if (_currentMotionVelosity != VelosityMovingDown)
                                 {
                                     _currentMotionVelosity = VelosityMovingDown;
@@ -202,7 +205,7 @@ namespace BreakJunctions.Motion
                             {
                                 CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
 
-                                if(Math.Max(Channel_01_LastValues.Count, Channel_02_LastValues.Count) < ConsiderUsingLast)
+                                if (Math.Max(Channel_01_LastValues.Count, Channel_02_LastValues.Count) < ConsiderUsingLast)
                                 {
                                     Channel_01_LastValues.AddLast(e.CH_01_Conductance);
                                     Channel_02_LastValues.AddLast(e.CH_02_Conductance);
@@ -226,21 +229,37 @@ namespace BreakJunctions.Motion
                                 else if (Channel_02_LastValues.Average() <= OpenedJunctionConductance)
                                     Channel_02_Broken = true;
 
-                                if (Channel_01_Broken == true && Channel_02_Broken == true)
+
+
+                                // If two channels are broken, go to zero
+                                if ((Channel_01_Broken & Channel_02_Broken) == true)
                                 {
                                     StartPosition = CurrentPosition;
-                                    FinalDestination = 0.0;
+                                    FinalDestination = MotionMin_Position;
                                 }
-                                else
+                                // If one of channels is working and max position reached, go to zero
+                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true)
                                 {
                                     StartPosition = CurrentPosition;
-                                    FinalDestination = 0.015;
+                                    FinalDestination = MotionMin_Position;
+                                }
+                                // If one of channels is working and min position reached, go to max position
+                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                {
+                                    StartPosition = CurrentPosition;
+                                    FinalDestination = MotionMax_Position;
+                                }
+                                // If two channels are working, go to max position
+                                else if((Channel_01_Broken & Channel_02_Broken) == false)
+                                {
+                                    StartPosition = CurrentPosition;
+                                    FinalDestination = MotionMax_Position;
                                 }
 
-                                if (StartPosition <= 0.0)
-                                    StartPosition = 0.0;
-                                if (FinalDestination >= 0.015)
-                                    FinalDestination = 0.015;
+                                if (StartPosition <= MotionMin_Position)
+                                    StartPosition = MotionMin_Position;
+                                if (FinalDestination >= MotionMax_Position)
+                                    FinalDestination = MotionMax_Position;
                             }
 
                             _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
@@ -376,7 +395,7 @@ namespace BreakJunctions.Motion
 
                                     if (CurrentPosition <= 0 || CurrentPosition >= 0.015)
                                         CurrentPosition = 0;
-                                    
+
                                     CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * _localPositionIncrement;
 
                                     _Motor.LoadAbsolutePosition(ConvertPotitionToMotorUnits(CurrentPosition));
