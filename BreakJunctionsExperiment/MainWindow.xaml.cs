@@ -319,6 +319,9 @@ namespace BreakJunctions
             controlTimeTraceMeasurementSettings.cmdTimeTraceStopMeasurement.Click += on_cmdTimeTraceStopMeasurementClick;
             controlTimeTraceMeasurementSettings.MotionParameters.cmdEnableDisableMotor.Click += cmdEnableDisableMotor_Click;
 
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_01 += TimeTracePointReceivedChannel_01;
+            AllEventsHandler.Instance.TimeTracePointReceivedChannel_02 += TimeTracePointReceivedChannel_02;
+
             #endregion
 
             #region Real time TimeTrace Model-view interactions
@@ -997,7 +1000,8 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_01.Motor.EliminateClosing = _TimeTraceExperimentSettings.EliminateClosing;
                                 TimeTraceCurveChannel_01.Motor.SmartMode = _TimeTraceExperimentSettings.SmartMeasurement;
 
-                                TimeTraceCurveChannel_01.Motor.OpenedJunctionConductance = _TimeTraceExperimentSettings.OpenedJunctionConductance;
+                                TimeTraceCurveChannel_01.Motor.OpenedJunctionConductance_CH_01 = _TimeTraceExperimentSettings.OpenedJunctionConductance_CH_01;
+                                TimeTraceCurveChannel_01.Motor.OpenedJunctionConductance_CH_02 = _TimeTraceExperimentSettings.OpenedJunctionConductance_CH_02;
                                 TimeTraceCurveChannel_01.Motor.ClosedJunctionConductance = _TimeTraceExperimentSettings.ClosedJunctionConductance;
                                 TimeTraceCurveChannel_01.Motor.ConsiderUsingLast = _TimeTraceExperimentSettings.ConsiderUsingLast;
                             }
@@ -1011,7 +1015,8 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_01.Motor.EliminateClosing = _TimeTraceExperimentSettings.EliminateClosing;
                                 TimeTraceCurveChannel_01.Motor.SmartMode = _TimeTraceExperimentSettings.SmartMeasurement;
 
-                                TimeTraceCurveChannel_01.Motor.OpenedJunctionConductance = _TimeTraceExperimentSettings.OpenedJunctionConductance;
+                                TimeTraceCurveChannel_01.Motor.OpenedJunctionConductance_CH_01 = _TimeTraceExperimentSettings.OpenedJunctionConductance_CH_01;
+                                TimeTraceCurveChannel_01.Motor.OpenedJunctionConductance_CH_02 = _TimeTraceExperimentSettings.OpenedJunctionConductance_CH_02;
                                 TimeTraceCurveChannel_01.Motor.ClosedJunctionConductance = _TimeTraceExperimentSettings.ClosedJunctionConductance;
                                 TimeTraceCurveChannel_01.Motor.ConsiderUsingLast = _TimeTraceExperimentSettings.ConsiderUsingLast;
                             }
@@ -1026,7 +1031,8 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_02.Motor.EliminateClosing = _TimeTraceExperimentSettings.EliminateClosing;
                                 TimeTraceCurveChannel_02.Motor.SmartMode = _TimeTraceExperimentSettings.SmartMeasurement;
 
-                                TimeTraceCurveChannel_02.Motor.OpenedJunctionConductance = _TimeTraceExperimentSettings.OpenedJunctionConductance;
+                                TimeTraceCurveChannel_02.Motor.OpenedJunctionConductance_CH_01 = _TimeTraceExperimentSettings.OpenedJunctionConductance_CH_01;
+                                TimeTraceCurveChannel_02.Motor.OpenedJunctionConductance_CH_02 = _TimeTraceExperimentSettings.OpenedJunctionConductance_CH_02;
                                 TimeTraceCurveChannel_02.Motor.ClosedJunctionConductance = _TimeTraceExperimentSettings.ClosedJunctionConductance;
                                 TimeTraceCurveChannel_02.Motor.ConsiderUsingLast = _TimeTraceExperimentSettings.ConsiderUsingLast;
                             }
@@ -1040,7 +1046,8 @@ namespace BreakJunctions
                                 TimeTraceCurveChannel_02.Motor.EliminateClosing = _TimeTraceExperimentSettings.EliminateClosing;
                                 TimeTraceCurveChannel_02.Motor.SmartMode = _TimeTraceExperimentSettings.SmartMeasurement;
 
-                                TimeTraceCurveChannel_02.Motor.OpenedJunctionConductance = _TimeTraceExperimentSettings.OpenedJunctionConductance;
+                                TimeTraceCurveChannel_02.Motor.OpenedJunctionConductance_CH_01 = _TimeTraceExperimentSettings.OpenedJunctionConductance_CH_01;
+                                TimeTraceCurveChannel_02.Motor.OpenedJunctionConductance_CH_02 = _TimeTraceExperimentSettings.OpenedJunctionConductance_CH_02;
                                 TimeTraceCurveChannel_02.Motor.ClosedJunctionConductance = _TimeTraceExperimentSettings.ClosedJunctionConductance;
                                 TimeTraceCurveChannel_02.Motor.ConsiderUsingLast = _TimeTraceExperimentSettings.ConsiderUsingLast;
                             }
@@ -1219,6 +1226,18 @@ namespace BreakJunctions
                 _MotionController.EnableDevice();
             else
                 _MotionController.DisableDevice();
+        }
+        
+        // Reflecting the resistance value in the first channel in the motion control
+        void TimeTracePointReceivedChannel_01(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
+        {
+            this.controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.CH_01_R_Value = 1.0 / (e.Y * 0.00007748091734625);
+        }
+
+        // Reflecting the resistance value in the second channel in the motion control
+        void TimeTracePointReceivedChannel_02(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
+        {
+            this.controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.CH_02_R_Value = 1.0 / (e.Y * 0.00007748091734625);
         }
 
         #region 1-st Channel Background Work

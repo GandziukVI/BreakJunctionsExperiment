@@ -64,11 +64,18 @@ namespace BreakJunctions.Motion
             }
         }
 
-        private double _OpenedJunctionConductance = 0.00001;
-        public double OpenedJunctionConductance
+        private double _OpenedJunctionConductance_CH_01 = 0.00001;
+        public double OpenedJunctionConductance_CH_01
         {
-            get { return _OpenedJunctionConductance; }
-            set { _OpenedJunctionConductance = value; }
+            get { return _OpenedJunctionConductance_CH_01; }
+            set { _OpenedJunctionConductance_CH_01 = value; }
+        }
+
+        private double _OpenedJunctionConductance_CH_02 = 0.00001;
+        public double OpenedJunctionConductance_CH_02
+        {
+            get { return _OpenedJunctionConductance_CH_02; }
+            set { _OpenedJunctionConductance_CH_02 = value; }
         }
 
         private double _ClosedJunctionConductance = 10.0;

@@ -157,6 +157,28 @@ namespace BreakJunctions
             }
         }
 
+        private double _CH_01_R_Value = 0.0;
+        public double CH_01_R_Value
+        {
+            get { return _CH_01_R_Value; }
+            set
+            {
+                _CH_01_R_Value = value;
+                OnPropertyChanged("CH_01_R_Value");
+            }
+        }
+
+        private double _CH_02_R_Value = 0.0;
+        public double CH_02_R_Value
+        {
+            get { return _CH_02_R_Value; }
+            set
+            {
+                _CH_02_R_Value = value;
+                OnPropertyChanged("CH_02_R_Value");
+            }
+        }
+
         #endregion
 
         #region Distance

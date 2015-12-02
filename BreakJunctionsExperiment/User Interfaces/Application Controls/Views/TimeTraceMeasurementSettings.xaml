@@ -263,14 +263,14 @@
 											<DataTrigger.EnterActions>
 												<BeginStoryboard>
 													<Storyboard>
-														<DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="75" Duration="0:0:.1" />
+														<DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="100" Duration="0:0:.1" />
 													</Storyboard>
 												</BeginStoryboard>
 											</DataTrigger.EnterActions>
 											<DataTrigger.ExitActions>
 												<BeginStoryboard>
 													<Storyboard>
-														<DoubleAnimation Storyboard.TargetProperty="Height" From="75" To="0" Duration="0:0:0.1"/>
+														<DoubleAnimation Storyboard.TargetProperty="Height" From="100" To="0" Duration="0:0:0.1"/>
 													</Storyboard>
 												</BeginStoryboard>
 											</DataTrigger.ExitActions>
@@ -283,18 +283,21 @@
 								<RowDefinition />
 								<RowDefinition />
 								<RowDefinition />
+								<RowDefinition />
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition />
 								<ColumnDefinition />
 							</Grid.ColumnDefinitions>
 
-							<TextBlock VerticalAlignment="Center" Margin="0,0,5,0">Opened Junction [G/G<Run BaselineAlignment="Subscript">0</Run>]</TextBlock>
-							<wpfTool:DoubleUpDown Grid.Column="1" FormatString="F5" Value="{Binding OpenedJunctionConductance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-							<TextBlock VerticalAlignment="Center" Grid.Row="1" Margin="0,0,5,0">Closed Junction [G/G<Run BaselineAlignment="Subscript">0</Run>]</TextBlock>
-							<wpfTool:DoubleUpDown Grid.Column="1" Grid.Row="1" FormatString="F5" Value="{Binding ClosedJunctionConductance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-							<TextBlock VerticalAlignment="Center" Grid.Row="2" Margin="0,0,5,0">Consider Using Last</TextBlock>
-							<wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ConsiderUsingLast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+							<TextBlock VerticalAlignment="Center" Margin="0,0,5,0">CH 01 Opened [G/G<Run FontSize="9" BaselineAlignment="Subscript">0</Run>]</TextBlock>
+							<wpfTool:DoubleUpDown Grid.Column="1" FormatString="F5" Value="{Binding OpenedJunctionConductance_CH_01, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+							<TextBlock VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="1">CH 02 Opened [G/G<Run FontSize="9" BaselineAlignment="Subscript">0</Run>]</TextBlock>
+							<wpfTool:DoubleUpDown Grid.Column="1" FormatString="F5" Value="{Binding OpenedJunctionConductance_CH_02, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"/>
+							<TextBlock VerticalAlignment="Center" Grid.Row="2" Margin="0,0,5,0">Closed Junction [G/G<Run FontSize="9" BaselineAlignment="Subscript">0</Run>]</TextBlock>
+							<wpfTool:DoubleUpDown Grid.Column="1" Grid.Row="2" FormatString="F5" Value="{Binding ClosedJunctionConductance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Row="3" Margin="0,0,5,0">Consider Using Last</TextBlock>
+							<wpfTool:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ConsiderUsingLast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 						</Grid>
                         <Label Grid.Row="2" Grid.Column="0" Content="Number of Averages"/>
 						<wpfTool:IntegerUpDown Grid.Row="2" Grid.Column="1" x:Name="textBoxTimeTraceNumberOfAverages" Value="{Binding TimeTraceMeasurementNumberOfAverages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />

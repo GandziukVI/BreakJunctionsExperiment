@@ -197,14 +197,25 @@ namespace BreakJunctions
             }
         }
 
-        private double _OpenedJunctionConductance = 0.00001;
-        public double OpenedJunctionConductance
+        private double _OpenedJunctionConductance_CH_01 = 0.00001;
+        public double OpenedJunctionConductance_CH_01
         {
-            get { return _OpenedJunctionConductance; }
+            get { return _OpenedJunctionConductance_CH_01; }
             set
             {
-                _OpenedJunctionConductance = value;
-                OnPropertyChanged("OpenedJunctionConductance");
+                _OpenedJunctionConductance_CH_01 = value;
+                OnPropertyChanged("OpenedJunctionConductance_CH_01");
+            }
+        }
+
+        private double _OpenedJunctionConductance_CH_02 = 0.00001;
+        public double OpenedJunctionConductance_CH_02
+        {
+            get { return _OpenedJunctionConductance_CH_02; }
+            set
+            {
+                _OpenedJunctionConductance_CH_02 = value;
+                OnPropertyChanged("OpenedJunctionConductance_CH_02");
             }
         }
 

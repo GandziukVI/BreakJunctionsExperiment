@@ -157,20 +157,55 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+							<RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="0" Content="Start position"/>
-                        <wpfTool:DoubleUpDown Grid.Row="0" Grid.Column="1" Value="{Binding StartPosition, Converter={StaticResource MilimetersToMetersConverter}, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=LostFocus}"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
-                        <Label Grid.Row="1" Grid.Column="0" Content="Current position" />
-                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding CurrentPosition, Converter={StaticResource MilimetersToMetersConverter}, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
-                        <Label Grid.Row="2" Grid.Column="0" Content="End position"/>
-                        <wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding FinalDestination, Converter={StaticResource MilimetersToMetersConverter}, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=LostFocus}"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
-                        <Label Grid.Row="3" Grid.Column="0" Content="Number cycles"/>
-						<wpfTool:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding NumberCycles, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=LostFocus}" />
+						<Grid Grid.ColumnSpan="2">
+							<Grid.RowDefinitions>
+								<RowDefinition />
+								<RowDefinition />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+
+							<GroupBox Grid.Row="0" Grid.Column="0" Header="Moving direction" Margin="2.5" IsHitTestVisible="False" Grid.RowSpan="2">
+								<StackPanel>
+									<RadioButton IsChecked="{Binding Direction_UP, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" Content="Up"/>
+									<RadioButton IsChecked="{Binding Direction_DOWN, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" Content="Down"/>
+								</StackPanel>
+							</GroupBox>
+
+							<Grid Grid.Column="1" VerticalAlignment="Bottom">
+								<Grid.RowDefinitions>
+									<RowDefinition />
+									<RowDefinition />
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition />
+								</Grid.ColumnDefinitions>
+
+								<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0">R<Run FontSize="9" BaselineAlignment="Subscript">CH_01</Run></TextBlock>
+								<wpfTool:DoubleUpDown Grid.Column="1" IsReadOnly="True" Value="{Binding CH_01_R_Value, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" FormatString="F3" />
+								<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Margin="0,0,5,0">R<Run FontSize="9" BaselineAlignment="Subscript">CH_02</Run></TextBlock>
+								<wpfTool:DoubleUpDown Grid.Column="1" Grid.Row="1" IsReadOnly="True" Value="{Binding CH_02_R_Value, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" FormatString="F3" />
+							</Grid>
+						</Grid>
+
+                        <Label Grid.Row="1" Grid.Column="0" Content="Start position"/>
+                        <wpfTool:DoubleUpDown Grid.Row="1" Grid.Column="1" Value="{Binding StartPosition, Converter={StaticResource MilimetersToMetersConverter}, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=LostFocus}"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
+                        <Label Grid.Row="2" Grid.Column="0" Content="Current position" />
+                        <wpfTool:DoubleUpDown Grid.Row="2" Grid.Column="1" Value="{Binding CurrentPosition, Converter={StaticResource MilimetersToMetersConverter}, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
+                        <Label Grid.Row="3" Grid.Column="0" Content="End position"/>
+                        <wpfTool:DoubleUpDown Grid.Row="3" Grid.Column="1" Value="{Binding FinalDestination, Converter={StaticResource MilimetersToMetersConverter}, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=LostFocus}"  Style="{StaticResource MotionDoubleUpDown}" Maximum="15" />
+                        <Label Grid.Row="4" Grid.Column="0" Content="Number cycles"/>
+						<wpfTool:IntegerUpDown Grid.Row="4" Grid.Column="1" Value="{Binding NumberCycles, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=LostFocus}" />
                     </Grid>
                 </TabItem>
                 <!-- End tab item repetitive time trace distance measuremebts -->
