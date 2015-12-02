@@ -473,6 +473,7 @@ namespace BreakJunctions.Motion
 
         public override void MoveToZeroPosition()
         {
+            _Motor.EnableDevice();
             _Motor.LoadAbsolutePosition(0);
             _Motor.InitiateMotion();
         }
