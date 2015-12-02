@@ -192,7 +192,7 @@
 								</Grid.ColumnDefinitions>
 
 								<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0">R<Run FontSize="9" BaselineAlignment="Subscript">CH_01</Run></TextBlock>
-								<wpfTool:DoubleUpDown Grid.Column="1" IsReadOnly="True" Value="{Binding CH_01_R_Value, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" FormatString="F3" />
+								<wpfTool:DoubleUpDown Grid.Column="1" IsReadOnly="True" Value="{Binding CH_01_R_Value, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" FormatString="F3" MaxWidth="95" />
 								<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Margin="0,0,5,0">R<Run FontSize="9" BaselineAlignment="Subscript">CH_02</Run></TextBlock>
 								<wpfTool:DoubleUpDown Grid.Column="1" Grid.Row="1" IsReadOnly="True" Value="{Binding CH_02_R_Value, Mode=TwoWay, Source={StaticResource Motion_Params}, UpdateSourceTrigger=PropertyChanged}" FormatString="F3" />
 							</Grid>
