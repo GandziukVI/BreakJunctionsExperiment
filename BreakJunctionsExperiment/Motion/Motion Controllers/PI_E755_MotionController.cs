@@ -193,30 +193,95 @@ namespace BreakJunctions.Motion
                                 else if (Channel_02_LastValues.Average() <= OpenedJunctionConductance_CH_02)
                                     Channel_02_Broken = true;
 
-                                // If two channels are broken, go to zero
-                                if ((Channel_01_Broken & Channel_02_Broken) == true)
+                                if (!IsFirstChannelCompletelyBroken & !IsSecondChannelCompletelyBroken == true)
                                 {
-                                    StartPosition = CurrentPosition;
-                                    FinalDestination = MotionMin_Position;
+                                    // If two channels are broken, go to zero
+                                    if ((Channel_01_Broken & Channel_02_Broken) == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMin_Position;
+                                    }
+                                    // If one of channels or both are working and max position reached, go to zero
+                                    else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true ||
+                                        ((!Channel_01_Broken & !Channel_02_Broken) & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMin_Position;
+                                    }
+                                    // If one of channels or both are working and min position reached, go to max position
+                                    // At min position thehere is a checking if the channels are completely broken
+                                    else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true ||
+                                        ((!Channel_01_Broken & !Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMax_Position;
+
+                                        IsFirstChannelCompletelyBroken = (bool)Channel_01_Broken;
+                                        IsSecondChannelCompletelyBroken = (bool)Channel_02_Broken;
+                                    }
+                                    // If two channels are working, go to max position
+                                    else if ((!Channel_01_Broken & !Channel_02_Broken) == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMax_Position;
+                                    }
                                 }
-                                // If one of channels is working and max position reached, go to zero
-                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true)
+                                else if (!IsFirstChannelCompletelyBroken & IsSecondChannelCompletelyBroken == true)
                                 {
-                                    StartPosition = CurrentPosition;
-                                    FinalDestination = MotionMin_Position;
+                                    if (Channel_01_Broken == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMin_Position;
+                                    }
+                                    else if ((!Channel_01_Broken & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMin_Position;
+                                    }
+                                    else if ((!Channel_01_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMax_Position;
+                                    }
+                                    else if ((Channel_01_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                    {
+                                        IsFirstChannelCompletelyBroken = true;
+                                    }
+                                    else if (Channel_01_Broken == false)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMax_Position;
+                                    }
                                 }
-                                // If one of channels is working and min position reached, go to max position
-                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                else if (!IsSecondChannelCompletelyBroken & IsFirstChannelCompletelyBroken == true)
                                 {
-                                    StartPosition = CurrentPosition;
-                                    FinalDestination = MotionMax_Position;
+                                    if (Channel_02_Broken == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMin_Position;
+                                    }
+                                    else if ((!Channel_02_Broken & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMin_Position;
+                                    }
+                                    else if ((!Channel_02_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMax_Position;
+                                    }
+                                    else if ((Channel_02_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                    {
+                                        IsSecondChannelCompletelyBroken = true;
+                                    }
+                                    else if (Channel_02_Broken == false)
+                                    {
+                                        StartPosition = CurrentPosition;
+                                        FinalDestination = MotionMax_Position;
+                                    }
                                 }
-                                // If two channels are working, go to max position
-                                else if ((!Channel_01_Broken & !Channel_02_Broken) == true)
-                                {
-                                    StartPosition = CurrentPosition;
-                                    FinalDestination = MotionMax_Position;
-                                }
+                                else if (IsFirstChannelCompletelyBroken & IsSecondChannelCompletelyBroken == true)
+                                    StopMotion();
 
                                 if (StartPosition <= MotionMin_Position)
                                     StartPosition = MotionMin_Position;
