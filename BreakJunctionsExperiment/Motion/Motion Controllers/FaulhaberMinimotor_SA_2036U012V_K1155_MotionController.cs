@@ -81,6 +81,16 @@ namespace BreakJunctions.Motion
             return isInitSuccess;
         }
 
+        public override void EnableDevice()
+        {
+            _Motor.EnableDevice();
+        }
+
+        public override void DisableDevice()
+        {
+            _Motor.DisableDevice();
+        }
+
         #endregion
 
         #region Constructor / Destructor
@@ -165,7 +175,8 @@ namespace BreakJunctions.Motion
                     } break;
                 case MotionKind.Repetitive:
                     {
-                        //Checking if measurement is completed
+                        // Checking if measurement is completed
+                        // stop the measurement
                         if (CurrentIteration >= NumberOfRepetities * 2)
                             this.StopMotion();
 
@@ -192,8 +203,11 @@ namespace BreakJunctions.Motion
                                 this.SetDirection(MotionDirection.Up);
                             }
 
+                            // Acquiring all the data points going up and down
+                            // in all distance range which was set before starting the measurement
                             if (NormalMode == true)
                                 CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
+                            // Not acquiring data while going down
                             else if (EliminateClosing == true)
                             {
                                 if (CurrentDirection == MotionDirection.Up)
@@ -201,10 +215,13 @@ namespace BreakJunctions.Motion
                                 else
                                     CurrentPosition = StartPosition;
                             }
+                            // Aquiring data only in the region of breaking
                             else if (SmartMode == true)
                             {
                                 CurrentPosition += (CurrentDirection == MotionDirection.Up ? 1 : -1) * positionIncrement;
 
+                                // Filling the conductance data collections for the estimation of the
+                                // sample current conductance state: closed or broken
                                 if (Math.Max(Channel_01_LastValues.Count, Channel_02_LastValues.Count) < ConsiderUsingLast)
                                 {
                                     Channel_01_LastValues.AddLast(e.CH_01_Conductance);
@@ -219,6 +236,7 @@ namespace BreakJunctions.Motion
                                     Channel_02_LastValues.AddLast(e.CH_02_Conductance);
                                 }
 
+                                // Estimation of sample current conductance state
                                 if (Channel_01_LastValues.Average() >= ClosedJunctionConductance)
                                     Channel_01_Broken = false;
                                 else if (Channel_01_LastValues.Average() <= OpenedJunctionConductance_CH_01)
@@ -229,28 +247,32 @@ namespace BreakJunctions.Motion
                                 else if (Channel_02_LastValues.Average() <= OpenedJunctionConductance_CH_02)
                                     Channel_02_Broken = true;
 
-
-
                                 // If two channels are broken, go to zero
                                 if ((Channel_01_Broken & Channel_02_Broken) == true)
                                 {
                                     StartPosition = CurrentPosition;
                                     FinalDestination = MotionMin_Position;
                                 }
-                                // If one of channels is working and max position reached, go to zero
-                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true)
+                                // If one of channels or both are working and max position reached, go to zero
+                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true ||
+                                    ((!Channel_01_Broken & !Channel_02_Broken) & (CurrentPosition >= (MotionMax_Position - positionIncrement))) == true)
                                 {
                                     StartPosition = CurrentPosition;
                                     FinalDestination = MotionMin_Position;
                                 }
-                                // If one of channels is working and min position reached, go to max position
-                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                // If one of channels or both are working and min position reached, go to max position
+                                // At min position thehere is a checking if the channels are completely broken
+                                else if (((Channel_01_Broken ^ Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true ||
+                                    ((!Channel_01_Broken & !Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
                                 {
                                     StartPosition = CurrentPosition;
                                     FinalDestination = MotionMax_Position;
+
+                                    IsFirstChannelCompletelyBroken = (bool)Channel_01_Broken;
+                                    IsSecondChannelCompletelyBroken = (bool)Channel_02_Broken;
                                 }
                                 // If two channels are working, go to max position
-                                else if((!Channel_01_Broken & !Channel_02_Broken) == true)
+                                else if ((!Channel_01_Broken & !Channel_02_Broken) == true)
                                 {
                                     StartPosition = CurrentPosition;
                                     FinalDestination = MotionMax_Position;
@@ -540,15 +562,5 @@ namespace BreakJunctions.Motion
         }
 
         #endregion
-
-        public override void EnableDevice()
-        {
-            _Motor.EnableDevice();
-        }
-
-        public override void DisableDevice()
-        {
-            _Motor.DisableDevice();
-        }
     }
 }

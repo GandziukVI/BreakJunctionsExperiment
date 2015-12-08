@@ -9,6 +9,20 @@ namespace BreakJunctions.Motion
 {
     public abstract class MotionController : IDisposable
     {
+        private bool _IsFirstChannelCompletelyBroken = false;
+        public bool IsFirstChannelCompletelyBroken
+        {
+            get { return _IsFirstChannelCompletelyBroken; }
+            set { _IsFirstChannelCompletelyBroken = value; }
+        }
+
+        private bool _IsSecondChannelCompletelyBroken = false;
+        public bool IsSecondChannelCompletelyBroken
+        {
+            get { return _IsSecondChannelCompletelyBroken; }
+            set { _IsSecondChannelCompletelyBroken = value; }
+        }
+
         private bool _NormalMode = false;
         /// <summary>
         /// Aquiring both breaking and closing curves in full range od distance

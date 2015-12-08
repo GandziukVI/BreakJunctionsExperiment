@@ -335,12 +335,12 @@ namespace BreakJunctions.Motion
 
         public override void EnableDevice()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void DisableDevice()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
