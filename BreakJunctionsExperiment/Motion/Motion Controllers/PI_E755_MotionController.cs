@@ -219,8 +219,8 @@ namespace BreakJunctions.Motion
                                         IsFirstChannelCompletelyBroken = (bool)Channel_01_Broken;
                                         IsSecondChannelCompletelyBroken = (bool)Channel_02_Broken;
                                     }
-                                    // If two channels are working, go to max position
-                                    else if ((!Channel_01_Broken & !Channel_02_Broken) == true)
+                                    // If two channels are working and minimum position is reached, go to max position
+                                    else if (((!Channel_01_Broken & !Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
                                     {
                                         StartPosition = CurrentPosition;
                                         FinalDestination = MotionMax_Position;
@@ -247,7 +247,7 @@ namespace BreakJunctions.Motion
                                     {
                                         IsFirstChannelCompletelyBroken = true;
                                     }
-                                    else if (Channel_01_Broken == false)
+                                    else if ((!Channel_01_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
                                     {
                                         StartPosition = CurrentPosition;
                                         FinalDestination = MotionMax_Position;
@@ -274,7 +274,7 @@ namespace BreakJunctions.Motion
                                     {
                                         IsSecondChannelCompletelyBroken = true;
                                     }
-                                    else if (Channel_02_Broken == false)
+                                    else if ((!Channel_02_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == false)
                                     {
                                         StartPosition = CurrentPosition;
                                         FinalDestination = MotionMax_Position;
