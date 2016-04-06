@@ -274,11 +274,11 @@ namespace BreakJunctions.Motion
                                         IsSecondChannelCompletelyBroken = (bool)Channel_02_Broken;
                                     }
                                     // If two channels are working and minimum position is reached, go to max position
-                                    else if (((!Channel_01_Broken & !Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
-                                    {
-                                        StartPosition = CurrentPosition;
-                                        FinalDestination = MotionMax_Position;
-                                    }
+                                    //else if (((!Channel_01_Broken & !Channel_02_Broken) & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                    //{
+                                    //    StartPosition = CurrentPosition;
+                                    //    FinalDestination = MotionMax_Position;
+                                    //}
                                 }
                                 else if (!IsFirstChannelCompletelyBroken & IsSecondChannelCompletelyBroken == true)
                                 {
@@ -301,11 +301,16 @@ namespace BreakJunctions.Motion
                                     {
                                         IsFirstChannelCompletelyBroken = true;
                                     }
-                                    else if ((!Channel_01_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                    else if (Channel_01_Broken == false)
                                     {
                                         StartPosition = CurrentPosition;
                                         FinalDestination = MotionMax_Position;
                                     }
+                                    //else if ((!Channel_01_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == true)
+                                    //{
+                                    //    StartPosition = CurrentPosition;
+                                    //    FinalDestination = MotionMax_Position;
+                                    //}
                                 }
                                 else if (!IsSecondChannelCompletelyBroken & IsFirstChannelCompletelyBroken == true)
                                 {
@@ -328,11 +333,16 @@ namespace BreakJunctions.Motion
                                     {
                                         IsSecondChannelCompletelyBroken = true;
                                     }
-                                    else if ((!Channel_02_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == false)
+                                    else if (Channel_02_Broken == false)
                                     {
                                         StartPosition = CurrentPosition;
                                         FinalDestination = MotionMax_Position;
                                     }
+                                    //else if ((!Channel_02_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == false)
+                                    //{
+                                    //    StartPosition = CurrentPosition;
+                                    //    FinalDestination = MotionMax_Position;
+                                    //}
                                 }
                                 else if (IsFirstChannelCompletelyBroken & IsSecondChannelCompletelyBroken == true)
                                     StopMotion();
