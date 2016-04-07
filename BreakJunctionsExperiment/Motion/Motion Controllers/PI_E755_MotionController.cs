@@ -274,11 +274,16 @@ namespace BreakJunctions.Motion
                                     {
                                         IsSecondChannelCompletelyBroken = true;
                                     }
-                                    else if ((!Channel_02_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == false)
+                                    else if (Channel_02_Broken == false)
                                     {
                                         StartPosition = CurrentPosition;
                                         FinalDestination = MotionMax_Position;
                                     }
+                                    //else if ((!Channel_02_Broken & (CurrentPosition <= (MotionMin_Position + positionIncrement))) == false)
+                                    //{
+                                    //    StartPosition = CurrentPosition;
+                                    //    FinalDestination = MotionMax_Position;
+                                    //}
                                 }
                                 else if (IsFirstChannelCompletelyBroken & IsSecondChannelCompletelyBroken == true)
                                     StopMotion();
