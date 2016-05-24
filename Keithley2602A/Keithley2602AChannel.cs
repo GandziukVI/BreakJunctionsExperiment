@@ -372,24 +372,29 @@ namespace KeithleyInstruments
             }
         }
 
+        private double _CurrentSpeed;
         public void SetSpeed(double Value)
         {
-            if (Value < 0.01)
-                Value = 0.01;
-            else if (Value > 25)
-                Value = 25.0;
-
-            switch (_selectedChannel)
+            if (Value != _CurrentSpeed)
             {
-                case Keithley2602AChannels.ChannelA:
-                    {
-                        _device.Driver.Measurement.set_NPLC("A", Value);
-                    } break;
-                case Keithley2602AChannels.ChannelB:
-                    {
-                        _device.Driver.Measurement.set_NPLC("B", Value);
-                    } break;
+                if (Value < 0.01)
+                    Value = 0.01;
+                else if (Value > 25)
+                    Value = 25.0;
+
+                switch (_selectedChannel)
+                {
+                    case Keithley2602AChannels.ChannelA:
+                        {
+                            _device.Driver.Measurement.set_NPLC("A", Value);
+                        } break;
+                    case Keithley2602AChannels.ChannelB:
+                        {
+                            _device.Driver.Measurement.set_NPLC("B", Value);
+                        } break;
+                }
             }
+            _CurrentSpeed = Value;
         }
 
         private AccuracyParams _ChannelAccuracyParams;
