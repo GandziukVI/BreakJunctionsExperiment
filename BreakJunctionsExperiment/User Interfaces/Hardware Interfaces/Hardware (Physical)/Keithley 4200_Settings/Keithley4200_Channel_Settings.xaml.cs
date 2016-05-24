@@ -63,6 +63,7 @@ namespace BreakJunctions
 
             smu.VoltageLimit = DeviceSettings.LimitValueVoltage;
             smu.CurrentLimit = DeviceSettings.LimitValueCurrent;
+            smu.ChannelAccuracyParams.RangeAccuracySet = AccuracyListBox.ItemsSource as ObservableCollection<Keithley4200_RangeAccuracySet>;
             smu.SetIntegrationTime(DeviceSettings.CurrentIntegrationTime);
 
             return smu;

@@ -12,6 +12,7 @@ namespace Keithley_4200.Pages
         #region CommonCommands settings
 
         private IExperimentalDevice _TheDevice;
+        private IntegrationTime _currentIntegrationTime;
 
         #endregion
 
@@ -28,8 +29,12 @@ namespace Keithley_4200.Pages
 
         public void SetIntegrationTime(IntegrationTime __IntegrationTime)
         {
-            var command = String.Format("IT{0}", (int)__IntegrationTime);
-            _TheDevice.SendCommandRequest(command);
+            if (__IntegrationTime != _currentIntegrationTime)
+            {
+                var command = String.Format("IT{0}", (int)__IntegrationTime);
+                _TheDevice.SendCommandRequest(command);
+            }
+            _currentIntegrationTime = __IntegrationTime;
         }
 
         public void SetIntegrationTime(double __DelayFactor, double __FilterFactor, double __AD_CIT)

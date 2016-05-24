@@ -1409,10 +1409,14 @@ namespace BreakJunctions
                 case MotionDirection.Up:
                     {
                         controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.Direction_UP = true;
+                        DeviceChannel_01.OnConsiderAccuracyChanged(true);
+                        DeviceChannel_02.OnConsiderAccuracyChanged(true);
                     } break;
                 case MotionDirection.Down:
                     {
                         controlTimeTraceMeasurementSettings.MotionParameters.MeasurementSettings.Direction_DOWN = true;
+                        DeviceChannel_01.OnConsiderAccuracyChanged(false);
+                        DeviceChannel_02.OnConsiderAccuracyChanged(false);
                     } break;
             }
         }

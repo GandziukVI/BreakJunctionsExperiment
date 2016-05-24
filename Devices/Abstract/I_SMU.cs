@@ -72,5 +72,7 @@ namespace Devices.SMU
         /// <param name="TimeDelay"></param>
         /// <returns></returns>
         double MeasurePower(double valueThroughTheStrusture, int NumberOfAverages, double TimeDelay, SourceMode sourceMode);
+
+        void OnConsiderAccuracyChanged(bool state);
     }
 }

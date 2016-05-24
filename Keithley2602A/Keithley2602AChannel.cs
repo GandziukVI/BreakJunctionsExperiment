@@ -11,6 +11,7 @@ namespace KeithleyInstruments
     {
         private Keithley2602AChannels _selectedChannel;
         private Keithley2602A _device;
+        private bool _considerAccuracy = true;
 
         public Keithley2602AChannel(Keithley2602A Device, Keithley2602AChannels SelectedChannel)
         {
@@ -411,24 +412,35 @@ namespace KeithleyInstruments
             {
                 try
                 {
-                    foreach (var row in ChannelAccuracyParams.RangeAccuracySet)
+                    if (_considerAccuracy)
                     {
-                        var min = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Min();
-                        var max = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Max();
-
-                        if ((value >= min) && (value <= max))
+                        foreach (var row in ChannelAccuracyParams.RangeAccuracySet)
                         {
-                            if (row != _CurrentRow)
+                            var min = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Min();
+                            var max = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Max();
+
+                            if ((value >= min) && (value <= max))
                             {
-                                _CurrentRow = row;
-                                SetSpeed(row.Accuracy);
-                                break;
+                                if (row != _CurrentRow)
+                                {
+                                    _CurrentRow = row;
+                                    SetSpeed(row.Accuracy);
+                                    break;
+                                }
                             }
                         }
                     }
+                    else
+                        SetSpeed(1.0);
                 }
                 catch { }
             }
+        }
+
+
+        public void OnConsiderAccuracyChanged(bool state)
+        {
+            _considerAccuracy = state;
         }
     }
 }

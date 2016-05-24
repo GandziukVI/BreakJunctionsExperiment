@@ -32,6 +32,10 @@ namespace Keithley_4200
 
         private SMUs _SelectedSMU;
 
+        private bool _considerAccuracy = true;
+        private bool _measureResistance = false;
+        private bool _measurePower = false;
+
         #endregion
 
         #region Constructor
@@ -99,10 +103,38 @@ namespace Keithley_4200
             catch { return false; }
         }
 
+        public AccuracyParams ChannelAccuracyParams { get; set; }
+
         private Keithley4200_RangeAccuracySet _CurrentRow;
         private void CheckIntegrationTime(double value)
         {
-            
+            if (ChannelAccuracyParams.RangeAccuracySet != null)
+            {
+                try
+                {
+                    if (_considerAccuracy)
+                    {
+                        foreach (var row in ChannelAccuracyParams.RangeAccuracySet)
+                        {
+                            var min = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Min();
+                            var max = (new double[] { row.MinRangeLimit, row.MaxRangeLimit }).Max();
+
+                            if ((value >= min) && (value <= max))
+                            {
+                                if (row != _CurrentRow)
+                                {
+                                    _CurrentRow = row;
+                                    SetIntegrationTime(row.Accuracy);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                        SetIntegrationTime(IntegrationTime.Medium);
+                }
+                catch { }
+            }
         }
 
         public double MeasureVoltage(int NumberOfAverages, double TimeDelay)
@@ -114,24 +146,67 @@ namespace Keithley_4200
                     case SMUs.SMU1:
                         {
                             var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU1).Data;
-                            CheckIntegrationTime(voltage);
+                            if (!(_measureResistance || _measurePower))
+                                CheckIntegrationTime(voltage);
 
                             return voltage;
                         }
                     case SMUs.SMU2:
-                        return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU2).Data;
+                        {
+                            var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU2).Data;
+                            if (!(_measureResistance || _measurePower))
+                                CheckIntegrationTime(voltage);
+
+                            return voltage;
+                        }
                     case SMUs.SMU3:
-                        return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU3).Data;
+                        {
+                            var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU3).Data;
+                            if (!(_measureResistance || _measurePower))
+                                CheckIntegrationTime(voltage);
+
+                            return voltage;
+                        }
                     case SMUs.SMU4:
-                        return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU4).Data;
+                        {
+                            var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU4).Data;
+                            if (!(_measureResistance || _measurePower))
+                                CheckIntegrationTime(voltage);
+
+                            return voltage;
+                        }
                     case SMUs.SMU5:
-                        return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU5).Data;
+                        {
+                            var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU5).Data;
+                            if (!(_measureResistance || _measurePower))
+                                CheckIntegrationTime(voltage);
+
+                            return voltage;
+                        }
                     case SMUs.SMU6:
-                        return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU6).Data;
+                        {
+                            var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU6).Data;
+                            if (!(_measureResistance || _measurePower))
+                                CheckIntegrationTime(voltage);
+
+                            return voltage;
+                        }
                     case SMUs.SMU7:
-                        return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU7).Data;
+                        {
+                            var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU7).Data;
+                            if (!(_measureResistance || _measurePower))
+                                CheckIntegrationTime(voltage);
+
+                            return voltage;
+                        }
                     case SMUs.SMU8:
-                        return _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU8).Data;
+                        {
+                            var voltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU8).Data;
+                            if (!(_measureResistance || _measurePower))
+                                CheckIntegrationTime(voltage);
+
+                            return voltage;
+                        }
                     default:
                         return double.NaN;
                 }
@@ -146,21 +221,61 @@ namespace Keithley_4200
                 switch (_SelectedSMU)
                 {
                     case SMUs.SMU1:
-                        return _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU1).Data;
+                        {
+                            var current = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU1).Data;
+                            CheckIntegrationTime(current);
+
+                            return current;
+                        }
                     case SMUs.SMU2:
-                        return _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU2).Data;
+                        {
+                            var current = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU2).Data;
+                            CheckIntegrationTime(current);
+
+                            return current;
+                        }
                     case SMUs.SMU3:
-                        return _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU3).Data;
+                        {
+                            var current = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU3).Data;
+                            CheckIntegrationTime(current);
+
+                            return current;
+                        }
                     case SMUs.SMU4:
-                        return _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU4).Data;
+                        {
+                            var current = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU4).Data;
+                            CheckIntegrationTime(current);
+
+                            return current;
+                        }
                     case SMUs.SMU5:
-                        return _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU5).Data;
+                        {
+                            var current = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU5).Data;
+                            CheckIntegrationTime(current);
+
+                            return current;
+                        }
                     case SMUs.SMU6:
-                        return _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU6).Data;
+                        {
+                            var current = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU6).Data;
+                            CheckIntegrationTime(current);
+
+                            return current;
+                        }
                     case SMUs.SMU7:
-                        return _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU7).Data;
+                        {
+                            var current = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU7).Data;
+                            CheckIntegrationTime(current);
+
+                            return current;
+                        }
                     case SMUs.SMU8:
-                        return _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU8).Data;
+                        {
+                            var current = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU8).Data;
+                            CheckIntegrationTime(current);
+
+                            return current;
+                        }
                     default:
                         return double.NaN;
                 }
@@ -182,7 +297,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU1).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture / MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture / MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -190,7 +310,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU2).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture / MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture / MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -198,7 +323,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU3).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture / MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture / MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -206,7 +336,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU4).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture / MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture / MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -214,7 +349,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU5).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture / MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture / MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -222,7 +362,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU6).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture / MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture / MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -230,7 +375,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU7).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture / MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture / MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -238,7 +388,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU8).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture / MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture / MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -256,7 +411,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU1).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage / valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage / valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -264,7 +424,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU2).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage / valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage / valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -272,7 +437,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU3).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage / valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage / valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -280,7 +450,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU4).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage / valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage / valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -288,7 +463,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU5).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage / valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage / valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -296,7 +476,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU6).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage / valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage / valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -304,7 +489,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU7).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage / valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage / valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -312,7 +502,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU8).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage / valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage / valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -339,7 +534,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU1).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture * MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture * MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -347,7 +547,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU2).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture * MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture * MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -355,7 +560,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU3).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture * MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture * MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -363,7 +573,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU4).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture * MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture * MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -371,7 +586,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU5).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture * MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture * MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -379,7 +599,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU6).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture * MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture * MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -387,7 +612,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU7).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture * MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture * MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -395,7 +625,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredCurrent = _UserModeCommands.TriggerCurrent(TriggerCurrent.SMU8).Data;
                                     if (MeasuredCurrent != double.NaN)
-                                        return valueThroughTheStrusture * MeasuredCurrent;
+                                    {
+                                        var result = valueThroughTheStrusture * MeasuredCurrent;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -413,7 +648,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU1).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage * valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage * valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -421,7 +661,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU2).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage * valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage * valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -429,7 +674,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU3).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage * valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage * valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -437,7 +687,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU4).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage * valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage * valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -445,7 +700,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU5).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage * valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage * valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -453,7 +713,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU6).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage * valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage * valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -461,7 +726,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU7).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage * valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage * valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -469,7 +739,12 @@ namespace Keithley_4200
                                 {
                                     MeasuredVoltage = _UserModeCommands.TriggerVoltage(TriggerVoltage.SMU8).Data;
                                     if (MeasuredVoltage != double.NaN)
-                                        return MeasuredVoltage * valueThroughTheStrusture;
+                                    {
+                                        var result = MeasuredVoltage * valueThroughTheStrusture;
+                                        CheckIntegrationTime(result);
+
+                                        return result;
+                                    }
                                     else
                                         return double.NaN;
                                 }
@@ -485,6 +760,12 @@ namespace Keithley_4200
         public void SetIntegrationTime(IntegrationTime __IntegrationTime)
         {
             _CommonCommands.SetIntegrationTime(__IntegrationTime);
+        }
+
+
+        public void OnConsiderAccuracyChanged(bool state)
+        {
+            _considerAccuracy = state;
         }
     }
 }
