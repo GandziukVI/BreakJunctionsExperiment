@@ -344,10 +344,6 @@
       <Project>{8158bb3a-1aff-41c7-9bc1-4de188b6e2c2}</Project>
       <Name>FourierTransformProvider</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HP_35670A\HP_35670A.csproj">
-      <Project>{8664B9C3-B476-4BF6-A7B1-D90E8F9A79BC}</Project>
-      <Name>HP_35670A</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Keithley2602A\Keithley2602A.csproj">
       <Project>{35300475-eb06-4889-a3fd-6a4c6e2f3805}</Project>
       <Name>Keithley2602A</Name>
