@@ -239,12 +239,12 @@ namespace BreakJunctions.Motion
                                 // Estimation of sample current conductance state
                                 if (Channel_01_LastValues.Average() >= ClosedJunctionConductance)
                                     Channel_01_Broken = false;
-                                else if (Channel_01_LastValues.Average() <= OpenedJunctionConductance_CH_01)
+                                if (Channel_01_LastValues.Average() <= OpenedJunctionConductance_CH_01)
                                     Channel_01_Broken = true;
 
                                 if (Channel_02_LastValues.Average() >= ClosedJunctionConductance)
                                     Channel_02_Broken = false;
-                                else if (Channel_02_LastValues.Average() <= OpenedJunctionConductance_CH_02)
+                                if (Channel_02_LastValues.Average() <= OpenedJunctionConductance_CH_02)
                                     Channel_02_Broken = true;
 
                                 if (!IsFirstChannelCompletelyBroken & !IsSecondChannelCompletelyBroken == true)

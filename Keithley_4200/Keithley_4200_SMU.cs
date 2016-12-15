@@ -51,6 +51,9 @@ namespace Keithley_4200
             _MeasurementSetupPage = new MeasurementSetupPage(ref _TheDevice);
             _MeasurementControlPage = new MeasurementControlPage(ref _TheDevice);
             _UserModeCommands = new UserModeCommands(ref _TheDevice);
+
+            if (ChannelAccuracyParams == null)
+                ChannelAccuracyParams = new AccuracyParams();
         }
 
         #endregion

@@ -28,6 +28,12 @@ namespace Keithley_4200
 
     public class AccuracyParams
     {
+        public AccuracyParams()
+        {
+            if (RangeAccuracySet == null)
+                RangeAccuracySet = new ObservableCollection<Keithley4200_RangeAccuracySet>();
+        }
+
         public ObservableCollection<Keithley4200_RangeAccuracySet> RangeAccuracySet { get; set; }
 
         public void Add_New_RangeAccuracy_Value(double[] _Range, IntegrationTime _Accuracy)
