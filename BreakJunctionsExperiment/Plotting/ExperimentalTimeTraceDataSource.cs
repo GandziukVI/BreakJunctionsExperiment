@@ -69,7 +69,7 @@ namespace BreakJunctions.Plotting
 
         public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_01_EventArgs e)
         {
-            if (_ExperimentalData.Count > 2500)
+            if (_ExperimentalData.Count > 1000)
                 _ExperimentalData.RemoveFirst();
 
             if (e.Y >= _ScaledConductanceOverflow)
@@ -94,7 +94,7 @@ namespace BreakJunctions.Plotting
         }
         public async void OnTimeTracePointReceived(object sender, TimeTracePointReceivedChannel_02_EventArgs e)
         {
-            if (_ExperimentalData.Count > 2500)
+            if (_ExperimentalData.Count > 1000)
                 _ExperimentalData.RemoveFirst();
 
             if (e.Y >= _ScaledConductanceOverflow)

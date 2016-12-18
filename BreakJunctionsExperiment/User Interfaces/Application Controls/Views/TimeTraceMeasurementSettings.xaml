@@ -291,9 +291,9 @@
 							</Grid.ColumnDefinitions>
 
 							<TextBlock VerticalAlignment="Center" Margin="0,0,5,0">CH 01 Opened [G/G<Run FontSize="9" BaselineAlignment="Subscript">0</Run>]</TextBlock>
-							<wpfTool:DoubleUpDown Grid.Column="1" FormatString="F5" Value="{Binding OpenedJunctionConductance_CH_01, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+							<wpfTool:DoubleUpDown Grid.Column="1" FormatString="E4" Value="{Binding OpenedJunctionConductance_CH_01, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 							<TextBlock VerticalAlignment="Center" Margin="0,0,5,0" Grid.Row="1">CH 02 Opened [G/G<Run FontSize="9" BaselineAlignment="Subscript">0</Run>]</TextBlock>
-							<wpfTool:DoubleUpDown Grid.Column="1" FormatString="F5" Value="{Binding OpenedJunctionConductance_CH_02, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"/>
+							<wpfTool:DoubleUpDown Grid.Column="1" FormatString="E4" Value="{Binding OpenedJunctionConductance_CH_02, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"/>
 							<TextBlock VerticalAlignment="Center" Grid.Row="2" Margin="0,0,5,0">Closed Junction [G/G<Run FontSize="9" BaselineAlignment="Subscript">0</Run>]</TextBlock>
 							<wpfTool:DoubleUpDown Grid.Column="1" Grid.Row="2" FormatString="F5" Value="{Binding ClosedJunctionConductance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 							<TextBlock VerticalAlignment="Center" Grid.Row="3" Margin="0,0,5,0">Consider Using Last</TextBlock>
