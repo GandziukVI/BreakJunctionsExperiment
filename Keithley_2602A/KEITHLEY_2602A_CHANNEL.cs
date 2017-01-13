@@ -231,5 +231,11 @@ namespace SMU.KEITHLEY_2602A
             }
             else return double.NaN;
         }
+
+
+        public void OnConsiderAccuracyChanged(bool state)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
