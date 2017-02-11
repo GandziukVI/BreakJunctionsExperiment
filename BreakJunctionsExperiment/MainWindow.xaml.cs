@@ -850,7 +850,7 @@ namespace BreakJunctions
                 }
 
                 _experimentalTimeTraceDataSourceChannel_01 = new ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate.Channel_01);
-                _experimentalTimeTraceDataSourceChannel_01.AttachPointReceiveEvent();
+                //_experimentalTimeTraceDataSourceChannel_01.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_01 = new LineGraph(_experimentalTimeTraceDataSourceChannel_01);
                 _TimeTraceLineGraphChannel_01.AddToPlotter(chartTimeTraceChannel_01);
 
@@ -865,7 +865,7 @@ namespace BreakJunctions
                 }
 
                 _experimentalTimeTraceDataSourceChannel_02 = new ExperimentalTimetraceDataSourceChannel(ChannelsToInvestigate.Channel_02);
-                _experimentalTimeTraceDataSourceChannel_02.AttachPointReceiveEvent();
+                //_experimentalTimeTraceDataSourceChannel_02.AttachPointReceiveEvent();
                 _TimeTraceLineGraphChannel_02 = new LineGraph(_experimentalTimeTraceDataSourceChannel_02);
                 _TimeTraceLineGraphChannel_02.AddToPlotter(chartTimeTraceChannel_02);
 
