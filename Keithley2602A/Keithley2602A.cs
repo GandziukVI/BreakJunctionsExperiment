@@ -18,7 +18,7 @@ namespace KeithleyInstruments
 
         public Keithley2602A(string VisaID)
         {
-            _driver = new Ke26XXAClass();
+            _driver = new Ke26XXA();
 
             ResourceName = VisaID;
         }
